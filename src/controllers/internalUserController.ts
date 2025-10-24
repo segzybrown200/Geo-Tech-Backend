@@ -316,7 +316,7 @@ export const refreshInternalToken = async (req: AuthRequest, res: Response) => {
     res.cookie("token", newToken, {
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
     
