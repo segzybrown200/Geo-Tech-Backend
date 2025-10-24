@@ -229,3 +229,21 @@ export const logout = (req: Request, res: Response) => {
   });
   res.json({ message: "Logged out successfully" });
 };
+
+export const getAllState= async(req:Request, res:Response)=>{
+
+  try {
+
+    const state = await prisma.state.findMany({
+      orderBy:{
+        name: "asc"
+      }
+    })
+    return res.status(201).json({message: "State gotten", state})
+    
+  } catch (error) {
+    return res.status(401).json({success: false, message: "Error occured"})
+    
+  }
+
+}
