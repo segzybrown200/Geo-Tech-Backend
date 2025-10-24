@@ -1,5 +1,5 @@
 import express from 'express';
-import { createInternalUser, getInternalUserSession, loginInternalUser, resendInternalVerification, setInternalUserPassword, updateSignature, uploadSignature, verifyInternalEmail } from '../controllers/internalUserController';
+import { createInternalUser, getInternalUserSession, loginInternalUser, refreshInternalToken, resendInternalVerification, setInternalUserPassword, updateSignature, uploadSignature, verifyInternalEmail } from '../controllers/internalUserController';
 import { internalUserAuth, verifyToken } from '../middlewares/authMiddleware';
 import { authorizeRoles } from '../middlewares/roleMiddleware';
 import multer from 'multer';
@@ -15,5 +15,7 @@ router.post('/set-password', setInternalUserPassword);
 router.post('/resend-verification', resendInternalVerification);
 router.post("/login", loginInternalUser);
 router.get("/session", internalUserAuth, getInternalUserSession);
+router.get("/refresh", verifyToken, refreshInternalToken);
+
 
 export default router;

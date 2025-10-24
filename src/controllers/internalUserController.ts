@@ -8,6 +8,7 @@ import crypto from "crypto";
 import { sendEmail } from '../services/emailSevices';
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcryptjs"
+import { AuthRequest } from '../middlewares/authMiddleware';
 
 const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET!;
@@ -262,10 +263,15 @@ export const loginInternalUser = async (req: Request, res: Response) => {
       JWT_SECRET,
       { expiresIn: "7d" }
     );
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
 
     res.json({
       message: "Login successful",
-      token,
       user: {
         id: user.id,
         email: user.email,
@@ -278,32 +284,6 @@ export const loginInternalUser = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-export const refreshToken = async (req:Request, res:Response) => {
-  const { refreshToken } = req.body;
-  const session = await prisma.session.findUnique({ where: { refreshToken } });
-  if (!session || session.revoked || new Date() > session.expiresAt) {
-    return res.status(403).json({ message: 'Invalid refresh token' });
-  }
-
-  const internalUser = await prisma.internalUser.findUnique({
-    where: { id: session.internalUserId }
-  });
-
-  if (!internalUser) {
-    return res.status(404).json({ message: 'User not found' });
-  }
-    if (!process.env.JWT_SECRET) {
-    throw new Error('JWT_SECRET is not defined');
-  }
-
-  const newAccessToken = jwt.sign(
-    { id: internalUser.id, role: internalUser.role },
-    process.env.JWT_SECRET,
-    { expiresIn: '15m' }
-  );
-
-  return res.json({ accessToken: newAccessToken });
-};
 export const getInternalUserSession = async (req: any, res: Response) => {
   try {
     const userId = req.user?.id;
@@ -315,3 +295,42 @@ export const getInternalUserSession = async (req: any, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+export const refreshInternalToken = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ message: "Unauthorized" });
+    
+    const internalUser = await prisma.internalUser.findUnique({
+      where: { id: userId },
+    });
+    if (!internalUser) return res.status(404).json({ message: "internalUser not found" });
+    if (internalUser.role !== "APPROVER" || "GOVERNOR" )
+      return res.status(403).json({ message: "Not authorized as internalUser" });
+    
+    const newToken = jwt.sign(
+      { id: internalUser.id, email: internalUser.email, role: internalUser.role, type: "internalUser" },
+      process.env.JWT_SECRET!,
+      { expiresIn: "7d" }
+    );
+    
+    res.cookie("token", newToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+    
+    res.json({
+      message: "Token refreshed successfully",
+      user: {
+        id: internalUser.id,
+        email: internalUser.email,
+        name: internalUser.name,
+        role: internalUser.role,
+      },
+    });
+  } catch (error) {
+    console.error("Token refresh error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+}

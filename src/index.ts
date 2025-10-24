@@ -5,14 +5,15 @@ import authRoutes from "./router/authRoutes";
 import applicationRoutes from "./router/applicationRoutes";
 import adminRoutes from "./router/adminRoutes";
 import { verifyToken } from "./middlewares/authMiddleware";
-import { authorizeRoles } from "./middlewares/roleMiddleware";
 import internalUserRoutes from "./router/internalUserRoutes";
 import landRoutes from "./router/landRoutes";
 import cofoRoutes from "./router/cofoRoutes";
 import ownershipRoutes from "./router/ownershipRoutes";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
+app.use(cookieParser());
 
 app.use(
   cors({

@@ -1,7 +1,8 @@
-import { Request, Response } from 'express';
-import { PrismaClient, ApplicationStatus } from '@prisma/client';
+import { Request, Response } from "express";
+import { PrismaClient, ApplicationStatus } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
+import { AuthRequest } from "../middlewares/authMiddleware";
 
 const prisma = new PrismaClient();
 
@@ -9,11 +10,13 @@ export const getAllApplications = async (_req: Request, res: Response) => {
   try {
     const applications = await prisma.application.findMany({
       include: { user: true },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
     res.json(applications);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch applications', error: err });
+    res
+      .status(500)
+      .json({ message: "Failed to fetch applications", error: err });
   }
 };
 
@@ -22,7 +25,7 @@ export const updateApplicationStatus = async (req: Request, res: Response) => {
   const { status } = req.body;
 
   if (!Object.values(ApplicationStatus).includes(status)) {
-    return res.status(400).json({ message: 'Invalid status' });
+    return res.status(400).json({ message: "Invalid status" });
   }
 
   try {
@@ -30,9 +33,9 @@ export const updateApplicationStatus = async (req: Request, res: Response) => {
       where: { id },
       data: { status },
     });
-    res.json({ message: 'Status updated', updated });
+    res.json({ message: "Status updated", updated });
   } catch (err) {
-    res.status(500).json({ message: 'Update failed', error: err });
+    res.status(500).json({ message: "Update failed", error: err });
   }
 };
 export const createFirstAdmin = async (req: Request, res: Response) => {
@@ -40,7 +43,9 @@ export const createFirstAdmin = async (req: Request, res: Response) => {
     const { email, password, fullName } = req.body;
 
     if (!email || !password || !fullName) {
-      return res.status(400).json({ message: "Email, password, and full name are required" });
+      return res
+        .status(400)
+        .json({ message: "Email, password, and full name are required" });
     }
 
     // Check if any admin already exists
@@ -104,9 +109,15 @@ export const loginAdmin = async (req: Request, res: Response) => {
       { expiresIn: "7d" }
     );
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
     res.json({
       message: "Admin login successful",
-      token,
       user: {
         id: admin.id,
         email: admin.email,
@@ -119,3 +130,43 @@ export const loginAdmin = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const refreshAdminToken = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ message: "Unauthorized" });
+    
+    const admin = await prisma.internalUser.findUnique({
+      where: { id: userId },
+    });
+    if (!admin) return res.status(404).json({ message: "Admin not found" });
+    if (admin.role !== "ADMIN")
+      return res.status(403).json({ message: "Not authorized as admin" });
+    
+    const newToken = jwt.sign(
+      { id: admin.id, email: admin.email, role: admin.role, type: "admin" },
+      process.env.JWT_SECRET!,
+      { expiresIn: "7d" }
+    );
+    
+    res.cookie("token", newToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+    
+    res.json({
+      message: "Token refreshed successfully",
+      user: {
+        id: admin.id,
+        email: admin.email,
+        name: admin.name,
+        role: admin.role,
+      },
+    });
+  } catch (error) {
+    console.error("Token refresh error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+}
