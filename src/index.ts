@@ -18,13 +18,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/auth', authRoutes);
-app.use('/applications', verifyToken, applicationRoutes);
-app.use('/admin', verifyToken, authorizeRoles(['ADMIN', 'GOVERNMENT']), adminRoutes);
-app.use('/internal-users', verifyToken, authorizeRoles(['ADMIN']), internalUserRoutes);
-app.use('/lands', verifyToken, landRoutes);
-app.use('/cofo', verifyToken, cofoRoutes);
-app.use('/ownership', verifyToken, ownershipRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/applications', verifyToken, applicationRoutes);
+app.use('/api/admin', verifyToken, authorizeRoles(['ADMIN', 'GOVERNMENT']), adminRoutes);
+app.use('/api/internal-users', verifyToken, authorizeRoles(['ADMIN']), internalUserRoutes);
+app.use('/api/lands', verifyToken, landRoutes);
+app.use('/api/cofo', verifyToken, cofoRoutes);
+app.use('/api/ownership', verifyToken, ownershipRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
