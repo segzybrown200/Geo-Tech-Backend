@@ -15,7 +15,12 @@ import ownershipRoutes from './router/ownershipRoutes';
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://your-production-frontend.com"],
+    credentials: true, // if you use cookies or auth headers
+  })
+);
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
