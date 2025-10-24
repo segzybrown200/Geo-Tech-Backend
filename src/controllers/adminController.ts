@@ -112,7 +112,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
@@ -135,27 +135,27 @@ export const refreshAdminToken = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ message: "Unauthorized" });
-    
+
     const admin = await prisma.internalUser.findUnique({
       where: { id: userId },
     });
     if (!admin) return res.status(404).json({ message: "Admin not found" });
     if (admin.role !== "ADMIN")
       return res.status(403).json({ message: "Not authorized as admin" });
-    
+
     const newToken = jwt.sign(
       { id: admin.id, email: admin.email, role: admin.role, type: "admin" },
       process.env.JWT_SECRET!,
       { expiresIn: "7d" }
     );
-    
+
     res.cookie("token", newToken, {
       httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
-    
+
     res.json({
       message: "Token refreshed successfully",
       user: {
@@ -169,4 +169,4 @@ export const refreshAdminToken = async (req: AuthRequest, res: Response) => {
     console.error("Token refresh error:", error);
     res.status(500).json({ message: "Server error" });
   }
-}
+};
