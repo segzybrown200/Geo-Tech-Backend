@@ -25,15 +25,9 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/applications", verifyToken, applicationRoutes);
 app.use(
-  "/api/admin",
-  verifyToken,
-  authorizeRoles(["ADMIN", "GOVERNMENT"]),
-  adminRoutes
-);
+  "/api/admin",adminRoutes);
 app.use(
   "/api/internal-users",
-  verifyToken,
-  authorizeRoles(["ADMIN"]),
   internalUserRoutes
 );
 app.use("/api/lands", verifyToken, landRoutes);
