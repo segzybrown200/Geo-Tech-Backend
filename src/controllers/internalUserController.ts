@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { PrismaClient, Role } from '../generated/prisma';
+import { PrismaClient, Role } from '@prisma/client';
 import { internalUserSchema } from '../utils/zodSchemas';
 import { uploadToCloudinary } from '../services/uploadService';
 import fs from 'fs';

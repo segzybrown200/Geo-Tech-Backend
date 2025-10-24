@@ -1,7 +1,7 @@
 // src/controllers/paymentController.ts
 import axios from "axios";
 import { Response,Request } from "express";
-import { PrismaClient } from "../generated/prisma";
+import { PrismaClient } from "@prisma/client";
 import { AuthRequest } from "../middlewares/authMiddleware";
 
 const prisma = new PrismaClient();

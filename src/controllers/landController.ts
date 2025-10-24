@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { PrismaClient } from "../generated/prisma";
+import { PrismaClient } from "@prisma/client";
 import { landRegistrationSchema } from "../utils/zodSchemas";
 import { uploadToCloudinary } from "../services/uploadService";
 import { Request, Response } from "express";
