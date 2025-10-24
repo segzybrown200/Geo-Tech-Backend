@@ -9,7 +9,8 @@
     "prisma:generate": "prisma generate",
     "build": "npx prisma generate && tsc",
     "postinstall": "npx prisma generate",
-    "seed:states": "ts-node prisma/seedStates.ts"
+    "seed:states": "ts-node prisma/seedStates.ts",
+    "seed:admin": "ts-node prisma/adminSeed.ts"
   },
   "keywords": [],
   "author": "",

@@ -64,8 +64,8 @@ model InternalUser {
   department        String?
   position          String?
   function          String?
-  state             State          @relation(fields: [stateId], references: [id])
-  stateId           String         @db.Uuid
+  state             State ?         @relation(fields: [stateId], references: [id])
+  stateId           String?        @db.Uuid
   role              Role           @default(APPROVER)
   requiresSignature Boolean        @default(false)
   signatureUrl      String?
