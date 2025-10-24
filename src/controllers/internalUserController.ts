@@ -10,6 +10,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from "bcryptjs"
 
 const prisma = new PrismaClient();
+const JWT_SECRET = process.env.JWT_SECRET!;
 
 export const createInternalUser = async (req: Request, res: Response) => {
 
@@ -227,37 +228,90 @@ export const resendInternalVerification = async (req:Request, res:Response) => {
     res.status(500).json({ message: "Failed to resend verification", error: err });
   }
 };
-export const loginInternalUser = async (req:Request, res:Response) => {
-  const { email, password } = req.body;
-  const internalUser = await prisma.internalUser.findUnique({ where: { email } });
-  
-  if (!internalUser) return res.status(404).json({ message: 'User not found' });
-  
-  // Compare password (assuming bcrypt)
-  const isMatch = await bcrypt.compare(password, internalUser.password || "");
-  if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
-  
-  // Create refresh token & access token
-  const refreshToken = crypto.randomBytes(64).toString('hex');
-  if (!process.env.JWT_SECRET) {
+export const loginInternalUser = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    // Check if user exists
+    const user = await prisma.internalUser.findUnique({ where: { email } });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Check if user has verified email
+    if (!user.isVerified) {
+      return res.status(403).json({
+        message:
+          "Email not verified. Please check your email to verify your account.",
+      });
+    }
+
+    // Check if password has been set
+    if (!user.password) {
+      return res.status(403).json({
+        message:
+          "You have not set your password yet. Please verify your email and set a password first.",
+      });
+    }
+
+    // Compare passwords
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) return res.status(400).json({ message: "Invalid credentials" });
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user.id, role: user.role, email: user.email },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      message: "Login successful",
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+export const refreshToken = async (req:Request, res:Response) => {
+  const { refreshToken } = req.body;
+  const session = await prisma.session.findUnique({ where: { refreshToken } });
+  if (!session || session.revoked || new Date() > session.expiresAt) {
+    return res.status(403).json({ message: 'Invalid refresh token' });
+  }
+
+  const internalUser = await prisma.internalUser.findUnique({
+    where: { id: session.internalUserId }
+  });
+
+  if (!internalUser) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+    if (!process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET is not defined');
   }
-  const accessToken = jwt.sign(
+
+  const newAccessToken = jwt.sign(
     { id: internalUser.id, role: internalUser.role },
     process.env.JWT_SECRET,
     { expiresIn: '15m' }
   );
 
-  // Save the session
-  await prisma.session.create({
-    data: {
-      internalUserId: internalUser.id,
-      refreshToken,
-      userAgent: req.headers['user-agent'] || '',
-      ip: req.ip || '',
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
-    }
-  });
+  return res.json({ accessToken: newAccessToken });
+};
+export const getInternalUserSession = async (req: any, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
-  return res.json({ accessToken, refreshToken });
+    const user = await prisma.internalUser.findUnique({ where: { id: userId } });
+    res.json({ user });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };

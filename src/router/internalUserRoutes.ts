@@ -1,6 +1,6 @@
 import express from 'express';
-import { createInternalUser, resendInternalVerification, setInternalUserPassword, updateSignature, uploadSignature, verifyInternalEmail } from '../controllers/internalUserController';
-import { verifyToken } from '../middlewares/authMiddleware';
+import { createInternalUser, getInternalUserSession, loginInternalUser, resendInternalVerification, setInternalUserPassword, updateSignature, uploadSignature, verifyInternalEmail } from '../controllers/internalUserController';
+import { internalUserAuth, verifyToken } from '../middlewares/authMiddleware';
 import { authorizeRoles } from '../middlewares/roleMiddleware';
 import multer from 'multer';
 const upload = multer({ dest: 'uploads/' });
@@ -13,5 +13,7 @@ router.patch('/update-signature', verifyToken, authorizeRoles(['ADMIN']), upload
 router.get('/verify', verifyInternalEmail);
 router.post('/set-password', setInternalUserPassword);
 router.post('/resend-verification', resendInternalVerification);
+router.post("/login", loginInternalUser);
+router.get("/session", internalUserAuth, getInternalUserSession);
 
 export default router;
