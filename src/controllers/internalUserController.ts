@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from "crypto";
 import { sendEmail } from '../services/emailSevices';
+import jwt from 'jsonwebtoken';
 import bcrypt from "bcryptjs"
 
 const prisma = new PrismaClient();
@@ -225,4 +226,38 @@ export const resendInternalVerification = async (req:Request, res:Response) => {
     console.error(err);
     res.status(500).json({ message: "Failed to resend verification", error: err });
   }
+};
+export const loginInternalUser = async (req:Request, res:Response) => {
+  const { email, password } = req.body;
+  const internalUser = await prisma.internalUser.findUnique({ where: { email } });
+  
+  if (!internalUser) return res.status(404).json({ message: 'User not found' });
+  
+  // Compare password (assuming bcrypt)
+  const isMatch = await bcrypt.compare(password, internalUser.password || "");
+  if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
+  
+  // Create refresh token & access token
+  const refreshToken = crypto.randomBytes(64).toString('hex');
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET is not defined');
+  }
+  const accessToken = jwt.sign(
+    { id: internalUser.id, role: internalUser.role },
+    process.env.JWT_SECRET,
+    { expiresIn: '15m' }
+  );
+
+  // Save the session
+  await prisma.session.create({
+    data: {
+      internalUserId: internalUser.id,
+      refreshToken,
+      userAgent: req.headers['user-agent'] || '',
+      ip: req.ip || '',
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
+    }
+  });
+
+  return res.json({ accessToken, refreshToken });
 };
