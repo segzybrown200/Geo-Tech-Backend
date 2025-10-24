@@ -1,5 +1,5 @@
 // src/controllers/ownershipController.ts
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../generated/prisma";
 import { sendEmail } from "../services/emailSevices";
 import crypto from "crypto";
 import { AuthRequest } from "../middlewares/authMiddleware";
