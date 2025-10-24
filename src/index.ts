@@ -1,16 +1,15 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import authRoutes from './router/authRoutes';
-import applicationRoutes from './router/applicationRoutes';
-import adminRoutes from './router/adminRoutes';
-import { verifyToken } from './middlewares/authMiddleware';
-import { authorizeRoles } from './middlewares/roleMiddleware';
-import internalUserRoutes from './router/internalUserRoutes';
-import landRoutes from './router/landRoutes';
-import cofoRoutes from './router/cofoRoutes';
-import ownershipRoutes from './router/ownershipRoutes';
-
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import authRoutes from "./router/authRoutes";
+import applicationRoutes from "./router/applicationRoutes";
+import adminRoutes from "./router/adminRoutes";
+import { verifyToken } from "./middlewares/authMiddleware";
+import { authorizeRoles } from "./middlewares/roleMiddleware";
+import internalUserRoutes from "./router/internalUserRoutes";
+import landRoutes from "./router/landRoutes";
+import cofoRoutes from "./router/cofoRoutes";
+import ownershipRoutes from "./router/ownershipRoutes";
 
 dotenv.config();
 const app = express();
@@ -23,13 +22,23 @@ app.use(
 );
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
-app.use('/api/applications', verifyToken, applicationRoutes);
-app.use('/api/admin', verifyToken, authorizeRoles(['ADMIN', 'GOVERNMENT']), adminRoutes);
-app.use('/api/internal-users', verifyToken, authorizeRoles(['ADMIN']), internalUserRoutes);
-app.use('/api/lands', verifyToken, landRoutes);
-app.use('/api/cofo', verifyToken, cofoRoutes);
-app.use('/api/ownership', verifyToken, ownershipRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/applications", verifyToken, applicationRoutes);
+app.use(
+  "/api/admin",
+  verifyToken,
+  authorizeRoles(["ADMIN", "GOVERNMENT"]),
+  adminRoutes
+);
+app.use(
+  "/api/internal-users",
+  verifyToken,
+  authorizeRoles(["ADMIN"]),
+  internalUserRoutes
+);
+app.use("/api/lands", verifyToken, landRoutes);
+app.use("/api/cofo", verifyToken, cofoRoutes);
+app.use("/api/ownership", verifyToken, ownershipRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
