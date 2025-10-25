@@ -48,7 +48,7 @@ export const createInternalUser = async (req: Request, res: Response) => {
       where: { id: stateId },
       include: {
         approvers: true,
-        governor:true
+        governor: true,
       },
     });
     if (!state) {
@@ -72,12 +72,14 @@ export const createInternalUser = async (req: Request, res: Response) => {
         .json({ message: "Approver should not have an approving position" });
     }
 
-       if (role === "GOVERNOR" && state.governorId) {
+    if (role === "GOVERNOR" && state.governor) {
       return res
         .status(400)
-        .json({ message: "A Governor has already been registered for this State" });
+        .json({
+          message: "A Governor has already been registered for this State",
+        });
     }
-     if (role === "APPROVER") {
+    if (role === "APPROVER") {
       if (!state.governor) {
         return res.status(400).json({
           message:
@@ -95,7 +97,6 @@ export const createInternalUser = async (req: Request, res: Response) => {
       }
     }
 
-
     const user = await prisma.internalUser.create({
       data: {
         name,
@@ -106,7 +107,7 @@ export const createInternalUser = async (req: Request, res: Response) => {
         approvingPosition:
           role === "GOVERNOR" ? Number(approvingPosition) : null,
         position:
-        role === "APPROVER" ? (state.approvers.length ?? 0) + 1 : null,
+          role === "APPROVER" ? (state.approvers.length ?? 0) + 1 : null,
         function: workflowFunction,
         role: role === "APPROVER" ? "APPROVER" : "GOVERNOR",
         requiresSignature: requiresSignature ?? false,
