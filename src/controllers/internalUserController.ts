@@ -72,13 +72,20 @@ export const createInternalUser = async (req: Request, res: Response) => {
         .json({ message: "Approver should not have an approving position" });
     }
 
-    if (role === "GOVERNOR" && state.governor) {
-      return res
-        .status(400)
-        .json({
+    if (role === "GOVERNOR") {
+      if (!approvingPosition || isNaN(Number(approvingPosition))) {
+        return res
+          .status(400)
+          .json({ message: "Governor must have a numeric approving position" });
+      }
+
+      if (state.governorId) {
+        return res.status(400).json({
           message: "A Governor has already been registered for this State",
         });
+      }
     }
+
     if (role === "APPROVER") {
       if (!state.governor) {
         return res.status(400).json({
