@@ -71,12 +71,12 @@ export const createInternalUser = async (req: Request, res: Response) => {
         .json({ message: "Approver should not have an approving position" });
     }
 
-    if (role === "GOVERNOR" && state.governorId != null) {
-        res.status(401).json({
-          message: "A Governor has been registered on for that State",
-        });
-      return;
+       if (role === "GOVERNOR" && state.governorId) {
+      return res
+        .status(400)
+        .json({ message: "A Governor has already been registered for this State" });
     }
+
 
     const user = await prisma.internalUser.create({
       data: {
