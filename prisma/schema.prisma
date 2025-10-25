@@ -192,6 +192,7 @@ model CofOApplication {
   documentUrls         String[]
   paymentRef           String?
   paymentStatus        String            @default("PENDING")
+  paymentAmount    Float?   @default(0)
   cofONumber           String? // new
   signedAt             DateTime? // new
   logs                 StageLog[]

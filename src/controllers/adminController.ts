@@ -170,3 +170,66 @@ export const refreshAdminToken = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+export const getAllActivities = async (req:AuthRequest, res:Response) => {
+  const logs = await prisma.stageLog.findMany({
+    include: {
+      approver: { select: { name: true, role: true, position: true } },
+      cofO: { select: { cofONumber: true, status: true } },
+    },
+    orderBy: { arrivedAt: "desc" },
+  });
+  res.json(logs);
+};
+export const getAllInternalUser = async (req:AuthRequest, res:Response) => {
+  const logs = await prisma.internalUser.findMany({
+    include: {
+      StageLog: true,
+      state: true,
+      StateGovernor: true
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  res.json(logs);
+};
+export const getAllUser = async (req:AuthRequest, res:Response) => {
+  const logs = await prisma.user.findMany({
+    include: {
+      applications: true,
+      CofOApplication: true,
+      LandRegistration: true,
+      OwnershipTransfer:true
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  res.json(logs);
+};
+
+export const getPayments = async (req:AuthRequest, res:Response) => {
+  const payments = await prisma.cofOApplication.findMany({
+    select: {
+      id: true,
+      cofONumber: true,
+      user: { select: { fullName: true, email: true } },
+      paymentStatus: true,
+      paymentRef: true,
+      createdAt: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  res.json(payments);
+};
+export const getAnalytics = async (req:AuthRequest, res:Response) => {
+  const totalApplications = await prisma.cofOApplication.count();
+  const approved = await prisma.cofOApplication.count({ where: { status: "APPROVED" } });
+  const rejected = await prisma.cofOApplication.count({ where: { status: "REJECTED" } });
+  const pending = await prisma.cofOApplication.count({ where: { status: "PENDING" } });
+  const review = await prisma.cofOApplication.count({ where: { status: "IN_REVIEW" } });
+  const revenue = await prisma.cofOApplication.aggregate({
+    _count: true,
+    _sum: {
+      paymentAmount: true,
+     },
+     where: { paymentStatus: "SUCCESS" },
+  });
+  res.json({ totalApplications, approved, rejected,pending,review, revenue });
+};

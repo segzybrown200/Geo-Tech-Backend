@@ -67,12 +67,14 @@ export const verifyPayment = async (req:Request, res:Response) => {
     const cofONumber = `COFO-${new Date().getFullYear()}-${Math.floor(
       Math.random() * 100000
     )}`;
+    const paymentAmount = payment.amount / 100;
 
     const application = await prisma.cofOApplication.updateMany({
       where: { paymentRef: reference as string },
       data: {
         paymentStatus: "SUCCESS",
         status: "PENDING",
+        paymentAmount,
         cofONumber,
       },
     });
