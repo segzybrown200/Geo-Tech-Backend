@@ -56,9 +56,10 @@ export const createInternalUser = async (req: Request, res: Response) => {
         message: "State not found",
       });
     }
-
+    console.log(role)
    
     if (role === "GOVERNOR") {
+      console.log("Governor", role)
       if (!approvingPosition || isNaN(Number(approvingPosition))) {
         return res
           .status(400)
