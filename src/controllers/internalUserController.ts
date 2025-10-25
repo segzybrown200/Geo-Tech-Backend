@@ -48,6 +48,7 @@ export const createInternalUser = async (req: Request, res: Response) => {
       where: { id: stateId },
       include: {
         approvers: true,
+        governor:true
       },
     });
     if (!state) {
@@ -75,6 +76,23 @@ export const createInternalUser = async (req: Request, res: Response) => {
       return res
         .status(400)
         .json({ message: "A Governor has already been registered for this State" });
+    }
+     if (role === "APPROVER") {
+      if (!state.governor) {
+        return res.status(400).json({
+          message:
+            "You cannot register approvers before a Governor has been assigned to this State",
+        });
+      }
+
+      const governorLimit = state.governor.approvingPosition ?? 0;
+      const currentApprovers = state.approvers.length;
+
+      if (currentApprovers >= governorLimit) {
+        return res.status(400).json({
+          message: `Maximum approvers reached for this state — Governor's limit is ${governorLimit}.`,
+        });
+      }
     }
 
 
