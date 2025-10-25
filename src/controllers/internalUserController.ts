@@ -57,21 +57,7 @@ export const createInternalUser = async (req: Request, res: Response) => {
       });
     }
 
-    if (
-      role === "GOVERNOR" &&
-      (isNaN(Number(approvingPosition)) || approvingPosition === null)
-    ) {
-      return res
-        .status(400)
-        .json({ message: "Governor must have a numeric approving position" });
-    }
-
-    if (role === "APPROVER" && approvingPosition) {
-      return res
-        .status(400)
-        .json({ message: "Approver should not have an approving position" });
-    }
-
+   
     if (role === "GOVERNOR") {
       if (!approvingPosition || isNaN(Number(approvingPosition))) {
         return res
@@ -85,6 +71,13 @@ export const createInternalUser = async (req: Request, res: Response) => {
         });
       }
     }
+
+    if (role === "APPROVER" && approvingPosition) {
+      return res
+        .status(400)
+        .json({ message: "Approver should not have an approving position" });
+    }
+
 
     if (role === "APPROVER") {
       if (!state.governor) {
