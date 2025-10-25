@@ -29,7 +29,7 @@ export const internalUserSchema = z.object({
   phone: z.string().min(7),
   ministry: z.string(),
   department: z.string(),
-  position: z.string(),
+  position: z.string().optional(),
   function: z.string(),
   role: z.string(),
   requiresSignature: z.boolean().optional(),
