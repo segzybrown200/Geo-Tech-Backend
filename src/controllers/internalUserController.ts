@@ -71,9 +71,9 @@ export const createInternalUser = async (req: Request, res: Response) => {
         .json({ message: "Approver should not have an approving position" });
     }
 
-    if (role === "GOVERNOR" && state.governorId !== null) {
+    if (role === "GOVERNOR" && state.governorId != null) {
         res.status(401).json({
-          message: "Governor has been registered on for that State",
+          message: "A Governor has been registered on for that State",
         });
       return;
     }
