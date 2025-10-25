@@ -16,15 +16,11 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 export const createInternalUser = async (req: Request, res: Response) => {
   const body = internalUserSchema.safeParse(req.body);
   if (!body.success) {
-    return res
-      .status(400)
-      .json({
-        message: "Invalid internal user input",
-        errors: body.error.flatten(),
-      });
+    return res.status(400).json({
+      message: "Invalid internal user input",
+      errors: body.error.flatten(),
+    });
   }
-
-
 
   const {
     name,
@@ -44,30 +40,43 @@ export const createInternalUser = async (req: Request, res: Response) => {
   const token = crypto.randomBytes(32).toString("hex");
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
- 
-
   try {
     const existing = await prisma.internalUser.findUnique({ where: { email } });
     if (existing)
       return res.status(400).json({ message: "Internal user already exists" });
-     const state = await prisma.state.findUnique({
-    where: {id:stateId},
-    include:{
-      approvers: true
+    const state = await prisma.state.findUnique({
+      where: { id: stateId },
+      include: {
+        approvers: true,
+      },
+    });
+    if (!state) {
+      return res.status(401).json({
+        message: "State not found",
+      });
     }
-  })
-  if(!state){
-    return res.status(401).json({
-      message: "State not found"
-    })
-  }
 
-    if (role === "GOVERNOR" && (isNaN(Number(approvingPosition)) || approvingPosition === null)) {
-      return res.status(400).json({ message: "Governor must have a numeric approving position" });
+    if (
+      role === "GOVERNOR" &&
+      (isNaN(Number(approvingPosition)) || approvingPosition === null)
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Governor must have a numeric approving position" });
     }
 
     if (role === "APPROVER" && approvingPosition) {
-      return res.status(400).json({ message: "Approver should not have an approving position" });
+      return res
+        .status(400)
+        .json({ message: "Approver should not have an approving position" });
+    }
+
+    if (role === "GOVERNOR") {
+      state.governorId !== null &&
+        res.status(401).json({
+          message: "Governor has been registered on for that State",
+        });
+      return;
     }
 
     const user = await prisma.internalUser.create({
@@ -77,10 +86,12 @@ export const createInternalUser = async (req: Request, res: Response) => {
         phone,
         ministry,
         department,
-        approvingPosition: role === "GOVERNOR" ? Number(approvingPosition) : null,
-        position: role === "APPROVER" ? (state.approvers.length ?? 0) + 1 : null,
+        approvingPosition:
+          role === "GOVERNOR" ? Number(approvingPosition) : null,
+        position:
+          role === "APPROVER" ? (state.approvers.length ?? 0) + 1 : null,
         function: workflowFunction,
-        role: (role && Role[role as keyof typeof Role]) || Role.APPROVER,
+        role: role === "APPROVER" ? Role.APPROVER : Role.GOVERNOR,
         requiresSignature: requiresSignature ?? false,
         signatureUrl,
         stateId: stateId as string,
@@ -89,6 +100,14 @@ export const createInternalUser = async (req: Request, res: Response) => {
         tokenExpiresAt: expires,
       },
     });
+
+    if (role === "GOVERNOR")
+      await prisma.state.update({
+        where: { id: stateId },
+        data: {
+          governorId: user.id,
+        },
+      });
     const verifyLink = `https://yourfrontend.com/internal/verify?token=${token}`;
     await sendEmail(
       email,
