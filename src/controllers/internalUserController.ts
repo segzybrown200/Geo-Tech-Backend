@@ -88,9 +88,9 @@ export const createInternalUser = async (req: Request, res: Response) => {
         approvingPosition:
           role === "GOVERNOR" ? Number(approvingPosition) : null,
         position:
-          role === "APPROVER" ? (state.approvers.length ?? 0) + 1 : null,
+        role === "APPROVER" ? (state.approvers.length ?? 0) + 1 : null,
         function: workflowFunction,
-        role: role === "APPROVER" ? Role.APPROVER : Role.GOVERNOR,
+        role: role === "APPROVER" ? "APPROVER" : "GOVERNOR",
         requiresSignature: requiresSignature ?? false,
         signatureUrl,
         stateId: stateId as string,
