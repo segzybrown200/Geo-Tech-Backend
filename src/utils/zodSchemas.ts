@@ -30,6 +30,7 @@ export const internalUserSchema = z.object({
   ministry: z.string(),
   department: z.string(),
   position: z.string().optional(),
+  approvingPosition: z.number().optional(),
   function: z.string(),
   role: z.string(),
   requiresSignature: z.boolean().optional(),

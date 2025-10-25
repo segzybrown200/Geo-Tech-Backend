@@ -62,12 +62,13 @@ model InternalUser {
   phone             String?
   ministry          String?
   department        String?
-  position          String?
+  position          Int?       @default(0)
   function          String?
   state             State ?         @relation(fields: [stateId], references: [id])
   stateId           String?        @db.Uuid
   role              Role           @default(APPROVER)
   requiresSignature Boolean        @default(false)
+  approvingPosition Int?          @default(0)
   signatureUrl      String?
   createdAt         DateTime       @default(now())
   StageLog          StageLog[]
