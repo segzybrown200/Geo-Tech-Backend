@@ -127,7 +127,7 @@ export const createInternalUser = async (req: Request, res: Response) => {
           governorId: user.id,
         },
       });
-    const verifyLink = `https://yourfrontend.com/internal/verify?token=${token}`;
+    const verifyLink = `https://localhost:5173/verify?token=${token}`;
     await sendEmail(
       email,
       "Verify Your Internal Account",

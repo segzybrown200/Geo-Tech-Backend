@@ -242,6 +242,7 @@ export const getAllState= async(req:Request, res:Response)=>{
     return res.status(201).json({message: "State gotten", state})
     
   } catch (error) {
+    console.log(error)
     return res.status(401).json({success: false, message: "Error occured"})
     
   }
