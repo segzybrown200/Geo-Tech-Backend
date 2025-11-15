@@ -127,7 +127,7 @@ export const createInternalUser = async (req: Request, res: Response) => {
           governorId: user.id,
         },
       });
-    const verifyLink = `https://localhost:5173/verify?token=${token}`;
+    const verifyLink = `http://localhost:5173/verify?token=${token}`;
     await sendEmail(
       email,
       "Verify Your Internal Account",
@@ -311,7 +311,7 @@ export const resendInternalVerification = async (
       data: { emailToken: token, tokenExpiresAt: expires },
     });
 
-    const verifyLink = `https://yourfrontend.com/internal/verify?token=${token}`;
+    const verifyLink = `https://localhost:5173/resend-verify?token=${token}`;
     await sendEmail(
       email,
       "Resend Verification - GeoTech",
