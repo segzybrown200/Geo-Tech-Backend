@@ -56,10 +56,10 @@ export const createInternalUser = async (req: Request, res: Response) => {
         message: "State not found",
       });
     }
-    console.log(role)
-   
+    console.log(role);
+
     if (role === "GOVERNOR") {
-      console.log("Governor", role)
+      console.log("Governor", role);
       if (!approvingPosition || isNaN(Number(approvingPosition))) {
         return res
           .status(400)
@@ -78,7 +78,6 @@ export const createInternalUser = async (req: Request, res: Response) => {
         .status(400)
         .json({ message: "Approver should not have an approving position" });
     }
-
 
     if (role === "APPROVER") {
       if (!state.governor) {
@@ -229,10 +228,11 @@ export const verifyInternalEmail = async (req: Request, res: Response) => {
       },
     });
 
-    if (!user)
+    if (!user) {
       return res
         .status(400)
         .json({ message: "Invalid or expired verification token" });
+    }
 
     // Mark verified & create password setup token
     const passwordToken = crypto.randomBytes(32).toString("hex");
