@@ -231,7 +231,7 @@ export const verifyInternalEmail = async (req: Request, res: Response) => {
     if (!user) {
       return res
         .status(400)
-        .json({ message: "Invalid or expired verification token" });
+        .json({ message: "Token not found" });
     }
 
     // Mark verified & create password setup token
