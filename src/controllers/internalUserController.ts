@@ -214,6 +214,9 @@ export const updateSignature = async (req: any, res: Response) => {
 export const verifyInternalEmail = async (req: Request, res: Response) => {
   const { token } = req.query;
 
+
+  console.log(token)
+
   if (!token) {
     return res.status(400).json({
       message: "Invalid or expired verification token",
@@ -225,6 +228,8 @@ export const verifyInternalEmail = async (req: Request, res: Response) => {
     const user = await prisma.internalUser.findFirst({
       where: { emailToken: token as string },
     });
+
+    console.log(user)
 
     if (!user) {
       return res.status(400).json({
