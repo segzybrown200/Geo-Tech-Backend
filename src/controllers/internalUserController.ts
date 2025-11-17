@@ -273,7 +273,6 @@ export const setInternalUserPassword = async (req: Request, res: Response) => {
     const user = await prisma.internalUser.findFirst({
       where: {
         passwordToken: token,
-        tokenExpiresAt: { gt: new Date() },
       },
     });
 
@@ -281,6 +280,12 @@ export const setInternalUserPassword = async (req: Request, res: Response) => {
       return res
         .status(400)
         .json({ message: "Invalid or expired password token" });
+
+    if (!user.tokenExpiresAt || user.tokenExpiresAt < new Date()) {
+      return res.status(400).json({
+        message: "Verification token has expired",
+      });
+    }
 
     const hash = await bcrypt.hash(password, 10);
 
