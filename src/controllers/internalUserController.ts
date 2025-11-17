@@ -215,48 +215,57 @@ export const verifyInternalEmail = async (req: Request, res: Response) => {
   const { token } = req.query;
 
   if (!token) {
-    return res
-      .status(400)
-      .json({ message: "Invalid or expired verification token" });
+    return res.status(400).json({
+      message: "Invalid or expired verification token",
+    });
   }
 
   try {
+    // 🟢 FIND USER BY TOKEN ONLY
     const user = await prisma.internalUser.findFirst({
-      where: {
-        emailToken: token as string,
-        tokenExpiresAt: { gt: new Date() }, // check expiry
-      },
+      where: { emailToken: token as string },
     });
 
     if (!user) {
-      return res
-        .status(400)
-        .json({ message: "Token not found" });
+      return res.status(400).json({
+        message: "Token not found",
+      });
     }
 
-    // Mark verified & create password setup token
+    // 🟢 CHECK EXPIRY MANUALLY
+    if (!user.tokenExpiresAt || user.tokenExpiresAt < new Date()) {
+      return res.status(400).json({
+        message: "Verification token has expired",
+      });
+    }
+
+    // 🟢 GENERATE PASSWORD SETUP TOKEN
     const passwordToken = crypto.randomBytes(32).toString("hex");
-    const expires = new Date(Date.now() + 30 * 60 * 1000); // 30 mins to set password
+    const expires = new Date(Date.now() + 30 * 60 * 1000); // 30 mins
 
     await prisma.internalUser.update({
       where: { id: user.id },
       data: {
         isVerified: true,
-        emailToken: null,
+        emailToken: null, // 🧹 remove old token
         passwordToken,
-        tokenExpiresAt: expires,
+        tokenExpiresAt: expires, // set new expiry
       },
     });
 
-    res.json({
+    return res.json({
       message: "Email verified. Proceed to set your password.",
       passwordToken,
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Verification failed", error: err });
+    console.error("❌ verifyInternalEmail Error:", err);
+    return res.status(500).json({
+      message: "Verification failed",
+      error: err,
+    });
   }
 };
+
 export const setInternalUserPassword = async (req: Request, res: Response) => {
   const { token, password } = req.body;
 
