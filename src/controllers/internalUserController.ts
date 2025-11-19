@@ -231,7 +231,7 @@ export const verifyInternalEmail = async (req: Request, res: Response) => {
 
     console.log(user)
 
-    if (!user) {
+        if (!user) {
       return res.status(400).json({
         message: "Token not found",
       });
