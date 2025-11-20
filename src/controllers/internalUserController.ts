@@ -214,8 +214,7 @@ export const updateSignature = async (req: any, res: Response) => {
 export const verifyInternalEmail = async (req: Request, res: Response) => {
   const { token } = req.query;
 
-
-  console.log(token)
+  console.log(token);
 
   if (!token) {
     return res.status(400).json({
@@ -224,14 +223,19 @@ export const verifyInternalEmail = async (req: Request, res: Response) => {
   }
 
   try {
+    const allUsers = await prisma.internalUser.findMany({
+      select: { id: true, email: true, emailToken: true, tokenExpiresAt: true },
+    });
+
+    console.log("🟡 Users in DB:", allUsers);
     // 🟢 FIND USER BY TOKEN ONLY
     const user = await prisma.internalUser.findFirst({
       where: { emailToken: token as string },
     });
 
-    console.log(user)
+    console.log(user);
 
-        if (!user) {
+    if (!user) {
       return res.status(400).json({
         message: "Token not found",
       });
