@@ -214,7 +214,6 @@ export const updateSignature = async (req: any, res: Response) => {
 export const verifyInternalEmail = async (req: Request, res: Response) => {
   const { token } = req.query;
 
-  console.log(token);
 
   if (!token) {
     return res.status(400).json({
@@ -233,7 +232,6 @@ export const verifyInternalEmail = async (req: Request, res: Response) => {
       where: { emailToken: token as string },
     });
 
-    console.log(user);
 
     if (!user) {
       return res.status(400).json({

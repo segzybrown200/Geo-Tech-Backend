@@ -43,7 +43,7 @@ export const cofoApplySchema = z.object({
   landId: z.string().uuid(),
 });
 export const loginSchema = z.object({
-  username: z.string(),
+   email: z.string().email(),
   password: z.string().min(6),
 });
 

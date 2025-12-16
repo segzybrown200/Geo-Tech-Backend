@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import prisma from "../lib/prisma";
+
 import {
+  loginSchema,
   registerSchema,
   requestPasswordResetSchema,
   resetPasswordSchema,
@@ -11,13 +11,13 @@ import {
 import crypto from "crypto";
 import { addMinutes } from "date-fns";
 import { sendEmail } from "../services/emailSevices";
+import prisma from "../lib/prisma";
 import {
   generateAccessToken,
   generateRefreshToken,
   hashToken,
 } from "../utils/tokens";
 import { clearSessionCookie, setSessionCookie } from "../utils/cookies";
-
 
 export const register = async (req: Request, res: Response) => {
   const parse = registerSchema.safeParse(req.body);
@@ -77,7 +77,7 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const parse = registerSchema.safeParse(req.body);
+  const parse = loginSchema.safeParse(req.body);
   if (!parse.success) {
     return res
       .status(400)
@@ -138,7 +138,10 @@ export const verifyEmail = async (req: Request, res: Response) => {
     const record = await prisma.emailVerificationToken.findUnique({
       where: { token },
     });
-    if (!record || record.email !== email) {
+    if (!record) {
+      return res.status(400).json({ message: "Record not found" });
+    }
+    if ( record.email !== email) {
       return res.status(400).json({ message: "Invalid or expired token" });
     }
 
@@ -156,6 +159,76 @@ export const verifyEmail = async (req: Request, res: Response) => {
     res.json({ message: "Email verified successfully" });
   } catch (err) {
     res.status(500).json({ message: "Verification failed", error: err });
+  }
+};
+
+export const resendVerification = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ message: "Email is required" });
+
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) return res.status(404).json({ message: "User not found" });
+    if (user.isEmailVerified)
+      return res.status(400).json({ message: "User already verified" });
+
+    // rate-limit: prevent resending more than once per 60 seconds
+    const recent = await prisma.emailVerificationToken.findFirst({
+      where: { email },
+      orderBy: { createdAt: "desc" },
+    });
+    if (
+      recent &&
+      recent.createdAt &&
+      new Date().getTime() - new Date(recent.createdAt).getTime() < 60 * 1000
+    ) {
+      return res
+        .status(429)
+        .json({ message: "Please wait before requesting another code" });
+    }
+
+    // remove previous tokens for this email
+    await prisma.emailVerificationToken.deleteMany({ where: { email } });
+
+    const token = crypto.randomUUID();
+    const expiresAt = addMinutes(new Date(), 30);
+
+    await prisma.emailVerificationToken.create({
+      data: { email, token, expiresAt },
+    });
+
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+        <div style="background: #004CFF; color: #fff; padding: 20px; text-align: center;">
+          <h2>Resend: GeoTech Account Verification</h2>
+        </div>
+        <div style="padding: 20px; color: #333;">
+          <p>Hi there,</p>
+          <p>We received a request to resend your verification code for <strong>GeoTech</strong>. Click the button below to verify your email address.</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="http://localhost:5173/auth/verify-email?email=${email}&token=${token}"
+               style="background: #004CFF; color: #fff; padding: 12px 20px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+              Verify My Email
+            </a>
+          </div>
+          <p>If the button above doesn’t work, copy and paste this link into your browser:</p>
+          <p style="word-break: break-all; color: #004CFF;">http://localhost:5173/auth/verify-email?email=${email}&token=${token}</p>
+          <p>This link will expire in <strong>30 minutes</strong>.</p>
+        </div>
+        <div style="background: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #888;">
+          <p>GeoTech © 2025. All rights reserved.</p>
+        </div>
+      </div>
+    `;
+
+    await sendEmail(email, "Resend Verification - GeoTech Account", html);
+
+    res.json({ message: "Verification email resent" });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ message: "Failed to resend verification", error: err });
   }
 };
 export const requestPasswordReset = async (req: Request, res: Response) => {
@@ -249,7 +322,6 @@ export const logout = async (req: Request, res: Response) => {
   res.json({ message: "Logged out securely" });
 };
 
-
 export const getAllState = async (req: Request, res: Response) => {
   try {
     const state = await prisma.state.findMany({
@@ -265,8 +337,7 @@ export const getAllState = async (req: Request, res: Response) => {
 };
 export const refresh = async (req: Request, res: Response) => {
   const token = req.cookies.geo_session;
-  if (!token)
-    return res.status(401).json({ message: "No session" });
+  if (!token) return res.status(401).json({ message: "No session" });
 
   const hash = hashToken(token);
 
