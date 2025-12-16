@@ -135,18 +135,25 @@ export const verifyEmail = async (req: Request, res: Response) => {
   const { email, token } = parse.data;
 
   try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { isEmailVerified: true },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.isEmailVerified) {
+      return res.status(400).json({ message: "Email already verified" });
+    }
     const record = await prisma.emailVerificationToken.findFirst({
       where: { token },
     });
 
- 
-    if (record === null || record.email === undefined) {
-      return res.status(400).json({ message: "Record not found" });
-    }
-    if ( record.email !== email) {
+    if (!record) {
       return res.status(400).json({ message: "Invalid or expired token" });
     }
-
     if (record.expiresAt < new Date()) {
       return res.status(400).json({ message: "Token has expired" });
     }
