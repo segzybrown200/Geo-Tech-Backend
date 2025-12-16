@@ -138,6 +138,8 @@ export const verifyEmail = async (req: Request, res: Response) => {
     const record = await prisma.emailVerificationToken.findFirst({
       where: { token },
     });
+
+    console.log(record)
     if (!record) {
       return res.status(400).json({ message: "Record not found" });
     }
