@@ -135,7 +135,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
   const { email, token } = parse.data;
 
   try {
-    const record = await prisma.emailVerificationToken.findUnique({
+    const record = await prisma.emailVerificationToken.findFirst({
       where: { token },
     });
     if (!record) {
