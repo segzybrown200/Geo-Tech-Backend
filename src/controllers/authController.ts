@@ -139,8 +139,8 @@ export const verifyEmail = async (req: Request, res: Response) => {
       where: { token },
     });
 
-    console.log(record)
-    if (!record) {
+ 
+    if (record === null || record.email === undefined) {
       return res.status(400).json({ message: "Record not found" });
     }
     if ( record.email !== email) {
