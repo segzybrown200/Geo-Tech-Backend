@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { PrismaClient } from '@prisma/client';;
+import prisma from "../lib/prisma";
 import {
   registerSchema,
   requestPasswordResetSchema,
@@ -11,8 +11,13 @@ import {
 import crypto from "crypto";
 import { addMinutes } from "date-fns";
 import { sendEmail } from "../services/emailSevices";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  hashToken,
+} from "../utils/tokens";
+import { clearSessionCookie, setSessionCookie } from "../utils/cookies";
 
-const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET!;
 
 export const register = async (req: Request, res: Response) => {
@@ -23,7 +28,7 @@ export const register = async (req: Request, res: Response) => {
       .json({ message: "Validation failed", errors: parse.error.flatten() });
   }
 
-  const { email, password, fullName } = parse.data;
+  const { email, password, fullName, phone } = parse.data;
   try {
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser)
@@ -31,7 +36,7 @@ export const register = async (req: Request, res: Response) => {
 
     const hashed = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
-      data: { email, password: hashed, fullName },
+      data: { email, password: hashed, fullName, phone },
     });
     const token = crypto.randomUUID();
     const expiresAt = addMinutes(new Date(), 30); // valid for 30 mins
@@ -64,11 +69,9 @@ export const register = async (req: Request, res: Response) => {
 `;
 
     await sendEmail(email, "Verify Your GeoTech Account", html);
-    res
-      .status(201)
-      .json({
-        message: "User registered successfully. Please verify your email.",
-      });
+    res.status(201).json({
+      message: "User registered successfully. Please verify your email.",
+    });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
@@ -87,27 +90,40 @@ export const login = async (req: Request, res: Response) => {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
+    if (!user.isEmailVerified)
+      return res.status(403).json({ message: "Email not verified" });
+
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user.id, role: user.role, email: user?.email }, JWT_SECRET, {
-      expiresIn: "7d",
+    const refreshToken = generateRefreshToken();
+    const refreshTokenHash = hashToken(refreshToken);
+    await prisma.session.create({
+      data: {
+        userId: user.id,
+        userType: "CITIZEN",
+        refreshTokenHash,
+        ipAddress: req.ip,
+        userAgent: req.headers["user-agent"],
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      },
     });
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
-    res.json({
-    message: "Login successful",
-    user: {
-      id: user.id,
-      name: user.fullName,
-      email: user.email,
+    setSessionCookie(res, refreshToken);
+    const accessToken = generateAccessToken({
+      sub: user.id,
       role: user.role,
-    },
-  });
+    });
+
+    return res.json({
+      message: "Login successful",
+      accessToken,
+      user: {
+        id: user.id,
+        name: user.fullName,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
@@ -221,30 +237,51 @@ export const resetPassword = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Reset failed", error: err });
   }
 };
-export const logout = (req: Request, res: Response) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    sameSite: "none",
-    secure: true
-  });
-  res.json({ message: "Logged out successfully" });
-};
-
-export const getAllState= async(req:Request, res:Response)=>{
-
-  try {
-
-    const state = await prisma.state.findMany({
-      orderBy:{
-        name: "asc"
-      }
-    })
-    return res.status(201).json({message: "State gotten", state})
-    
-  } catch (error) {
-    console.log(error)
-    return res.status(401).json({success: false, message: "Error occured"})
-    
+export const logout = async (req: Request, res: Response) => {
+  const token = req.cookies.geo_session;
+  if (token) {
+    await prisma.session.updateMany({
+      where: { refreshTokenHash: hashToken(token) },
+      data: { revoked: true },
+    });
   }
 
-}
+  clearSessionCookie(res);
+  res.json({ message: "Logged out securely" });
+};
+
+
+export const getAllState = async (req: Request, res: Response) => {
+  try {
+    const state = await prisma.state.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    });
+    return res.status(201).json({ message: "State gotten", state });
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({ success: false, message: "Error occured" });
+  }
+};
+export const refresh = async (req: Request, res: Response) => {
+  const token = req.cookies.geo_session;
+  if (!token)
+    return res.status(401).json({ message: "No session" });
+
+  const hash = hashToken(token);
+
+  const session = await prisma.session.findUnique({
+    where: { refreshTokenHash: hash },
+  });
+
+  if (!session || session.revoked || session.expiresAt < new Date())
+    return res.status(401).json({ message: "Session expired" });
+
+  const accessToken = generateAccessToken({
+    sub: session.userId,
+    type: session.userType,
+  });
+
+  res.json({ accessToken });
+};

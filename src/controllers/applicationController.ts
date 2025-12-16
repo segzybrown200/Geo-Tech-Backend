@@ -1,11 +1,10 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
 import { uploadToCloudinary } from '../services/uploadService';
 import fs from 'fs';
 import path from 'path';
 import { AuthRequest } from '../middlewares/authMiddleware';
 
-const prisma = new PrismaClient();
+import prisma from "../lib/prisma";
 
 export const submitApplication = async (req: AuthRequest, res: Response) => {
   const userId = req.user.id;

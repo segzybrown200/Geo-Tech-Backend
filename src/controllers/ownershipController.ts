@@ -1,11 +1,10 @@
 // src/controllers/ownershipController.ts
-import { PrismaClient } from "@prisma/client";
+import prisma from "../lib/prisma";
 import { sendEmail } from "../services/emailSevices";
 import crypto from "crypto";
 import { AuthRequest } from "../middlewares/authMiddleware";
 import { Response } from "express";
 
-const prisma = new PrismaClient();
 
 export const initiateTransfer = async (req:AuthRequest, res:Response) => {
   const userId = req.user.id;

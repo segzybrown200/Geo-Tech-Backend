@@ -5,6 +5,6 @@ import { submitApplication } from '../controllers/applicationController';
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
-router.post('/', upload.single('document'), submitApplication);
+// router.post('/', upload.single('document'), submitApplication);
 
 export default router;

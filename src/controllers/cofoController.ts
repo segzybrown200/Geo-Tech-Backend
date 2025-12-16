@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../lib/prisma";
 import { uploadToCloudinary } from "../services/uploadService";
 import fs from "fs";
 import path from "path";
@@ -7,7 +7,6 @@ import { AuthRequest } from "../middlewares/authMiddleware";
 import { cofoApplySchema, cofoBatchSignSchema, cofoReviewSchema } from "../utils/zodSchemas";
 import { sendEmail } from "../services/emailSevices";
 
-const prisma = new PrismaClient();
 
 export const applyForCofO = async (req: AuthRequest, res: Response) => {
   const userId = req.user.id;

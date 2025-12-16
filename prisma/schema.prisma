@@ -5,12 +5,12 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/client"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -18,6 +18,7 @@ model User {
   fullName           String?
   email              String               @unique
   password           String
+  phone              String?
   role               Role                 @default(USER)
   applications       Application[]
   createdAt          DateTime             @default(now())
@@ -75,7 +76,6 @@ model InternalUser {
   InboxMessage      InboxMessage[]
   StateGovernor     State?         @relation("Governor")
   // Sessions & OTP relations
-  sessions          Session[]      @relation("InternalUserSessions")
   emailToken        String? // used for verifying email
   passwordToken     String? // used for setting password after verification
   isVerified        Boolean        @default(false)
@@ -84,15 +84,24 @@ model InternalUser {
 }
 
 model Session {
-  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  internalUser   InternalUser @relation(fields: [internalUserId], references: [id], name: "InternalUserSessions")
-  internalUserId String       @db.Uuid
-  refreshToken   String       @unique
-  userAgent      String?
-  ip             String?
-  createdAt      DateTime     @default(now())
-  expiresAt      DateTime
-  revoked        Boolean      @default(false)
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  userId          String   @db.Uuid
+  userType        UserType // CITIZEN | INTERNAL
+
+  refreshTokenHash String  @unique
+
+  userAgent       String?
+  ipAddress       String?
+
+  createdAt       DateTime @default(now())
+  expiresAt       DateTime
+  revoked         Boolean  @default(false)
+}
+
+enum UserType {
+  CITIZEN
+  INTERNAL
 }
 
 model InternalOtp {

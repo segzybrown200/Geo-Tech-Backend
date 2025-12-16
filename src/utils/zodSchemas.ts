@@ -5,6 +5,7 @@ export const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   fullName: z.string().min(2),
+  phone: z.string().min(7),
 });
 
 export const transferOwnershipSchema = z.object({

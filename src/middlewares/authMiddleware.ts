@@ -15,6 +15,21 @@ export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction)
     res.status(401).json({ message: 'Invalid token' });
   }
 };
+export const requireAuth = (req: any, res: Response, next: Function) => {
+  const auth = req.headers.authorization;
+  if (!auth) return res.status(401).json({ message: "Unauthorized" });
+
+  const token = auth.split(" ")[1];
+
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET!);
+    req.user = payload;
+    next();
+  } catch {
+    return res.status(401).json({ message: "Token expired" });
+  }
+};
+
 export const internalUserAuth = (req: any, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
   try {

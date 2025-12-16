@@ -1,10 +1,9 @@
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient();
+import bcrypt from "bcryptjs";
+import prisma from "../src/lib/prisma";
 
 async function main() {
-  const email = "admin@yourapp.com";
+  const email = "admin@geotech.gov.ng";
   const password = "Admin@123"; // change this after first login
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -18,7 +17,7 @@ async function main() {
     },
   });
 
-  console.log("✅ Admin created successfully:", admin);
+  console.log("✅ Admin created successfully:", admin.email);
 }
 
 main()

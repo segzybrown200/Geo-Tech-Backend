@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PrismaClient, Role } from "@prisma/client";
+
 import { internalUserSchema } from "../utils/zodSchemas";
 import { uploadToCloudinary } from "../services/uploadService";
 import fs from "fs";
@@ -10,7 +10,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { AuthRequest } from "../middlewares/authMiddleware";
 
-const prisma = new PrismaClient();
+import prisma from "../lib/prisma";
 const JWT_SECRET = process.env.JWT_SECRET!;
 
 export const createInternalUser = async (req: Request, res: Response) => {

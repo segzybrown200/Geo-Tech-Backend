@@ -1,12 +1,10 @@
 import fs from "fs";
 import path from "path";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../lib/prisma";
 import { landRegistrationSchema } from "../utils/zodSchemas";
 import { uploadToCloudinary } from "../services/uploadService";
 import { Request, Response } from "express";
 import { AuthRequest } from "../middlewares/authMiddleware";
-
-const prisma = new PrismaClient();
 
 // helper function
 function generateSquareBoundary(lat: number, lng: number, squareMeters: number) {

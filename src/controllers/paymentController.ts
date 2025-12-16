@@ -1,10 +1,9 @@
 // src/controllers/paymentController.ts
 import axios from "axios";
 import { Response,Request } from "express";
-import { PrismaClient } from "@prisma/client";
 import { AuthRequest } from "../middlewares/authMiddleware";
 
-const prisma = new PrismaClient();
+import prisma from "../lib/prisma";
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET!;
 
 export const initializePayment = async (req:AuthRequest, res:Response) => {

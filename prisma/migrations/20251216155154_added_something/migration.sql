@@ -4,12 +4,16 @@ CREATE TYPE "ApplicationStatus" AS ENUM ('PENDING', 'IN_REVIEW', 'APPROVED', 'RE
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('USER', 'APPROVER', 'ADMIN', 'GOVERNOR');
 
+-- CreateEnum
+CREATE TYPE "UserType" AS ENUM ('CITIZEN', 'INTERNAL');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" UUID NOT NULL,
     "fullName" TEXT,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "phone" TEXT,
     "role" "Role" NOT NULL DEFAULT 'USER',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "isEmailVerified" BOOLEAN NOT NULL DEFAULT false,
@@ -39,11 +43,12 @@ CREATE TABLE "InternalUser" (
     "phone" TEXT,
     "ministry" TEXT,
     "department" TEXT,
-    "position" TEXT,
+    "position" INTEGER DEFAULT 0,
     "function" TEXT,
     "stateId" UUID,
     "role" "Role" NOT NULL DEFAULT 'APPROVER',
     "requiresSignature" BOOLEAN NOT NULL DEFAULT false,
+    "approvingPosition" INTEGER DEFAULT 0,
     "signatureUrl" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "emailToken" TEXT,
@@ -57,10 +62,11 @@ CREATE TABLE "InternalUser" (
 -- CreateTable
 CREATE TABLE "Session" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "internalUserId" UUID NOT NULL,
-    "refreshToken" TEXT NOT NULL,
+    "userId" UUID NOT NULL,
+    "userType" "UserType" NOT NULL,
+    "refreshTokenHash" TEXT NOT NULL,
     "userAgent" TEXT,
-    "ip" TEXT,
+    "ipAddress" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "expiresAt" TIMESTAMP(3) NOT NULL,
     "revoked" BOOLEAN NOT NULL DEFAULT false,
@@ -168,6 +174,7 @@ CREATE TABLE "CofOApplication" (
     "documentUrls" TEXT[],
     "paymentRef" TEXT,
     "paymentStatus" TEXT NOT NULL DEFAULT 'PENDING',
+    "paymentAmount" DOUBLE PRECISION DEFAULT 0,
     "cofONumber" TEXT,
     "signedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -232,7 +239,7 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "InternalUser_email_key" ON "InternalUser"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Session_refreshToken_key" ON "Session"("refreshToken");
+CREATE UNIQUE INDEX "Session_refreshTokenHash_key" ON "Session"("refreshTokenHash");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "State_name_key" ON "State"("name");
@@ -251,9 +258,6 @@ ALTER TABLE "Application" ADD CONSTRAINT "Application_userId_fkey" FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE "InternalUser" ADD CONSTRAINT "InternalUser_stateId_fkey" FOREIGN KEY ("stateId") REFERENCES "State"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Session" ADD CONSTRAINT "Session_internalUserId_fkey" FOREIGN KEY ("internalUserId") REFERENCES "InternalUser"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "InternalOtp" ADD CONSTRAINT "InternalOtp_internalUserId_fkey" FOREIGN KEY ("internalUserId") REFERENCES "InternalUser"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

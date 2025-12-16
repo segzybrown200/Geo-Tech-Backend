@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { PrismaClient, ApplicationStatus } from "@prisma/client";
+import prisma from "../lib/prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { AuthRequest } from "../middlewares/authMiddleware";
 
-const prisma = new PrismaClient();
 
 export const getAllApplications = async (_req: Request, res: Response) => {
   try {
