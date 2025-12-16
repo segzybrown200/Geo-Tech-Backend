@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PrismaClient, ApplicationStatus } from "@prisma/client";
+import {  ApplicationStatus } from "../generated/client/client";
 import prisma from "../lib/prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
