@@ -18,7 +18,6 @@ import {
 } from "../utils/tokens";
 import { clearSessionCookie, setSessionCookie } from "../utils/cookies";
 
-const JWT_SECRET = process.env.JWT_SECRET!;
 
 export const register = async (req: Request, res: Response) => {
   const parse = registerSchema.safeParse(req.body);
@@ -53,13 +52,13 @@ export const register = async (req: Request, res: Response) => {
       <p>Hi there,</p>
       <p>Thanks for registering with <strong>GeoTech</strong>. To finish setting up your account, please verify your email address.</p>
       <div style="text-align: center; margin: 30px 0;">
-        <a href="http://localhost:5000/auth/verify-email?email=${email}&token=${token}"
+        <a href="http://localhost:5173/auth/verify-email?email=${email}&token=${token}"
            style="background: #004CFF; color: #fff; padding: 12px 20px; text-decoration: none; border-radius: 6px; font-weight: bold;">
           Verify My Email
         </a>
       </div>
       <p>If the button above doesn’t work, copy and paste this link into your browser:</p>
-      <p style="word-break: break-all; color: #004CFF;">http://localhost:5000/auth/verify-email?email=${email}&token=${token}</p>
+      <p style="word-break: break-all; color: #004CFF;">http://localhost:5173/auth/verify-email?email=${email}&token=${token}</p>
       <p>This link will expire in <strong>30 minutes</strong>.</p>
     </div>
     <div style="background: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #888;">
@@ -185,7 +184,7 @@ export const requestPasswordReset = async (req: Request, res: Response) => {
       <p>Hello,</p>
       <p>We received a request to reset your password for your <strong>GeoTech</strong> account. If this was you, please click the button below to set a new password.</p>
       <div style="text-align: center; margin: 30px 0;">
-        <a href="http://localhost:5000/auth/reset-password?token=${token}"
+        <a href="http://localhost:5173/auth/reset-password?token=${token}"
            style="background: #E63946; color: #fff; padding: 12px 20px; text-decoration: none; border-radius: 6px; font-weight: bold;">
           Reset My Password
         </a>
