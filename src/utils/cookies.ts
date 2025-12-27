@@ -1,13 +1,12 @@
 import { Response } from "express";
 
-// const isProd = process.env.NODE_ENV === "production";
+const isProd = process.env.NODE_ENV === "production";
+
 export const setSessionCookie = (res: Response, token: string) => {
   res.cookie("geo_session", token, {
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    // secure: isProd, // ❗ false on localhost
-    // sameSite: isProd ? "strict" : "lax",
+    secure: isProd,               // ✅ true only in production (HTTPS)
+    sameSite: isProd ? "none" : "lax", // ✅ cross-site only in prod
     maxAge: 24 * 60 * 60 * 1000, // 24 hrs
     path: "/",
   });
@@ -16,10 +15,8 @@ export const setSessionCookie = (res: Response, token: string) => {
 export const clearSessionCookie = (res: Response) => {
   res.clearCookie("geo_session", {
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
     path: "/",
-    // secure: isProd,
-    // sameSite: isProd ? "strict" : "lax",
   });
 };
