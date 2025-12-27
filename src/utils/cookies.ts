@@ -4,7 +4,7 @@ import { Response } from "express";
 export const setSessionCookie = (res: Response, token: string) => {
   res.cookie("geo_session", token, {
     httpOnly: true,
-    secure: true,
+    secure: false,
     sameSite: "lax",
     // secure: isProd, // ❗ false on localhost
     // sameSite: isProd ? "strict" : "lax",
@@ -15,7 +15,7 @@ export const setSessionCookie = (res: Response, token: string) => {
 export const clearSessionCookie = (res: Response) => {
   res.clearCookie("geo_session", {
     httpOnly: true,
-    secure: true,
+    secure: false,
     sameSite: "lax",
     // secure: isProd,
     // sameSite: isProd ? "strict" : "lax",
