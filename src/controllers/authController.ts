@@ -97,13 +97,20 @@ export const login = async (req: Request, res: Response) => {
 
     const refreshToken = generateRefreshToken();
     const refreshTokenHash = hashToken(refreshToken);
+    
+    // Delete existing sessions for this user
+    await prisma.session.deleteMany({
+      where: { userId: user.id },
+    });
+    
+    // Create new session
     await prisma.session.create({
       data: {
         userId: user.id,
         userType: "CITIZEN",
         refreshTokenHash,
         ipAddress: req.ip,
-        userAgent: req.headers["user-agent"],
+        userAgent: req.headers["user-agent"], 
         expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
       },
     });
