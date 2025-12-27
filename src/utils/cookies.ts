@@ -1,6 +1,6 @@
 import { Response } from "express";
 
-const isProd = process.env.NODE_ENV === "production";
+const isProd = process.env.NODE_ENV! === "production";
 
 export const setSessionCookie = (res: Response, token: string) => {
   res.cookie("geo_session", token, {
