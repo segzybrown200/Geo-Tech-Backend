@@ -6,7 +6,6 @@
     "outDir": "dist",
 
     "moduleResolution": "node",
-    "types": ["node", "express"],
 
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
