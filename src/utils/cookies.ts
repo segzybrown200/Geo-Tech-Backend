@@ -5,7 +5,7 @@ export const setSessionCookie = (res: Response, token: string) => {
   res.cookie("geo_session", token, {
     httpOnly: true,
     secure: false,
-    sameSite: "none",
+    sameSite: "lax",
     // secure: isProd, // ❗ false on localhost
     // sameSite: isProd ? "strict" : "lax",
     maxAge: 24 * 60 * 60 * 1000, // 24 hrs
@@ -17,7 +17,7 @@ export const clearSessionCookie = (res: Response) => {
   res.clearCookie("geo_session", {
     httpOnly: true,
     secure: false,
-    sameSite: "none",
+    sameSite: "lax",
     path: "/",
     // secure: isProd,
     // sameSite: isProd ? "strict" : "lax",
