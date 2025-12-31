@@ -7,7 +7,7 @@ export interface AuthRequest extends Request {
 }
 
 export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) => {
-   const token = req.cookies.token;
+   const token = req.cookies.geo_session;
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
     req.user = decoded;
