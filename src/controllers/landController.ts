@@ -1,5 +1,3 @@
-import fs from "fs";
-import path from "path";
 import prisma from "../lib/prisma";
 import { landRegistrationSchema } from "../utils/zodSchemas";
 import { uploadToCloudinary } from "../services/uploadService";
@@ -69,15 +67,15 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
       land.id
     );
 
-    // ✅ Upload land documents
+    // ✅ Upload land documents (memory buffers -> cloudinary stream)
     const uploadedDocs = await Promise.all(
-      req.files.map(async (file: Express.Multer.File) => {
-        const uploaded = await uploadToCloudinary(file.path);
-        fs.unlinkSync(path.resolve(file.path));
+      (req.files as Express.Multer.File[]).map(async (file) => {
+        const buffer = (file as any).buffer as Buffer;
+        const uploaded = await uploadToCloudinary(buffer, file.originalname);
         return prisma.landDocument.create({
           data: {
             landId: land.id,
-            documentUrl: uploaded.secure_url,
+            documentUrl: (uploaded as any).secure_url,
             fileName: file.originalname,
           },
         });
