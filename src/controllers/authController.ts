@@ -371,3 +371,4 @@ export const refresh = async (req: Request, res: Response) => {
 
   res.json({ accessToken });
 };
+

@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { registerLand } from '../controllers/landController';
-import { requireAuth } from '../middlewares/authMiddleware';
+import { requireAuth,verifyToken } from '../middlewares/authMiddleware';
 
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });

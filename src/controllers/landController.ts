@@ -25,7 +25,8 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
   }
 
   const { ownerName, latitude, longitude, squareMeters, ownershipType, purpose, titleType, stateId } = body.data;
-  const userId = req.user.id;
+  console.log(req.user)
+  const userId = req.user.sub;
 
   if (!req.files || !(req.files instanceof Array) || req.files.length === 0) {
     return res.status(400).json({ message: "No documents uploaded" });
@@ -89,6 +90,7 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
       documents: uploadedDocs,
     });
   } catch (err) {
+    console.log(err)
     res.status(500).json({ message: "Registration failed", error: err });
   }
 };
