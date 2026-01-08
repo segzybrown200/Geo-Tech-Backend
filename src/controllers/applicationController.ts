@@ -15,7 +15,11 @@ export const submitApplication = async (req: AuthRequest, res: Response) => {
   if (!type) return res.status(400).json({ message: 'Document type is required' });
 
   try {
-    const uploadResult = await uploadToCloudinary(file.path);
+        // ✅ Upload land documents (memory buffers -> cloudinary stream)
+    const uploadResult = await uploadToCloudinary(fs.readFileSync(path.resolve(file.path)), file.originalname);
+
+    // ✅ Create application record
+    
 
     const application = await prisma.application.create({
       data: {

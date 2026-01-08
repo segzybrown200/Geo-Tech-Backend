@@ -36,12 +36,11 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
   if (!land) return res.status(404).json({ message: "Land not found" });
 
   try {
-    const docUrls: string[] = [];
-    for (const file of files) {
-      const uploaded = await uploadToCloudinary(file.path);
-      docUrls.push(uploaded.secure_url);
-      fs.unlinkSync(path.resolve(file.path));
-    }
+    const uploadPromises = files.map((file) =>
+      uploadToCloudinary(fs.readFileSync(path.resolve(file.path)), file.originalname)
+    );
+    const uploadResults = await Promise.all(uploadPromises);
+    const docUrls = uploadResults.map((result) => result.secure_url);
 
     const cofO = await prisma.cofOApplication.create({
       data: {
