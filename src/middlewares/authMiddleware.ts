@@ -10,6 +10,9 @@ export interface AuthRequest extends Request {
 
 export const verifyToken = async(req: AuthRequest, res: Response, next: NextFunction) => {
    const token = req.cookies.geo_session;
+    if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
   try {
     // Verify Access Token 
     const verifiedTokenSession = await prisma.session.findUnique({
@@ -23,7 +26,7 @@ export const verifyToken = async(req: AuthRequest, res: Response, next: NextFunc
     req.user = { id: verifiedTokenSession.userId };
     next();
   } catch (err) {
-    res.status(401).json({ message: 'Invalid token' });
+    return res.status(401).json({ message: 'Invalid token' });
   }
 };
 export const requireAuth = (req: AuthRequest, res: Response, next: Function) => {
