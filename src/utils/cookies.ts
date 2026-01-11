@@ -3,8 +3,8 @@ import { Response } from "express";
 export const setSessionCookie = (res: Response, token: string) => {
   res.cookie("geo_session", token, {
     httpOnly: true,
-    sameSite: "lax",
-    secure: false,   
+    sameSite: "none",
+    secure: true,   
     maxAge: 24 * 60 * 60 * 1000, // 24 hrs
     path: "/",
   });
@@ -13,8 +13,8 @@ export const setSessionCookie = (res: Response, token: string) => {
 export const clearSessionCookie = (res: Response) => {
   res.clearCookie("geo_session", {
     httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    secure: true,
+    sameSite: "none",
     path: "/",
   });
 };
