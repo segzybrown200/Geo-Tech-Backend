@@ -205,14 +205,10 @@ export const getAllUser = async (req:AuthRequest, res:Response) => {
 };
 
 export const getPayments = async (req:AuthRequest, res:Response) => {
-  const payments = await prisma.cofOApplication.findMany({
-    select: {
-      id: true,
-      cofONumber: true,
+  const payments = await prisma.payment.findMany({
+    include: {
       user: { select: { fullName: true, email: true } },
-      paymentStatus: true,
-      paymentRef: true,
-      createdAt: true,
+      cofO: { select: { cofONumber: true, status: true } },
     },
     orderBy: { createdAt: "desc" },
   });
@@ -224,12 +220,10 @@ export const getAnalytics = async (req:AuthRequest, res:Response) => {
   const rejected = await prisma.cofOApplication.count({ where: { status: "REJECTED" } });
   const pending = await prisma.cofOApplication.count({ where: { status: "PENDING" } });
   const review = await prisma.cofOApplication.count({ where: { status: "IN_REVIEW" } });
-  const revenue = await prisma.cofOApplication.aggregate({
-    _count: true,
+  const revenue = await prisma.payment.aggregate({
     _sum: {
-      paymentAmount: true,
-     },
-     where: { paymentStatus: "SUCCESS" },
+      amount: true,
+    },
   });
   res.json({ totalApplications, approved, rejected,pending,review, revenue });
 };
