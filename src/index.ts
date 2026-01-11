@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://your-production-frontend.com"],
+    origin: "http://localhost:5173",
     credentials: true, // if you use cookies or auth headers
   })
 );
