@@ -7,7 +7,7 @@ export const getUserDashboardOverview = async (
   req: AuthRequest,
   res: Response
 ) => {
-  const userId = req.user.id;
+  const userId = req.user.sub;
 
   try {
     const [
