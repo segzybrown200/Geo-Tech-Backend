@@ -6,6 +6,7 @@ export const setSessionCookie = (res: Response, token: string) => {
     httpOnly: true,
     // secure: false,
     sameSite: "none",
+    secure: false,   
     // secure: isProd, // ❗ false on localhost
     // sameSite: isProd ? "strict" : "lax",
     maxAge: 24 * 60 * 60 * 1000, // 24 hrs
