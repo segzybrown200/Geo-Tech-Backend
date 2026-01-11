@@ -63,6 +63,7 @@ export const ModelName = {
   TransferVerification: 'TransferVerification',
   OwnershipHistory: 'OwnershipHistory',
   CofOApplication: 'CofOApplication',
+  Payment: 'Payment',
   StageLog: 'StageLog',
   InboxMessage: 'InboxMessage',
   EmailVerificationToken: 'EmailVerificationToken',
@@ -247,9 +248,6 @@ export const CofOApplicationScalarFieldEnum = {
   landId: 'landId',
   status: 'status',
   documentUrls: 'documentUrls',
-  paymentRef: 'paymentRef',
-  paymentStatus: 'paymentStatus',
-  paymentAmount: 'paymentAmount',
   cofONumber: 'cofONumber',
   signedAt: 'signedAt',
   createdAt: 'createdAt',
@@ -257,6 +255,20 @@ export const CofOApplicationScalarFieldEnum = {
 } as const
 
 export type CofOApplicationScalarFieldEnum = (typeof CofOApplicationScalarFieldEnum)[keyof typeof CofOApplicationScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  cofOId: 'cofOId',
+  amount: 'amount',
+  reference: 'reference',
+  status: 'status',
+  provider: 'provider',
+  createdAt: 'createdAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
 export const StageLogScalarFieldEnum = {

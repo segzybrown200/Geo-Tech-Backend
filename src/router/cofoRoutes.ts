@@ -5,7 +5,7 @@ import { requireAuth, verifyToken } from '../middlewares/authMiddleware';
 import { initializePayment, verifyPayment } from '../controllers/paymentController';
 
 const router = express.Router();
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.post('/apply', upload.array('documents'), requireAuth, applyForCofO);
 router.post('/review/:id', reviewCofO); // :id = CofOApplication.id

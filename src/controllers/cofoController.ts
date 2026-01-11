@@ -9,6 +9,8 @@ import { sendEmail } from "../services/emailSevices";
 
 
 export const applyForCofO = async (req: AuthRequest, res: Response) => {
+    try {
+
   const userId = req.user.id;
   const body = cofoApplySchema.safeParse(req.body);
   if (!body.success) {
@@ -23,7 +25,7 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
   const { landId } = body.data;
   const files = req.files as Express.Multer.File[];
 
-  if (!landId || !files?.length) {
+  if (!landId || files.length === 0) {
     return res
       .status(400)
       .json({ message: "Land ID and documents are required" });
@@ -35,42 +37,77 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
 
   if (!land) return res.status(404).json({ message: "Land not found" });
 
-  try {
-    const uploadPromises = files.map((file) =>
-      uploadToCloudinary(fs.readFileSync(path.resolve(file.path)), file.originalname)
-    );
-    const uploadResults = await Promise.all(uploadPromises);
-    const docUrls = uploadResults.map((result) => result.secure_url);
-
-    const cofO = await prisma.cofOApplication.create({
-      data: {
-        userId,
+  
+    if (land.ownerId !== userId) {
+      return res.status(403).json({
+        message: "You do not own this land",
+      });
+    }
+    const existingApplication = await prisma.cofOApplication.findFirst({
+      where: {
         landId,
-        documentUrls: docUrls,
-        status: "PENDING",
+        status: {
+          in: ["IN_REVIEW", "PENDING", "APPROVED"],
+        },
       },
     });
+
+    if (existingApplication) {
+      return res.status(409).json({
+        message: "A C of O application already exists for this land",
+      });
+    }
+
+    const uploadResults = await Promise.all(
+      files.map((file) =>
+        uploadToCloudinary(
+          fs.readFileSync(path.resolve(file.path)),
+          file.originalname
+        )
+      )
+    );
+
+    const documentUrls = uploadResults.map((r) => r.secure_url);
 
     const approvers = await prisma.internalUser.findMany({
       where: { function: "CofO Approval" },
       orderBy: { createdAt: "asc" },
     });
 
-    if (approvers.length > 0) {
-      await prisma.inboxMessage.create({
+    
+
+   const cofOApplication = await prisma.$transaction(async (tx) => {
+      const application = await tx.cofOApplication.create({
         data: {
-          receiverId: approvers[0].id,
-          cofOId: cofO.id,
-          documentList: docUrls,
+          userId,
+          landId,
+          documentUrls,
           status: "PENDING",
-          messageLink: `CofO/${cofO.id}`,
         },
       });
-    }
 
-    res.status(201).json({ message: "C of O application submitted", cofO });
+      if (approvers.length > 0) {
+        await tx.inboxMessage.create({
+          data: {
+            receiverId: approvers[0].id,
+            cofOId: application.id,
+            documentList: documentUrls,
+            status: "PENDING",
+            messageLink: `CofO/${application.id}`,
+          },
+        });
+      }
+
+      return application;
+    });
+
+    /** 8️⃣ RESPONSE */
+    return res.status(201).json({
+      message: "C of O application submitted successfully",
+      application: cofOApplication,
+    });
   } catch (err) {
-    res.status(500).json({ message: "Application failed", error: err });
+    return res.status(500).json({ message: "Application failed", error: err });
   }
 };
 
@@ -367,5 +404,20 @@ if (internal.role === 'GOVERNOR') {
   } catch (err) {
     console.error('batch sign failed', err);
     return res.status(500).json({ message: 'Batch sign failed', error: err });
+  }
+};
+export const getCofOById = async (req: Request, res: Response) => {
+  const cofOId = req.params.id;
+  try {
+    const cofO = await prisma.cofOApplication.findUnique({
+      where: { id: cofOId },
+      include: { land: true, user: true, logs: true }
+    });
+    if (!cofO) {
+      return res.status(404).json({ message: "CofO application not found" });
+    } 
+    res.status(200).json({ cofO });
+  } catch (err) {
+    res.status(500).json({ message: "Error retrieving CofO application", error: err });
   }
 };

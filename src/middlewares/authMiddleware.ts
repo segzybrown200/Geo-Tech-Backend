@@ -34,7 +34,6 @@ export const requireAuth = (req: AuthRequest, res: Response, next: Function) => 
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET!);
-    console.log("verifyAuth",payload)
     req.user = payload;
     next();
   } catch {

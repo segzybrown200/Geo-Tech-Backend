@@ -7,6 +7,9 @@ CREATE TYPE "Role" AS ENUM ('USER', 'APPROVER', 'ADMIN', 'GOVERNOR');
 -- CreateEnum
 CREATE TYPE "UserType" AS ENUM ('CITIZEN', 'INTERNAL');
 
+-- CreateEnum
+CREATE TYPE "PaymentStatus" AS ENUM ('PENDING', 'SUCCESS', 'FAILED');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" UUID NOT NULL,
@@ -172,15 +175,26 @@ CREATE TABLE "CofOApplication" (
     "landId" UUID NOT NULL,
     "status" "ApplicationStatus" NOT NULL DEFAULT 'PENDING',
     "documentUrls" TEXT[],
-    "paymentRef" TEXT,
-    "paymentStatus" TEXT NOT NULL DEFAULT 'PENDING',
-    "paymentAmount" DOUBLE PRECISION DEFAULT 0,
     "cofONumber" TEXT,
     "signedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "governorSignatureUrl" TEXT,
 
     CONSTRAINT "CofOApplication_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Payment" (
+    "id" UUID NOT NULL,
+    "userId" UUID NOT NULL,
+    "cofOId" UUID NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL,
+    "reference" TEXT NOT NULL,
+    "status" "PaymentStatus" NOT NULL,
+    "provider" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Payment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -248,6 +262,9 @@ CREATE UNIQUE INDEX "State_name_key" ON "State"("name");
 CREATE UNIQUE INDEX "State_governorId_key" ON "State"("governorId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Payment_reference_key" ON "Payment"("reference");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "EmailVerificationToken_token_key" ON "EmailVerificationToken"("token");
 
 -- CreateIndex
@@ -291,6 +308,12 @@ ALTER TABLE "CofOApplication" ADD CONSTRAINT "CofOApplication_userId_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "CofOApplication" ADD CONSTRAINT "CofOApplication_landId_fkey" FOREIGN KEY ("landId") REFERENCES "LandRegistration"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Payment" ADD CONSTRAINT "Payment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Payment" ADD CONSTRAINT "Payment_cofOId_fkey" FOREIGN KEY ("cofOId") REFERENCES "CofOApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "StageLog" ADD CONSTRAINT "StageLog_cofOId_fkey" FOREIGN KEY ("cofOId") REFERENCES "CofOApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

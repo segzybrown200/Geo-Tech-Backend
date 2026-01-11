@@ -7,7 +7,7 @@ import prisma from "../lib/prisma";
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET!;
 
 export const initializePayment = async (req:AuthRequest, res:Response) => {
-  const { amount, landId } = req.body;
+  const { amount, cofOId } = req.body;
   const userId = req.user.id;
 
   try {
@@ -20,6 +20,7 @@ export const initializePayment = async (req:AuthRequest, res:Response) => {
         email: user.email,
         amount: amount * 100, // Paystack uses kobo
         callback_url: "https://yourfrontend.com/payment/callback",
+        metadata: { cofOId}
       },
       {
         headers: {
@@ -30,13 +31,14 @@ export const initializePayment = async (req:AuthRequest, res:Response) => {
 
     const { reference, authorization_url } = response.data.data;
 
-    // create pending CofO application
-    await prisma.cofOApplication.create({
+    await prisma.payment.create({
       data: {
         userId,
-        landId,
-        paymentRef: reference,
-        paymentStatus: "PENDING",
+        cofOId: cofOId,
+        amount,
+        reference,
+        status: "PENDING",
+        provider: "PAYSTACK",
       },
     });
 
@@ -68,16 +70,15 @@ export const verifyPayment = async (req:Request, res:Response) => {
     )}`;
     const paymentAmount = payment.amount / 100;
 
-    const application = await prisma.cofOApplication.updateMany({
-      where: { paymentRef: reference as string },
-      data: {
-        paymentStatus: "SUCCESS",
-        status: "PENDING",
-        paymentAmount,
-        cofONumber,
-      },
+    await prisma.payment.updateMany({
+      where: { reference: String(reference) },
+      data: { status: "SUCCESS" },
     });
 
+    await prisma.cofOApplication.updateMany({
+      where: { id: payment.metadata.cofOId },
+      data: { cofONumber  },
+    });
     res.json({
       message: "Payment verified successfully. You can now upload documents.",
       cofONumber,

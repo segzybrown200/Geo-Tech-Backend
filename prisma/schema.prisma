@@ -27,6 +27,7 @@ model User {
   isEmailVerified    Boolean              @default(false)
   PasswordResetToken PasswordResetToken[]
   OwnershipTransfer  OwnershipTransfer[]
+  payments           Payment[]
 }
 
 model Application {
@@ -63,13 +64,13 @@ model InternalUser {
   phone             String?
   ministry          String?
   department        String?
-  position          Int?       @default(0)
+  position          Int?           @default(0)
   function          String?
-  state             State ?         @relation(fields: [stateId], references: [id])
+  state             State?         @relation(fields: [stateId], references: [id])
   stateId           String?        @db.Uuid
   role              Role           @default(APPROVER)
   requiresSignature Boolean        @default(false)
-  approvingPosition Int?          @default(0)
+  approvingPosition Int?           @default(0)
   signatureUrl      String?
   createdAt         DateTime       @default(now())
   StageLog          StageLog[]
@@ -84,19 +85,19 @@ model InternalUser {
 }
 
 model Session {
-  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
 
-  userId          String   @db.Uuid
-  userType        UserType // CITIZEN | INTERNAL
+  userId   String   @db.Uuid
+  userType UserType // CITIZEN | INTERNAL
 
-  refreshTokenHash String  @unique
+  refreshTokenHash String @unique
 
-  userAgent       String?
-  ipAddress       String?
+  userAgent String?
+  ipAddress String?
 
-  createdAt       DateTime @default(now())
-  expiresAt       DateTime
-  revoked         Boolean  @default(false)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
 }
 
 enum UserType {
@@ -199,9 +200,6 @@ model CofOApplication {
   landId               String            @db.Uuid
   status               ApplicationStatus @default(PENDING)
   documentUrls         String[]
-  paymentRef           String?
-  paymentStatus        String            @default("PENDING")
-  paymentAmount    Float?   @default(0)
   cofONumber           String? // new
   signedAt             DateTime? // new
   logs                 StageLog[]
@@ -210,6 +208,27 @@ model CofOApplication {
   land                 LandRegistration  @relation(fields: [landId], references: [id])
   InboxMessage         InboxMessage[]
   governorSignatureUrl String? // new
+  payments             Payment[]
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+model Payment {
+  id        String        @id @default(uuid()) @db.Uuid
+  userId    String        @db.Uuid
+  cofOId    String        @db.Uuid
+  amount    Float
+  reference String        @unique
+  status    PaymentStatus
+  provider  String // Paystack, Remita, etc
+  createdAt DateTime      @default(now())
+
+  user User            @relation(fields: [userId], references: [id])
+  cofO CofOApplication @relation(fields: [cofOId], references: [id])
 }
 
 model StageLog {

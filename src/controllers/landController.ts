@@ -23,7 +23,6 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
   }
 
   const { ownerName, latitude, longitude, squareMeters, ownershipType, purpose, titleType, stateId } = body.data;
-  console.log(req.user)
   const userId = req.user.sub;
 
   if (!req.files || !(req.files instanceof Array) || req.files.length === 0) {
@@ -92,3 +91,111 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "Registration failed", error: err });
   }
 };
+export const getLandById = async (req: Request, res: Response) => {
+  const landId = req.params.id;
+  try {
+    const land = await prisma.landRegistration.findUnique({
+      where: { id: landId },
+      include: { documents: true },
+    });
+    if (!land) {
+      return res.status(404).json({ message: "Land not found" });
+    }
+    res.status(200).json({ land });
+  } catch (err) {
+    res.status(500).json({ message: "Error retrieving land", error: err });
+  }
+};
+
+export const getAllUserLands = async (req: AuthRequest, res: Response) => {
+  const userId = req.user.sub;
+  try {
+    const lands = await prisma.landRegistration.findMany({
+      where: { ownerId: userId },
+      include: { documents: true },
+    });
+    res.status(200).json({ lands });
+  } catch (err) {
+    res.status(500).json({ message: "Error retrieving lands", error: err });
+  }
+};
+export const getLandsByState = async (req: Request, res: Response) => {
+  const stateId = req.params.stateId;
+  try {
+    const lands = await prisma.landRegistration.findMany({
+      where: { stateId: stateId },
+      include: { documents: true },
+    });
+    res.status(200).json({ lands });
+  } catch (err) {
+    res.status(500).json({ message: "Error retrieving lands", error: err });
+  }
+};
+
+export const getAllLands = async (req: Request, res: Response) => {
+  try {
+    const lands = await prisma.landRegistration.findMany({
+      include: { documents: true },
+    });
+    res.status(200).json({ lands });
+  } catch (err) {
+    res.status(500).json({ message: "Error retrieving lands", error: err });
+  }
+};
+export const deleteLand = async (req: AuthRequest, res: Response) => {
+  const landId = req.params.id;
+  const userId = req.user.sub;
+  try {
+    const land = await prisma.landRegistration.findUnique({
+      where: { id: landId },
+    });
+    if (!land) {
+      return res.status(404).json({ message: "Land not found" });
+    }
+    if (land.ownerId !== userId) {
+      return res.status(403).json({ message: "Forbidden: You do not own this land" });
+    } 
+    await prisma.landRegistration.delete({
+      where: { id: landId },
+    });
+    res.status(200).json({ message: "Land deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Error deleting land", error: err });
+  }
+};
+export const updateLand = async (req: AuthRequest, res: Response) => {
+  const landId = req.params.id;
+  const body = landRegistrationSchema.partial().safeParse(req.body);
+  if (!body.success) {
+    return res.status(400).json({ message: "Invalid land input", errors: body.error.flatten() });
+  }
+  const userId = req.user.sub;
+  try {
+    const land = await prisma.landRegistration.findUnique({
+      where: { id: landId },
+    });
+    if (!land) {
+      return res.status(404).json({ message: "Land not found" });
+    }
+    if (land.ownerId !== userId) {
+      return res.status(403).json({ message: "Forbidden: You do not own this land" });
+    }
+    const updatedLand = await prisma.landRegistration.update({
+      where: { id: landId },
+      data: body.data,
+    });
+    res.status(200).json({ message: "Land updated successfully", land: updatedLand });
+  }
+  catch (err) {
+    res.status(500).json({ message: "Error updating land", error: err });
+  }
+};
+export const getLandCount = async (req: Request, res: Response) => {
+  try {
+    const count = await prisma.landRegistration.count();
+    res.status(200).json({ count });
+  } catch (err) {
+    res.status(500).json({ message: "Error retrieving land count", error: err });
+  }
+};
+

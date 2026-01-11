@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import authRoutes from "./router/authRoutes";
 import applicationRoutes from "./router/applicationRoutes";
 import adminRoutes from "./router/adminRoutes";
+import userRoutes from "./router/userRoute";
 import { verifyToken } from "./middlewares/authMiddleware";
 import internalUserRoutes from "./router/internalUserRoutes";
 import landRoutes from "./router/landRoutes";
@@ -27,6 +28,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/applications", verifyToken, applicationRoutes);
 app.use(
   "/api/admin",adminRoutes);
+  app.use("/api/user", userRoutes);
 app.use(
   "/api/internal-users",
   internalUserRoutes

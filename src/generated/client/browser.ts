@@ -78,6 +78,11 @@ export type OwnershipHistory = Prisma.OwnershipHistoryModel
  */
 export type CofOApplication = Prisma.CofOApplicationModel
 /**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
  * Model StageLog
  * 
  */

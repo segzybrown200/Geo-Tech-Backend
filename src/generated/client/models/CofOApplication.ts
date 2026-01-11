@@ -20,18 +20,8 @@ export type CofOApplicationModel = runtime.Types.Result.DefaultSelection<Prisma.
 
 export type AggregateCofOApplication = {
   _count: CofOApplicationCountAggregateOutputType | null
-  _avg: CofOApplicationAvgAggregateOutputType | null
-  _sum: CofOApplicationSumAggregateOutputType | null
   _min: CofOApplicationMinAggregateOutputType | null
   _max: CofOApplicationMaxAggregateOutputType | null
-}
-
-export type CofOApplicationAvgAggregateOutputType = {
-  paymentAmount: number | null
-}
-
-export type CofOApplicationSumAggregateOutputType = {
-  paymentAmount: number | null
 }
 
 export type CofOApplicationMinAggregateOutputType = {
@@ -39,9 +29,6 @@ export type CofOApplicationMinAggregateOutputType = {
   userId: string | null
   landId: string | null
   status: $Enums.ApplicationStatus | null
-  paymentRef: string | null
-  paymentStatus: string | null
-  paymentAmount: number | null
   cofONumber: string | null
   signedAt: Date | null
   createdAt: Date | null
@@ -53,9 +40,6 @@ export type CofOApplicationMaxAggregateOutputType = {
   userId: string | null
   landId: string | null
   status: $Enums.ApplicationStatus | null
-  paymentRef: string | null
-  paymentStatus: string | null
-  paymentAmount: number | null
   cofONumber: string | null
   signedAt: Date | null
   createdAt: Date | null
@@ -68,9 +52,6 @@ export type CofOApplicationCountAggregateOutputType = {
   landId: number
   status: number
   documentUrls: number
-  paymentRef: number
-  paymentStatus: number
-  paymentAmount: number
   cofONumber: number
   signedAt: number
   createdAt: number
@@ -79,22 +60,11 @@ export type CofOApplicationCountAggregateOutputType = {
 }
 
 
-export type CofOApplicationAvgAggregateInputType = {
-  paymentAmount?: true
-}
-
-export type CofOApplicationSumAggregateInputType = {
-  paymentAmount?: true
-}
-
 export type CofOApplicationMinAggregateInputType = {
   id?: true
   userId?: true
   landId?: true
   status?: true
-  paymentRef?: true
-  paymentStatus?: true
-  paymentAmount?: true
   cofONumber?: true
   signedAt?: true
   createdAt?: true
@@ -106,9 +76,6 @@ export type CofOApplicationMaxAggregateInputType = {
   userId?: true
   landId?: true
   status?: true
-  paymentRef?: true
-  paymentStatus?: true
-  paymentAmount?: true
   cofONumber?: true
   signedAt?: true
   createdAt?: true
@@ -121,9 +88,6 @@ export type CofOApplicationCountAggregateInputType = {
   landId?: true
   status?: true
   documentUrls?: true
-  paymentRef?: true
-  paymentStatus?: true
-  paymentAmount?: true
   cofONumber?: true
   signedAt?: true
   createdAt?: true
@@ -169,18 +133,6 @@ export type CofOApplicationAggregateArgs<ExtArgs extends runtime.Types.Extension
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: CofOApplicationAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: CofOApplicationSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: CofOApplicationMinAggregateInputType
@@ -211,8 +163,6 @@ export type CofOApplicationGroupByArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   _count?: CofOApplicationCountAggregateInputType | true
-  _avg?: CofOApplicationAvgAggregateInputType
-  _sum?: CofOApplicationSumAggregateInputType
   _min?: CofOApplicationMinAggregateInputType
   _max?: CofOApplicationMaxAggregateInputType
 }
@@ -223,16 +173,11 @@ export type CofOApplicationGroupByOutputType = {
   landId: string
   status: $Enums.ApplicationStatus
   documentUrls: string[]
-  paymentRef: string | null
-  paymentStatus: string
-  paymentAmount: number | null
   cofONumber: string | null
   signedAt: Date | null
   createdAt: Date
   governorSignatureUrl: string | null
   _count: CofOApplicationCountAggregateOutputType | null
-  _avg: CofOApplicationAvgAggregateOutputType | null
-  _sum: CofOApplicationSumAggregateOutputType | null
   _min: CofOApplicationMinAggregateOutputType | null
   _max: CofOApplicationMaxAggregateOutputType | null
 }
@@ -261,9 +206,6 @@ export type CofOApplicationWhereInput = {
   landId?: Prisma.UuidFilter<"CofOApplication"> | string
   status?: Prisma.EnumApplicationStatusFilter<"CofOApplication"> | $Enums.ApplicationStatus
   documentUrls?: Prisma.StringNullableListFilter<"CofOApplication">
-  paymentRef?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
-  paymentStatus?: Prisma.StringFilter<"CofOApplication"> | string
-  paymentAmount?: Prisma.FloatNullableFilter<"CofOApplication"> | number | null
   cofONumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   signedAt?: Prisma.DateTimeNullableFilter<"CofOApplication"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOApplication"> | Date | string
@@ -272,6 +214,7 @@ export type CofOApplicationWhereInput = {
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
   InboxMessage?: Prisma.InboxMessageListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }
 
 export type CofOApplicationOrderByWithRelationInput = {
@@ -280,9 +223,6 @@ export type CofOApplicationOrderByWithRelationInput = {
   landId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   documentUrls?: Prisma.SortOrder
-  paymentRef?: Prisma.SortOrderInput | Prisma.SortOrder
-  paymentStatus?: Prisma.SortOrder
-  paymentAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   cofONumber?: Prisma.SortOrderInput | Prisma.SortOrder
   signedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -291,6 +231,7 @@ export type CofOApplicationOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   land?: Prisma.LandRegistrationOrderByWithRelationInput
   InboxMessage?: Prisma.InboxMessageOrderByRelationAggregateInput
+  payments?: Prisma.PaymentOrderByRelationAggregateInput
 }
 
 export type CofOApplicationWhereUniqueInput = Prisma.AtLeast<{
@@ -302,9 +243,6 @@ export type CofOApplicationWhereUniqueInput = Prisma.AtLeast<{
   landId?: Prisma.UuidFilter<"CofOApplication"> | string
   status?: Prisma.EnumApplicationStatusFilter<"CofOApplication"> | $Enums.ApplicationStatus
   documentUrls?: Prisma.StringNullableListFilter<"CofOApplication">
-  paymentRef?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
-  paymentStatus?: Prisma.StringFilter<"CofOApplication"> | string
-  paymentAmount?: Prisma.FloatNullableFilter<"CofOApplication"> | number | null
   cofONumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   signedAt?: Prisma.DateTimeNullableFilter<"CofOApplication"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOApplication"> | Date | string
@@ -313,6 +251,7 @@ export type CofOApplicationWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
   InboxMessage?: Prisma.InboxMessageListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }, "id">
 
 export type CofOApplicationOrderByWithAggregationInput = {
@@ -321,18 +260,13 @@ export type CofOApplicationOrderByWithAggregationInput = {
   landId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   documentUrls?: Prisma.SortOrder
-  paymentRef?: Prisma.SortOrderInput | Prisma.SortOrder
-  paymentStatus?: Prisma.SortOrder
-  paymentAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   cofONumber?: Prisma.SortOrderInput | Prisma.SortOrder
   signedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   governorSignatureUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CofOApplicationCountOrderByAggregateInput
-  _avg?: Prisma.CofOApplicationAvgOrderByAggregateInput
   _max?: Prisma.CofOApplicationMaxOrderByAggregateInput
   _min?: Prisma.CofOApplicationMinOrderByAggregateInput
-  _sum?: Prisma.CofOApplicationSumOrderByAggregateInput
 }
 
 export type CofOApplicationScalarWhereWithAggregatesInput = {
@@ -344,9 +278,6 @@ export type CofOApplicationScalarWhereWithAggregatesInput = {
   landId?: Prisma.UuidWithAggregatesFilter<"CofOApplication"> | string
   status?: Prisma.EnumApplicationStatusWithAggregatesFilter<"CofOApplication"> | $Enums.ApplicationStatus
   documentUrls?: Prisma.StringNullableListFilter<"CofOApplication">
-  paymentRef?: Prisma.StringNullableWithAggregatesFilter<"CofOApplication"> | string | null
-  paymentStatus?: Prisma.StringWithAggregatesFilter<"CofOApplication"> | string
-  paymentAmount?: Prisma.FloatNullableWithAggregatesFilter<"CofOApplication"> | number | null
   cofONumber?: Prisma.StringNullableWithAggregatesFilter<"CofOApplication"> | string | null
   signedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CofOApplication"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CofOApplication"> | Date | string
@@ -357,9 +288,6 @@ export type CofOApplicationCreateInput = {
   id?: string
   status?: $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
-  paymentRef?: string | null
-  paymentStatus?: string
-  paymentAmount?: number | null
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
@@ -368,6 +296,7 @@ export type CofOApplicationCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateInput = {
@@ -376,24 +305,19 @@ export type CofOApplicationUncheckedCreateInput = {
   landId: string
   status?: $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
-  paymentRef?: string | null
-  paymentStatus?: string
-  paymentAmount?: number | null
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -402,6 +326,7 @@ export type CofOApplicationUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateInput = {
@@ -410,15 +335,13 @@ export type CofOApplicationUncheckedUpdateInput = {
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationCreateManyInput = {
@@ -427,9 +350,6 @@ export type CofOApplicationCreateManyInput = {
   landId: string
   status?: $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
-  paymentRef?: string | null
-  paymentStatus?: string
-  paymentAmount?: number | null
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
@@ -440,9 +360,6 @@ export type CofOApplicationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -455,9 +372,6 @@ export type CofOApplicationUncheckedUpdateManyInput = {
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -488,17 +402,10 @@ export type CofOApplicationCountOrderByAggregateInput = {
   landId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   documentUrls?: Prisma.SortOrder
-  paymentRef?: Prisma.SortOrder
-  paymentStatus?: Prisma.SortOrder
-  paymentAmount?: Prisma.SortOrder
   cofONumber?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   governorSignatureUrl?: Prisma.SortOrder
-}
-
-export type CofOApplicationAvgOrderByAggregateInput = {
-  paymentAmount?: Prisma.SortOrder
 }
 
 export type CofOApplicationMaxOrderByAggregateInput = {
@@ -506,9 +413,6 @@ export type CofOApplicationMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  paymentRef?: Prisma.SortOrder
-  paymentStatus?: Prisma.SortOrder
-  paymentAmount?: Prisma.SortOrder
   cofONumber?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -520,17 +424,10 @@ export type CofOApplicationMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  paymentRef?: Prisma.SortOrder
-  paymentStatus?: Prisma.SortOrder
-  paymentAmount?: Prisma.SortOrder
   cofONumber?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   governorSignatureUrl?: Prisma.SortOrder
-}
-
-export type CofOApplicationSumOrderByAggregateInput = {
-  paymentAmount?: Prisma.SortOrder
 }
 
 export type CofOApplicationScalarRelationFilter = {
@@ -631,12 +528,18 @@ export type CofOApplicationUpdatedocumentUrlsInput = {
   push?: string | string[]
 }
 
-export type NullableFloatFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type CofOApplicationCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutPaymentsInput, Prisma.CofOApplicationUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.CofOApplicationWhereUniqueInput
+}
+
+export type CofOApplicationUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutPaymentsInput, Prisma.CofOApplicationUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.CofOApplicationUpsertWithoutPaymentsInput
+  connect?: Prisma.CofOApplicationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CofOApplicationUpdateToOneWithWhereWithoutPaymentsInput, Prisma.CofOApplicationUpdateWithoutPaymentsInput>, Prisma.CofOApplicationUncheckedUpdateWithoutPaymentsInput>
 }
 
 export type CofOApplicationCreateNestedOneWithoutLogsInput = {
@@ -671,9 +574,6 @@ export type CofOApplicationCreateWithoutUserInput = {
   id?: string
   status?: $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
-  paymentRef?: string | null
-  paymentStatus?: string
-  paymentAmount?: number | null
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
@@ -681,6 +581,7 @@ export type CofOApplicationCreateWithoutUserInput = {
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutUserInput = {
@@ -688,15 +589,13 @@ export type CofOApplicationUncheckedCreateWithoutUserInput = {
   landId: string
   status?: $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
-  paymentRef?: string | null
-  paymentStatus?: string
-  paymentAmount?: number | null
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutUserInput = {
@@ -734,9 +633,6 @@ export type CofOApplicationScalarWhereInput = {
   landId?: Prisma.UuidFilter<"CofOApplication"> | string
   status?: Prisma.EnumApplicationStatusFilter<"CofOApplication"> | $Enums.ApplicationStatus
   documentUrls?: Prisma.StringNullableListFilter<"CofOApplication">
-  paymentRef?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
-  paymentStatus?: Prisma.StringFilter<"CofOApplication"> | string
-  paymentAmount?: Prisma.FloatNullableFilter<"CofOApplication"> | number | null
   cofONumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   signedAt?: Prisma.DateTimeNullableFilter<"CofOApplication"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOApplication"> | Date | string
@@ -747,9 +643,6 @@ export type CofOApplicationCreateWithoutLandInput = {
   id?: string
   status?: $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
-  paymentRef?: string | null
-  paymentStatus?: string
-  paymentAmount?: number | null
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
@@ -757,6 +650,7 @@ export type CofOApplicationCreateWithoutLandInput = {
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutLandInput = {
@@ -764,15 +658,13 @@ export type CofOApplicationUncheckedCreateWithoutLandInput = {
   userId: string
   status?: $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
-  paymentRef?: string | null
-  paymentStatus?: string
-  paymentAmount?: number | null
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutLandInput = {
@@ -801,13 +693,82 @@ export type CofOApplicationUpdateManyWithWhereWithoutLandInput = {
   data: Prisma.XOR<Prisma.CofOApplicationUpdateManyMutationInput, Prisma.CofOApplicationUncheckedUpdateManyWithoutLandInput>
 }
 
+export type CofOApplicationCreateWithoutPaymentsInput = {
+  id?: string
+  status?: $Enums.ApplicationStatus
+  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  governorSignatureUrl?: string | null
+  logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
+  user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationUncheckedCreateWithoutPaymentsInput = {
+  id?: string
+  userId: string
+  landId: string
+  status?: $Enums.ApplicationStatus
+  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  governorSignatureUrl?: string | null
+  logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutPaymentsInput, Prisma.CofOApplicationUncheckedCreateWithoutPaymentsInput>
+}
+
+export type CofOApplicationUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutPaymentsInput, Prisma.CofOApplicationUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutPaymentsInput, Prisma.CofOApplicationUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.CofOApplicationWhereInput
+}
+
+export type CofOApplicationUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.CofOApplicationWhereInput
+  data: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutPaymentsInput, Prisma.CofOApplicationUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type CofOApplicationUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+}
+
 export type CofOApplicationCreateWithoutLogsInput = {
   id?: string
   status?: $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
-  paymentRef?: string | null
-  paymentStatus?: string
-  paymentAmount?: number | null
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
@@ -815,6 +776,7 @@ export type CofOApplicationCreateWithoutLogsInput = {
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutLogsInput = {
@@ -823,14 +785,12 @@ export type CofOApplicationUncheckedCreateWithoutLogsInput = {
   landId: string
   status?: $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
-  paymentRef?: string | null
-  paymentStatus?: string
-  paymentAmount?: number | null
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutLogsInput = {
@@ -853,9 +813,6 @@ export type CofOApplicationUpdateWithoutLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -863,6 +820,7 @@ export type CofOApplicationUpdateWithoutLogsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutLogsInput = {
@@ -871,23 +829,18 @@ export type CofOApplicationUncheckedUpdateWithoutLogsInput = {
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationCreateWithoutInboxMessageInput = {
   id?: string
   status?: $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
-  paymentRef?: string | null
-  paymentStatus?: string
-  paymentAmount?: number | null
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
@@ -895,6 +848,7 @@ export type CofOApplicationCreateWithoutInboxMessageInput = {
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutInboxMessageInput = {
@@ -903,14 +857,12 @@ export type CofOApplicationUncheckedCreateWithoutInboxMessageInput = {
   landId: string
   status?: $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
-  paymentRef?: string | null
-  paymentStatus?: string
-  paymentAmount?: number | null
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutInboxMessageInput = {
@@ -933,9 +885,6 @@ export type CofOApplicationUpdateWithoutInboxMessageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -943,6 +892,7 @@ export type CofOApplicationUpdateWithoutInboxMessageInput = {
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutInboxMessageInput = {
@@ -951,14 +901,12 @@ export type CofOApplicationUncheckedUpdateWithoutInboxMessageInput = {
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationCreateManyUserInput = {
@@ -966,9 +914,6 @@ export type CofOApplicationCreateManyUserInput = {
   landId: string
   status?: $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
-  paymentRef?: string | null
-  paymentStatus?: string
-  paymentAmount?: number | null
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
@@ -979,9 +924,6 @@ export type CofOApplicationUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -989,6 +931,7 @@ export type CofOApplicationUpdateWithoutUserInput = {
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutUserInput = {
@@ -996,15 +939,13 @@ export type CofOApplicationUncheckedUpdateWithoutUserInput = {
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateManyWithoutUserInput = {
@@ -1012,9 +953,6 @@ export type CofOApplicationUncheckedUpdateManyWithoutUserInput = {
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1026,9 +964,6 @@ export type CofOApplicationCreateManyLandInput = {
   userId: string
   status?: $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
-  paymentRef?: string | null
-  paymentStatus?: string
-  paymentAmount?: number | null
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
@@ -1039,9 +974,6 @@ export type CofOApplicationUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1049,6 +981,7 @@ export type CofOApplicationUpdateWithoutLandInput = {
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutLandInput = {
@@ -1056,15 +989,13 @@ export type CofOApplicationUncheckedUpdateWithoutLandInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateManyWithoutLandInput = {
@@ -1072,9 +1003,6 @@ export type CofOApplicationUncheckedUpdateManyWithoutLandInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
   documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
-  paymentRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1089,11 +1017,13 @@ export type CofOApplicationUncheckedUpdateManyWithoutLandInput = {
 export type CofOApplicationCountOutputType = {
   logs: number
   InboxMessage: number
+  payments: number
 }
 
 export type CofOApplicationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   logs?: boolean | CofOApplicationCountOutputTypeCountLogsArgs
   InboxMessage?: boolean | CofOApplicationCountOutputTypeCountInboxMessageArgs
+  payments?: boolean | CofOApplicationCountOutputTypeCountPaymentsArgs
 }
 
 /**
@@ -1120,6 +1050,13 @@ export type CofOApplicationCountOutputTypeCountInboxMessageArgs<ExtArgs extends 
   where?: Prisma.InboxMessageWhereInput
 }
 
+/**
+ * CofOApplicationCountOutputType without action
+ */
+export type CofOApplicationCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentWhereInput
+}
+
 
 export type CofOApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1127,9 +1064,6 @@ export type CofOApplicationSelect<ExtArgs extends runtime.Types.Extensions.Inter
   landId?: boolean
   status?: boolean
   documentUrls?: boolean
-  paymentRef?: boolean
-  paymentStatus?: boolean
-  paymentAmount?: boolean
   cofONumber?: boolean
   signedAt?: boolean
   createdAt?: boolean
@@ -1138,6 +1072,7 @@ export type CofOApplicationSelect<ExtArgs extends runtime.Types.Extensions.Inter
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   InboxMessage?: boolean | Prisma.CofOApplication$InboxMessageArgs<ExtArgs>
+  payments?: boolean | Prisma.CofOApplication$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.CofOApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cofOApplication"]>
 
@@ -1147,9 +1082,6 @@ export type CofOApplicationSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   landId?: boolean
   status?: boolean
   documentUrls?: boolean
-  paymentRef?: boolean
-  paymentStatus?: boolean
-  paymentAmount?: boolean
   cofONumber?: boolean
   signedAt?: boolean
   createdAt?: boolean
@@ -1164,9 +1096,6 @@ export type CofOApplicationSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   landId?: boolean
   status?: boolean
   documentUrls?: boolean
-  paymentRef?: boolean
-  paymentStatus?: boolean
-  paymentAmount?: boolean
   cofONumber?: boolean
   signedAt?: boolean
   createdAt?: boolean
@@ -1181,21 +1110,19 @@ export type CofOApplicationSelectScalar = {
   landId?: boolean
   status?: boolean
   documentUrls?: boolean
-  paymentRef?: boolean
-  paymentStatus?: boolean
-  paymentAmount?: boolean
   cofONumber?: boolean
   signedAt?: boolean
   createdAt?: boolean
   governorSignatureUrl?: boolean
 }
 
-export type CofOApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "landId" | "status" | "documentUrls" | "paymentRef" | "paymentStatus" | "paymentAmount" | "cofONumber" | "signedAt" | "createdAt" | "governorSignatureUrl", ExtArgs["result"]["cofOApplication"]>
+export type CofOApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "landId" | "status" | "documentUrls" | "cofONumber" | "signedAt" | "createdAt" | "governorSignatureUrl", ExtArgs["result"]["cofOApplication"]>
 export type CofOApplicationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   logs?: boolean | Prisma.CofOApplication$logsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   InboxMessage?: boolean | Prisma.CofOApplication$InboxMessageArgs<ExtArgs>
+  payments?: boolean | Prisma.CofOApplication$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.CofOApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CofOApplicationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1214,6 +1141,7 @@ export type $CofOApplicationPayload<ExtArgs extends runtime.Types.Extensions.Int
     user: Prisma.$UserPayload<ExtArgs>
     land: Prisma.$LandRegistrationPayload<ExtArgs>
     InboxMessage: Prisma.$InboxMessagePayload<ExtArgs>[]
+    payments: Prisma.$PaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1221,9 +1149,6 @@ export type $CofOApplicationPayload<ExtArgs extends runtime.Types.Extensions.Int
     landId: string
     status: $Enums.ApplicationStatus
     documentUrls: string[]
-    paymentRef: string | null
-    paymentStatus: string
-    paymentAmount: number | null
     cofONumber: string | null
     signedAt: Date | null
     createdAt: Date
@@ -1626,6 +1551,7 @@ export interface Prisma__CofOApplicationClient<T, Null = never, ExtArgs extends 
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   land<T extends Prisma.LandRegistrationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistrationDefaultArgs<ExtArgs>>): Prisma.Prisma__LandRegistrationClient<runtime.Types.Result.GetResult<Prisma.$LandRegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   InboxMessage<T extends Prisma.CofOApplication$InboxMessageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$InboxMessageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InboxMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.CofOApplication$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1660,9 +1586,6 @@ export interface CofOApplicationFieldRefs {
   readonly landId: Prisma.FieldRef<"CofOApplication", 'String'>
   readonly status: Prisma.FieldRef<"CofOApplication", 'ApplicationStatus'>
   readonly documentUrls: Prisma.FieldRef<"CofOApplication", 'String[]'>
-  readonly paymentRef: Prisma.FieldRef<"CofOApplication", 'String'>
-  readonly paymentStatus: Prisma.FieldRef<"CofOApplication", 'String'>
-  readonly paymentAmount: Prisma.FieldRef<"CofOApplication", 'Float'>
   readonly cofONumber: Prisma.FieldRef<"CofOApplication", 'String'>
   readonly signedAt: Prisma.FieldRef<"CofOApplication", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"CofOApplication", 'DateTime'>
@@ -2108,6 +2031,30 @@ export type CofOApplication$InboxMessageArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   distinct?: Prisma.InboxMessageScalarFieldEnum | Prisma.InboxMessageScalarFieldEnum[]
+}
+
+/**
+ * CofOApplication.payments
+ */
+export type CofOApplication$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
+  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
 }
 
 /**
