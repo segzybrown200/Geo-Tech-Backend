@@ -275,6 +275,7 @@ export const searchLandExistence = async (req: Request, res: Response) => {
         purpose: string;
         titleType: string;
         stateId: string;
+        ownershipType: string;
       }[]
     >(
       `
@@ -284,6 +285,7 @@ export const searchLandExistence = async (req: Request, res: Response) => {
         longitude,
         "squareMeters",
         purpose,
+        "ownershipType",
         "titleType",
         "stateId"
       FROM "LandRegistration"
@@ -309,6 +311,7 @@ export const searchLandExistence = async (req: Request, res: Response) => {
         purpose: l.purpose,
         titleType: l.titleType,
         stateId: l.stateId,
+        ownershipType: l.ownershipType,
       })),
     });
   } catch (error) {
