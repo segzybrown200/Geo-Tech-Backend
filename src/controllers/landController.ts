@@ -246,3 +246,75 @@ export const getLandCount = async (req: Request, res: Response) => {
   }
 };
 
+export const searchLandExistence = async (req: Request, res: Response) => {
+  const { lat, lng, radius = 50, stateId } = req.query;
+
+  if (!lat || !lng) {
+    return res.status(400).json({
+      message: "Latitude and longitude are required",
+    });
+  }
+
+  const latitude = Number(lat);
+  const longitude = Number(lng);
+  const searchRadius = Number(radius); // meters
+
+  if (isNaN(latitude) || isNaN(longitude)) {
+    return res.status(400).json({ message: "Invalid coordinates" });
+  }
+
+  try {
+    const pointWKT = `POINT(${longitude} ${latitude})`;
+
+    const lands = await prisma.$queryRawUnsafe<
+      {
+        id: string;
+        latitude: number;
+        longitude: number;
+        squareMeters: number;
+        purpose: string;
+        titleType: string;
+        stateId: string;
+      }[]
+    >(
+      `
+      SELECT
+        id,
+        latitude,
+        longitude,
+        "squareMeters",
+        purpose,
+        "titleType",
+        "stateId"
+      FROM "LandRegistration"
+      WHERE ST_DWithin(
+        boundary::geography,
+        ST_GeomFromText($1, 4326)::geography,
+        $2
+      )
+      ${stateId ? `AND "stateId" = '${stateId}'` : ""}
+      `,
+      pointWKT,
+      searchRadius
+    );
+
+    res.json({
+      exists: lands.length > 0,
+      count: lands.length,
+      lands: lands.map((l) => ({
+        id: l.id,
+        latitude: l.latitude,
+        longitude: l.longitude,
+        squareMeters: l.squareMeters,
+        purpose: l.purpose,
+        titleType: l.titleType,
+        stateId: l.stateId,
+      })),
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Failed to search land records",
+    });
+  }
+};

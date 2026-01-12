@@ -113,6 +113,9 @@ CREATE TABLE "LandDocument" (
     "landId" UUID NOT NULL,
     "documentUrl" TEXT NOT NULL,
     "fileName" TEXT NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "replacedById" UUID,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "LandDocument_pkey" PRIMARY KEY ("id")
 );
@@ -126,6 +129,18 @@ CREATE TABLE "State" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "State_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "LandAuditLog" (
+    "id" UUID NOT NULL,
+    "landId" UUID NOT NULL,
+    "action" TEXT NOT NULL,
+    "userId" UUID NOT NULL,
+    "metadata" JSONB NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "LandAuditLog_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
