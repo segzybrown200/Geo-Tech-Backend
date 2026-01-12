@@ -29,6 +29,9 @@ export type LandDocumentMinAggregateOutputType = {
   landId: string | null
   documentUrl: string | null
   fileName: string | null
+  isActive: boolean | null
+  replacedById: string | null
+  createdAt: Date | null
 }
 
 export type LandDocumentMaxAggregateOutputType = {
@@ -36,6 +39,9 @@ export type LandDocumentMaxAggregateOutputType = {
   landId: string | null
   documentUrl: string | null
   fileName: string | null
+  isActive: boolean | null
+  replacedById: string | null
+  createdAt: Date | null
 }
 
 export type LandDocumentCountAggregateOutputType = {
@@ -43,6 +49,9 @@ export type LandDocumentCountAggregateOutputType = {
   landId: number
   documentUrl: number
   fileName: number
+  isActive: number
+  replacedById: number
+  createdAt: number
   _all: number
 }
 
@@ -52,6 +61,9 @@ export type LandDocumentMinAggregateInputType = {
   landId?: true
   documentUrl?: true
   fileName?: true
+  isActive?: true
+  replacedById?: true
+  createdAt?: true
 }
 
 export type LandDocumentMaxAggregateInputType = {
@@ -59,6 +71,9 @@ export type LandDocumentMaxAggregateInputType = {
   landId?: true
   documentUrl?: true
   fileName?: true
+  isActive?: true
+  replacedById?: true
+  createdAt?: true
 }
 
 export type LandDocumentCountAggregateInputType = {
@@ -66,6 +81,9 @@ export type LandDocumentCountAggregateInputType = {
   landId?: true
   documentUrl?: true
   fileName?: true
+  isActive?: true
+  replacedById?: true
+  createdAt?: true
   _all?: true
 }
 
@@ -146,6 +164,9 @@ export type LandDocumentGroupByOutputType = {
   landId: string
   documentUrl: string
   fileName: string
+  isActive: boolean
+  replacedById: string | null
+  createdAt: Date
   _count: LandDocumentCountAggregateOutputType | null
   _min: LandDocumentMinAggregateOutputType | null
   _max: LandDocumentMaxAggregateOutputType | null
@@ -174,6 +195,9 @@ export type LandDocumentWhereInput = {
   landId?: Prisma.UuidFilter<"LandDocument"> | string
   documentUrl?: Prisma.StringFilter<"LandDocument"> | string
   fileName?: Prisma.StringFilter<"LandDocument"> | string
+  isActive?: Prisma.BoolFilter<"LandDocument"> | boolean
+  replacedById?: Prisma.UuidNullableFilter<"LandDocument"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"LandDocument"> | Date | string
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
 }
 
@@ -182,6 +206,9 @@ export type LandDocumentOrderByWithRelationInput = {
   landId?: Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
   fileName?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  replacedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   land?: Prisma.LandRegistrationOrderByWithRelationInput
 }
 
@@ -193,6 +220,9 @@ export type LandDocumentWhereUniqueInput = Prisma.AtLeast<{
   landId?: Prisma.UuidFilter<"LandDocument"> | string
   documentUrl?: Prisma.StringFilter<"LandDocument"> | string
   fileName?: Prisma.StringFilter<"LandDocument"> | string
+  isActive?: Prisma.BoolFilter<"LandDocument"> | boolean
+  replacedById?: Prisma.UuidNullableFilter<"LandDocument"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"LandDocument"> | Date | string
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
 }, "id">
 
@@ -201,6 +231,9 @@ export type LandDocumentOrderByWithAggregationInput = {
   landId?: Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
   fileName?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  replacedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   _count?: Prisma.LandDocumentCountOrderByAggregateInput
   _max?: Prisma.LandDocumentMaxOrderByAggregateInput
   _min?: Prisma.LandDocumentMinOrderByAggregateInput
@@ -214,12 +247,18 @@ export type LandDocumentScalarWhereWithAggregatesInput = {
   landId?: Prisma.UuidWithAggregatesFilter<"LandDocument"> | string
   documentUrl?: Prisma.StringWithAggregatesFilter<"LandDocument"> | string
   fileName?: Prisma.StringWithAggregatesFilter<"LandDocument"> | string
+  isActive?: Prisma.BoolWithAggregatesFilter<"LandDocument"> | boolean
+  replacedById?: Prisma.UuidNullableWithAggregatesFilter<"LandDocument"> | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"LandDocument"> | Date | string
 }
 
 export type LandDocumentCreateInput = {
   id?: string
   documentUrl: string
   fileName: string
+  isActive?: boolean
+  replacedById?: string | null
+  createdAt?: Date | string
   land: Prisma.LandRegistrationCreateNestedOneWithoutDocumentsInput
 }
 
@@ -228,12 +267,18 @@ export type LandDocumentUncheckedCreateInput = {
   landId: string
   documentUrl: string
   fileName: string
+  isActive?: boolean
+  replacedById?: string | null
+  createdAt?: Date | string
 }
 
 export type LandDocumentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replacedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutDocumentsNestedInput
 }
 
@@ -242,6 +287,9 @@ export type LandDocumentUncheckedUpdateInput = {
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replacedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type LandDocumentCreateManyInput = {
@@ -249,12 +297,18 @@ export type LandDocumentCreateManyInput = {
   landId: string
   documentUrl: string
   fileName: string
+  isActive?: boolean
+  replacedById?: string | null
+  createdAt?: Date | string
 }
 
 export type LandDocumentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replacedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type LandDocumentUncheckedUpdateManyInput = {
@@ -262,6 +316,9 @@ export type LandDocumentUncheckedUpdateManyInput = {
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replacedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type LandDocumentListRelationFilter = {
@@ -279,6 +336,9 @@ export type LandDocumentCountOrderByAggregateInput = {
   landId?: Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
   fileName?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  replacedById?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type LandDocumentMaxOrderByAggregateInput = {
@@ -286,6 +346,9 @@ export type LandDocumentMaxOrderByAggregateInput = {
   landId?: Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
   fileName?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  replacedById?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type LandDocumentMinOrderByAggregateInput = {
@@ -293,6 +356,9 @@ export type LandDocumentMinOrderByAggregateInput = {
   landId?: Prisma.SortOrder
   documentUrl?: Prisma.SortOrder
   fileName?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  replacedById?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type LandDocumentCreateNestedManyWithoutLandInput = {
@@ -341,12 +407,18 @@ export type LandDocumentCreateWithoutLandInput = {
   id?: string
   documentUrl: string
   fileName: string
+  isActive?: boolean
+  replacedById?: string | null
+  createdAt?: Date | string
 }
 
 export type LandDocumentUncheckedCreateWithoutLandInput = {
   id?: string
   documentUrl: string
   fileName: string
+  isActive?: boolean
+  replacedById?: string | null
+  createdAt?: Date | string
 }
 
 export type LandDocumentCreateOrConnectWithoutLandInput = {
@@ -383,30 +455,45 @@ export type LandDocumentScalarWhereInput = {
   landId?: Prisma.UuidFilter<"LandDocument"> | string
   documentUrl?: Prisma.StringFilter<"LandDocument"> | string
   fileName?: Prisma.StringFilter<"LandDocument"> | string
+  isActive?: Prisma.BoolFilter<"LandDocument"> | boolean
+  replacedById?: Prisma.UuidNullableFilter<"LandDocument"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"LandDocument"> | Date | string
 }
 
 export type LandDocumentCreateManyLandInput = {
   id?: string
   documentUrl: string
   fileName: string
+  isActive?: boolean
+  replacedById?: string | null
+  createdAt?: Date | string
 }
 
 export type LandDocumentUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replacedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type LandDocumentUncheckedUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replacedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type LandDocumentUncheckedUpdateManyWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replacedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -416,6 +503,9 @@ export type LandDocumentSelect<ExtArgs extends runtime.Types.Extensions.Internal
   landId?: boolean
   documentUrl?: boolean
   fileName?: boolean
+  isActive?: boolean
+  replacedById?: boolean
+  createdAt?: boolean
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["landDocument"]>
 
@@ -424,6 +514,9 @@ export type LandDocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   landId?: boolean
   documentUrl?: boolean
   fileName?: boolean
+  isActive?: boolean
+  replacedById?: boolean
+  createdAt?: boolean
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["landDocument"]>
 
@@ -432,6 +525,9 @@ export type LandDocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   landId?: boolean
   documentUrl?: boolean
   fileName?: boolean
+  isActive?: boolean
+  replacedById?: boolean
+  createdAt?: boolean
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["landDocument"]>
 
@@ -440,9 +536,12 @@ export type LandDocumentSelectScalar = {
   landId?: boolean
   documentUrl?: boolean
   fileName?: boolean
+  isActive?: boolean
+  replacedById?: boolean
+  createdAt?: boolean
 }
 
-export type LandDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "landId" | "documentUrl" | "fileName", ExtArgs["result"]["landDocument"]>
+export type LandDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "landId" | "documentUrl" | "fileName" | "isActive" | "replacedById" | "createdAt", ExtArgs["result"]["landDocument"]>
 export type LandDocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }
@@ -463,6 +562,9 @@ export type $LandDocumentPayload<ExtArgs extends runtime.Types.Extensions.Intern
     landId: string
     documentUrl: string
     fileName: string
+    isActive: boolean
+    replacedById: string | null
+    createdAt: Date
   }, ExtArgs["result"]["landDocument"]>
   composites: {}
 }
@@ -891,6 +993,9 @@ export interface LandDocumentFieldRefs {
   readonly landId: Prisma.FieldRef<"LandDocument", 'String'>
   readonly documentUrl: Prisma.FieldRef<"LandDocument", 'String'>
   readonly fileName: Prisma.FieldRef<"LandDocument", 'String'>
+  readonly isActive: Prisma.FieldRef<"LandDocument", 'Boolean'>
+  readonly replacedById: Prisma.FieldRef<"LandDocument", 'String'>
+  readonly createdAt: Prisma.FieldRef<"LandDocument", 'DateTime'>
 }
     
 

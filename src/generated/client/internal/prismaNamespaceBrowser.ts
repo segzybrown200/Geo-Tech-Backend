@@ -59,6 +59,7 @@ export const ModelName = {
   LandRegistration: 'LandRegistration',
   LandDocument: 'LandDocument',
   State: 'State',
+  LandAuditLog: 'LandAuditLog',
   OwnershipTransfer: 'OwnershipTransfer',
   TransferVerification: 'TransferVerification',
   OwnershipHistory: 'OwnershipHistory',
@@ -186,7 +187,10 @@ export const LandDocumentScalarFieldEnum = {
   id: 'id',
   landId: 'landId',
   documentUrl: 'documentUrl',
-  fileName: 'fileName'
+  fileName: 'fileName',
+  isActive: 'isActive',
+  replacedById: 'replacedById',
+  createdAt: 'createdAt'
 } as const
 
 export type LandDocumentScalarFieldEnum = (typeof LandDocumentScalarFieldEnum)[keyof typeof LandDocumentScalarFieldEnum]
@@ -200,6 +204,18 @@ export const StateScalarFieldEnum = {
 } as const
 
 export type StateScalarFieldEnum = (typeof StateScalarFieldEnum)[keyof typeof StateScalarFieldEnum]
+
+
+export const LandAuditLogScalarFieldEnum = {
+  id: 'id',
+  landId: 'landId',
+  action: 'action',
+  userId: 'userId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type LandAuditLogScalarFieldEnum = (typeof LandAuditLogScalarFieldEnum)[keyof typeof LandAuditLogScalarFieldEnum]
 
 
 export const OwnershipTransferScalarFieldEnum = {
@@ -328,6 +344,13 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: 'JsonNull'
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -342,4 +365,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull',
+  AnyNull: 'AnyNull'
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

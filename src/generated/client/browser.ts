@@ -58,6 +58,11 @@ export type LandDocument = Prisma.LandDocumentModel
  */
 export type State = Prisma.StateModel
 /**
+ * Model LandAuditLog
+ * 
+ */
+export type LandAuditLog = Prisma.LandAuditLogModel
+/**
  * Model OwnershipTransfer
  * 
  */

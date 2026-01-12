@@ -141,6 +141,9 @@ model LandDocument {
   landId      String           @db.Uuid
   documentUrl String
   fileName    String
+  isActive    Boolean  @default(true)
+  replacedById  String?   @db.Uuid
+  createdAt     DateTime @default(now())
   land        LandRegistration @relation(fields: [landId], references: [id])
 }
 
@@ -154,6 +157,16 @@ model State {
   governor   InternalUser?            @relation("Governor", fields: [governorId], references: [id])
   createdAt  DateTime                 @default(now())
 }
+
+model LandAuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  landId    String   @db.Uuid
+  action    String
+  userId    String   @db.Uuid
+  metadata  Json
+  createdAt DateTime @default(now())
+}
+
 
 model OwnershipTransfer {
   id             String   @id @default(uuid()) @db.Uuid

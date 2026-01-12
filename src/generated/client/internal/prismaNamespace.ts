@@ -392,6 +392,7 @@ export const ModelName = {
   LandRegistration: 'LandRegistration',
   LandDocument: 'LandDocument',
   State: 'State',
+  LandAuditLog: 'LandAuditLog',
   OwnershipTransfer: 'OwnershipTransfer',
   TransferVerification: 'TransferVerification',
   OwnershipHistory: 'OwnershipHistory',
@@ -416,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "application" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "ownershipTransfer" | "transferVerification" | "ownershipHistory" | "cofOApplication" | "payment" | "stageLog" | "inboxMessage" | "emailVerificationToken" | "passwordResetToken"
+    modelProps: "user" | "application" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "landAuditLog" | "ownershipTransfer" | "transferVerification" | "ownershipHistory" | "cofOApplication" | "payment" | "stageLog" | "inboxMessage" | "emailVerificationToken" | "passwordResetToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1009,6 +1010,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.StateCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.StateCountAggregateOutputType> | number
+        }
+      }
+    }
+    LandAuditLog: {
+      payload: Prisma.$LandAuditLogPayload<ExtArgs>
+      fields: Prisma.LandAuditLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LandAuditLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandAuditLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LandAuditLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandAuditLogPayload>
+        }
+        findFirst: {
+          args: Prisma.LandAuditLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandAuditLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LandAuditLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandAuditLogPayload>
+        }
+        findMany: {
+          args: Prisma.LandAuditLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandAuditLogPayload>[]
+        }
+        create: {
+          args: Prisma.LandAuditLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandAuditLogPayload>
+        }
+        createMany: {
+          args: Prisma.LandAuditLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LandAuditLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandAuditLogPayload>[]
+        }
+        delete: {
+          args: Prisma.LandAuditLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandAuditLogPayload>
+        }
+        update: {
+          args: Prisma.LandAuditLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandAuditLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.LandAuditLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LandAuditLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LandAuditLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandAuditLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.LandAuditLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandAuditLogPayload>
+        }
+        aggregate: {
+          args: Prisma.LandAuditLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLandAuditLog>
+        }
+        groupBy: {
+          args: Prisma.LandAuditLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LandAuditLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LandAuditLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LandAuditLogCountAggregateOutputType> | number
         }
       }
     }
@@ -1817,7 +1892,10 @@ export const LandDocumentScalarFieldEnum = {
   id: 'id',
   landId: 'landId',
   documentUrl: 'documentUrl',
-  fileName: 'fileName'
+  fileName: 'fileName',
+  isActive: 'isActive',
+  replacedById: 'replacedById',
+  createdAt: 'createdAt'
 } as const
 
 export type LandDocumentScalarFieldEnum = (typeof LandDocumentScalarFieldEnum)[keyof typeof LandDocumentScalarFieldEnum]
@@ -1831,6 +1909,18 @@ export const StateScalarFieldEnum = {
 } as const
 
 export type StateScalarFieldEnum = (typeof StateScalarFieldEnum)[keyof typeof StateScalarFieldEnum]
+
+
+export const LandAuditLogScalarFieldEnum = {
+  id: 'id',
+  landId: 'landId',
+  action: 'action',
+  userId: 'userId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type LandAuditLogScalarFieldEnum = (typeof LandAuditLogScalarFieldEnum)[keyof typeof LandAuditLogScalarFieldEnum]
 
 
 export const OwnershipTransferScalarFieldEnum = {
@@ -1959,6 +2049,13 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -1973,6 +2070,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -2083,6 +2189,20 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -2202,6 +2322,7 @@ export type GlobalOmitConfig = {
   landRegistration?: Prisma.LandRegistrationOmit
   landDocument?: Prisma.LandDocumentOmit
   state?: Prisma.StateOmit
+  landAuditLog?: Prisma.LandAuditLogOmit
   ownershipTransfer?: Prisma.OwnershipTransferOmit
   transferVerification?: Prisma.TransferVerificationOmit
   ownershipHistory?: Prisma.OwnershipHistoryOmit

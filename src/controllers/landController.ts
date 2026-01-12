@@ -165,26 +165,73 @@ export const deleteLand = async (req: AuthRequest, res: Response) => {
 };
 export const updateLand = async (req: AuthRequest, res: Response) => {
   const landId = req.params.id;
-  const body = landRegistrationSchema.partial().safeParse(req.body);
-  if (!body.success) {
+  const userId = req.user.sub;
+
+
+  const allowedSchema = landRegistrationSchema.pick({
+    ownerName: true,
+    ownershipType: true,
+    purpose: true,
+    titleType: true,
+  });
+  const body = allowedSchema.safeParse(req.body);
+    if (!body.success) {
     return res.status(400).json({ message: "Invalid land input", errors: body.error.flatten() });
   }
-  const userId = req.user.sub;
   try {
-    const land = await prisma.landRegistration.findUnique({
-      where: { id: landId },
-    });
+  const land = await prisma.landRegistration.findUnique({
+    where: { id: landId },
+    include: {
+      documents: { where: { isActive: true } },
+      CofOApplication: {
+        where: { status: "APPROVED" },
+        select: { id: true },
+      },
+    },
+  });
     if (!land) {
       return res.status(404).json({ message: "Land not found" });
     }
     if (land.ownerId !== userId) {
       return res.status(403).json({ message: "Forbidden: You do not own this land" });
     }
-    const updatedLand = await prisma.landRegistration.update({
-      where: { id: landId },
-      data: body.data,
-    });
-    res.status(200).json({ message: "Land updated successfully", land: updatedLand });
+     const files = req.files as Express.Multer.File[] | undefined;
+     await prisma.$transaction(async (tx) => {
+    // Update land metadata
+    if (Object.keys(body.data).length > 0) {
+      await tx.landRegistration.update({
+        where: { id: landId },
+        data: body.data,
+      });
+    }
+
+    if (files?.length) {
+      for (const file of files) {
+        const oldDocId = req.body.replaceDocumentId; // optional
+
+        const uploaded = await uploadToCloudinary(
+          file.buffer,
+          file.originalname
+        );
+
+        const newDoc = await tx.landDocument.create({
+          data: {
+            landId,
+            documentUrl: uploaded.secure_url,
+            fileName: file.originalname,
+          },
+        });
+        if (oldDocId) {
+          await tx.landDocument.updateMany({
+            where: { id: oldDocId, landId },
+            data: { isActive: false, replacedById: newDoc.id },
+          });
+        }
+      }
+    }
+  });
+
+   return res.status(200).json({ message: "Land updated successfully" });
   }
   catch (err) {
     res.status(500).json({ message: "Error updating land", error: err });
