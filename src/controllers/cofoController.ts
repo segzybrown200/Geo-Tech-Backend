@@ -94,6 +94,7 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
     /** 8️⃣ RESPONSE */
     res.status(201).json({
       message: "C of O application submitted successfully",
+      applicationNumber: application.applicationNumber,
     });
   } catch (err) {
     return res.status(500).json({ message: "Application failed", error: err });

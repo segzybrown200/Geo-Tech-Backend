@@ -2,10 +2,9 @@
 import axios from "axios";
 import { Response, Request } from "express";
 import { AuthRequest } from "../middlewares/authMiddleware";
-
 import prisma from "../lib/prisma";
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET!;
-
+const PAYSTACK_PUBLIC_KEY = process.env.PAYSTACK_PUBLIC_KEY!;
 export const initializePayment = async (req: AuthRequest, res: Response) => {
   const { amount, landID } = req.body;
   const userId = req.user.id;
@@ -41,7 +40,7 @@ export const initializePayment = async (req: AuthRequest, res: Response) => {
       },
     });
 
-    res.json({ authorization_url, reference });
+    res.json({ authorization_url, reference, publicKey: PAYSTACK_PUBLIC_KEY, email: user.email, amount });
   } catch (err) {
     console.error(err);
     res

@@ -7,7 +7,7 @@ import { initializePayment, verifyPayment } from '../controllers/paymentControll
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.post('/apply', upload.array('documents'), requireAuth, applyForCofO);
+router.post('/apply/:cofOApplicationId', upload.array('documents'), requireAuth, applyForCofO);
 router.post('/review/:id', reviewCofO); // :id = CofOApplication.id
 router.post("/init", verifyToken, initializePayment);
 router.get("/verify", verifyPayment);
