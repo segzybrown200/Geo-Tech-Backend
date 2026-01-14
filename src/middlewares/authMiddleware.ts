@@ -29,6 +29,20 @@ export const verifyToken = async(req: AuthRequest, res: Response, next: NextFunc
     return res.status(401).json({ message: 'Invalid token' });
   }
 };
+export const AdminverifyToken = async(req: AuthRequest, res: Response, next: NextFunction) => {
+   const token = req.cookies.token;
+    if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+  try {
+    // Verify Access Token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+};
 export const requireAuth = (req: AuthRequest, res: Response, next: Function) => {
   const auth = req.headers.authorization;
   if (!auth) return res.status(401).json({ message: "Unauthorized" });

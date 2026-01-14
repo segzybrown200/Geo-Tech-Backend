@@ -46,6 +46,11 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
     );
 
     const documentUrls = uploadResults.map((r) => r.secure_url);
+    if (documentUrls.length === 0) {
+      return res
+        .status(500)
+        .json({ message: "Document upload failed, try again" });
+    }
     const land = await prisma.landRegistration.findUnique({
       where: { id: application.landId },
       include: { state: true },
