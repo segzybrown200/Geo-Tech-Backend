@@ -13,7 +13,7 @@ import { sendEmail } from "../services/emailSevices";
 
 export const applyForCofO = async (req: AuthRequest, res: Response) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.sub;
     const { cofOApplicationId } = req.params;
     const files = req.files as Express.Multer.File[];
 
