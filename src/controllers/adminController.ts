@@ -8,7 +8,7 @@ import { AuthRequest } from "../middlewares/authMiddleware";
 
 export const getAllApplications = async (_req: Request, res: Response) => {
   try {
-    const applications = await prisma.application.findMany({
+    const applications = await prisma.cofOApplication.findMany({
       include: { user: true },
       orderBy: { createdAt: "desc" },
     });
@@ -29,7 +29,7 @@ export const updateApplicationStatus = async (req: Request, res: Response) => {
   }
 
   try {
-    const updated = await prisma.application.update({
+    const updated = await prisma.cofOApplication.update({
       where: { id },
       data: { status },
     });
@@ -194,7 +194,6 @@ export const getAllInternalUser = async (req:AuthRequest, res:Response) => {
 export const getAllUser = async (req:AuthRequest, res:Response) => {
   const logs = await prisma.user.findMany({
     include: {
-      applications: true,
       CofOApplication: true,
       LandRegistration: true,
       OwnershipTransfer:true

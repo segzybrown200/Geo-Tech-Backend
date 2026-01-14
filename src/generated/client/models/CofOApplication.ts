@@ -557,6 +557,10 @@ export type CofOApplicationCreatedocumentUrlsInput = {
   set: string[]
 }
 
+export type EnumApplicationStatusFieldUpdateOperationsInput = {
+  set?: $Enums.ApplicationStatus
+}
+
 export type CofOApplicationUpdatedocumentUrlsInput = {
   set?: string[]
   push?: string | string[]

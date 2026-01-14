@@ -9,7 +9,6 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User'
-export type * from './models/Application'
 export type * from './models/InternalUser'
 export type * from './models/Session'
 export type * from './models/InternalOtp'

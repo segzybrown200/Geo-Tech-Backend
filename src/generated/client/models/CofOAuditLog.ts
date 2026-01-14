@@ -191,10 +191,10 @@ export type CofOAuditLogWhereInput = {
   AND?: Prisma.CofOAuditLogWhereInput | Prisma.CofOAuditLogWhereInput[]
   OR?: Prisma.CofOAuditLogWhereInput[]
   NOT?: Prisma.CofOAuditLogWhereInput | Prisma.CofOAuditLogWhereInput[]
-  id?: Prisma.StringFilter<"CofOAuditLog"> | string
-  cofOId?: Prisma.StringFilter<"CofOAuditLog"> | string
+  id?: Prisma.UuidFilter<"CofOAuditLog"> | string
+  cofOId?: Prisma.UuidFilter<"CofOAuditLog"> | string
   action?: Prisma.StringFilter<"CofOAuditLog"> | string
-  performedById?: Prisma.StringFilter<"CofOAuditLog"> | string
+  performedById?: Prisma.UuidFilter<"CofOAuditLog"> | string
   performedByRole?: Prisma.StringFilter<"CofOAuditLog"> | string
   comment?: Prisma.StringNullableFilter<"CofOAuditLog"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOAuditLog"> | Date | string
@@ -217,9 +217,9 @@ export type CofOAuditLogWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.CofOAuditLogWhereInput | Prisma.CofOAuditLogWhereInput[]
   OR?: Prisma.CofOAuditLogWhereInput[]
   NOT?: Prisma.CofOAuditLogWhereInput | Prisma.CofOAuditLogWhereInput[]
-  cofOId?: Prisma.StringFilter<"CofOAuditLog"> | string
+  cofOId?: Prisma.UuidFilter<"CofOAuditLog"> | string
   action?: Prisma.StringFilter<"CofOAuditLog"> | string
-  performedById?: Prisma.StringFilter<"CofOAuditLog"> | string
+  performedById?: Prisma.UuidFilter<"CofOAuditLog"> | string
   performedByRole?: Prisma.StringFilter<"CofOAuditLog"> | string
   comment?: Prisma.StringNullableFilter<"CofOAuditLog"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOAuditLog"> | Date | string
@@ -243,10 +243,10 @@ export type CofOAuditLogScalarWhereWithAggregatesInput = {
   AND?: Prisma.CofOAuditLogScalarWhereWithAggregatesInput | Prisma.CofOAuditLogScalarWhereWithAggregatesInput[]
   OR?: Prisma.CofOAuditLogScalarWhereWithAggregatesInput[]
   NOT?: Prisma.CofOAuditLogScalarWhereWithAggregatesInput | Prisma.CofOAuditLogScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"CofOAuditLog"> | string
-  cofOId?: Prisma.StringWithAggregatesFilter<"CofOAuditLog"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"CofOAuditLog"> | string
+  cofOId?: Prisma.UuidWithAggregatesFilter<"CofOAuditLog"> | string
   action?: Prisma.StringWithAggregatesFilter<"CofOAuditLog"> | string
-  performedById?: Prisma.StringWithAggregatesFilter<"CofOAuditLog"> | string
+  performedById?: Prisma.UuidWithAggregatesFilter<"CofOAuditLog"> | string
   performedByRole?: Prisma.StringWithAggregatesFilter<"CofOAuditLog"> | string
   comment?: Prisma.StringNullableWithAggregatesFilter<"CofOAuditLog"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CofOAuditLog"> | Date | string
@@ -451,10 +451,10 @@ export type CofOAuditLogScalarWhereInput = {
   AND?: Prisma.CofOAuditLogScalarWhereInput | Prisma.CofOAuditLogScalarWhereInput[]
   OR?: Prisma.CofOAuditLogScalarWhereInput[]
   NOT?: Prisma.CofOAuditLogScalarWhereInput | Prisma.CofOAuditLogScalarWhereInput[]
-  id?: Prisma.StringFilter<"CofOAuditLog"> | string
-  cofOId?: Prisma.StringFilter<"CofOAuditLog"> | string
+  id?: Prisma.UuidFilter<"CofOAuditLog"> | string
+  cofOId?: Prisma.UuidFilter<"CofOAuditLog"> | string
   action?: Prisma.StringFilter<"CofOAuditLog"> | string
-  performedById?: Prisma.StringFilter<"CofOAuditLog"> | string
+  performedById?: Prisma.UuidFilter<"CofOAuditLog"> | string
   performedByRole?: Prisma.StringFilter<"CofOAuditLog"> | string
   comment?: Prisma.StringNullableFilter<"CofOAuditLog"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOAuditLog"> | Date | string

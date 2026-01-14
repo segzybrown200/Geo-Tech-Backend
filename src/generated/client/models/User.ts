@@ -206,7 +206,6 @@ export type UserWhereInput = {
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   isEmailVerified?: Prisma.BoolFilter<"User"> | boolean
-  applications?: Prisma.ApplicationListRelationFilter
   CofOApplication?: Prisma.CofOApplicationListRelationFilter
   LandRegistration?: Prisma.LandRegistrationListRelationFilter
   PasswordResetToken?: Prisma.PasswordResetTokenListRelationFilter
@@ -223,7 +222,6 @@ export type UserOrderByWithRelationInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   isEmailVerified?: Prisma.SortOrder
-  applications?: Prisma.ApplicationOrderByRelationAggregateInput
   CofOApplication?: Prisma.CofOApplicationOrderByRelationAggregateInput
   LandRegistration?: Prisma.LandRegistrationOrderByRelationAggregateInput
   PasswordResetToken?: Prisma.PasswordResetTokenOrderByRelationAggregateInput
@@ -243,7 +241,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   isEmailVerified?: Prisma.BoolFilter<"User"> | boolean
-  applications?: Prisma.ApplicationListRelationFilter
   CofOApplication?: Prisma.CofOApplicationListRelationFilter
   LandRegistration?: Prisma.LandRegistrationListRelationFilter
   PasswordResetToken?: Prisma.PasswordResetTokenListRelationFilter
@@ -288,7 +285,6 @@ export type UserCreateInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   isEmailVerified?: boolean
-  applications?: Prisma.ApplicationCreateNestedManyWithoutUserInput
   CofOApplication?: Prisma.CofOApplicationCreateNestedManyWithoutUserInput
   LandRegistration?: Prisma.LandRegistrationCreateNestedManyWithoutOwnerInput
   PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -305,7 +301,6 @@ export type UserUncheckedCreateInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   isEmailVerified?: boolean
-  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutUserInput
   CofOApplication?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutUserInput
   LandRegistration?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutOwnerInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -322,7 +317,6 @@ export type UserUpdateInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applications?: Prisma.ApplicationUpdateManyWithoutUserNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutUserNestedInput
   LandRegistration?: Prisma.LandRegistrationUpdateManyWithoutOwnerNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -339,7 +333,6 @@ export type UserUncheckedUpdateInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutUserNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutUserNestedInput
   LandRegistration?: Prisma.LandRegistrationUncheckedUpdateManyWithoutOwnerNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -438,20 +431,6 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
-export type UserCreateNestedOneWithoutApplicationsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutApplicationsInput, Prisma.UserUncheckedCreateWithoutApplicationsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApplicationsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutApplicationsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutApplicationsInput, Prisma.UserUncheckedCreateWithoutApplicationsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApplicationsInput
-  upsert?: Prisma.UserUpsertWithoutApplicationsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApplicationsInput, Prisma.UserUpdateWithoutApplicationsInput>, Prisma.UserUncheckedUpdateWithoutApplicationsInput>
-}
-
 export type UserCreateNestedOneWithoutLandRegistrationInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutLandRegistrationInput, Prisma.UserUncheckedCreateWithoutLandRegistrationInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutLandRegistrationInput
@@ -522,86 +501,6 @@ export type UserUpdateOneRequiredWithoutPasswordResetTokenNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPasswordResetTokenInput, Prisma.UserUpdateWithoutPasswordResetTokenInput>, Prisma.UserUncheckedUpdateWithoutPasswordResetTokenInput>
 }
 
-export type UserCreateWithoutApplicationsInput = {
-  id?: string
-  fullName?: string | null
-  email: string
-  password: string
-  phone?: string | null
-  role?: $Enums.Role
-  createdAt?: Date | string
-  isEmailVerified?: boolean
-  CofOApplication?: Prisma.CofOApplicationCreateNestedManyWithoutUserInput
-  LandRegistration?: Prisma.LandRegistrationCreateNestedManyWithoutOwnerInput
-  PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
-  OwnershipTransfer?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutApplicationsInput = {
-  id?: string
-  fullName?: string | null
-  email: string
-  password: string
-  phone?: string | null
-  role?: $Enums.Role
-  createdAt?: Date | string
-  isEmailVerified?: boolean
-  CofOApplication?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutUserInput
-  LandRegistration?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutOwnerInput
-  PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentOwnerInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutApplicationsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutApplicationsInput, Prisma.UserUncheckedCreateWithoutApplicationsInput>
-}
-
-export type UserUpsertWithoutApplicationsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutApplicationsInput, Prisma.UserUncheckedUpdateWithoutApplicationsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutApplicationsInput, Prisma.UserUncheckedCreateWithoutApplicationsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutApplicationsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutApplicationsInput, Prisma.UserUncheckedUpdateWithoutApplicationsInput>
-}
-
-export type UserUpdateWithoutApplicationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutUserNestedInput
-  LandRegistration?: Prisma.LandRegistrationUpdateManyWithoutOwnerNestedInput
-  PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutCurrentOwnerNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutApplicationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutUserNestedInput
-  LandRegistration?: Prisma.LandRegistrationUncheckedUpdateManyWithoutOwnerNestedInput
-  PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
-}
-
 export type UserCreateWithoutLandRegistrationInput = {
   id?: string
   fullName?: string | null
@@ -611,7 +510,6 @@ export type UserCreateWithoutLandRegistrationInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   isEmailVerified?: boolean
-  applications?: Prisma.ApplicationCreateNestedManyWithoutUserInput
   CofOApplication?: Prisma.CofOApplicationCreateNestedManyWithoutUserInput
   PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   OwnershipTransfer?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput
@@ -627,7 +525,6 @@ export type UserUncheckedCreateWithoutLandRegistrationInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   isEmailVerified?: boolean
-  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutUserInput
   CofOApplication?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutUserInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentOwnerInput
@@ -659,7 +556,6 @@ export type UserUpdateWithoutLandRegistrationInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applications?: Prisma.ApplicationUpdateManyWithoutUserNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutUserNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutCurrentOwnerNestedInput
@@ -675,7 +571,6 @@ export type UserUncheckedUpdateWithoutLandRegistrationInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutUserNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutUserNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput
@@ -691,7 +586,6 @@ export type UserCreateWithoutOwnershipTransferInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   isEmailVerified?: boolean
-  applications?: Prisma.ApplicationCreateNestedManyWithoutUserInput
   CofOApplication?: Prisma.CofOApplicationCreateNestedManyWithoutUserInput
   LandRegistration?: Prisma.LandRegistrationCreateNestedManyWithoutOwnerInput
   PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -707,7 +601,6 @@ export type UserUncheckedCreateWithoutOwnershipTransferInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   isEmailVerified?: boolean
-  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutUserInput
   CofOApplication?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutUserInput
   LandRegistration?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutOwnerInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -739,7 +632,6 @@ export type UserUpdateWithoutOwnershipTransferInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applications?: Prisma.ApplicationUpdateManyWithoutUserNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutUserNestedInput
   LandRegistration?: Prisma.LandRegistrationUpdateManyWithoutOwnerNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -755,7 +647,6 @@ export type UserUncheckedUpdateWithoutOwnershipTransferInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutUserNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutUserNestedInput
   LandRegistration?: Prisma.LandRegistrationUncheckedUpdateManyWithoutOwnerNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -771,7 +662,6 @@ export type UserCreateWithoutCofOApplicationInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   isEmailVerified?: boolean
-  applications?: Prisma.ApplicationCreateNestedManyWithoutUserInput
   LandRegistration?: Prisma.LandRegistrationCreateNestedManyWithoutOwnerInput
   PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   OwnershipTransfer?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput
@@ -787,7 +677,6 @@ export type UserUncheckedCreateWithoutCofOApplicationInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   isEmailVerified?: boolean
-  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutUserInput
   LandRegistration?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutOwnerInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentOwnerInput
@@ -819,7 +708,6 @@ export type UserUpdateWithoutCofOApplicationInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applications?: Prisma.ApplicationUpdateManyWithoutUserNestedInput
   LandRegistration?: Prisma.LandRegistrationUpdateManyWithoutOwnerNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutCurrentOwnerNestedInput
@@ -835,7 +723,6 @@ export type UserUncheckedUpdateWithoutCofOApplicationInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutUserNestedInput
   LandRegistration?: Prisma.LandRegistrationUncheckedUpdateManyWithoutOwnerNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput
@@ -851,7 +738,6 @@ export type UserCreateWithoutPaymentsInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   isEmailVerified?: boolean
-  applications?: Prisma.ApplicationCreateNestedManyWithoutUserInput
   CofOApplication?: Prisma.CofOApplicationCreateNestedManyWithoutUserInput
   LandRegistration?: Prisma.LandRegistrationCreateNestedManyWithoutOwnerInput
   PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -867,7 +753,6 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   isEmailVerified?: boolean
-  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutUserInput
   CofOApplication?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutUserInput
   LandRegistration?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutOwnerInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -899,7 +784,6 @@ export type UserUpdateWithoutPaymentsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applications?: Prisma.ApplicationUpdateManyWithoutUserNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutUserNestedInput
   LandRegistration?: Prisma.LandRegistrationUpdateManyWithoutOwnerNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -915,7 +799,6 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutUserNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutUserNestedInput
   LandRegistration?: Prisma.LandRegistrationUncheckedUpdateManyWithoutOwnerNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -931,7 +814,6 @@ export type UserCreateWithoutPasswordResetTokenInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   isEmailVerified?: boolean
-  applications?: Prisma.ApplicationCreateNestedManyWithoutUserInput
   CofOApplication?: Prisma.CofOApplicationCreateNestedManyWithoutUserInput
   LandRegistration?: Prisma.LandRegistrationCreateNestedManyWithoutOwnerInput
   OwnershipTransfer?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput
@@ -947,7 +829,6 @@ export type UserUncheckedCreateWithoutPasswordResetTokenInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   isEmailVerified?: boolean
-  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutUserInput
   CofOApplication?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutUserInput
   LandRegistration?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutOwnerInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentOwnerInput
@@ -979,7 +860,6 @@ export type UserUpdateWithoutPasswordResetTokenInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applications?: Prisma.ApplicationUpdateManyWithoutUserNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutUserNestedInput
   LandRegistration?: Prisma.LandRegistrationUpdateManyWithoutOwnerNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutCurrentOwnerNestedInput
@@ -995,7 +875,6 @@ export type UserUncheckedUpdateWithoutPasswordResetTokenInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutUserNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutUserNestedInput
   LandRegistration?: Prisma.LandRegistrationUncheckedUpdateManyWithoutOwnerNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput
@@ -1008,7 +887,6 @@ export type UserUncheckedUpdateWithoutPasswordResetTokenInput = {
  */
 
 export type UserCountOutputType = {
-  applications: number
   CofOApplication: number
   LandRegistration: number
   PasswordResetToken: number
@@ -1017,7 +895,6 @@ export type UserCountOutputType = {
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  applications?: boolean | UserCountOutputTypeCountApplicationsArgs
   CofOApplication?: boolean | UserCountOutputTypeCountCofOApplicationArgs
   LandRegistration?: boolean | UserCountOutputTypeCountLandRegistrationArgs
   PasswordResetToken?: boolean | UserCountOutputTypeCountPasswordResetTokenArgs
@@ -1033,13 +910,6 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ApplicationWhereInput
 }
 
 /**
@@ -1087,7 +957,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   role?: boolean
   createdAt?: boolean
   isEmailVerified?: boolean
-  applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
   CofOApplication?: boolean | Prisma.User$CofOApplicationArgs<ExtArgs>
   LandRegistration?: boolean | Prisma.User$LandRegistrationArgs<ExtArgs>
   PasswordResetToken?: boolean | Prisma.User$PasswordResetTokenArgs<ExtArgs>
@@ -1131,7 +1000,6 @@ export type UserSelectScalar = {
 
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "phone" | "role" | "createdAt" | "isEmailVerified", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
   CofOApplication?: boolean | Prisma.User$CofOApplicationArgs<ExtArgs>
   LandRegistration?: boolean | Prisma.User$LandRegistrationArgs<ExtArgs>
   PasswordResetToken?: boolean | Prisma.User$PasswordResetTokenArgs<ExtArgs>
@@ -1145,7 +1013,6 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    applications: Prisma.$ApplicationPayload<ExtArgs>[]
     CofOApplication: Prisma.$CofOApplicationPayload<ExtArgs>[]
     LandRegistration: Prisma.$LandRegistrationPayload<ExtArgs>[]
     PasswordResetToken: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
@@ -1555,7 +1422,6 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  applications<T extends Prisma.User$applicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   CofOApplication<T extends Prisma.User$CofOApplicationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$CofOApplicationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   LandRegistration<T extends Prisma.User$LandRegistrationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$LandRegistrationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   PasswordResetToken<T extends Prisma.User$PasswordResetTokenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$PasswordResetTokenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1983,30 +1849,6 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Users to delete.
    */
   limit?: number
-}
-
-/**
- * User.applications
- */
-export type User$applicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Application
-   */
-  select?: Prisma.ApplicationSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Application
-   */
-  omit?: Prisma.ApplicationOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ApplicationInclude<ExtArgs> | null
-  where?: Prisma.ApplicationWhereInput
-  orderBy?: Prisma.ApplicationOrderByWithRelationInput | Prisma.ApplicationOrderByWithRelationInput[]
-  cursor?: Prisma.ApplicationWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ApplicationScalarFieldEnum | Prisma.ApplicationScalarFieldEnum[]
 }
 
 /**
