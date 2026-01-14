@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./router/authRoutes";
-import applicationRoutes from "./router/applicationRoutes";
 import adminRoutes from "./router/adminRoutes";
 import userRoutes from "./router/userRoute";
 import { verifyToken } from "./middlewares/authMiddleware";
@@ -25,7 +24,6 @@ app.use(
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/applications", verifyToken, applicationRoutes);
 app.use(
   "/api/admin",adminRoutes);
   app.use("/api/user", userRoutes);
