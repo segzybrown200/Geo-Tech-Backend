@@ -38,6 +38,7 @@ export type PaymentMinAggregateOutputType = {
   id: string | null
   userId: string | null
   cofOId: string | null
+  landId: string | null
   amount: number | null
   reference: string | null
   status: $Enums.PaymentStatus | null
@@ -49,6 +50,7 @@ export type PaymentMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   cofOId: string | null
+  landId: string | null
   amount: number | null
   reference: string | null
   status: $Enums.PaymentStatus | null
@@ -60,6 +62,7 @@ export type PaymentCountAggregateOutputType = {
   id: number
   userId: number
   cofOId: number
+  landId: number
   amount: number
   reference: number
   status: number
@@ -81,6 +84,7 @@ export type PaymentMinAggregateInputType = {
   id?: true
   userId?: true
   cofOId?: true
+  landId?: true
   amount?: true
   reference?: true
   status?: true
@@ -92,6 +96,7 @@ export type PaymentMaxAggregateInputType = {
   id?: true
   userId?: true
   cofOId?: true
+  landId?: true
   amount?: true
   reference?: true
   status?: true
@@ -103,6 +108,7 @@ export type PaymentCountAggregateInputType = {
   id?: true
   userId?: true
   cofOId?: true
+  landId?: true
   amount?: true
   reference?: true
   status?: true
@@ -200,7 +206,8 @@ export type PaymentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type PaymentGroupByOutputType = {
   id: string
   userId: string
-  cofOId: string
+  cofOId: string | null
+  landId: string
   amount: number
   reference: string
   status: $Enums.PaymentStatus
@@ -234,20 +241,23 @@ export type PaymentWhereInput = {
   NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
   id?: Prisma.UuidFilter<"Payment"> | string
   userId?: Prisma.UuidFilter<"Payment"> | string
-  cofOId?: Prisma.UuidFilter<"Payment"> | string
+  cofOId?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  landId?: Prisma.UuidFilter<"Payment"> | string
   amount?: Prisma.FloatFilter<"Payment"> | number
   reference?: Prisma.StringFilter<"Payment"> | string
   status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
   provider?: Prisma.StringFilter<"Payment"> | string
   createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  cofO?: Prisma.XOR<Prisma.CofOApplicationScalarRelationFilter, Prisma.CofOApplicationWhereInput>
+  cofO?: Prisma.XOR<Prisma.CofOApplicationNullableScalarRelationFilter, Prisma.CofOApplicationWhereInput> | null
+  land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
 }
 
 export type PaymentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  cofOId?: Prisma.SortOrder
+  cofOId?: Prisma.SortOrderInput | Prisma.SortOrder
+  landId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   reference?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -255,6 +265,7 @@ export type PaymentOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   cofO?: Prisma.CofOApplicationOrderByWithRelationInput
+  land?: Prisma.LandRegistrationOrderByWithRelationInput
 }
 
 export type PaymentWhereUniqueInput = Prisma.AtLeast<{
@@ -264,19 +275,22 @@ export type PaymentWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PaymentWhereInput[]
   NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
   userId?: Prisma.UuidFilter<"Payment"> | string
-  cofOId?: Prisma.UuidFilter<"Payment"> | string
+  cofOId?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  landId?: Prisma.UuidFilter<"Payment"> | string
   amount?: Prisma.FloatFilter<"Payment"> | number
   status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
   provider?: Prisma.StringFilter<"Payment"> | string
   createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  cofO?: Prisma.XOR<Prisma.CofOApplicationScalarRelationFilter, Prisma.CofOApplicationWhereInput>
+  cofO?: Prisma.XOR<Prisma.CofOApplicationNullableScalarRelationFilter, Prisma.CofOApplicationWhereInput> | null
+  land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
 }, "id" | "reference">
 
 export type PaymentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  cofOId?: Prisma.SortOrder
+  cofOId?: Prisma.SortOrderInput | Prisma.SortOrder
+  landId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   reference?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -295,7 +309,8 @@ export type PaymentScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PaymentScalarWhereWithAggregatesInput | Prisma.PaymentScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Payment"> | string
   userId?: Prisma.UuidWithAggregatesFilter<"Payment"> | string
-  cofOId?: Prisma.UuidWithAggregatesFilter<"Payment"> | string
+  cofOId?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
+  landId?: Prisma.UuidWithAggregatesFilter<"Payment"> | string
   amount?: Prisma.FloatWithAggregatesFilter<"Payment"> | number
   reference?: Prisma.StringWithAggregatesFilter<"Payment"> | string
   status?: Prisma.EnumPaymentStatusWithAggregatesFilter<"Payment"> | $Enums.PaymentStatus
@@ -311,13 +326,15 @@ export type PaymentCreateInput = {
   provider: string
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutPaymentsInput
-  cofO: Prisma.CofOApplicationCreateNestedOneWithoutPaymentsInput
+  cofO?: Prisma.CofOApplicationCreateNestedOneWithoutPaymentsInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutPaymentsInput
 }
 
 export type PaymentUncheckedCreateInput = {
   id?: string
   userId: string
-  cofOId: string
+  cofOId?: string | null
+  landId: string
   amount: number
   reference: string
   status: $Enums.PaymentStatus
@@ -333,13 +350,15 @@ export type PaymentUpdateInput = {
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutPaymentsNestedInput
-  cofO?: Prisma.CofOApplicationUpdateOneRequiredWithoutPaymentsNestedInput
+  cofO?: Prisma.CofOApplicationUpdateOneWithoutPaymentsNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutPaymentsNestedInput
 }
 
 export type PaymentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  cofOId?: Prisma.StringFieldUpdateOperationsInput | string
+  cofOId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -350,7 +369,8 @@ export type PaymentUncheckedUpdateInput = {
 export type PaymentCreateManyInput = {
   id?: string
   userId: string
-  cofOId: string
+  cofOId?: string | null
+  landId: string
   amount: number
   reference: string
   status: $Enums.PaymentStatus
@@ -370,7 +390,8 @@ export type PaymentUpdateManyMutationInput = {
 export type PaymentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  cofOId?: Prisma.StringFieldUpdateOperationsInput | string
+  cofOId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -392,6 +413,7 @@ export type PaymentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   cofOId?: Prisma.SortOrder
+  landId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   reference?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -407,6 +429,7 @@ export type PaymentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   cofOId?: Prisma.SortOrder
+  landId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   reference?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -418,6 +441,7 @@ export type PaymentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   cofOId?: Prisma.SortOrder
+  landId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   reference?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -468,6 +492,48 @@ export type PaymentUncheckedUpdateManyWithoutUserNestedInput = {
   connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
   update?: Prisma.PaymentUpdateWithWhereUniqueWithoutUserInput | Prisma.PaymentUpdateWithWhereUniqueWithoutUserInput[]
   updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutUserInput | Prisma.PaymentUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
+}
+
+export type PaymentCreateNestedManyWithoutLandInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutLandInput, Prisma.PaymentUncheckedCreateWithoutLandInput> | Prisma.PaymentCreateWithoutLandInput[] | Prisma.PaymentUncheckedCreateWithoutLandInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutLandInput | Prisma.PaymentCreateOrConnectWithoutLandInput[]
+  createMany?: Prisma.PaymentCreateManyLandInputEnvelope
+  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+}
+
+export type PaymentUncheckedCreateNestedManyWithoutLandInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutLandInput, Prisma.PaymentUncheckedCreateWithoutLandInput> | Prisma.PaymentCreateWithoutLandInput[] | Prisma.PaymentUncheckedCreateWithoutLandInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutLandInput | Prisma.PaymentCreateOrConnectWithoutLandInput[]
+  createMany?: Prisma.PaymentCreateManyLandInputEnvelope
+  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+}
+
+export type PaymentUpdateManyWithoutLandNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutLandInput, Prisma.PaymentUncheckedCreateWithoutLandInput> | Prisma.PaymentCreateWithoutLandInput[] | Prisma.PaymentUncheckedCreateWithoutLandInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutLandInput | Prisma.PaymentCreateOrConnectWithoutLandInput[]
+  upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutLandInput | Prisma.PaymentUpsertWithWhereUniqueWithoutLandInput[]
+  createMany?: Prisma.PaymentCreateManyLandInputEnvelope
+  set?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  disconnect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  delete?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  update?: Prisma.PaymentUpdateWithWhereUniqueWithoutLandInput | Prisma.PaymentUpdateWithWhereUniqueWithoutLandInput[]
+  updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutLandInput | Prisma.PaymentUpdateManyWithWhereWithoutLandInput[]
+  deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
+}
+
+export type PaymentUncheckedUpdateManyWithoutLandNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutLandInput, Prisma.PaymentUncheckedCreateWithoutLandInput> | Prisma.PaymentCreateWithoutLandInput[] | Prisma.PaymentUncheckedCreateWithoutLandInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutLandInput | Prisma.PaymentCreateOrConnectWithoutLandInput[]
+  upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutLandInput | Prisma.PaymentUpsertWithWhereUniqueWithoutLandInput[]
+  createMany?: Prisma.PaymentCreateManyLandInputEnvelope
+  set?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  disconnect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  delete?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
+  update?: Prisma.PaymentUpdateWithWhereUniqueWithoutLandInput | Prisma.PaymentUpdateWithWhereUniqueWithoutLandInput[]
+  updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutLandInput | Prisma.PaymentUpdateManyWithWhereWithoutLandInput[]
   deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
 }
 
@@ -524,12 +590,14 @@ export type PaymentCreateWithoutUserInput = {
   status: $Enums.PaymentStatus
   provider: string
   createdAt?: Date | string
-  cofO: Prisma.CofOApplicationCreateNestedOneWithoutPaymentsInput
+  cofO?: Prisma.CofOApplicationCreateNestedOneWithoutPaymentsInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutPaymentsInput
 }
 
 export type PaymentUncheckedCreateWithoutUserInput = {
   id?: string
-  cofOId: string
+  cofOId?: string | null
+  landId: string
   amount: number
   reference: string
   status: $Enums.PaymentStatus
@@ -569,12 +637,61 @@ export type PaymentScalarWhereInput = {
   NOT?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
   id?: Prisma.UuidFilter<"Payment"> | string
   userId?: Prisma.UuidFilter<"Payment"> | string
-  cofOId?: Prisma.UuidFilter<"Payment"> | string
+  cofOId?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  landId?: Prisma.UuidFilter<"Payment"> | string
   amount?: Prisma.FloatFilter<"Payment"> | number
   reference?: Prisma.StringFilter<"Payment"> | string
   status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
   provider?: Prisma.StringFilter<"Payment"> | string
   createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
+}
+
+export type PaymentCreateWithoutLandInput = {
+  id?: string
+  amount: number
+  reference: string
+  status: $Enums.PaymentStatus
+  provider: string
+  createdAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutPaymentsInput
+  cofO?: Prisma.CofOApplicationCreateNestedOneWithoutPaymentsInput
+}
+
+export type PaymentUncheckedCreateWithoutLandInput = {
+  id?: string
+  userId: string
+  cofOId?: string | null
+  amount: number
+  reference: string
+  status: $Enums.PaymentStatus
+  provider: string
+  createdAt?: Date | string
+}
+
+export type PaymentCreateOrConnectWithoutLandInput = {
+  where: Prisma.PaymentWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaymentCreateWithoutLandInput, Prisma.PaymentUncheckedCreateWithoutLandInput>
+}
+
+export type PaymentCreateManyLandInputEnvelope = {
+  data: Prisma.PaymentCreateManyLandInput | Prisma.PaymentCreateManyLandInput[]
+  skipDuplicates?: boolean
+}
+
+export type PaymentUpsertWithWhereUniqueWithoutLandInput = {
+  where: Prisma.PaymentWhereUniqueInput
+  update: Prisma.XOR<Prisma.PaymentUpdateWithoutLandInput, Prisma.PaymentUncheckedUpdateWithoutLandInput>
+  create: Prisma.XOR<Prisma.PaymentCreateWithoutLandInput, Prisma.PaymentUncheckedCreateWithoutLandInput>
+}
+
+export type PaymentUpdateWithWhereUniqueWithoutLandInput = {
+  where: Prisma.PaymentWhereUniqueInput
+  data: Prisma.XOR<Prisma.PaymentUpdateWithoutLandInput, Prisma.PaymentUncheckedUpdateWithoutLandInput>
+}
+
+export type PaymentUpdateManyWithWhereWithoutLandInput = {
+  where: Prisma.PaymentScalarWhereInput
+  data: Prisma.XOR<Prisma.PaymentUpdateManyMutationInput, Prisma.PaymentUncheckedUpdateManyWithoutLandInput>
 }
 
 export type PaymentCreateWithoutCofOInput = {
@@ -585,11 +702,13 @@ export type PaymentCreateWithoutCofOInput = {
   provider: string
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutPaymentsInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutPaymentsInput
 }
 
 export type PaymentUncheckedCreateWithoutCofOInput = {
   id?: string
   userId: string
+  landId: string
   amount: number
   reference: string
   status: $Enums.PaymentStatus
@@ -625,7 +744,8 @@ export type PaymentUpdateManyWithWhereWithoutCofOInput = {
 
 export type PaymentCreateManyUserInput = {
   id?: string
-  cofOId: string
+  cofOId?: string | null
+  landId: string
   amount: number
   reference: string
   status: $Enums.PaymentStatus
@@ -640,12 +760,14 @@ export type PaymentUpdateWithoutUserInput = {
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  cofO?: Prisma.CofOApplicationUpdateOneRequiredWithoutPaymentsNestedInput
+  cofO?: Prisma.CofOApplicationUpdateOneWithoutPaymentsNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutPaymentsNestedInput
 }
 
 export type PaymentUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  cofOId?: Prisma.StringFieldUpdateOperationsInput | string
+  cofOId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -655,7 +777,52 @@ export type PaymentUncheckedUpdateWithoutUserInput = {
 
 export type PaymentUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  cofOId?: Prisma.StringFieldUpdateOperationsInput | string
+  cofOId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  reference?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PaymentCreateManyLandInput = {
+  id?: string
+  userId: string
+  cofOId?: string | null
+  amount: number
+  reference: string
+  status: $Enums.PaymentStatus
+  provider: string
+  createdAt?: Date | string
+}
+
+export type PaymentUpdateWithoutLandInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  reference?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutPaymentsNestedInput
+  cofO?: Prisma.CofOApplicationUpdateOneWithoutPaymentsNestedInput
+}
+
+export type PaymentUncheckedUpdateWithoutLandInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  cofOId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  reference?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PaymentUncheckedUpdateManyWithoutLandInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  cofOId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -666,6 +833,7 @@ export type PaymentUncheckedUpdateManyWithoutUserInput = {
 export type PaymentCreateManyCofOInput = {
   id?: string
   userId: string
+  landId: string
   amount: number
   reference: string
   status: $Enums.PaymentStatus
@@ -681,11 +849,13 @@ export type PaymentUpdateWithoutCofOInput = {
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutPaymentsNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutPaymentsNestedInput
 }
 
 export type PaymentUncheckedUpdateWithoutCofOInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -696,6 +866,7 @@ export type PaymentUncheckedUpdateWithoutCofOInput = {
 export type PaymentUncheckedUpdateManyWithoutCofOInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   reference?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -709,45 +880,52 @@ export type PaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   userId?: boolean
   cofOId?: boolean
+  landId?: boolean
   amount?: boolean
   reference?: boolean
   status?: boolean
   provider?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  cofO?: boolean | Prisma.CofOApplicationDefaultArgs<ExtArgs>
+  cofO?: boolean | Prisma.Payment$cofOArgs<ExtArgs>
+  land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type PaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   cofOId?: boolean
+  landId?: boolean
   amount?: boolean
   reference?: boolean
   status?: boolean
   provider?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  cofO?: boolean | Prisma.CofOApplicationDefaultArgs<ExtArgs>
+  cofO?: boolean | Prisma.Payment$cofOArgs<ExtArgs>
+  land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type PaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   cofOId?: boolean
+  landId?: boolean
   amount?: boolean
   reference?: boolean
   status?: boolean
   provider?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  cofO?: boolean | Prisma.CofOApplicationDefaultArgs<ExtArgs>
+  cofO?: boolean | Prisma.Payment$cofOArgs<ExtArgs>
+  land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type PaymentSelectScalar = {
   id?: boolean
   userId?: boolean
   cofOId?: boolean
+  landId?: boolean
   amount?: boolean
   reference?: boolean
   status?: boolean
@@ -755,30 +933,35 @@ export type PaymentSelectScalar = {
   createdAt?: boolean
 }
 
-export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "cofOId" | "amount" | "reference" | "status" | "provider" | "createdAt", ExtArgs["result"]["payment"]>
+export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "cofOId" | "landId" | "amount" | "reference" | "status" | "provider" | "createdAt", ExtArgs["result"]["payment"]>
 export type PaymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  cofO?: boolean | Prisma.CofOApplicationDefaultArgs<ExtArgs>
+  cofO?: boolean | Prisma.Payment$cofOArgs<ExtArgs>
+  land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }
 export type PaymentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  cofO?: boolean | Prisma.CofOApplicationDefaultArgs<ExtArgs>
+  cofO?: boolean | Prisma.Payment$cofOArgs<ExtArgs>
+  land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }
 export type PaymentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  cofO?: boolean | Prisma.CofOApplicationDefaultArgs<ExtArgs>
+  cofO?: boolean | Prisma.Payment$cofOArgs<ExtArgs>
+  land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }
 
 export type $PaymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Payment"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
-    cofO: Prisma.$CofOApplicationPayload<ExtArgs>
+    cofO: Prisma.$CofOApplicationPayload<ExtArgs> | null
+    land: Prisma.$LandRegistrationPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    cofOId: string
+    cofOId: string | null
+    landId: string
     amount: number
     reference: string
     status: $Enums.PaymentStatus
@@ -1179,7 +1362,8 @@ readonly fields: PaymentFieldRefs;
 export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  cofO<T extends Prisma.CofOApplicationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplicationDefaultArgs<ExtArgs>>): Prisma.Prisma__CofOApplicationClient<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  cofO<T extends Prisma.Payment$cofOArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$cofOArgs<ExtArgs>>): Prisma.Prisma__CofOApplicationClient<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  land<T extends Prisma.LandRegistrationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistrationDefaultArgs<ExtArgs>>): Prisma.Prisma__LandRegistrationClient<runtime.Types.Result.GetResult<Prisma.$LandRegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1212,6 +1396,7 @@ export interface PaymentFieldRefs {
   readonly id: Prisma.FieldRef<"Payment", 'String'>
   readonly userId: Prisma.FieldRef<"Payment", 'String'>
   readonly cofOId: Prisma.FieldRef<"Payment", 'String'>
+  readonly landId: Prisma.FieldRef<"Payment", 'String'>
   readonly amount: Prisma.FieldRef<"Payment", 'Float'>
   readonly reference: Prisma.FieldRef<"Payment", 'String'>
   readonly status: Prisma.FieldRef<"Payment", 'PaymentStatus'>
@@ -1610,6 +1795,25 @@ export type PaymentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Payments to delete.
    */
   limit?: number
+}
+
+/**
+ * Payment.cofO
+ */
+export type Payment$cofOArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CofOApplication
+   */
+  select?: Prisma.CofOApplicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CofOApplication
+   */
+  omit?: Prisma.CofOApplicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CofOApplicationInclude<ExtArgs> | null
+  where?: Prisma.CofOApplicationWhereInput
 }
 
 /**

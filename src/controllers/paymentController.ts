@@ -1,13 +1,13 @@
 // src/controllers/paymentController.ts
 import axios from "axios";
-import { Response,Request } from "express";
+import { Response, Request } from "express";
 import { AuthRequest } from "../middlewares/authMiddleware";
 
 import prisma from "../lib/prisma";
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET!;
 
-export const initializePayment = async (req:AuthRequest, res:Response) => {
-  const { amount, cofOId } = req.body;
+export const initializePayment = async (req: AuthRequest, res: Response) => {
+  const { amount, landID } = req.body;
   const userId = req.user.id;
 
   try {
@@ -19,8 +19,7 @@ export const initializePayment = async (req:AuthRequest, res:Response) => {
       {
         email: user.email,
         amount: amount * 100, // Paystack uses kobo
-        callback_url: "https://yourfrontend.com/payment/callback",
-        metadata: { cofOId}
+        metadata: { landID },
       },
       {
         headers: {
@@ -34,8 +33,8 @@ export const initializePayment = async (req:AuthRequest, res:Response) => {
     await prisma.payment.create({
       data: {
         userId,
-        cofOId: cofOId,
         amount,
+        landId: landID,
         reference,
         status: "PENDING",
         provider: "PAYSTACK",
@@ -45,11 +44,13 @@ export const initializePayment = async (req:AuthRequest, res:Response) => {
     res.json({ authorization_url, reference });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Payment initialization failed", error: err });
+    res
+      .status(500)
+      .json({ message: "Payment initialization failed", error: err });
   }
 };
 // src/controllers/paymentController.ts
-export const verifyPayment = async (req:Request, res:Response) => {
+export const verifyPayment = async (req: Request, res: Response) => {
   const { reference } = req.query;
 
   try {
@@ -60,31 +61,46 @@ export const verifyPayment = async (req:Request, res:Response) => {
       }
     );
 
-    const payment = verify.data.data;
+    const paymentData = verify.data.data;
 
-    if (payment.status !== "success")
+    if (paymentData.status !== "success") {
       return res.status(400).json({ message: "Payment not successful" });
-
-    const cofONumber = `COFO-${new Date().getFullYear()}-${Math.floor(
-      Math.random() * 100000
-    )}`;
-    const paymentAmount = payment.amount / 100;
-
-    await prisma.payment.updateMany({
+    }
+    const payment = await prisma.payment.findUnique({
       where: { reference: String(reference) },
+    });
+    if (!payment) {
+      return res.status(404).json({ message: "Payment record not found" });
+    }
+
+
+
+    await prisma.payment.update({
+      where: { id: payment.id },
       data: { status: "SUCCESS" },
     });
+    const cofO = await prisma.cofOApplication.create({
+      data: {
+        userId: payment.userId,
+        landId: payment.landId,
+        status: "DRAFT",
+      },
+    });
+      const applicationNumber = `COFO-${new Date().getFullYear()}-${cofO.id}`;
 
-    await prisma.cofOApplication.updateMany({
-      where: { id: payment.metadata.cofOId },
-      data: { cofONumber  },
+    await prisma.cofOApplication.update({
+      where: { id: cofO.id },
+      data: { applicationNumber },
     });
     res.json({
       message: "Payment verified successfully. You can now upload documents.",
-      cofONumber,
+      cofOApplicationId: cofO.id,
+      applicationNumber,
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Payment verification failed", error: err });
+    res
+      .status(500)
+      .json({ message: "Payment verification failed", error: err });
   }
 };

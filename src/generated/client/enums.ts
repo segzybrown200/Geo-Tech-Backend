@@ -13,7 +13,8 @@ export const ApplicationStatus = {
   PENDING: 'PENDING',
   IN_REVIEW: 'IN_REVIEW',
   APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED'
+  REJECTED: 'REJECTED',
+  DRAFT: 'DRAFT'
 } as const
 
 export type ApplicationStatus = (typeof ApplicationStatus)[keyof typeof ApplicationStatus]
@@ -40,6 +41,7 @@ export type UserType = (typeof UserType)[keyof typeof UserType]
 export const PaymentStatus = {
   PENDING: 'PENDING',
   SUCCESS: 'SUCCESS',
+  UNPAID: 'UNPAID',
   FAILED: 'FAILED'
 } as const
 

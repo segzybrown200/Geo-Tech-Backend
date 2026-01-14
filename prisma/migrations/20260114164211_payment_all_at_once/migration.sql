@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "ApplicationStatus" AS ENUM ('PENDING', 'IN_REVIEW', 'APPROVED', 'REJECTED');
+CREATE TYPE "ApplicationStatus" AS ENUM ('PENDING', 'IN_REVIEW', 'APPROVED', 'REJECTED', 'DRAFT');
 
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('USER', 'APPROVER', 'ADMIN', 'GOVERNOR');
@@ -8,7 +8,7 @@ CREATE TYPE "Role" AS ENUM ('USER', 'APPROVER', 'ADMIN', 'GOVERNOR');
 CREATE TYPE "UserType" AS ENUM ('CITIZEN', 'INTERNAL');
 
 -- CreateEnum
-CREATE TYPE "PaymentStatus" AS ENUM ('PENDING', 'SUCCESS', 'FAILED');
+CREATE TYPE "PaymentStatus" AS ENUM ('PENDING', 'SUCCESS', 'UNPAID', 'FAILED');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -22,19 +22,6 @@ CREATE TABLE "User" (
     "isEmailVerified" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Application" (
-    "id" TEXT NOT NULL,
-    "userId" UUID NOT NULL,
-    "documentUrl" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
-    "status" "ApplicationStatus" NOT NULL DEFAULT 'PENDING',
-    "paymentId" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "Application_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -194,6 +181,7 @@ CREATE TABLE "CofOApplication" (
     "signedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "governorSignatureUrl" TEXT,
+    "applicationNumber" TEXT,
 
     CONSTRAINT "CofOApplication_pkey" PRIMARY KEY ("id")
 );
@@ -202,7 +190,8 @@ CREATE TABLE "CofOApplication" (
 CREATE TABLE "Payment" (
     "id" UUID NOT NULL,
     "userId" UUID NOT NULL,
-    "cofOId" UUID NOT NULL,
+    "cofOId" UUID,
+    "landId" UUID NOT NULL,
     "amount" DOUBLE PRECISION NOT NULL,
     "reference" TEXT NOT NULL,
     "status" "PaymentStatus" NOT NULL,
@@ -251,6 +240,19 @@ CREATE TABLE "EmailVerificationToken" (
 );
 
 -- CreateTable
+CREATE TABLE "CofOAuditLog" (
+    "id" UUID NOT NULL,
+    "cofOId" UUID NOT NULL,
+    "action" TEXT NOT NULL,
+    "performedById" UUID NOT NULL,
+    "performedByRole" TEXT NOT NULL,
+    "comment" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "CofOAuditLog_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "PasswordResetToken" (
     "id" TEXT NOT NULL,
     "userId" UUID NOT NULL,
@@ -277,6 +279,9 @@ CREATE UNIQUE INDEX "State_name_key" ON "State"("name");
 CREATE UNIQUE INDEX "State_governorId_key" ON "State"("governorId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "CofOApplication_applicationNumber_key" ON "CofOApplication"("applicationNumber");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Payment_reference_key" ON "Payment"("reference");
 
 -- CreateIndex
@@ -284,9 +289,6 @@ CREATE UNIQUE INDEX "EmailVerificationToken_token_key" ON "EmailVerificationToke
 
 -- CreateIndex
 CREATE UNIQUE INDEX "PasswordResetToken_token_key" ON "PasswordResetToken"("token");
-
--- AddForeignKey
-ALTER TABLE "Application" ADD CONSTRAINT "Application_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "InternalUser" ADD CONSTRAINT "InternalUser_stateId_fkey" FOREIGN KEY ("stateId") REFERENCES "State"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -328,7 +330,10 @@ ALTER TABLE "CofOApplication" ADD CONSTRAINT "CofOApplication_landId_fkey" FOREI
 ALTER TABLE "Payment" ADD CONSTRAINT "Payment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Payment" ADD CONSTRAINT "Payment_cofOId_fkey" FOREIGN KEY ("cofOId") REFERENCES "CofOApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Payment" ADD CONSTRAINT "Payment_cofOId_fkey" FOREIGN KEY ("cofOId") REFERENCES "CofOApplication"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Payment" ADD CONSTRAINT "Payment_landId_fkey" FOREIGN KEY ("landId") REFERENCES "LandRegistration"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "StageLog" ADD CONSTRAINT "StageLog_cofOId_fkey" FOREIGN KEY ("cofOId") REFERENCES "CofOApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -341,6 +346,9 @@ ALTER TABLE "InboxMessage" ADD CONSTRAINT "InboxMessage_receiverId_fkey" FOREIGN
 
 -- AddForeignKey
 ALTER TABLE "InboxMessage" ADD CONSTRAINT "InboxMessage_cofOId_fkey" FOREIGN KEY ("cofOId") REFERENCES "CofOApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CofOAuditLog" ADD CONSTRAINT "CofOAuditLog_cofOId_fkey" FOREIGN KEY ("cofOId") REFERENCES "CofOApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PasswordResetToken" ADD CONSTRAINT "PasswordResetToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

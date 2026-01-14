@@ -103,6 +103,11 @@ export type InboxMessage = Prisma.InboxMessageModel
  */
 export type EmailVerificationToken = Prisma.EmailVerificationTokenModel
 /**
+ * Model CofOAuditLog
+ * 
+ */
+export type CofOAuditLog = Prisma.CofOAuditLogModel
+/**
  * Model PasswordResetToken
  * 
  */

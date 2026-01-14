@@ -401,6 +401,7 @@ export const ModelName = {
   StageLog: 'StageLog',
   InboxMessage: 'InboxMessage',
   EmailVerificationToken: 'EmailVerificationToken',
+  CofOAuditLog: 'CofOAuditLog',
   PasswordResetToken: 'PasswordResetToken'
 } as const
 
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "application" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "landAuditLog" | "ownershipTransfer" | "transferVerification" | "ownershipHistory" | "cofOApplication" | "payment" | "stageLog" | "inboxMessage" | "emailVerificationToken" | "passwordResetToken"
+    modelProps: "user" | "application" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "landAuditLog" | "ownershipTransfer" | "transferVerification" | "ownershipHistory" | "cofOApplication" | "payment" | "stageLog" | "inboxMessage" | "emailVerificationToken" | "cofOAuditLog" | "passwordResetToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1679,6 +1680,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CofOAuditLog: {
+      payload: Prisma.$CofOAuditLogPayload<ExtArgs>
+      fields: Prisma.CofOAuditLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CofOAuditLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CofOAuditLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CofOAuditLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CofOAuditLogPayload>
+        }
+        findFirst: {
+          args: Prisma.CofOAuditLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CofOAuditLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CofOAuditLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CofOAuditLogPayload>
+        }
+        findMany: {
+          args: Prisma.CofOAuditLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CofOAuditLogPayload>[]
+        }
+        create: {
+          args: Prisma.CofOAuditLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CofOAuditLogPayload>
+        }
+        createMany: {
+          args: Prisma.CofOAuditLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CofOAuditLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CofOAuditLogPayload>[]
+        }
+        delete: {
+          args: Prisma.CofOAuditLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CofOAuditLogPayload>
+        }
+        update: {
+          args: Prisma.CofOAuditLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CofOAuditLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.CofOAuditLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CofOAuditLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CofOAuditLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CofOAuditLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.CofOAuditLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CofOAuditLogPayload>
+        }
+        aggregate: {
+          args: Prisma.CofOAuditLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCofOAuditLog>
+        }
+        groupBy: {
+          args: Prisma.CofOAuditLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CofOAuditLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CofOAuditLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CofOAuditLogCountAggregateOutputType> | number
+        }
+      }
+    }
     PasswordResetToken: {
       payload: Prisma.$PasswordResetTokenPayload<ExtArgs>
       fields: Prisma.PasswordResetTokenFieldRefs
@@ -1972,7 +2047,8 @@ export const CofOApplicationScalarFieldEnum = {
   cofONumber: 'cofONumber',
   signedAt: 'signedAt',
   createdAt: 'createdAt',
-  governorSignatureUrl: 'governorSignatureUrl'
+  governorSignatureUrl: 'governorSignatureUrl',
+  applicationNumber: 'applicationNumber'
 } as const
 
 export type CofOApplicationScalarFieldEnum = (typeof CofOApplicationScalarFieldEnum)[keyof typeof CofOApplicationScalarFieldEnum]
@@ -1982,6 +2058,7 @@ export const PaymentScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   cofOId: 'cofOId',
+  landId: 'landId',
   amount: 'amount',
   reference: 'reference',
   status: 'status',
@@ -2028,6 +2105,19 @@ export const EmailVerificationTokenScalarFieldEnum = {
 } as const
 
 export type EmailVerificationTokenScalarFieldEnum = (typeof EmailVerificationTokenScalarFieldEnum)[keyof typeof EmailVerificationTokenScalarFieldEnum]
+
+
+export const CofOAuditLogScalarFieldEnum = {
+  id: 'id',
+  cofOId: 'cofOId',
+  action: 'action',
+  performedById: 'performedById',
+  performedByRole: 'performedByRole',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type CofOAuditLogScalarFieldEnum = (typeof CofOAuditLogScalarFieldEnum)[keyof typeof CofOAuditLogScalarFieldEnum]
 
 
 export const PasswordResetTokenScalarFieldEnum = {
@@ -2331,6 +2421,7 @@ export type GlobalOmitConfig = {
   stageLog?: Prisma.StageLogOmit
   inboxMessage?: Prisma.InboxMessageOmit
   emailVerificationToken?: Prisma.EmailVerificationTokenOmit
+  cofOAuditLog?: Prisma.CofOAuditLogOmit
   passwordResetToken?: Prisma.PasswordResetTokenOmit
 }
 

@@ -68,6 +68,7 @@ export const ModelName = {
   StageLog: 'StageLog',
   InboxMessage: 'InboxMessage',
   EmailVerificationToken: 'EmailVerificationToken',
+  CofOAuditLog: 'CofOAuditLog',
   PasswordResetToken: 'PasswordResetToken'
 } as const
 
@@ -267,7 +268,8 @@ export const CofOApplicationScalarFieldEnum = {
   cofONumber: 'cofONumber',
   signedAt: 'signedAt',
   createdAt: 'createdAt',
-  governorSignatureUrl: 'governorSignatureUrl'
+  governorSignatureUrl: 'governorSignatureUrl',
+  applicationNumber: 'applicationNumber'
 } as const
 
 export type CofOApplicationScalarFieldEnum = (typeof CofOApplicationScalarFieldEnum)[keyof typeof CofOApplicationScalarFieldEnum]
@@ -277,6 +279,7 @@ export const PaymentScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   cofOId: 'cofOId',
+  landId: 'landId',
   amount: 'amount',
   reference: 'reference',
   status: 'status',
@@ -323,6 +326,19 @@ export const EmailVerificationTokenScalarFieldEnum = {
 } as const
 
 export type EmailVerificationTokenScalarFieldEnum = (typeof EmailVerificationTokenScalarFieldEnum)[keyof typeof EmailVerificationTokenScalarFieldEnum]
+
+
+export const CofOAuditLogScalarFieldEnum = {
+  id: 'id',
+  cofOId: 'cofOId',
+  action: 'action',
+  performedById: 'performedById',
+  performedByRole: 'performedByRole',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type CofOAuditLogScalarFieldEnum = (typeof CofOAuditLogScalarFieldEnum)[keyof typeof CofOAuditLogScalarFieldEnum]
 
 
 export const PasswordResetTokenScalarFieldEnum = {

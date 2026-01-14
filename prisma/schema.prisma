@@ -20,7 +20,6 @@ model User {
   password           String
   phone              String?
   role               Role                 @default(USER)
-  applications       Application[]
   createdAt          DateTime             @default(now())
   CofOApplication    CofOApplication[]
   LandRegistration   LandRegistration[]   @relation("UserLands")
@@ -30,23 +29,13 @@ model User {
   payments           Payment[]
 }
 
-model Application {
-  id          String            @id @default(uuid())
-  userId      String            @db.Uuid
-  documentUrl String
-  type        String
-  status      ApplicationStatus @default(PENDING)
-  paymentId   String?
-  createdAt   DateTime          @default(now())
-
-  user User @relation(fields: [userId], references: [id])
-}
 
 enum ApplicationStatus {
   PENDING
   IN_REVIEW
   APPROVED
   REJECTED
+  DRAFT
 }
 
 enum Role {
@@ -134,17 +123,19 @@ model LandRegistration {
   CofOApplication   CofOApplication[]
   boundary          Unsupported("geometry")?
   OwnershipTransfer OwnershipTransfer[]
+
+  payments Payment[]
 }
 
 model LandDocument {
-  id          String           @id @default(uuid())
-  landId      String           @db.Uuid
-  documentUrl String
-  fileName    String
-  isActive    Boolean  @default(true)
-  replacedById  String?   @db.Uuid
-  createdAt     DateTime @default(now())
-  land        LandRegistration @relation(fields: [landId], references: [id])
+  id           String           @id @default(uuid())
+  landId       String           @db.Uuid
+  documentUrl  String
+  fileName     String
+  isActive     Boolean          @default(true)
+  replacedById String?          @db.Uuid
+  createdAt    DateTime         @default(now())
+  land         LandRegistration @relation(fields: [landId], references: [id])
 }
 
 model State {
@@ -166,7 +157,6 @@ model LandAuditLog {
   metadata  Json
   createdAt DateTime @default(now())
 }
-
 
 model OwnershipTransfer {
   id             String   @id @default(uuid()) @db.Uuid
@@ -222,26 +212,31 @@ model CofOApplication {
   InboxMessage         InboxMessage[]
   governorSignatureUrl String? // new
   payments             Payment[]
+  applicationNumber    String?           @unique
+  cofOAuditLogs        CofOAuditLog[]
 }
 
 enum PaymentStatus {
   PENDING
   SUCCESS
+  UNPAID
   FAILED
 }
 
 model Payment {
   id        String        @id @default(uuid()) @db.Uuid
   userId    String        @db.Uuid
-  cofOId    String        @db.Uuid
+  cofOId    String?       @db.Uuid
+  landId    String        @db.Uuid
   amount    Float
   reference String        @unique
   status    PaymentStatus
   provider  String // Paystack, Remita, etc
   createdAt DateTime      @default(now())
 
-  user User            @relation(fields: [userId], references: [id])
-  cofO CofOApplication @relation(fields: [cofOId], references: [id])
+  user User             @relation(fields: [userId], references: [id])
+  cofO CofOApplication? @relation(fields: [cofOId], references: [id])
+  land LandRegistration @relation(fields: [landId], references: [id])
 }
 
 model StageLog {
@@ -275,6 +270,18 @@ model EmailVerificationToken {
   token     String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
+}
+
+model CofOAuditLog {
+  id              String   @id @default(uuid()) @db.Uuid
+  cofOId          String  @db.Uuid
+  action          String // SUBMITTED, APPROVED, REJECTED, FORWARDED
+  performedById   String  @db.Uuid
+  performedByRole String
+  comment         String?
+  createdAt       DateTime @default(now())
+
+  cofO CofOApplication @relation(fields: [cofOId], references: [id])
 }
 
 model PasswordResetToken {

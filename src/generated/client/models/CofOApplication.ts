@@ -33,6 +33,7 @@ export type CofOApplicationMinAggregateOutputType = {
   signedAt: Date | null
   createdAt: Date | null
   governorSignatureUrl: string | null
+  applicationNumber: string | null
 }
 
 export type CofOApplicationMaxAggregateOutputType = {
@@ -44,6 +45,7 @@ export type CofOApplicationMaxAggregateOutputType = {
   signedAt: Date | null
   createdAt: Date | null
   governorSignatureUrl: string | null
+  applicationNumber: string | null
 }
 
 export type CofOApplicationCountAggregateOutputType = {
@@ -56,6 +58,7 @@ export type CofOApplicationCountAggregateOutputType = {
   signedAt: number
   createdAt: number
   governorSignatureUrl: number
+  applicationNumber: number
   _all: number
 }
 
@@ -69,6 +72,7 @@ export type CofOApplicationMinAggregateInputType = {
   signedAt?: true
   createdAt?: true
   governorSignatureUrl?: true
+  applicationNumber?: true
 }
 
 export type CofOApplicationMaxAggregateInputType = {
@@ -80,6 +84,7 @@ export type CofOApplicationMaxAggregateInputType = {
   signedAt?: true
   createdAt?: true
   governorSignatureUrl?: true
+  applicationNumber?: true
 }
 
 export type CofOApplicationCountAggregateInputType = {
@@ -92,6 +97,7 @@ export type CofOApplicationCountAggregateInputType = {
   signedAt?: true
   createdAt?: true
   governorSignatureUrl?: true
+  applicationNumber?: true
   _all?: true
 }
 
@@ -177,6 +183,7 @@ export type CofOApplicationGroupByOutputType = {
   signedAt: Date | null
   createdAt: Date
   governorSignatureUrl: string | null
+  applicationNumber: string | null
   _count: CofOApplicationCountAggregateOutputType | null
   _min: CofOApplicationMinAggregateOutputType | null
   _max: CofOApplicationMaxAggregateOutputType | null
@@ -210,11 +217,13 @@ export type CofOApplicationWhereInput = {
   signedAt?: Prisma.DateTimeNullableFilter<"CofOApplication"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOApplication"> | Date | string
   governorSignatureUrl?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
+  applicationNumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   logs?: Prisma.StageLogListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
   InboxMessage?: Prisma.InboxMessageListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
+  cofOAuditLogs?: Prisma.CofOAuditLogListRelationFilter
 }
 
 export type CofOApplicationOrderByWithRelationInput = {
@@ -227,15 +236,18 @@ export type CofOApplicationOrderByWithRelationInput = {
   signedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   governorSignatureUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  applicationNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   logs?: Prisma.StageLogOrderByRelationAggregateInput
   user?: Prisma.UserOrderByWithRelationInput
   land?: Prisma.LandRegistrationOrderByWithRelationInput
   InboxMessage?: Prisma.InboxMessageOrderByRelationAggregateInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
+  cofOAuditLogs?: Prisma.CofOAuditLogOrderByRelationAggregateInput
 }
 
 export type CofOApplicationWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  applicationNumber?: string
   AND?: Prisma.CofOApplicationWhereInput | Prisma.CofOApplicationWhereInput[]
   OR?: Prisma.CofOApplicationWhereInput[]
   NOT?: Prisma.CofOApplicationWhereInput | Prisma.CofOApplicationWhereInput[]
@@ -252,7 +264,8 @@ export type CofOApplicationWhereUniqueInput = Prisma.AtLeast<{
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
   InboxMessage?: Prisma.InboxMessageListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
-}, "id">
+  cofOAuditLogs?: Prisma.CofOAuditLogListRelationFilter
+}, "id" | "applicationNumber">
 
 export type CofOApplicationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -264,6 +277,7 @@ export type CofOApplicationOrderByWithAggregationInput = {
   signedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   governorSignatureUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  applicationNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CofOApplicationCountOrderByAggregateInput
   _max?: Prisma.CofOApplicationMaxOrderByAggregateInput
   _min?: Prisma.CofOApplicationMinOrderByAggregateInput
@@ -282,6 +296,7 @@ export type CofOApplicationScalarWhereWithAggregatesInput = {
   signedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CofOApplication"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CofOApplication"> | Date | string
   governorSignatureUrl?: Prisma.StringNullableWithAggregatesFilter<"CofOApplication"> | string | null
+  applicationNumber?: Prisma.StringNullableWithAggregatesFilter<"CofOApplication"> | string | null
 }
 
 export type CofOApplicationCreateInput = {
@@ -292,11 +307,13 @@ export type CofOApplicationCreateInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateInput = {
@@ -309,9 +326,11 @@ export type CofOApplicationUncheckedCreateInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUpdateInput = {
@@ -322,11 +341,13 @@ export type CofOApplicationUpdateInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateInput = {
@@ -339,9 +360,11 @@ export type CofOApplicationUncheckedUpdateInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationCreateManyInput = {
@@ -354,6 +377,7 @@ export type CofOApplicationCreateManyInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
 }
 
 export type CofOApplicationUpdateManyMutationInput = {
@@ -364,6 +388,7 @@ export type CofOApplicationUpdateManyMutationInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type CofOApplicationUncheckedUpdateManyInput = {
@@ -376,6 +401,7 @@ export type CofOApplicationUncheckedUpdateManyInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type CofOApplicationListRelationFilter = {
@@ -406,6 +432,7 @@ export type CofOApplicationCountOrderByAggregateInput = {
   signedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   governorSignatureUrl?: Prisma.SortOrder
+  applicationNumber?: Prisma.SortOrder
 }
 
 export type CofOApplicationMaxOrderByAggregateInput = {
@@ -417,6 +444,7 @@ export type CofOApplicationMaxOrderByAggregateInput = {
   signedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   governorSignatureUrl?: Prisma.SortOrder
+  applicationNumber?: Prisma.SortOrder
 }
 
 export type CofOApplicationMinOrderByAggregateInput = {
@@ -428,6 +456,12 @@ export type CofOApplicationMinOrderByAggregateInput = {
   signedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   governorSignatureUrl?: Prisma.SortOrder
+  applicationNumber?: Prisma.SortOrder
+}
+
+export type CofOApplicationNullableScalarRelationFilter = {
+  is?: Prisma.CofOApplicationWhereInput | null
+  isNot?: Prisma.CofOApplicationWhereInput | null
 }
 
 export type CofOApplicationScalarRelationFilter = {
@@ -534,10 +568,12 @@ export type CofOApplicationCreateNestedOneWithoutPaymentsInput = {
   connect?: Prisma.CofOApplicationWhereUniqueInput
 }
 
-export type CofOApplicationUpdateOneRequiredWithoutPaymentsNestedInput = {
+export type CofOApplicationUpdateOneWithoutPaymentsNestedInput = {
   create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutPaymentsInput, Prisma.CofOApplicationUncheckedCreateWithoutPaymentsInput>
   connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutPaymentsInput
   upsert?: Prisma.CofOApplicationUpsertWithoutPaymentsInput
+  disconnect?: Prisma.CofOApplicationWhereInput | boolean
+  delete?: Prisma.CofOApplicationWhereInput | boolean
   connect?: Prisma.CofOApplicationWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.CofOApplicationUpdateToOneWithWhereWithoutPaymentsInput, Prisma.CofOApplicationUpdateWithoutPaymentsInput>, Prisma.CofOApplicationUncheckedUpdateWithoutPaymentsInput>
 }
@@ -570,6 +606,20 @@ export type CofOApplicationUpdateOneRequiredWithoutInboxMessageNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CofOApplicationUpdateToOneWithWhereWithoutInboxMessageInput, Prisma.CofOApplicationUpdateWithoutInboxMessageInput>, Prisma.CofOApplicationUncheckedUpdateWithoutInboxMessageInput>
 }
 
+export type CofOApplicationCreateNestedOneWithoutCofOAuditLogsInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCofOAuditLogsInput, Prisma.CofOApplicationUncheckedCreateWithoutCofOAuditLogsInput>
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutCofOAuditLogsInput
+  connect?: Prisma.CofOApplicationWhereUniqueInput
+}
+
+export type CofOApplicationUpdateOneRequiredWithoutCofOAuditLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCofOAuditLogsInput, Prisma.CofOApplicationUncheckedCreateWithoutCofOAuditLogsInput>
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutCofOAuditLogsInput
+  upsert?: Prisma.CofOApplicationUpsertWithoutCofOAuditLogsInput
+  connect?: Prisma.CofOApplicationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CofOApplicationUpdateToOneWithWhereWithoutCofOAuditLogsInput, Prisma.CofOApplicationUpdateWithoutCofOAuditLogsInput>, Prisma.CofOApplicationUncheckedUpdateWithoutCofOAuditLogsInput>
+}
+
 export type CofOApplicationCreateWithoutUserInput = {
   id?: string
   status?: $Enums.ApplicationStatus
@@ -578,10 +628,12 @@ export type CofOApplicationCreateWithoutUserInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutUserInput = {
@@ -593,9 +645,11 @@ export type CofOApplicationUncheckedCreateWithoutUserInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutUserInput = {
@@ -637,6 +691,7 @@ export type CofOApplicationScalarWhereInput = {
   signedAt?: Prisma.DateTimeNullableFilter<"CofOApplication"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOApplication"> | Date | string
   governorSignatureUrl?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
+  applicationNumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
 }
 
 export type CofOApplicationCreateWithoutLandInput = {
@@ -647,10 +702,12 @@ export type CofOApplicationCreateWithoutLandInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutLandInput = {
@@ -662,9 +719,11 @@ export type CofOApplicationUncheckedCreateWithoutLandInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutLandInput = {
@@ -701,10 +760,12 @@ export type CofOApplicationCreateWithoutPaymentsInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutPaymentsInput = {
@@ -717,8 +778,10 @@ export type CofOApplicationUncheckedCreateWithoutPaymentsInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutPaymentsInput = {
@@ -745,10 +808,12 @@ export type CofOApplicationUpdateWithoutPaymentsInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutPaymentsInput = {
@@ -761,8 +826,10 @@ export type CofOApplicationUncheckedUpdateWithoutPaymentsInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationCreateWithoutLogsInput = {
@@ -773,10 +840,12 @@ export type CofOApplicationCreateWithoutLogsInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutLogsInput = {
@@ -789,8 +858,10 @@ export type CofOApplicationUncheckedCreateWithoutLogsInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutLogsInput = {
@@ -817,10 +888,12 @@ export type CofOApplicationUpdateWithoutLogsInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutLogsInput = {
@@ -833,8 +906,10 @@ export type CofOApplicationUncheckedUpdateWithoutLogsInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationCreateWithoutInboxMessageInput = {
@@ -845,10 +920,12 @@ export type CofOApplicationCreateWithoutInboxMessageInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutInboxMessageInput = {
@@ -861,8 +938,10 @@ export type CofOApplicationUncheckedCreateWithoutInboxMessageInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutInboxMessageInput = {
@@ -889,10 +968,12 @@ export type CofOApplicationUpdateWithoutInboxMessageInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutInboxMessageInput = {
@@ -905,7 +986,89 @@ export type CofOApplicationUncheckedUpdateWithoutInboxMessageInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationCreateWithoutCofOAuditLogsInput = {
+  id?: string
+  status?: $Enums.ApplicationStatus
+  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
+  user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationUncheckedCreateWithoutCofOAuditLogsInput = {
+  id?: string
+  userId: string
+  landId: string
+  status?: $Enums.ApplicationStatus
+  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationCreateOrConnectWithoutCofOAuditLogsInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCofOAuditLogsInput, Prisma.CofOApplicationUncheckedCreateWithoutCofOAuditLogsInput>
+}
+
+export type CofOApplicationUpsertWithoutCofOAuditLogsInput = {
+  update: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutCofOAuditLogsInput, Prisma.CofOApplicationUncheckedUpdateWithoutCofOAuditLogsInput>
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCofOAuditLogsInput, Prisma.CofOApplicationUncheckedCreateWithoutCofOAuditLogsInput>
+  where?: Prisma.CofOApplicationWhereInput
+}
+
+export type CofOApplicationUpdateToOneWithWhereWithoutCofOAuditLogsInput = {
+  where?: Prisma.CofOApplicationWhereInput
+  data: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutCofOAuditLogsInput, Prisma.CofOApplicationUncheckedUpdateWithoutCofOAuditLogsInput>
+}
+
+export type CofOApplicationUpdateWithoutCofOAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationUncheckedUpdateWithoutCofOAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
 }
 
@@ -918,6 +1081,7 @@ export type CofOApplicationCreateManyUserInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
 }
 
 export type CofOApplicationUpdateWithoutUserInput = {
@@ -928,10 +1092,12 @@ export type CofOApplicationUpdateWithoutUserInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutUserInput = {
@@ -943,9 +1109,11 @@ export type CofOApplicationUncheckedUpdateWithoutUserInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateManyWithoutUserInput = {
@@ -957,6 +1125,7 @@ export type CofOApplicationUncheckedUpdateManyWithoutUserInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type CofOApplicationCreateManyLandInput = {
@@ -968,6 +1137,7 @@ export type CofOApplicationCreateManyLandInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   governorSignatureUrl?: string | null
+  applicationNumber?: string | null
 }
 
 export type CofOApplicationUpdateWithoutLandInput = {
@@ -978,10 +1148,12 @@ export type CofOApplicationUpdateWithoutLandInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutLandInput = {
@@ -993,9 +1165,11 @@ export type CofOApplicationUncheckedUpdateWithoutLandInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateManyWithoutLandInput = {
@@ -1007,6 +1181,7 @@ export type CofOApplicationUncheckedUpdateManyWithoutLandInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1018,12 +1193,14 @@ export type CofOApplicationCountOutputType = {
   logs: number
   InboxMessage: number
   payments: number
+  cofOAuditLogs: number
 }
 
 export type CofOApplicationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   logs?: boolean | CofOApplicationCountOutputTypeCountLogsArgs
   InboxMessage?: boolean | CofOApplicationCountOutputTypeCountInboxMessageArgs
   payments?: boolean | CofOApplicationCountOutputTypeCountPaymentsArgs
+  cofOAuditLogs?: boolean | CofOApplicationCountOutputTypeCountCofOAuditLogsArgs
 }
 
 /**
@@ -1057,6 +1234,13 @@ export type CofOApplicationCountOutputTypeCountPaymentsArgs<ExtArgs extends runt
   where?: Prisma.PaymentWhereInput
 }
 
+/**
+ * CofOApplicationCountOutputType without action
+ */
+export type CofOApplicationCountOutputTypeCountCofOAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CofOAuditLogWhereInput
+}
+
 
 export type CofOApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1068,11 +1252,13 @@ export type CofOApplicationSelect<ExtArgs extends runtime.Types.Extensions.Inter
   signedAt?: boolean
   createdAt?: boolean
   governorSignatureUrl?: boolean
+  applicationNumber?: boolean
   logs?: boolean | Prisma.CofOApplication$logsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   InboxMessage?: boolean | Prisma.CofOApplication$InboxMessageArgs<ExtArgs>
   payments?: boolean | Prisma.CofOApplication$paymentsArgs<ExtArgs>
+  cofOAuditLogs?: boolean | Prisma.CofOApplication$cofOAuditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.CofOApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cofOApplication"]>
 
@@ -1086,6 +1272,7 @@ export type CofOApplicationSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   signedAt?: boolean
   createdAt?: boolean
   governorSignatureUrl?: boolean
+  applicationNumber?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cofOApplication"]>
@@ -1100,6 +1287,7 @@ export type CofOApplicationSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   signedAt?: boolean
   createdAt?: boolean
   governorSignatureUrl?: boolean
+  applicationNumber?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cofOApplication"]>
@@ -1114,15 +1302,17 @@ export type CofOApplicationSelectScalar = {
   signedAt?: boolean
   createdAt?: boolean
   governorSignatureUrl?: boolean
+  applicationNumber?: boolean
 }
 
-export type CofOApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "landId" | "status" | "documentUrls" | "cofONumber" | "signedAt" | "createdAt" | "governorSignatureUrl", ExtArgs["result"]["cofOApplication"]>
+export type CofOApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "landId" | "status" | "documentUrls" | "cofONumber" | "signedAt" | "createdAt" | "governorSignatureUrl" | "applicationNumber", ExtArgs["result"]["cofOApplication"]>
 export type CofOApplicationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   logs?: boolean | Prisma.CofOApplication$logsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   InboxMessage?: boolean | Prisma.CofOApplication$InboxMessageArgs<ExtArgs>
   payments?: boolean | Prisma.CofOApplication$paymentsArgs<ExtArgs>
+  cofOAuditLogs?: boolean | Prisma.CofOApplication$cofOAuditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.CofOApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CofOApplicationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1142,6 +1332,7 @@ export type $CofOApplicationPayload<ExtArgs extends runtime.Types.Extensions.Int
     land: Prisma.$LandRegistrationPayload<ExtArgs>
     InboxMessage: Prisma.$InboxMessagePayload<ExtArgs>[]
     payments: Prisma.$PaymentPayload<ExtArgs>[]
+    cofOAuditLogs: Prisma.$CofOAuditLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1153,6 +1344,7 @@ export type $CofOApplicationPayload<ExtArgs extends runtime.Types.Extensions.Int
     signedAt: Date | null
     createdAt: Date
     governorSignatureUrl: string | null
+    applicationNumber: string | null
   }, ExtArgs["result"]["cofOApplication"]>
   composites: {}
 }
@@ -1552,6 +1744,7 @@ export interface Prisma__CofOApplicationClient<T, Null = never, ExtArgs extends 
   land<T extends Prisma.LandRegistrationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistrationDefaultArgs<ExtArgs>>): Prisma.Prisma__LandRegistrationClient<runtime.Types.Result.GetResult<Prisma.$LandRegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   InboxMessage<T extends Prisma.CofOApplication$InboxMessageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$InboxMessageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InboxMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payments<T extends Prisma.CofOApplication$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  cofOAuditLogs<T extends Prisma.CofOApplication$cofOAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$cofOAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1590,6 +1783,7 @@ export interface CofOApplicationFieldRefs {
   readonly signedAt: Prisma.FieldRef<"CofOApplication", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"CofOApplication", 'DateTime'>
   readonly governorSignatureUrl: Prisma.FieldRef<"CofOApplication", 'String'>
+  readonly applicationNumber: Prisma.FieldRef<"CofOApplication", 'String'>
 }
     
 
@@ -2055,6 +2249,30 @@ export type CofOApplication$paymentsArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
+}
+
+/**
+ * CofOApplication.cofOAuditLogs
+ */
+export type CofOApplication$cofOAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CofOAuditLog
+   */
+  select?: Prisma.CofOAuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CofOAuditLog
+   */
+  omit?: Prisma.CofOAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CofOAuditLogInclude<ExtArgs> | null
+  where?: Prisma.CofOAuditLogWhereInput
+  orderBy?: Prisma.CofOAuditLogOrderByWithRelationInput | Prisma.CofOAuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.CofOAuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CofOAuditLogScalarFieldEnum | Prisma.CofOAuditLogScalarFieldEnum[]
 }
 
 /**
