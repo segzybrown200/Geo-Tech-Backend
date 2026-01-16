@@ -79,6 +79,8 @@ export const createInternalUser = async (req: Request, res: Response) => {
         .json({ message: "Approver should not have an approving position" });
     }
 
+    let currentApprovers = 0;
+
     if (role === "APPROVER") {
       if (!state.governor) {
         return res.status(400).json({
@@ -87,8 +89,17 @@ export const createInternalUser = async (req: Request, res: Response) => {
         });
       }
 
-      const governorLimit = state.governor.approvingPosition ?? 0;
-      const currentApprovers = state.approvers.length;
+      const governorLimit = state.governor.approvingPosition || 0;
+
+
+      currentApprovers = await prisma.internalUser.count({
+        where: {
+          stateId,
+          role: "APPROVER",
+          function: workflowFunction,
+        },
+      });
+    
 
       if (currentApprovers >= governorLimit) {
         return res.status(400).json({
@@ -106,8 +117,7 @@ export const createInternalUser = async (req: Request, res: Response) => {
         department,
         approvingPosition:
           role === "GOVERNOR" ? Number(approvingPosition) : null,
-        position:
-          role === "APPROVER" ? (state.approvers.length ?? 0) + 1 : null,
+        position: role === "APPROVER" ? currentApprovers + 1 : null,
         function: workflowFunction,
         role: role === "APPROVER" ? "APPROVER" : "GOVERNOR",
         requiresSignature: requiresSignature ?? false,
@@ -214,7 +224,6 @@ export const updateSignature = async (req: any, res: Response) => {
 export const verifyInternalEmail = async (req: Request, res: Response) => {
   const { token } = req.query;
 
-
   if (!token) {
     return res.status(400).json({
       message: "Invalid or expired verification token",
@@ -231,7 +240,6 @@ export const verifyInternalEmail = async (req: Request, res: Response) => {
     const user = await prisma.internalUser.findFirst({
       where: { emailToken: token as string },
     });
-
 
     if (!user) {
       return res.status(400).json({

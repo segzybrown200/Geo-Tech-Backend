@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
+    "dev": "ts-node-dev src/index.ts",
     "build": "tsc",
     "seed:states": "ts-node prisma/seedStates.ts",
     "seed:admin": "ts-node prisma/adminSeed.ts"

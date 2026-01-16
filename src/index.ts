@@ -34,7 +34,7 @@ app.use(
   internalUserRoutes
 );
 app.use("/api/lands", verifyToken, landRoutes);
-app.use("/api/cofo", verifyToken, cofoRoutes);
+app.use("/api/cofo",  cofoRoutes);
 app.use("/api/ownership", verifyToken, ownershipRoutes);
 
 const PORT = process.env.PORT || 5001;

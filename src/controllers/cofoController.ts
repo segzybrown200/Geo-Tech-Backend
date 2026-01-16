@@ -41,11 +41,12 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
     }
     const uploadResults = await Promise.all(
       files.map((file) =>
-        uploadToCloudinary(fs.readFileSync(file.path), file.originalname)
+        uploadToCloudinary(file.buffer, file.originalname)
       )
     );
 
     const documentUrls = uploadResults.map((r) => r.secure_url);
+    console.log(uploadResults)
     if (documentUrls.length === 0) {
       return res
         .status(500)
@@ -62,7 +63,7 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
     const firstApprover = await prisma.internalUser.findFirst({
       where: {
         stateId: land.stateId,
-        position: 1,
+        position: 2,
       },
     });
     if (!firstApprover) {
@@ -102,6 +103,7 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
       applicationNumber: application.applicationNumber,
     });
   } catch (err) {
+    console.log(err)
     return res.status(500).json({ message: "Application failed", error: err });
   }
 };
