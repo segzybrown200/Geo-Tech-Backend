@@ -2,10 +2,7 @@ import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { uploadToCloudinary } from "../services/uploadService";
 import { AuthRequest } from "../middlewares/authMiddleware";
-import {
-  cofoBatchSignSchema,
-  cofoReviewSchema,
-} from "../utils/zodSchemas";
+import { cofoBatchSignSchema, cofoReviewSchema } from "../utils/zodSchemas";
 import { sendEmail } from "../services/emailSevices";
 
 export const applyForCofO = async (req: AuthRequest, res: Response) => {
@@ -20,7 +17,9 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
         message: "CofO ID and documents are required",
       });
     }
-    const documents: { type: string; title: string }[] = [];
+    const documents: { type: string; title: string }[] = JSON.parse(
+      req.body.documentsMeta || "[]",
+    );
     Object.keys(req.body).forEach((key) => {
       const match = key.match(/documents\[(\d+)\]\[(.+)\]/);
       if (match) {
@@ -29,9 +28,16 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
         if (!documents[index]) {
           documents[index] = { type: "", title: "" };
         }
-        documents[index][field as keyof typeof documents[0]] = req.body[key];
+        documents[index][field as keyof (typeof documents)[0]] = req.body[key];
       }
     });
+
+    if (documents.length !== files.length) {
+      return res.status(400).json({
+        message: "Documents metadata does not match uploaded files",
+      });
+    }
+
     const application = await prisma.cofOApplication.findUnique({
       where: { id: cofOApplicationId },
       include: { land: true },
@@ -44,13 +50,16 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
         message: "You do not own this land",
       });
     }
-    if (application.status !== "DRAFT" && application.status !== "NEEDS_CORRECTION") {
+    if (
+      application.status !== "DRAFT" &&
+      application.status !== "NEEDS_CORRECTION"
+    ) {
       return res.status(400).json({
         message: "Application already submitted",
       });
     }
     const uploadResults = await Promise.all(
-      files.map((file) => uploadToCloudinary(file.buffer, file.originalname))
+      files.map((file) => uploadToCloudinary(file.buffer, file.originalname)),
     );
 
     const documentUrls = uploadResults.map((r) => r.secure_url);
@@ -60,11 +69,10 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
         .json({ message: "Document upload failed, try again" });
     }
 
-    
-  const approvers = await prisma.internalUser.findMany({
-    where: { stateId: application.land.stateId },
-    orderBy: { position: "asc" }, // 🔥 FIXED ORDER
-  });
+    const approvers = await prisma.internalUser.findMany({
+      where: { stateId: application.land.stateId },
+      orderBy: { position: "asc" }, // 🔥 FIXED ORDER
+    });
     if (!approvers || approvers.length === 0) {
       return res.status(500).json({
         message: "No approvers configured for this state's CofO workflow",
@@ -73,16 +81,16 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
     const firstApprover = approvers[0];
 
     await prisma.$transaction(async (tx) => {
-       for (let i = 0; i < uploadResults.length; i++) {
-      await tx.cofODocument.create({
-        data: {
-          cofOId: cofOApplicationId,
-          type: documents[i].type,
-          title: documents[i].title,
-          url: uploadResults[i].secure_url,
-        },
-      });
-    }
+      for (let i = 0; i < uploadResults.length; i++) {
+        await tx.cofODocument.create({
+          data: {
+            cofOId: cofOApplicationId,
+            type: documents[i].type,
+            title: documents[i].title,
+            url: uploadResults[i].secure_url,
+          },
+        });
+      }
       await tx.cofOApplication.update({
         where: { id: cofOApplicationId },
         data: { status: "IN_REVIEW", currentReviewerId: firstApprover.id },
@@ -116,7 +124,7 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
         <p>A new Certificate of Occupancy application has been assigned to you.</p>
         <p><b>Application NUmber:</b> ${application.applicationNumber}</p>
           <p>Please log in to review and take action.</p>
-        `
+        `,
       );
     } catch (e) {
       console.warn("email fail", e);
@@ -190,7 +198,6 @@ export async function generateCofONumber() {
   return `COFO-${year}-${padded}`;
 }
 
-
 /**
  * POST /cofo/review/:id
  * Body: { action: 'APPROVE' | 'REJECT', message?: string, signatureUrl?: string }
@@ -215,7 +222,10 @@ export const resubmitCofO = async (req: AuthRequest, res: Response) => {
 
   await prisma.$transaction(async (tx) => {
     for (let i = 0; i < files.length; i++) {
-      const upload = await uploadToCloudinary(files[i].buffer, files[i].originalname);
+      const upload = await uploadToCloudinary(
+        files[i].buffer,
+        files[i].originalname,
+      );
 
       await tx.cofODocument.update({
         where: { id: documents[i].docId },
@@ -254,18 +264,18 @@ export const resubmitCofO = async (req: AuthRequest, res: Response) => {
     });
   });
   try {
-      await sendEmail(
-        cofO.rejectedBy?.email!,
-        "CofO application resubmitted for your review",
-        `
+    await sendEmail(
+      cofO.rejectedBy?.email!,
+      "CofO application resubmitted for your review",
+      `
          <p>Hello ${cofO.rejectedBy?.name},</p>
         <p>The Certificate of Occupancy application with Application Number: ${cofO.applicationNumber} has been resubmitted and awaits your review.</p>
         <p>Please log in to review and take action.</p>
-        `
-      );
-    } catch (e) {
-      console.warn("email fail", e);
-    }
+        `,
+    );
+  } catch (e) {
+    console.warn("email fail", e);
+  }
 
   res.json({ message: "Application resubmitted successfully" });
 };
@@ -286,7 +296,12 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
     // 1) Load CofO application, its land and state info
     const cofO = await prisma.cofOApplication.findUnique({
       where: { id: cofOId },
-      include: { land: { include: { state: true } }, user: true, logs: true,cofODocuments: true  },
+      include: {
+        land: { include: { state: true } },
+        user: true,
+        logs: true,
+        cofODocuments: true,
+      },
     });
     if (!cofO)
       return res.status(404).json({ message: "CofO application not found" });
@@ -345,42 +360,40 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
     });
 
     // 6) If REJECT => set CofO status to REJECTED, notify applicant, and stop pipeline
-  if (action === "REJECT") {
-  await prisma.$transaction(async tx => {
-    await tx.cofOApplication.update({
-      where: { id: cofOId },
-      data: {
-        status: "NEEDS_CORRECTION",
-        rejectedById: reviewer.id,
-        currentReviewerId: reviewer.id,
-      },
-    });
+    if (action === "REJECT") {
+      await prisma.$transaction(async (tx) => {
+        await tx.cofOApplication.update({
+          where: { id: cofOId },
+          data: {
+            status: "NEEDS_CORRECTION",
+            rejectedById: reviewer.id,
+            currentReviewerId: reviewer.id,
+          },
+        });
 
-    await tx.stageLog.create({
-      data: {
-        cofOId,
-        internalUserId: reviewer.id,
-        stageNumber: cofO.logs.length + 1,
-        status: "REJECTED",
-        message,
-      },
-    });
-    await tx.inboxMessage.update({
-      where: { id: inbox.id },
-      data: { status: "REJECTED" },
-    });
+        await tx.stageLog.create({
+          data: {
+            cofOId,
+            internalUserId: reviewer.id,
+            stageNumber: cofO.logs.length + 1,
+            status: "REJECTED",
+            message,
+          },
+        });
+        await tx.inboxMessage.update({
+          where: { id: inbox.id },
+          data: { status: "REJECTED" },
+        });
+      });
 
-  });
+      await sendEmail(
+        cofO.user.email,
+        `C of O with Application Number ${cofO.applicationNumber} requires correction`,
+        `<p>${message}</p>`,
+      );
 
-  await sendEmail(
-    cofO.user.email,
-    `C of O with Application Number ${cofO.applicationNumber} requires correction`,
-    `<p>${message}</p>`
-  );
-
-  return res.json({ message: "Application returned for correction" });
-}
-
+      return res.json({ message: "Application returned for correction" });
+    }
 
     // 7) APPROVED path: move to next approver OR finalize if last
     // get ordered approvers for this state
@@ -413,7 +426,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
         await sendEmail(
           nextApprover.email,
           "New CofO application awaiting your review",
-          `<p>You have a new C of O application awaiting review: <strong>${cofO.applicationNumber}</strong></p>`
+          `<p>You have a new C of O application awaiting review: <strong>${cofO.applicationNumber}</strong></p>`,
         );
       } catch (e) {
         console.warn("email fail", e);
@@ -437,7 +450,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
       await enqueueInbox(
         stateWithGovernor.governor.id,
         cofOId,
-        cofO.cofODocuments
+        cofO.cofODocuments,
       );
       await prisma.cofOApplication.update({
         where: { id: cofOId },
@@ -449,7 +462,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
         await sendEmail(
           stateWithGovernor.governor.email,
           "C of O pending your signature",
-          `<p>CofO Application ${cofO.applicationNumber} has reached final stage and awaits your signature.</p>`
+          `<p>CofO Application ${cofO.applicationNumber} has reached final stage and awaits your signature.</p>`,
         );
       } catch (e) {
         console.warn("notify governor fail", e);
@@ -485,7 +498,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
         cofO.user.email,
         "Your C of O application has been approved",
         `<p>Congratulations — your application ${cofO.id} has been APPROVED and finalized.</p>
-         <p>CofO Number: ${cofONumber}</p>`
+         <p>CofO Number: ${cofONumber}</p>`,
       );
     } catch (e) {
       console.warn("notify applicant fail", e);
@@ -584,7 +597,7 @@ export const batchSignCofOs = async (req: AuthRequest, res: Response) => {
         await sendEmail(
           cofO.user.email,
           "Your CofO has been signed",
-          `<p>Your CofO ${cofO.id} is now approved. CofO Number: ${cofONumber}</p>`
+          `<p>Your CofO ${cofO.id} is now approved. CofO Number: ${cofONumber}</p>`,
         );
       } catch (e) {
         console.warn("email fail", e);
@@ -604,7 +617,13 @@ export const getCofOById = async (req: Request, res: Response) => {
   try {
     const cofO = await prisma.cofOApplication.findUnique({
       where: { id: cofOId },
-      include: { land: true, user: true, logs: true, cofODocuments: true, InboxMessage: true  },
+      include: {
+        land: true,
+        user: true,
+        logs: true,
+        cofODocuments: true,
+        InboxMessage: true,
+      },
     });
     if (!cofO) {
       return res.status(404).json({ message: "CofO application not found" });
