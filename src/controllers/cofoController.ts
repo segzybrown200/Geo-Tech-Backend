@@ -156,7 +156,7 @@ export async function generateCofONumber() {
   // get next sequence value from Postgres, safe for concurrency
   // Prisma raw query returns [{ nextval: '1' }] shape or DB-dependent; use $queryRawUnsafe
   const result = await prisma.$queryRawUnsafe<{ nextval: string }[]>(
-    `SELECT nextval('applicationNumber_seq') as nextval`
+    `SELECT nextval('applicationnumber_seq') as nextval`
   );
 
   const next = result?.[0]?.nextval;
@@ -579,7 +579,7 @@ export const getCofOById = async (req: Request, res: Response) => {
   try {
     const cofO = await prisma.cofOApplication.findUnique({
       where: { id: cofOId },
-      include: { land: true, user: true, logs: true },
+      include: { land: true, user: true, logs: true, cofODocuments: true, InboxMessage: true  },
     });
     if (!cofO) {
       return res.status(404).json({ message: "CofO application not found" });
