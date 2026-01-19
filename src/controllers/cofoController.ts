@@ -153,18 +153,31 @@ async function enqueueInbox(
   });
 }
 export async function generateCofONumber() {
-  // get next sequence value from Postgres, safe for concurrency
-  // Prisma raw query returns [{ nextval: '1' }] shape or DB-dependent; use $queryRawUnsafe
-  const result = await prisma.$queryRawUnsafe<{ nextval: string }[]>(
-    `SELECT nextval('applicationnumber_seq') as nextval`
-  );
-
-  const next = result?.[0]?.nextval;
-  const n = parseInt(next, 10);
   const year = new Date().getFullYear();
-  const padded = String(n).padStart(6, "0");
+
+  const last = await prisma.cofOApplication.findFirst({
+    where: {
+      applicationNumber: {
+        startsWith: `COFO-${year}-`,
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    select: { applicationNumber: true },
+  });
+
+  let next = 1;
+
+  if (last?.applicationNumber) {
+    const parts = last.applicationNumber.split("-");
+    next = parseInt(parts[2], 10) + 1;
+  }
+
+  const padded = String(next).padStart(6, "0");
   return `COFO-${year}-${padded}`;
 }
+
 
 /**
  * POST /cofo/review/:id

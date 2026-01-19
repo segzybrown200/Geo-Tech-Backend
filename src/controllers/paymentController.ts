@@ -78,7 +78,11 @@ export const verifyPayment = async (req: Request, res: Response) => {
     where: { landId: payment.landId, userId: payment.userId },
   });
   if (existing) {
-    return res.json({ cofOApplicationId: existing.id });
+    return res.json({
+      message: "Payment verified successfully. CofO application already exists.",
+      cofOApplicationId: existing.id,
+      applicationNumber: existing.applicationNumber ,
+    });
   }
 
 
