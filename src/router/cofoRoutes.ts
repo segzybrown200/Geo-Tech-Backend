@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { applyForCofO, getCofOById, resubmitCofO, reviewCofO } from '../controllers/cofoController';
+import { applyForCofO, getCofOById, resubmitCofO, reviewCofO, getMyCofOApplications } from '../controllers/cofoController';
 import { requireAuth, verifyToken } from '../middlewares/authMiddleware';
 import { initializePayment, verifyPayment } from '../controllers/paymentController';
 
@@ -13,4 +13,6 @@ router.post("/init", verifyToken, initializePayment);
 router.get("/get-applications/:cofOId", requireAuth, getCofOById )
 router.get("/verify", verifyPayment);
 router.post("/re-submit/:cofOId", requireAuth, upload.array('documents'), resubmitCofO);
+router.get("/my-cofo-applications", requireAuth, getMyCofOApplications);
+
 export default router;

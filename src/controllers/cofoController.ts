@@ -635,3 +635,18 @@ export const getCofOById = async (req: Request, res: Response) => {
       .json({ message: "Error retrieving CofO application", error: err });
   }
 };
+export const getMyCofOApplications = async (req: AuthRequest, res: Response) => {
+  const userId = req.user.sub;
+
+  const applications = await prisma.cofOApplication.findMany({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+    include: {
+      land: true,
+      currentReviewer: true,
+      logs: { orderBy: { arrivedAt: "asc" } },
+    },
+  });
+
+  res.json(applications);
+};
