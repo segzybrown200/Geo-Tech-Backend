@@ -12,7 +12,7 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user.sub;
     const { cofOApplicationId } = req.params;
-      const documents = req.body.documents; // [{ type, title }]
+
     const files = req.files as Express.Multer.File[];
 
     if (!cofOApplicationId || !files?.length) {
@@ -20,6 +20,18 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
         message: "CofO ID and documents are required",
       });
     }
+    const documents: { type: string; title: string }[] = [];
+    Object.keys(req.body).forEach((key) => {
+      const match = key.match(/documents\[(\d+)\]\[(.+)\]/);
+      if (match) {
+        const index = parseInt(match[1]);
+        const field = match[2];
+        if (!documents[index]) {
+          documents[index] = { type: "", title: "" };
+        }
+        documents[index][field as keyof typeof documents[0]] = req.body[key];
+      }
+    });
     const application = await prisma.cofOApplication.findUnique({
       where: { id: cofOApplicationId },
       include: { land: true },
