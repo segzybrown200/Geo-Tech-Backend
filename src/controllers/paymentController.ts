@@ -3,6 +3,7 @@ import axios from "axios";
 import { Response, Request } from "express";
 import { AuthRequest } from "../middlewares/authMiddleware";
 import prisma from "../lib/prisma";
+import { generateCofONumber } from "./cofoController";
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET!;
 const PAYSTACK_PUBLIC_KEY = process.env.PAYSTACK_PUBLIC_KEY!;
 export const initializePayment = async (req: AuthRequest, res: Response) => {
@@ -72,29 +73,33 @@ export const verifyPayment = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Payment record not found" });
     }
 
+      // ✅ prevent duplicate CofO
+  const existing = await prisma.cofOApplication.findFirst({
+    where: { landId: payment.landId, userId: payment.userId },
+  });
+  if (existing) {
+    return res.json({ cofOApplicationId: existing.id });
+  }
 
+
+  const cofO = await prisma.cofOApplication.create({
+    data: {
+      userId: payment.userId,
+      landId: payment.landId,
+      status: "DRAFT",
+      applicationNumber: await generateCofONumber(),
+    },
+  });
 
     await prisma.payment.update({
       where: { id: payment.id },
       data: { status: "SUCCESS" },
     });
-    const cofO = await prisma.cofOApplication.create({
-      data: {
-        userId: payment.userId,
-        landId: payment.landId,
-        status: "DRAFT",
-      },
-    });
-      const applicationNumber = `COFO-${new Date().getFullYear()}-${cofO.id}`;
-
-    await prisma.cofOApplication.update({
-      where: { id: cofO.id },
-      data: { applicationNumber },
-    });
+    
     res.json({
       message: "Payment verified successfully. You can now upload documents.",
       cofOApplicationId: cofO.id,
-      applicationNumber,
+      applicationNumber: cofO.applicationNumber ,
     });
   } catch (err) {
     console.error(err);

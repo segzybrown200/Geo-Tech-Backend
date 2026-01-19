@@ -46,7 +46,6 @@ export type InboxMessageCountAggregateOutputType = {
   id: number
   receiverId: number
   cofOId: number
-  documentList: number
   status: number
   timestamp: number
   messageLink: number
@@ -76,7 +75,6 @@ export type InboxMessageCountAggregateInputType = {
   id?: true
   receiverId?: true
   cofOId?: true
-  documentList?: true
   status?: true
   timestamp?: true
   messageLink?: true
@@ -159,7 +157,6 @@ export type InboxMessageGroupByOutputType = {
   id: string
   receiverId: string
   cofOId: string
-  documentList: string[]
   status: string
   timestamp: Date
   messageLink: string
@@ -190,10 +187,10 @@ export type InboxMessageWhereInput = {
   id?: Prisma.StringFilter<"InboxMessage"> | string
   receiverId?: Prisma.UuidFilter<"InboxMessage"> | string
   cofOId?: Prisma.UuidFilter<"InboxMessage"> | string
-  documentList?: Prisma.StringNullableListFilter<"InboxMessage">
   status?: Prisma.StringFilter<"InboxMessage"> | string
   timestamp?: Prisma.DateTimeFilter<"InboxMessage"> | Date | string
   messageLink?: Prisma.StringFilter<"InboxMessage"> | string
+  documentList?: Prisma.CofODocumentListRelationFilter
   internalUser?: Prisma.XOR<Prisma.InternalUserScalarRelationFilter, Prisma.InternalUserWhereInput>
   cofO?: Prisma.XOR<Prisma.CofOApplicationScalarRelationFilter, Prisma.CofOApplicationWhereInput>
 }
@@ -202,10 +199,10 @@ export type InboxMessageOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   receiverId?: Prisma.SortOrder
   cofOId?: Prisma.SortOrder
-  documentList?: Prisma.SortOrder
   status?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
   messageLink?: Prisma.SortOrder
+  documentList?: Prisma.CofODocumentOrderByRelationAggregateInput
   internalUser?: Prisma.InternalUserOrderByWithRelationInput
   cofO?: Prisma.CofOApplicationOrderByWithRelationInput
 }
@@ -217,10 +214,10 @@ export type InboxMessageWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.InboxMessageWhereInput | Prisma.InboxMessageWhereInput[]
   receiverId?: Prisma.UuidFilter<"InboxMessage"> | string
   cofOId?: Prisma.UuidFilter<"InboxMessage"> | string
-  documentList?: Prisma.StringNullableListFilter<"InboxMessage">
   status?: Prisma.StringFilter<"InboxMessage"> | string
   timestamp?: Prisma.DateTimeFilter<"InboxMessage"> | Date | string
   messageLink?: Prisma.StringFilter<"InboxMessage"> | string
+  documentList?: Prisma.CofODocumentListRelationFilter
   internalUser?: Prisma.XOR<Prisma.InternalUserScalarRelationFilter, Prisma.InternalUserWhereInput>
   cofO?: Prisma.XOR<Prisma.CofOApplicationScalarRelationFilter, Prisma.CofOApplicationWhereInput>
 }, "id">
@@ -229,7 +226,6 @@ export type InboxMessageOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   receiverId?: Prisma.SortOrder
   cofOId?: Prisma.SortOrder
-  documentList?: Prisma.SortOrder
   status?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
   messageLink?: Prisma.SortOrder
@@ -245,7 +241,6 @@ export type InboxMessageScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"InboxMessage"> | string
   receiverId?: Prisma.UuidWithAggregatesFilter<"InboxMessage"> | string
   cofOId?: Prisma.UuidWithAggregatesFilter<"InboxMessage"> | string
-  documentList?: Prisma.StringNullableListFilter<"InboxMessage">
   status?: Prisma.StringWithAggregatesFilter<"InboxMessage"> | string
   timestamp?: Prisma.DateTimeWithAggregatesFilter<"InboxMessage"> | Date | string
   messageLink?: Prisma.StringWithAggregatesFilter<"InboxMessage"> | string
@@ -253,10 +248,10 @@ export type InboxMessageScalarWhereWithAggregatesInput = {
 
 export type InboxMessageCreateInput = {
   id?: string
-  documentList?: Prisma.InboxMessageCreatedocumentListInput | string[]
   status: string
   timestamp?: Date | string
   messageLink: string
+  documentList?: Prisma.CofODocumentCreateNestedManyWithoutInboxMessageInput
   internalUser: Prisma.InternalUserCreateNestedOneWithoutInboxMessageInput
   cofO: Prisma.CofOApplicationCreateNestedOneWithoutInboxMessageInput
 }
@@ -265,18 +260,18 @@ export type InboxMessageUncheckedCreateInput = {
   id?: string
   receiverId: string
   cofOId: string
-  documentList?: Prisma.InboxMessageCreatedocumentListInput | string[]
   status: string
   timestamp?: Date | string
   messageLink: string
+  documentList?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutInboxMessageInput
 }
 
 export type InboxMessageUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  documentList?: Prisma.InboxMessageUpdatedocumentListInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messageLink?: Prisma.StringFieldUpdateOperationsInput | string
+  documentList?: Prisma.CofODocumentUpdateManyWithoutInboxMessageNestedInput
   internalUser?: Prisma.InternalUserUpdateOneRequiredWithoutInboxMessageNestedInput
   cofO?: Prisma.CofOApplicationUpdateOneRequiredWithoutInboxMessageNestedInput
 }
@@ -285,17 +280,16 @@ export type InboxMessageUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receiverId?: Prisma.StringFieldUpdateOperationsInput | string
   cofOId?: Prisma.StringFieldUpdateOperationsInput | string
-  documentList?: Prisma.InboxMessageUpdatedocumentListInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messageLink?: Prisma.StringFieldUpdateOperationsInput | string
+  documentList?: Prisma.CofODocumentUncheckedUpdateManyWithoutInboxMessageNestedInput
 }
 
 export type InboxMessageCreateManyInput = {
   id?: string
   receiverId: string
   cofOId: string
-  documentList?: Prisma.InboxMessageCreatedocumentListInput | string[]
   status: string
   timestamp?: Date | string
   messageLink: string
@@ -303,7 +297,6 @@ export type InboxMessageCreateManyInput = {
 
 export type InboxMessageUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  documentList?: Prisma.InboxMessageUpdatedocumentListInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messageLink?: Prisma.StringFieldUpdateOperationsInput | string
@@ -313,7 +306,6 @@ export type InboxMessageUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receiverId?: Prisma.StringFieldUpdateOperationsInput | string
   cofOId?: Prisma.StringFieldUpdateOperationsInput | string
-  documentList?: Prisma.InboxMessageUpdatedocumentListInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messageLink?: Prisma.StringFieldUpdateOperationsInput | string
@@ -329,11 +321,15 @@ export type InboxMessageOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type InboxMessageNullableScalarRelationFilter = {
+  is?: Prisma.InboxMessageWhereInput | null
+  isNot?: Prisma.InboxMessageWhereInput | null
+}
+
 export type InboxMessageCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   receiverId?: Prisma.SortOrder
   cofOId?: Prisma.SortOrder
-  documentList?: Prisma.SortOrder
   status?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
   messageLink?: Prisma.SortOrder
@@ -441,31 +437,38 @@ export type InboxMessageUncheckedUpdateManyWithoutCofONestedInput = {
   deleteMany?: Prisma.InboxMessageScalarWhereInput | Prisma.InboxMessageScalarWhereInput[]
 }
 
-export type InboxMessageCreatedocumentListInput = {
-  set: string[]
+export type InboxMessageCreateNestedOneWithoutDocumentListInput = {
+  create?: Prisma.XOR<Prisma.InboxMessageCreateWithoutDocumentListInput, Prisma.InboxMessageUncheckedCreateWithoutDocumentListInput>
+  connectOrCreate?: Prisma.InboxMessageCreateOrConnectWithoutDocumentListInput
+  connect?: Prisma.InboxMessageWhereUniqueInput
 }
 
-export type InboxMessageUpdatedocumentListInput = {
-  set?: string[]
-  push?: string | string[]
+export type InboxMessageUpdateOneWithoutDocumentListNestedInput = {
+  create?: Prisma.XOR<Prisma.InboxMessageCreateWithoutDocumentListInput, Prisma.InboxMessageUncheckedCreateWithoutDocumentListInput>
+  connectOrCreate?: Prisma.InboxMessageCreateOrConnectWithoutDocumentListInput
+  upsert?: Prisma.InboxMessageUpsertWithoutDocumentListInput
+  disconnect?: Prisma.InboxMessageWhereInput | boolean
+  delete?: Prisma.InboxMessageWhereInput | boolean
+  connect?: Prisma.InboxMessageWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InboxMessageUpdateToOneWithWhereWithoutDocumentListInput, Prisma.InboxMessageUpdateWithoutDocumentListInput>, Prisma.InboxMessageUncheckedUpdateWithoutDocumentListInput>
 }
 
 export type InboxMessageCreateWithoutInternalUserInput = {
   id?: string
-  documentList?: Prisma.InboxMessageCreatedocumentListInput | string[]
   status: string
   timestamp?: Date | string
   messageLink: string
+  documentList?: Prisma.CofODocumentCreateNestedManyWithoutInboxMessageInput
   cofO: Prisma.CofOApplicationCreateNestedOneWithoutInboxMessageInput
 }
 
 export type InboxMessageUncheckedCreateWithoutInternalUserInput = {
   id?: string
   cofOId: string
-  documentList?: Prisma.InboxMessageCreatedocumentListInput | string[]
   status: string
   timestamp?: Date | string
   messageLink: string
+  documentList?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutInboxMessageInput
 }
 
 export type InboxMessageCreateOrConnectWithoutInternalUserInput = {
@@ -501,7 +504,6 @@ export type InboxMessageScalarWhereInput = {
   id?: Prisma.StringFilter<"InboxMessage"> | string
   receiverId?: Prisma.UuidFilter<"InboxMessage"> | string
   cofOId?: Prisma.UuidFilter<"InboxMessage"> | string
-  documentList?: Prisma.StringNullableListFilter<"InboxMessage">
   status?: Prisma.StringFilter<"InboxMessage"> | string
   timestamp?: Prisma.DateTimeFilter<"InboxMessage"> | Date | string
   messageLink?: Prisma.StringFilter<"InboxMessage"> | string
@@ -509,20 +511,20 @@ export type InboxMessageScalarWhereInput = {
 
 export type InboxMessageCreateWithoutCofOInput = {
   id?: string
-  documentList?: Prisma.InboxMessageCreatedocumentListInput | string[]
   status: string
   timestamp?: Date | string
   messageLink: string
+  documentList?: Prisma.CofODocumentCreateNestedManyWithoutInboxMessageInput
   internalUser: Prisma.InternalUserCreateNestedOneWithoutInboxMessageInput
 }
 
 export type InboxMessageUncheckedCreateWithoutCofOInput = {
   id?: string
   receiverId: string
-  documentList?: Prisma.InboxMessageCreatedocumentListInput | string[]
   status: string
   timestamp?: Date | string
   messageLink: string
+  documentList?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutInboxMessageInput
 }
 
 export type InboxMessageCreateOrConnectWithoutCofOInput = {
@@ -551,10 +553,61 @@ export type InboxMessageUpdateManyWithWhereWithoutCofOInput = {
   data: Prisma.XOR<Prisma.InboxMessageUpdateManyMutationInput, Prisma.InboxMessageUncheckedUpdateManyWithoutCofOInput>
 }
 
+export type InboxMessageCreateWithoutDocumentListInput = {
+  id?: string
+  status: string
+  timestamp?: Date | string
+  messageLink: string
+  internalUser: Prisma.InternalUserCreateNestedOneWithoutInboxMessageInput
+  cofO: Prisma.CofOApplicationCreateNestedOneWithoutInboxMessageInput
+}
+
+export type InboxMessageUncheckedCreateWithoutDocumentListInput = {
+  id?: string
+  receiverId: string
+  cofOId: string
+  status: string
+  timestamp?: Date | string
+  messageLink: string
+}
+
+export type InboxMessageCreateOrConnectWithoutDocumentListInput = {
+  where: Prisma.InboxMessageWhereUniqueInput
+  create: Prisma.XOR<Prisma.InboxMessageCreateWithoutDocumentListInput, Prisma.InboxMessageUncheckedCreateWithoutDocumentListInput>
+}
+
+export type InboxMessageUpsertWithoutDocumentListInput = {
+  update: Prisma.XOR<Prisma.InboxMessageUpdateWithoutDocumentListInput, Prisma.InboxMessageUncheckedUpdateWithoutDocumentListInput>
+  create: Prisma.XOR<Prisma.InboxMessageCreateWithoutDocumentListInput, Prisma.InboxMessageUncheckedCreateWithoutDocumentListInput>
+  where?: Prisma.InboxMessageWhereInput
+}
+
+export type InboxMessageUpdateToOneWithWhereWithoutDocumentListInput = {
+  where?: Prisma.InboxMessageWhereInput
+  data: Prisma.XOR<Prisma.InboxMessageUpdateWithoutDocumentListInput, Prisma.InboxMessageUncheckedUpdateWithoutDocumentListInput>
+}
+
+export type InboxMessageUpdateWithoutDocumentListInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  messageLink?: Prisma.StringFieldUpdateOperationsInput | string
+  internalUser?: Prisma.InternalUserUpdateOneRequiredWithoutInboxMessageNestedInput
+  cofO?: Prisma.CofOApplicationUpdateOneRequiredWithoutInboxMessageNestedInput
+}
+
+export type InboxMessageUncheckedUpdateWithoutDocumentListInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  receiverId?: Prisma.StringFieldUpdateOperationsInput | string
+  cofOId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  messageLink?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
 export type InboxMessageCreateManyInternalUserInput = {
   id?: string
   cofOId: string
-  documentList?: Prisma.InboxMessageCreatedocumentListInput | string[]
   status: string
   timestamp?: Date | string
   messageLink: string
@@ -562,26 +615,25 @@ export type InboxMessageCreateManyInternalUserInput = {
 
 export type InboxMessageUpdateWithoutInternalUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  documentList?: Prisma.InboxMessageUpdatedocumentListInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messageLink?: Prisma.StringFieldUpdateOperationsInput | string
+  documentList?: Prisma.CofODocumentUpdateManyWithoutInboxMessageNestedInput
   cofO?: Prisma.CofOApplicationUpdateOneRequiredWithoutInboxMessageNestedInput
 }
 
 export type InboxMessageUncheckedUpdateWithoutInternalUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   cofOId?: Prisma.StringFieldUpdateOperationsInput | string
-  documentList?: Prisma.InboxMessageUpdatedocumentListInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messageLink?: Prisma.StringFieldUpdateOperationsInput | string
+  documentList?: Prisma.CofODocumentUncheckedUpdateManyWithoutInboxMessageNestedInput
 }
 
 export type InboxMessageUncheckedUpdateManyWithoutInternalUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   cofOId?: Prisma.StringFieldUpdateOperationsInput | string
-  documentList?: Prisma.InboxMessageUpdatedocumentListInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messageLink?: Prisma.StringFieldUpdateOperationsInput | string
@@ -590,7 +642,6 @@ export type InboxMessageUncheckedUpdateManyWithoutInternalUserInput = {
 export type InboxMessageCreateManyCofOInput = {
   id?: string
   receiverId: string
-  documentList?: Prisma.InboxMessageCreatedocumentListInput | string[]
   status: string
   timestamp?: Date | string
   messageLink: string
@@ -598,50 +649,78 @@ export type InboxMessageCreateManyCofOInput = {
 
 export type InboxMessageUpdateWithoutCofOInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  documentList?: Prisma.InboxMessageUpdatedocumentListInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messageLink?: Prisma.StringFieldUpdateOperationsInput | string
+  documentList?: Prisma.CofODocumentUpdateManyWithoutInboxMessageNestedInput
   internalUser?: Prisma.InternalUserUpdateOneRequiredWithoutInboxMessageNestedInput
 }
 
 export type InboxMessageUncheckedUpdateWithoutCofOInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receiverId?: Prisma.StringFieldUpdateOperationsInput | string
-  documentList?: Prisma.InboxMessageUpdatedocumentListInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messageLink?: Prisma.StringFieldUpdateOperationsInput | string
+  documentList?: Prisma.CofODocumentUncheckedUpdateManyWithoutInboxMessageNestedInput
 }
 
 export type InboxMessageUncheckedUpdateManyWithoutCofOInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   receiverId?: Prisma.StringFieldUpdateOperationsInput | string
-  documentList?: Prisma.InboxMessageUpdatedocumentListInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messageLink?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
+
+/**
+ * Count Type InboxMessageCountOutputType
+ */
+
+export type InboxMessageCountOutputType = {
+  documentList: number
+}
+
+export type InboxMessageCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  documentList?: boolean | InboxMessageCountOutputTypeCountDocumentListArgs
+}
+
+/**
+ * InboxMessageCountOutputType without action
+ */
+export type InboxMessageCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InboxMessageCountOutputType
+   */
+  select?: Prisma.InboxMessageCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * InboxMessageCountOutputType without action
+ */
+export type InboxMessageCountOutputTypeCountDocumentListArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CofODocumentWhereInput
+}
 
 
 export type InboxMessageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   receiverId?: boolean
   cofOId?: boolean
-  documentList?: boolean
   status?: boolean
   timestamp?: boolean
   messageLink?: boolean
+  documentList?: boolean | Prisma.InboxMessage$documentListArgs<ExtArgs>
   internalUser?: boolean | Prisma.InternalUserDefaultArgs<ExtArgs>
   cofO?: boolean | Prisma.CofOApplicationDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.InboxMessageCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["inboxMessage"]>
 
 export type InboxMessageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   receiverId?: boolean
   cofOId?: boolean
-  documentList?: boolean
   status?: boolean
   timestamp?: boolean
   messageLink?: boolean
@@ -653,7 +732,6 @@ export type InboxMessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   receiverId?: boolean
   cofOId?: boolean
-  documentList?: boolean
   status?: boolean
   timestamp?: boolean
   messageLink?: boolean
@@ -665,16 +743,17 @@ export type InboxMessageSelectScalar = {
   id?: boolean
   receiverId?: boolean
   cofOId?: boolean
-  documentList?: boolean
   status?: boolean
   timestamp?: boolean
   messageLink?: boolean
 }
 
-export type InboxMessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "receiverId" | "cofOId" | "documentList" | "status" | "timestamp" | "messageLink", ExtArgs["result"]["inboxMessage"]>
+export type InboxMessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "receiverId" | "cofOId" | "status" | "timestamp" | "messageLink", ExtArgs["result"]["inboxMessage"]>
 export type InboxMessageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  documentList?: boolean | Prisma.InboxMessage$documentListArgs<ExtArgs>
   internalUser?: boolean | Prisma.InternalUserDefaultArgs<ExtArgs>
   cofO?: boolean | Prisma.CofOApplicationDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.InboxMessageCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InboxMessageIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   internalUser?: boolean | Prisma.InternalUserDefaultArgs<ExtArgs>
@@ -688,6 +767,7 @@ export type InboxMessageIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types
 export type $InboxMessagePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "InboxMessage"
   objects: {
+    documentList: Prisma.$CofODocumentPayload<ExtArgs>[]
     internalUser: Prisma.$InternalUserPayload<ExtArgs>
     cofO: Prisma.$CofOApplicationPayload<ExtArgs>
   }
@@ -695,7 +775,6 @@ export type $InboxMessagePayload<ExtArgs extends runtime.Types.Extensions.Intern
     id: string
     receiverId: string
     cofOId: string
-    documentList: string[]
     status: string
     timestamp: Date
     messageLink: string
@@ -1093,6 +1172,7 @@ readonly fields: InboxMessageFieldRefs;
  */
 export interface Prisma__InboxMessageClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  documentList<T extends Prisma.InboxMessage$documentListArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InboxMessage$documentListArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofODocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   internalUser<T extends Prisma.InternalUserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUserDefaultArgs<ExtArgs>>): Prisma.Prisma__InternalUserClient<runtime.Types.Result.GetResult<Prisma.$InternalUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   cofO<T extends Prisma.CofOApplicationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplicationDefaultArgs<ExtArgs>>): Prisma.Prisma__CofOApplicationClient<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1127,7 +1207,6 @@ export interface InboxMessageFieldRefs {
   readonly id: Prisma.FieldRef<"InboxMessage", 'String'>
   readonly receiverId: Prisma.FieldRef<"InboxMessage", 'String'>
   readonly cofOId: Prisma.FieldRef<"InboxMessage", 'String'>
-  readonly documentList: Prisma.FieldRef<"InboxMessage", 'String[]'>
   readonly status: Prisma.FieldRef<"InboxMessage", 'String'>
   readonly timestamp: Prisma.FieldRef<"InboxMessage", 'DateTime'>
   readonly messageLink: Prisma.FieldRef<"InboxMessage", 'String'>
@@ -1524,6 +1603,30 @@ export type InboxMessageDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many InboxMessages to delete.
    */
   limit?: number
+}
+
+/**
+ * InboxMessage.documentList
+ */
+export type InboxMessage$documentListArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CofODocument
+   */
+  select?: Prisma.CofODocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CofODocument
+   */
+  omit?: Prisma.CofODocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CofODocumentInclude<ExtArgs> | null
+  where?: Prisma.CofODocumentWhereInput
+  orderBy?: Prisma.CofODocumentOrderByWithRelationInput | Prisma.CofODocumentOrderByWithRelationInput[]
+  cursor?: Prisma.CofODocumentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CofODocumentScalarFieldEnum | Prisma.CofODocumentScalarFieldEnum[]
 }
 
 /**

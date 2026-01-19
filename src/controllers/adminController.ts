@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {  ApplicationStatus } from "../generated/client/client";
+import {  CofOStatus } from "../generated/client/client";
 import prisma from "../lib/prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -24,7 +24,7 @@ export const updateApplicationStatus = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { status } = req.body;
 
-  if (!Object.values(ApplicationStatus).includes(status)) {
+  if (!Object.values(CofOStatus).includes(status)) {
     return res.status(400).json({ message: "Invalid status" });
   }
 
@@ -216,8 +216,8 @@ export const getPayments = async (req:AuthRequest, res:Response) => {
 export const getAnalytics = async (req:AuthRequest, res:Response) => {
   const totalApplications = await prisma.cofOApplication.count();
   const approved = await prisma.cofOApplication.count({ where: { status: "APPROVED" } });
-  const rejected = await prisma.cofOApplication.count({ where: { status: "REJECTED" } });
-  const pending = await prisma.cofOApplication.count({ where: { status: "PENDING" } });
+  const rejected = await prisma.cofOApplication.count({ where: { status: "NEEDS_CORRECTION" } });
+  const pending = await prisma.cofOApplication.count({ where: { status: "DRAFT" } });
   const review = await prisma.cofOApplication.count({ where: { status: "IN_REVIEW" } });
   const revenue = await prisma.payment.aggregate({
     _sum: {

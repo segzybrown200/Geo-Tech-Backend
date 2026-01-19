@@ -9,15 +9,19 @@
 * 🟢 You can import this file directly.
 */
 
-export const ApplicationStatus = {
-  PENDING: 'PENDING',
+export const CofOStatus = {
+  DRAFT: 'DRAFT',
+  PAYMENT_PENDING: 'PAYMENT_PENDING',
+  PAYMENT_CONFIRMED: 'PAYMENT_CONFIRMED',
+  DOCUMENTS_SUBMITTED: 'DOCUMENTS_SUBMITTED',
   IN_REVIEW: 'IN_REVIEW',
+  NEEDS_CORRECTION: 'NEEDS_CORRECTION',
+  RESUBMITTED: 'RESUBMITTED',
   APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED',
-  DRAFT: 'DRAFT'
+  REJECTED_FINAL: 'REJECTED_FINAL'
 } as const
 
-export type ApplicationStatus = (typeof ApplicationStatus)[keyof typeof ApplicationStatus]
+export type CofOStatus = (typeof CofOStatus)[keyof typeof CofOStatus]
 
 
 export const Role = {

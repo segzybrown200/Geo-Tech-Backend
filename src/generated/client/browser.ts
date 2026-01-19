@@ -78,6 +78,11 @@ export type OwnershipHistory = Prisma.OwnershipHistoryModel
  */
 export type CofOApplication = Prisma.CofOApplicationModel
 /**
+ * Model CofODocument
+ * 
+ */
+export type CofODocument = Prisma.CofODocumentModel
+/**
  * Model Payment
  * 
  */
@@ -102,6 +107,11 @@ export type EmailVerificationToken = Prisma.EmailVerificationTokenModel
  * 
  */
 export type CofOAuditLog = Prisma.CofOAuditLogModel
+/**
+ * Model ApprovalAudit
+ * 
+ */
+export type ApprovalAudit = Prisma.ApprovalAuditModel
 /**
  * Model PasswordResetToken
  * 

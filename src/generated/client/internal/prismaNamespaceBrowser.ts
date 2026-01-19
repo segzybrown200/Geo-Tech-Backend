@@ -63,11 +63,13 @@ export const ModelName = {
   TransferVerification: 'TransferVerification',
   OwnershipHistory: 'OwnershipHistory',
   CofOApplication: 'CofOApplication',
+  CofODocument: 'CofODocument',
   Payment: 'Payment',
   StageLog: 'StageLog',
   InboxMessage: 'InboxMessage',
   EmailVerificationToken: 'EmailVerificationToken',
   CofOAuditLog: 'CofOAuditLog',
+  ApprovalAudit: 'ApprovalAudit',
   PasswordResetToken: 'PasswordResetToken'
 } as const
 
@@ -250,15 +252,32 @@ export const CofOApplicationScalarFieldEnum = {
   userId: 'userId',
   landId: 'landId',
   status: 'status',
-  documentUrls: 'documentUrls',
   cofONumber: 'cofONumber',
   signedAt: 'signedAt',
   createdAt: 'createdAt',
+  rejectedById: 'rejectedById',
+  approvedById: 'approvedById',
+  revisionCount: 'revisionCount',
+  currentReviewerId: 'currentReviewerId',
   governorSignatureUrl: 'governorSignatureUrl',
-  applicationNumber: 'applicationNumber'
+  applicationNumber: 'applicationNumber',
+  internalUserId: 'internalUserId'
 } as const
 
 export type CofOApplicationScalarFieldEnum = (typeof CofOApplicationScalarFieldEnum)[keyof typeof CofOApplicationScalarFieldEnum]
+
+
+export const CofODocumentScalarFieldEnum = {
+  id: 'id',
+  cofOId: 'cofOId',
+  type: 'type',
+  title: 'title',
+  url: 'url',
+  createdAt: 'createdAt',
+  inboxMessageId: 'inboxMessageId'
+} as const
+
+export type CofODocumentScalarFieldEnum = (typeof CofODocumentScalarFieldEnum)[keyof typeof CofODocumentScalarFieldEnum]
 
 
 export const PaymentScalarFieldEnum = {
@@ -294,7 +313,6 @@ export const InboxMessageScalarFieldEnum = {
   id: 'id',
   receiverId: 'receiverId',
   cofOId: 'cofOId',
-  documentList: 'documentList',
   status: 'status',
   timestamp: 'timestamp',
   messageLink: 'messageLink'
@@ -325,6 +343,18 @@ export const CofOAuditLogScalarFieldEnum = {
 } as const
 
 export type CofOAuditLogScalarFieldEnum = (typeof CofOAuditLogScalarFieldEnum)[keyof typeof CofOAuditLogScalarFieldEnum]
+
+
+export const ApprovalAuditScalarFieldEnum = {
+  id: 'id',
+  cofOId: 'cofOId',
+  actorId: 'actorId',
+  action: 'action',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type ApprovalAuditScalarFieldEnum = (typeof ApprovalAuditScalarFieldEnum)[keyof typeof ApprovalAuditScalarFieldEnum]
 
 
 export const PasswordResetTokenScalarFieldEnum = {

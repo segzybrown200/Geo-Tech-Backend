@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "ApplicationStatus" AS ENUM ('PENDING', 'IN_REVIEW', 'APPROVED', 'REJECTED', 'DRAFT');
+CREATE TYPE "CofOStatus" AS ENUM ('DRAFT', 'PAYMENT_PENDING', 'PAYMENT_CONFIRMED', 'DOCUMENTS_SUBMITTED', 'IN_REVIEW', 'NEEDS_CORRECTION', 'RESUBMITTED', 'APPROVED', 'REJECTED_FINAL');
 
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('USER', 'APPROVER', 'ADMIN', 'GOVERNOR');
@@ -175,15 +175,32 @@ CREATE TABLE "CofOApplication" (
     "id" UUID NOT NULL,
     "userId" UUID NOT NULL,
     "landId" UUID NOT NULL,
-    "status" "ApplicationStatus" NOT NULL DEFAULT 'PENDING',
-    "documentUrls" TEXT[],
+    "status" "CofOStatus" NOT NULL DEFAULT 'DRAFT',
     "cofONumber" TEXT,
     "signedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "rejectedById" UUID,
+    "approvedById" UUID,
+    "revisionCount" INTEGER NOT NULL DEFAULT 0,
+    "currentReviewerId" UUID,
     "governorSignatureUrl" TEXT,
     "applicationNumber" TEXT,
+    "internalUserId" UUID,
 
     CONSTRAINT "CofOApplication_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CofODocument" (
+    "id" UUID NOT NULL,
+    "cofOId" UUID NOT NULL,
+    "type" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "inboxMessageId" UUID,
+
+    CONSTRAINT "CofODocument_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -217,10 +234,9 @@ CREATE TABLE "StageLog" (
 
 -- CreateTable
 CREATE TABLE "InboxMessage" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "receiverId" UUID NOT NULL,
     "cofOId" UUID NOT NULL,
-    "documentList" TEXT[],
     "status" TEXT NOT NULL,
     "timestamp" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "messageLink" TEXT NOT NULL,
@@ -250,6 +266,18 @@ CREATE TABLE "CofOAuditLog" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "CofOAuditLog_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ApprovalAudit" (
+    "id" TEXT NOT NULL,
+    "cofOId" UUID NOT NULL,
+    "actorId" TEXT NOT NULL,
+    "action" "CofOStatus" NOT NULL,
+    "comment" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "ApprovalAudit_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -327,6 +355,24 @@ ALTER TABLE "CofOApplication" ADD CONSTRAINT "CofOApplication_userId_fkey" FOREI
 ALTER TABLE "CofOApplication" ADD CONSTRAINT "CofOApplication_landId_fkey" FOREIGN KEY ("landId") REFERENCES "LandRegistration"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "CofOApplication" ADD CONSTRAINT "CofOApplication_rejectedById_fkey" FOREIGN KEY ("rejectedById") REFERENCES "InternalUser"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CofOApplication" ADD CONSTRAINT "CofOApplication_approvedById_fkey" FOREIGN KEY ("approvedById") REFERENCES "InternalUser"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CofOApplication" ADD CONSTRAINT "CofOApplication_currentReviewerId_fkey" FOREIGN KEY ("currentReviewerId") REFERENCES "InternalUser"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CofOApplication" ADD CONSTRAINT "CofOApplication_internalUserId_fkey" FOREIGN KEY ("internalUserId") REFERENCES "InternalUser"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CofODocument" ADD CONSTRAINT "CofODocument_cofOId_fkey" FOREIGN KEY ("cofOId") REFERENCES "CofOApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CofODocument" ADD CONSTRAINT "CofODocument_inboxMessageId_fkey" FOREIGN KEY ("inboxMessageId") REFERENCES "InboxMessage"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Payment" ADD CONSTRAINT "Payment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -349,6 +395,9 @@ ALTER TABLE "InboxMessage" ADD CONSTRAINT "InboxMessage_cofOId_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "CofOAuditLog" ADD CONSTRAINT "CofOAuditLog_cofOId_fkey" FOREIGN KEY ("cofOId") REFERENCES "CofOApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ApprovalAudit" ADD CONSTRAINT "ApprovalAudit_cofOId_fkey" FOREIGN KEY ("cofOId") REFERENCES "CofOApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PasswordResetToken" ADD CONSTRAINT "PasswordResetToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

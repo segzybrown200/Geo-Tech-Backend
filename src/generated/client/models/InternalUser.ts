@@ -337,6 +337,10 @@ export type InternalUserWhereInput = {
   InboxMessage?: Prisma.InboxMessageListRelationFilter
   StateGovernor?: Prisma.XOR<Prisma.StateNullableScalarRelationFilter, Prisma.StateWhereInput> | null
   otps?: Prisma.InternalOtpListRelationFilter
+  cofOApplications?: Prisma.CofOApplicationListRelationFilter
+  rejectedApplications?: Prisma.CofOApplicationListRelationFilter
+  approvedApplications?: Prisma.CofOApplicationListRelationFilter
+  reviewingApplications?: Prisma.CofOApplicationListRelationFilter
 }
 
 export type InternalUserOrderByWithRelationInput = {
@@ -364,6 +368,10 @@ export type InternalUserOrderByWithRelationInput = {
   InboxMessage?: Prisma.InboxMessageOrderByRelationAggregateInput
   StateGovernor?: Prisma.StateOrderByWithRelationInput
   otps?: Prisma.InternalOtpOrderByRelationAggregateInput
+  cofOApplications?: Prisma.CofOApplicationOrderByRelationAggregateInput
+  rejectedApplications?: Prisma.CofOApplicationOrderByRelationAggregateInput
+  approvedApplications?: Prisma.CofOApplicationOrderByRelationAggregateInput
+  reviewingApplications?: Prisma.CofOApplicationOrderByRelationAggregateInput
 }
 
 export type InternalUserWhereUniqueInput = Prisma.AtLeast<{
@@ -394,6 +402,10 @@ export type InternalUserWhereUniqueInput = Prisma.AtLeast<{
   InboxMessage?: Prisma.InboxMessageListRelationFilter
   StateGovernor?: Prisma.XOR<Prisma.StateNullableScalarRelationFilter, Prisma.StateWhereInput> | null
   otps?: Prisma.InternalOtpListRelationFilter
+  cofOApplications?: Prisma.CofOApplicationListRelationFilter
+  rejectedApplications?: Prisma.CofOApplicationListRelationFilter
+  approvedApplications?: Prisma.CofOApplicationListRelationFilter
+  reviewingApplications?: Prisma.CofOApplicationListRelationFilter
 }, "id" | "email">
 
 export type InternalUserOrderByWithAggregationInput = {
@@ -472,6 +484,10 @@ export type InternalUserCreateInput = {
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutInternalUserInput
   StateGovernor?: Prisma.StateCreateNestedOneWithoutGovernorInput
   otps?: Prisma.InternalOtpCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
 }
 
 export type InternalUserUncheckedCreateInput = {
@@ -498,6 +514,10 @@ export type InternalUserUncheckedCreateInput = {
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutInternalUserInput
   StateGovernor?: Prisma.StateUncheckedCreateNestedOneWithoutGovernorInput
   otps?: Prisma.InternalOtpUncheckedCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
 }
 
 export type InternalUserUpdateInput = {
@@ -524,6 +544,10 @@ export type InternalUserUpdateInput = {
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutInternalUserNestedInput
   StateGovernor?: Prisma.StateUpdateOneWithoutGovernorNestedInput
   otps?: Prisma.InternalOtpUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
 }
 
 export type InternalUserUncheckedUpdateInput = {
@@ -550,6 +574,10 @@ export type InternalUserUncheckedUpdateInput = {
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutInternalUserNestedInput
   StateGovernor?: Prisma.StateUncheckedUpdateOneWithoutGovernorNestedInput
   otps?: Prisma.InternalOtpUncheckedUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
 }
 
 export type InternalUserCreateManyInput = {
@@ -797,6 +825,70 @@ export type InternalUserUncheckedUpdateManyWithoutStateNestedInput = {
   deleteMany?: Prisma.InternalUserScalarWhereInput | Prisma.InternalUserScalarWhereInput[]
 }
 
+export type InternalUserCreateNestedOneWithoutRejectedApplicationsInput = {
+  create?: Prisma.XOR<Prisma.InternalUserCreateWithoutRejectedApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutRejectedApplicationsInput>
+  connectOrCreate?: Prisma.InternalUserCreateOrConnectWithoutRejectedApplicationsInput
+  connect?: Prisma.InternalUserWhereUniqueInput
+}
+
+export type InternalUserCreateNestedOneWithoutApprovedApplicationsInput = {
+  create?: Prisma.XOR<Prisma.InternalUserCreateWithoutApprovedApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutApprovedApplicationsInput>
+  connectOrCreate?: Prisma.InternalUserCreateOrConnectWithoutApprovedApplicationsInput
+  connect?: Prisma.InternalUserWhereUniqueInput
+}
+
+export type InternalUserCreateNestedOneWithoutReviewingApplicationsInput = {
+  create?: Prisma.XOR<Prisma.InternalUserCreateWithoutReviewingApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutReviewingApplicationsInput>
+  connectOrCreate?: Prisma.InternalUserCreateOrConnectWithoutReviewingApplicationsInput
+  connect?: Prisma.InternalUserWhereUniqueInput
+}
+
+export type InternalUserCreateNestedOneWithoutCofOApplicationsInput = {
+  create?: Prisma.XOR<Prisma.InternalUserCreateWithoutCofOApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutCofOApplicationsInput>
+  connectOrCreate?: Prisma.InternalUserCreateOrConnectWithoutCofOApplicationsInput
+  connect?: Prisma.InternalUserWhereUniqueInput
+}
+
+export type InternalUserUpdateOneWithoutRejectedApplicationsNestedInput = {
+  create?: Prisma.XOR<Prisma.InternalUserCreateWithoutRejectedApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutRejectedApplicationsInput>
+  connectOrCreate?: Prisma.InternalUserCreateOrConnectWithoutRejectedApplicationsInput
+  upsert?: Prisma.InternalUserUpsertWithoutRejectedApplicationsInput
+  disconnect?: Prisma.InternalUserWhereInput | boolean
+  delete?: Prisma.InternalUserWhereInput | boolean
+  connect?: Prisma.InternalUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InternalUserUpdateToOneWithWhereWithoutRejectedApplicationsInput, Prisma.InternalUserUpdateWithoutRejectedApplicationsInput>, Prisma.InternalUserUncheckedUpdateWithoutRejectedApplicationsInput>
+}
+
+export type InternalUserUpdateOneWithoutApprovedApplicationsNestedInput = {
+  create?: Prisma.XOR<Prisma.InternalUserCreateWithoutApprovedApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutApprovedApplicationsInput>
+  connectOrCreate?: Prisma.InternalUserCreateOrConnectWithoutApprovedApplicationsInput
+  upsert?: Prisma.InternalUserUpsertWithoutApprovedApplicationsInput
+  disconnect?: Prisma.InternalUserWhereInput | boolean
+  delete?: Prisma.InternalUserWhereInput | boolean
+  connect?: Prisma.InternalUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InternalUserUpdateToOneWithWhereWithoutApprovedApplicationsInput, Prisma.InternalUserUpdateWithoutApprovedApplicationsInput>, Prisma.InternalUserUncheckedUpdateWithoutApprovedApplicationsInput>
+}
+
+export type InternalUserUpdateOneWithoutReviewingApplicationsNestedInput = {
+  create?: Prisma.XOR<Prisma.InternalUserCreateWithoutReviewingApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutReviewingApplicationsInput>
+  connectOrCreate?: Prisma.InternalUserCreateOrConnectWithoutReviewingApplicationsInput
+  upsert?: Prisma.InternalUserUpsertWithoutReviewingApplicationsInput
+  disconnect?: Prisma.InternalUserWhereInput | boolean
+  delete?: Prisma.InternalUserWhereInput | boolean
+  connect?: Prisma.InternalUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InternalUserUpdateToOneWithWhereWithoutReviewingApplicationsInput, Prisma.InternalUserUpdateWithoutReviewingApplicationsInput>, Prisma.InternalUserUncheckedUpdateWithoutReviewingApplicationsInput>
+}
+
+export type InternalUserUpdateOneWithoutCofOApplicationsNestedInput = {
+  create?: Prisma.XOR<Prisma.InternalUserCreateWithoutCofOApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutCofOApplicationsInput>
+  connectOrCreate?: Prisma.InternalUserCreateOrConnectWithoutCofOApplicationsInput
+  upsert?: Prisma.InternalUserUpsertWithoutCofOApplicationsInput
+  disconnect?: Prisma.InternalUserWhereInput | boolean
+  delete?: Prisma.InternalUserWhereInput | boolean
+  connect?: Prisma.InternalUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InternalUserUpdateToOneWithWhereWithoutCofOApplicationsInput, Prisma.InternalUserUpdateWithoutCofOApplicationsInput>, Prisma.InternalUserUncheckedUpdateWithoutCofOApplicationsInput>
+}
+
 export type InternalUserCreateNestedOneWithoutStageLogInput = {
   create?: Prisma.XOR<Prisma.InternalUserCreateWithoutStageLogInput, Prisma.InternalUserUncheckedCreateWithoutStageLogInput>
   connectOrCreate?: Prisma.InternalUserCreateOrConnectWithoutStageLogInput
@@ -848,6 +940,10 @@ export type InternalUserCreateWithoutOtpsInput = {
   StageLog?: Prisma.StageLogCreateNestedManyWithoutApproverInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutInternalUserInput
   StateGovernor?: Prisma.StateCreateNestedOneWithoutGovernorInput
+  cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
 }
 
 export type InternalUserUncheckedCreateWithoutOtpsInput = {
@@ -873,6 +969,10 @@ export type InternalUserUncheckedCreateWithoutOtpsInput = {
   StageLog?: Prisma.StageLogUncheckedCreateNestedManyWithoutApproverInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutInternalUserInput
   StateGovernor?: Prisma.StateUncheckedCreateNestedOneWithoutGovernorInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
 }
 
 export type InternalUserCreateOrConnectWithoutOtpsInput = {
@@ -914,6 +1014,10 @@ export type InternalUserUpdateWithoutOtpsInput = {
   StageLog?: Prisma.StageLogUpdateManyWithoutApproverNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutInternalUserNestedInput
   StateGovernor?: Prisma.StateUpdateOneWithoutGovernorNestedInput
+  cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
 }
 
 export type InternalUserUncheckedUpdateWithoutOtpsInput = {
@@ -939,6 +1043,10 @@ export type InternalUserUncheckedUpdateWithoutOtpsInput = {
   StageLog?: Prisma.StageLogUncheckedUpdateManyWithoutApproverNestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutInternalUserNestedInput
   StateGovernor?: Prisma.StateUncheckedUpdateOneWithoutGovernorNestedInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
 }
 
 export type InternalUserCreateWithoutStateInput = {
@@ -964,6 +1072,10 @@ export type InternalUserCreateWithoutStateInput = {
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutInternalUserInput
   StateGovernor?: Prisma.StateCreateNestedOneWithoutGovernorInput
   otps?: Prisma.InternalOtpCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
 }
 
 export type InternalUserUncheckedCreateWithoutStateInput = {
@@ -989,6 +1101,10 @@ export type InternalUserUncheckedCreateWithoutStateInput = {
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutInternalUserInput
   StateGovernor?: Prisma.StateUncheckedCreateNestedOneWithoutGovernorInput
   otps?: Prisma.InternalOtpUncheckedCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
 }
 
 export type InternalUserCreateOrConnectWithoutStateInput = {
@@ -1024,6 +1140,10 @@ export type InternalUserCreateWithoutStateGovernorInput = {
   StageLog?: Prisma.StageLogCreateNestedManyWithoutApproverInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutInternalUserInput
   otps?: Prisma.InternalOtpCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
 }
 
 export type InternalUserUncheckedCreateWithoutStateGovernorInput = {
@@ -1049,6 +1169,10 @@ export type InternalUserUncheckedCreateWithoutStateGovernorInput = {
   StageLog?: Prisma.StageLogUncheckedCreateNestedManyWithoutApproverInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutInternalUserInput
   otps?: Prisma.InternalOtpUncheckedCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
 }
 
 export type InternalUserCreateOrConnectWithoutStateGovernorInput = {
@@ -1131,6 +1255,10 @@ export type InternalUserUpdateWithoutStateGovernorInput = {
   StageLog?: Prisma.StageLogUpdateManyWithoutApproverNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutInternalUserNestedInput
   otps?: Prisma.InternalOtpUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
 }
 
 export type InternalUserUncheckedUpdateWithoutStateGovernorInput = {
@@ -1156,6 +1284,538 @@ export type InternalUserUncheckedUpdateWithoutStateGovernorInput = {
   StageLog?: Prisma.StageLogUncheckedUpdateManyWithoutApproverNestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutInternalUserNestedInput
   otps?: Prisma.InternalOtpUncheckedUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+}
+
+export type InternalUserCreateWithoutRejectedApplicationsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  ministry?: string | null
+  department?: string | null
+  position?: number | null
+  function?: string | null
+  role?: $Enums.Role
+  requiresSignature?: boolean
+  approvingPosition?: number | null
+  signatureUrl?: string | null
+  createdAt?: Date | string
+  emailToken?: string | null
+  passwordToken?: string | null
+  isVerified?: boolean
+  tokenExpiresAt?: Date | string | null
+  state?: Prisma.StateCreateNestedOneWithoutApproversInput
+  StageLog?: Prisma.StageLogCreateNestedManyWithoutApproverInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutInternalUserInput
+  StateGovernor?: Prisma.StateCreateNestedOneWithoutGovernorInput
+  otps?: Prisma.InternalOtpCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
+  approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+}
+
+export type InternalUserUncheckedCreateWithoutRejectedApplicationsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  ministry?: string | null
+  department?: string | null
+  position?: number | null
+  function?: string | null
+  stateId?: string | null
+  role?: $Enums.Role
+  requiresSignature?: boolean
+  approvingPosition?: number | null
+  signatureUrl?: string | null
+  createdAt?: Date | string
+  emailToken?: string | null
+  passwordToken?: string | null
+  isVerified?: boolean
+  tokenExpiresAt?: Date | string | null
+  StageLog?: Prisma.StageLogUncheckedCreateNestedManyWithoutApproverInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutInternalUserInput
+  StateGovernor?: Prisma.StateUncheckedCreateNestedOneWithoutGovernorInput
+  otps?: Prisma.InternalOtpUncheckedCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+}
+
+export type InternalUserCreateOrConnectWithoutRejectedApplicationsInput = {
+  where: Prisma.InternalUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.InternalUserCreateWithoutRejectedApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutRejectedApplicationsInput>
+}
+
+export type InternalUserCreateWithoutApprovedApplicationsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  ministry?: string | null
+  department?: string | null
+  position?: number | null
+  function?: string | null
+  role?: $Enums.Role
+  requiresSignature?: boolean
+  approvingPosition?: number | null
+  signatureUrl?: string | null
+  createdAt?: Date | string
+  emailToken?: string | null
+  passwordToken?: string | null
+  isVerified?: boolean
+  tokenExpiresAt?: Date | string | null
+  state?: Prisma.StateCreateNestedOneWithoutApproversInput
+  StageLog?: Prisma.StageLogCreateNestedManyWithoutApproverInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutInternalUserInput
+  StateGovernor?: Prisma.StateCreateNestedOneWithoutGovernorInput
+  otps?: Prisma.InternalOtpCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
+  reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+}
+
+export type InternalUserUncheckedCreateWithoutApprovedApplicationsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  ministry?: string | null
+  department?: string | null
+  position?: number | null
+  function?: string | null
+  stateId?: string | null
+  role?: $Enums.Role
+  requiresSignature?: boolean
+  approvingPosition?: number | null
+  signatureUrl?: string | null
+  createdAt?: Date | string
+  emailToken?: string | null
+  passwordToken?: string | null
+  isVerified?: boolean
+  tokenExpiresAt?: Date | string | null
+  StageLog?: Prisma.StageLogUncheckedCreateNestedManyWithoutApproverInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutInternalUserInput
+  StateGovernor?: Prisma.StateUncheckedCreateNestedOneWithoutGovernorInput
+  otps?: Prisma.InternalOtpUncheckedCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+}
+
+export type InternalUserCreateOrConnectWithoutApprovedApplicationsInput = {
+  where: Prisma.InternalUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.InternalUserCreateWithoutApprovedApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutApprovedApplicationsInput>
+}
+
+export type InternalUserCreateWithoutReviewingApplicationsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  ministry?: string | null
+  department?: string | null
+  position?: number | null
+  function?: string | null
+  role?: $Enums.Role
+  requiresSignature?: boolean
+  approvingPosition?: number | null
+  signatureUrl?: string | null
+  createdAt?: Date | string
+  emailToken?: string | null
+  passwordToken?: string | null
+  isVerified?: boolean
+  tokenExpiresAt?: Date | string | null
+  state?: Prisma.StateCreateNestedOneWithoutApproversInput
+  StageLog?: Prisma.StageLogCreateNestedManyWithoutApproverInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutInternalUserInput
+  StateGovernor?: Prisma.StateCreateNestedOneWithoutGovernorInput
+  otps?: Prisma.InternalOtpCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
+}
+
+export type InternalUserUncheckedCreateWithoutReviewingApplicationsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  ministry?: string | null
+  department?: string | null
+  position?: number | null
+  function?: string | null
+  stateId?: string | null
+  role?: $Enums.Role
+  requiresSignature?: boolean
+  approvingPosition?: number | null
+  signatureUrl?: string | null
+  createdAt?: Date | string
+  emailToken?: string | null
+  passwordToken?: string | null
+  isVerified?: boolean
+  tokenExpiresAt?: Date | string | null
+  StageLog?: Prisma.StageLogUncheckedCreateNestedManyWithoutApproverInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutInternalUserInput
+  StateGovernor?: Prisma.StateUncheckedCreateNestedOneWithoutGovernorInput
+  otps?: Prisma.InternalOtpUncheckedCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
+}
+
+export type InternalUserCreateOrConnectWithoutReviewingApplicationsInput = {
+  where: Prisma.InternalUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.InternalUserCreateWithoutReviewingApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutReviewingApplicationsInput>
+}
+
+export type InternalUserCreateWithoutCofOApplicationsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  ministry?: string | null
+  department?: string | null
+  position?: number | null
+  function?: string | null
+  role?: $Enums.Role
+  requiresSignature?: boolean
+  approvingPosition?: number | null
+  signatureUrl?: string | null
+  createdAt?: Date | string
+  emailToken?: string | null
+  passwordToken?: string | null
+  isVerified?: boolean
+  tokenExpiresAt?: Date | string | null
+  state?: Prisma.StateCreateNestedOneWithoutApproversInput
+  StageLog?: Prisma.StageLogCreateNestedManyWithoutApproverInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutInternalUserInput
+  StateGovernor?: Prisma.StateCreateNestedOneWithoutGovernorInput
+  otps?: Prisma.InternalOtpCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+}
+
+export type InternalUserUncheckedCreateWithoutCofOApplicationsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  ministry?: string | null
+  department?: string | null
+  position?: number | null
+  function?: string | null
+  stateId?: string | null
+  role?: $Enums.Role
+  requiresSignature?: boolean
+  approvingPosition?: number | null
+  signatureUrl?: string | null
+  createdAt?: Date | string
+  emailToken?: string | null
+  passwordToken?: string | null
+  isVerified?: boolean
+  tokenExpiresAt?: Date | string | null
+  StageLog?: Prisma.StageLogUncheckedCreateNestedManyWithoutApproverInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutInternalUserInput
+  StateGovernor?: Prisma.StateUncheckedCreateNestedOneWithoutGovernorInput
+  otps?: Prisma.InternalOtpUncheckedCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+}
+
+export type InternalUserCreateOrConnectWithoutCofOApplicationsInput = {
+  where: Prisma.InternalUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.InternalUserCreateWithoutCofOApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutCofOApplicationsInput>
+}
+
+export type InternalUserUpsertWithoutRejectedApplicationsInput = {
+  update: Prisma.XOR<Prisma.InternalUserUpdateWithoutRejectedApplicationsInput, Prisma.InternalUserUncheckedUpdateWithoutRejectedApplicationsInput>
+  create: Prisma.XOR<Prisma.InternalUserCreateWithoutRejectedApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutRejectedApplicationsInput>
+  where?: Prisma.InternalUserWhereInput
+}
+
+export type InternalUserUpdateToOneWithWhereWithoutRejectedApplicationsInput = {
+  where?: Prisma.InternalUserWhereInput
+  data: Prisma.XOR<Prisma.InternalUserUpdateWithoutRejectedApplicationsInput, Prisma.InternalUserUncheckedUpdateWithoutRejectedApplicationsInput>
+}
+
+export type InternalUserUpdateWithoutRejectedApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ministry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  function?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  requiresSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvingPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  signatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  state?: Prisma.StateUpdateOneWithoutApproversNestedInput
+  StageLog?: Prisma.StageLogUpdateManyWithoutApproverNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutInternalUserNestedInput
+  StateGovernor?: Prisma.StateUpdateOneWithoutGovernorNestedInput
+  otps?: Prisma.InternalOtpUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
+  approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+}
+
+export type InternalUserUncheckedUpdateWithoutRejectedApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ministry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  function?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  requiresSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvingPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  signatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  StageLog?: Prisma.StageLogUncheckedUpdateManyWithoutApproverNestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutInternalUserNestedInput
+  StateGovernor?: Prisma.StateUncheckedUpdateOneWithoutGovernorNestedInput
+  otps?: Prisma.InternalOtpUncheckedUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+}
+
+export type InternalUserUpsertWithoutApprovedApplicationsInput = {
+  update: Prisma.XOR<Prisma.InternalUserUpdateWithoutApprovedApplicationsInput, Prisma.InternalUserUncheckedUpdateWithoutApprovedApplicationsInput>
+  create: Prisma.XOR<Prisma.InternalUserCreateWithoutApprovedApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutApprovedApplicationsInput>
+  where?: Prisma.InternalUserWhereInput
+}
+
+export type InternalUserUpdateToOneWithWhereWithoutApprovedApplicationsInput = {
+  where?: Prisma.InternalUserWhereInput
+  data: Prisma.XOR<Prisma.InternalUserUpdateWithoutApprovedApplicationsInput, Prisma.InternalUserUncheckedUpdateWithoutApprovedApplicationsInput>
+}
+
+export type InternalUserUpdateWithoutApprovedApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ministry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  function?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  requiresSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvingPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  signatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  state?: Prisma.StateUpdateOneWithoutApproversNestedInput
+  StageLog?: Prisma.StageLogUpdateManyWithoutApproverNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutInternalUserNestedInput
+  StateGovernor?: Prisma.StateUpdateOneWithoutGovernorNestedInput
+  otps?: Prisma.InternalOtpUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+}
+
+export type InternalUserUncheckedUpdateWithoutApprovedApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ministry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  function?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  requiresSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvingPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  signatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  StageLog?: Prisma.StageLogUncheckedUpdateManyWithoutApproverNestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutInternalUserNestedInput
+  StateGovernor?: Prisma.StateUncheckedUpdateOneWithoutGovernorNestedInput
+  otps?: Prisma.InternalOtpUncheckedUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+}
+
+export type InternalUserUpsertWithoutReviewingApplicationsInput = {
+  update: Prisma.XOR<Prisma.InternalUserUpdateWithoutReviewingApplicationsInput, Prisma.InternalUserUncheckedUpdateWithoutReviewingApplicationsInput>
+  create: Prisma.XOR<Prisma.InternalUserCreateWithoutReviewingApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutReviewingApplicationsInput>
+  where?: Prisma.InternalUserWhereInput
+}
+
+export type InternalUserUpdateToOneWithWhereWithoutReviewingApplicationsInput = {
+  where?: Prisma.InternalUserWhereInput
+  data: Prisma.XOR<Prisma.InternalUserUpdateWithoutReviewingApplicationsInput, Prisma.InternalUserUncheckedUpdateWithoutReviewingApplicationsInput>
+}
+
+export type InternalUserUpdateWithoutReviewingApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ministry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  function?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  requiresSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvingPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  signatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  state?: Prisma.StateUpdateOneWithoutApproversNestedInput
+  StageLog?: Prisma.StageLogUpdateManyWithoutApproverNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutInternalUserNestedInput
+  StateGovernor?: Prisma.StateUpdateOneWithoutGovernorNestedInput
+  otps?: Prisma.InternalOtpUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
+}
+
+export type InternalUserUncheckedUpdateWithoutReviewingApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ministry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  function?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  requiresSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvingPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  signatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  StageLog?: Prisma.StageLogUncheckedUpdateManyWithoutApproverNestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutInternalUserNestedInput
+  StateGovernor?: Prisma.StateUncheckedUpdateOneWithoutGovernorNestedInput
+  otps?: Prisma.InternalOtpUncheckedUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
+}
+
+export type InternalUserUpsertWithoutCofOApplicationsInput = {
+  update: Prisma.XOR<Prisma.InternalUserUpdateWithoutCofOApplicationsInput, Prisma.InternalUserUncheckedUpdateWithoutCofOApplicationsInput>
+  create: Prisma.XOR<Prisma.InternalUserCreateWithoutCofOApplicationsInput, Prisma.InternalUserUncheckedCreateWithoutCofOApplicationsInput>
+  where?: Prisma.InternalUserWhereInput
+}
+
+export type InternalUserUpdateToOneWithWhereWithoutCofOApplicationsInput = {
+  where?: Prisma.InternalUserWhereInput
+  data: Prisma.XOR<Prisma.InternalUserUpdateWithoutCofOApplicationsInput, Prisma.InternalUserUncheckedUpdateWithoutCofOApplicationsInput>
+}
+
+export type InternalUserUpdateWithoutCofOApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ministry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  function?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  requiresSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvingPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  signatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  state?: Prisma.StateUpdateOneWithoutApproversNestedInput
+  StageLog?: Prisma.StageLogUpdateManyWithoutApproverNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutInternalUserNestedInput
+  StateGovernor?: Prisma.StateUpdateOneWithoutGovernorNestedInput
+  otps?: Prisma.InternalOtpUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+}
+
+export type InternalUserUncheckedUpdateWithoutCofOApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ministry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  function?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  requiresSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvingPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  signatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  StageLog?: Prisma.StageLogUncheckedUpdateManyWithoutApproverNestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutInternalUserNestedInput
+  StateGovernor?: Prisma.StateUncheckedUpdateOneWithoutGovernorNestedInput
+  otps?: Prisma.InternalOtpUncheckedUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
 }
 
 export type InternalUserCreateWithoutStageLogInput = {
@@ -1181,6 +1841,10 @@ export type InternalUserCreateWithoutStageLogInput = {
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutInternalUserInput
   StateGovernor?: Prisma.StateCreateNestedOneWithoutGovernorInput
   otps?: Prisma.InternalOtpCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
 }
 
 export type InternalUserUncheckedCreateWithoutStageLogInput = {
@@ -1206,6 +1870,10 @@ export type InternalUserUncheckedCreateWithoutStageLogInput = {
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutInternalUserInput
   StateGovernor?: Prisma.StateUncheckedCreateNestedOneWithoutGovernorInput
   otps?: Prisma.InternalOtpUncheckedCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
 }
 
 export type InternalUserCreateOrConnectWithoutStageLogInput = {
@@ -1247,6 +1915,10 @@ export type InternalUserUpdateWithoutStageLogInput = {
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutInternalUserNestedInput
   StateGovernor?: Prisma.StateUpdateOneWithoutGovernorNestedInput
   otps?: Prisma.InternalOtpUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
 }
 
 export type InternalUserUncheckedUpdateWithoutStageLogInput = {
@@ -1272,6 +1944,10 @@ export type InternalUserUncheckedUpdateWithoutStageLogInput = {
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutInternalUserNestedInput
   StateGovernor?: Prisma.StateUncheckedUpdateOneWithoutGovernorNestedInput
   otps?: Prisma.InternalOtpUncheckedUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
 }
 
 export type InternalUserCreateWithoutInboxMessageInput = {
@@ -1297,6 +1973,10 @@ export type InternalUserCreateWithoutInboxMessageInput = {
   StageLog?: Prisma.StageLogCreateNestedManyWithoutApproverInput
   StateGovernor?: Prisma.StateCreateNestedOneWithoutGovernorInput
   otps?: Prisma.InternalOtpCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
 }
 
 export type InternalUserUncheckedCreateWithoutInboxMessageInput = {
@@ -1322,6 +2002,10 @@ export type InternalUserUncheckedCreateWithoutInboxMessageInput = {
   StageLog?: Prisma.StageLogUncheckedCreateNestedManyWithoutApproverInput
   StateGovernor?: Prisma.StateUncheckedCreateNestedOneWithoutGovernorInput
   otps?: Prisma.InternalOtpUncheckedCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
 }
 
 export type InternalUserCreateOrConnectWithoutInboxMessageInput = {
@@ -1363,6 +2047,10 @@ export type InternalUserUpdateWithoutInboxMessageInput = {
   StageLog?: Prisma.StageLogUpdateManyWithoutApproverNestedInput
   StateGovernor?: Prisma.StateUpdateOneWithoutGovernorNestedInput
   otps?: Prisma.InternalOtpUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
 }
 
 export type InternalUserUncheckedUpdateWithoutInboxMessageInput = {
@@ -1388,6 +2076,10 @@ export type InternalUserUncheckedUpdateWithoutInboxMessageInput = {
   StageLog?: Prisma.StageLogUncheckedUpdateManyWithoutApproverNestedInput
   StateGovernor?: Prisma.StateUncheckedUpdateOneWithoutGovernorNestedInput
   otps?: Prisma.InternalOtpUncheckedUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
 }
 
 export type InternalUserCreateManyStateInput = {
@@ -1434,6 +2126,10 @@ export type InternalUserUpdateWithoutStateInput = {
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutInternalUserNestedInput
   StateGovernor?: Prisma.StateUpdateOneWithoutGovernorNestedInput
   otps?: Prisma.InternalOtpUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
 }
 
 export type InternalUserUncheckedUpdateWithoutStateInput = {
@@ -1459,6 +2155,10 @@ export type InternalUserUncheckedUpdateWithoutStateInput = {
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutInternalUserNestedInput
   StateGovernor?: Prisma.StateUncheckedUpdateOneWithoutGovernorNestedInput
   otps?: Prisma.InternalOtpUncheckedUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
 }
 
 export type InternalUserUncheckedUpdateManyWithoutStateInput = {
@@ -1491,12 +2191,20 @@ export type InternalUserCountOutputType = {
   StageLog: number
   InboxMessage: number
   otps: number
+  cofOApplications: number
+  rejectedApplications: number
+  approvedApplications: number
+  reviewingApplications: number
 }
 
 export type InternalUserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   StageLog?: boolean | InternalUserCountOutputTypeCountStageLogArgs
   InboxMessage?: boolean | InternalUserCountOutputTypeCountInboxMessageArgs
   otps?: boolean | InternalUserCountOutputTypeCountOtpsArgs
+  cofOApplications?: boolean | InternalUserCountOutputTypeCountCofOApplicationsArgs
+  rejectedApplications?: boolean | InternalUserCountOutputTypeCountRejectedApplicationsArgs
+  approvedApplications?: boolean | InternalUserCountOutputTypeCountApprovedApplicationsArgs
+  reviewingApplications?: boolean | InternalUserCountOutputTypeCountReviewingApplicationsArgs
 }
 
 /**
@@ -1530,6 +2238,34 @@ export type InternalUserCountOutputTypeCountOtpsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.InternalOtpWhereInput
 }
 
+/**
+ * InternalUserCountOutputType without action
+ */
+export type InternalUserCountOutputTypeCountCofOApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CofOApplicationWhereInput
+}
+
+/**
+ * InternalUserCountOutputType without action
+ */
+export type InternalUserCountOutputTypeCountRejectedApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CofOApplicationWhereInput
+}
+
+/**
+ * InternalUserCountOutputType without action
+ */
+export type InternalUserCountOutputTypeCountApprovedApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CofOApplicationWhereInput
+}
+
+/**
+ * InternalUserCountOutputType without action
+ */
+export type InternalUserCountOutputTypeCountReviewingApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CofOApplicationWhereInput
+}
+
 
 export type InternalUserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1556,6 +2292,10 @@ export type InternalUserSelect<ExtArgs extends runtime.Types.Extensions.Internal
   InboxMessage?: boolean | Prisma.InternalUser$InboxMessageArgs<ExtArgs>
   StateGovernor?: boolean | Prisma.InternalUser$StateGovernorArgs<ExtArgs>
   otps?: boolean | Prisma.InternalUser$otpsArgs<ExtArgs>
+  cofOApplications?: boolean | Prisma.InternalUser$cofOApplicationsArgs<ExtArgs>
+  rejectedApplications?: boolean | Prisma.InternalUser$rejectedApplicationsArgs<ExtArgs>
+  approvedApplications?: boolean | Prisma.InternalUser$approvedApplicationsArgs<ExtArgs>
+  reviewingApplications?: boolean | Prisma.InternalUser$reviewingApplicationsArgs<ExtArgs>
   _count?: boolean | Prisma.InternalUserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["internalUser"]>
 
@@ -1634,6 +2374,10 @@ export type InternalUserInclude<ExtArgs extends runtime.Types.Extensions.Interna
   InboxMessage?: boolean | Prisma.InternalUser$InboxMessageArgs<ExtArgs>
   StateGovernor?: boolean | Prisma.InternalUser$StateGovernorArgs<ExtArgs>
   otps?: boolean | Prisma.InternalUser$otpsArgs<ExtArgs>
+  cofOApplications?: boolean | Prisma.InternalUser$cofOApplicationsArgs<ExtArgs>
+  rejectedApplications?: boolean | Prisma.InternalUser$rejectedApplicationsArgs<ExtArgs>
+  approvedApplications?: boolean | Prisma.InternalUser$approvedApplicationsArgs<ExtArgs>
+  reviewingApplications?: boolean | Prisma.InternalUser$reviewingApplicationsArgs<ExtArgs>
   _count?: boolean | Prisma.InternalUserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InternalUserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1651,6 +2395,10 @@ export type $InternalUserPayload<ExtArgs extends runtime.Types.Extensions.Intern
     InboxMessage: Prisma.$InboxMessagePayload<ExtArgs>[]
     StateGovernor: Prisma.$StatePayload<ExtArgs> | null
     otps: Prisma.$InternalOtpPayload<ExtArgs>[]
+    cofOApplications: Prisma.$CofOApplicationPayload<ExtArgs>[]
+    rejectedApplications: Prisma.$CofOApplicationPayload<ExtArgs>[]
+    approvedApplications: Prisma.$CofOApplicationPayload<ExtArgs>[]
+    reviewingApplications: Prisma.$CofOApplicationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2071,6 +2819,10 @@ export interface Prisma__InternalUserClient<T, Null = never, ExtArgs extends run
   InboxMessage<T extends Prisma.InternalUser$InboxMessageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$InboxMessageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InboxMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   StateGovernor<T extends Prisma.InternalUser$StateGovernorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$StateGovernorArgs<ExtArgs>>): Prisma.Prisma__StateClient<runtime.Types.Result.GetResult<Prisma.$StatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   otps<T extends Prisma.InternalUser$otpsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$otpsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InternalOtpPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  cofOApplications<T extends Prisma.InternalUser$cofOApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$cofOApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  rejectedApplications<T extends Prisma.InternalUser$rejectedApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$rejectedApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  approvedApplications<T extends Prisma.InternalUser$approvedApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$approvedApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviewingApplications<T extends Prisma.InternalUser$reviewingApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$reviewingApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2622,6 +3374,102 @@ export type InternalUser$otpsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.InternalOtpScalarFieldEnum | Prisma.InternalOtpScalarFieldEnum[]
+}
+
+/**
+ * InternalUser.cofOApplications
+ */
+export type InternalUser$cofOApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CofOApplication
+   */
+  select?: Prisma.CofOApplicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CofOApplication
+   */
+  omit?: Prisma.CofOApplicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CofOApplicationInclude<ExtArgs> | null
+  where?: Prisma.CofOApplicationWhereInput
+  orderBy?: Prisma.CofOApplicationOrderByWithRelationInput | Prisma.CofOApplicationOrderByWithRelationInput[]
+  cursor?: Prisma.CofOApplicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CofOApplicationScalarFieldEnum | Prisma.CofOApplicationScalarFieldEnum[]
+}
+
+/**
+ * InternalUser.rejectedApplications
+ */
+export type InternalUser$rejectedApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CofOApplication
+   */
+  select?: Prisma.CofOApplicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CofOApplication
+   */
+  omit?: Prisma.CofOApplicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CofOApplicationInclude<ExtArgs> | null
+  where?: Prisma.CofOApplicationWhereInput
+  orderBy?: Prisma.CofOApplicationOrderByWithRelationInput | Prisma.CofOApplicationOrderByWithRelationInput[]
+  cursor?: Prisma.CofOApplicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CofOApplicationScalarFieldEnum | Prisma.CofOApplicationScalarFieldEnum[]
+}
+
+/**
+ * InternalUser.approvedApplications
+ */
+export type InternalUser$approvedApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CofOApplication
+   */
+  select?: Prisma.CofOApplicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CofOApplication
+   */
+  omit?: Prisma.CofOApplicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CofOApplicationInclude<ExtArgs> | null
+  where?: Prisma.CofOApplicationWhereInput
+  orderBy?: Prisma.CofOApplicationOrderByWithRelationInput | Prisma.CofOApplicationOrderByWithRelationInput[]
+  cursor?: Prisma.CofOApplicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CofOApplicationScalarFieldEnum | Prisma.CofOApplicationScalarFieldEnum[]
+}
+
+/**
+ * InternalUser.reviewingApplications
+ */
+export type InternalUser$reviewingApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CofOApplication
+   */
+  select?: Prisma.CofOApplicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CofOApplication
+   */
+  omit?: Prisma.CofOApplicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CofOApplicationInclude<ExtArgs> | null
+  where?: Prisma.CofOApplicationWhereInput
+  orderBy?: Prisma.CofOApplicationOrderByWithRelationInput | Prisma.CofOApplicationOrderByWithRelationInput[]
+  cursor?: Prisma.CofOApplicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CofOApplicationScalarFieldEnum | Prisma.CofOApplicationScalarFieldEnum[]
 }
 
 /**

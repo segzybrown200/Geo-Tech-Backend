@@ -29,13 +29,16 @@ model User {
   payments           Payment[]
 }
 
-
-enum ApplicationStatus {
-  PENDING
+enum CofOStatus {
+  DRAFT // optional
+  PAYMENT_PENDING
+  PAYMENT_CONFIRMED
+  DOCUMENTS_SUBMITTED
   IN_REVIEW
+  NEEDS_CORRECTION // 🔑 KEY
+  RESUBMITTED
   APPROVED
-  REJECTED
-  DRAFT
+  REJECTED_FINAL // very rare
 }
 
 enum Role {
@@ -46,31 +49,35 @@ enum Role {
 }
 
 model InternalUser {
-  id                String         @id @default(uuid()) @db.Uuid
-  name              String
-  email             String         @unique
-  password          String?
-  phone             String?
-  ministry          String?
-  department        String?
-  position          Int?           @default(0)
-  function          String?
-  state             State?         @relation(fields: [stateId], references: [id])
-  stateId           String?        @db.Uuid
-  role              Role           @default(APPROVER)
-  requiresSignature Boolean        @default(false)
-  approvingPosition Int?           @default(0)
-  signatureUrl      String?
-  createdAt         DateTime       @default(now())
-  StageLog          StageLog[]
-  InboxMessage      InboxMessage[]
-  StateGovernor     State?         @relation("Governor")
+  id                    String            @id @default(uuid()) @db.Uuid
+  name                  String
+  email                 String            @unique
+  password              String?
+  phone                 String?
+  ministry              String?
+  department            String?
+  position              Int?              @default(0)
+  function              String?
+  state                 State?            @relation(fields: [stateId], references: [id])
+  stateId               String?           @db.Uuid
+  role                  Role              @default(APPROVER)
+  requiresSignature     Boolean           @default(false)
+  approvingPosition     Int?              @default(0)
+  signatureUrl          String?
+  createdAt             DateTime          @default(now())
+  StageLog              StageLog[]
+  InboxMessage          InboxMessage[]
+  StateGovernor         State?            @relation("Governor")
   // Sessions & OTP relations
-  emailToken        String? // used for verifying email
-  passwordToken     String? // used for setting password after verification
-  isVerified        Boolean        @default(false)
-  tokenExpiresAt    DateTime? // expiration for tokens
-  otps              InternalOtp[]
+  emailToken            String? // used for verifying email
+  passwordToken         String? // used for setting password after verification
+  isVerified            Boolean           @default(false)
+  tokenExpiresAt        DateTime? // expiration for tokens
+  otps                  InternalOtp[]
+  cofOApplications      CofOApplication[]
+  rejectedApplications  CofOApplication[] @relation("rejectedBy")
+  approvedApplications  CofOApplication[] @relation("approvedBy")
+  reviewingApplications CofOApplication[] @relation("currentReviewer")
 }
 
 model Session {
@@ -198,22 +205,47 @@ model OwnershipHistory {
 }
 
 model CofOApplication {
-  id                   String            @id @default(uuid()) @db.Uuid
-  userId               String            @db.Uuid
-  landId               String            @db.Uuid
-  status               ApplicationStatus @default(PENDING)
-  documentUrls         String[]
+  id     String     @id @default(uuid()) @db.Uuid
+  userId String     @db.Uuid
+  landId String     @db.Uuid
+  status CofOStatus @default(DRAFT)
+
   cofONumber           String? // new
   signedAt             DateTime? // new
   logs                 StageLog[]
-  createdAt            DateTime          @default(now())
-  user                 User              @relation(fields: [userId], references: [id])
-  land                 LandRegistration  @relation(fields: [landId], references: [id])
+  createdAt            DateTime         @default(now())
+  user                 User             @relation(fields: [userId], references: [id])
+  land                 LandRegistration @relation(fields: [landId], references: [id])
   InboxMessage         InboxMessage[]
+  rejectedById         String?          @db.Uuid
+  rejectedBy           InternalUser?    @relation("rejectedBy", fields: [rejectedById], references: [id])
+  approvedById         String?          @db.Uuid
+  approvedBy           InternalUser?    @relation("approvedBy", fields: [approvedById], references: [id])
+  approvalAudits       ApprovalAudit[]
+  revisionCount        Int              @default(0)
+  currentReviewerId    String?          @db.Uuid
+  currentReviewer      InternalUser?    @relation("currentReviewer", fields: [currentReviewerId], references: [id])
   governorSignatureUrl String? // new
   payments             Payment[]
-  applicationNumber    String?           @unique
+  applicationNumber    String?          @unique
   cofOAuditLogs        CofOAuditLog[]
+  internalUser         InternalUser?    @relation(fields: [internalUserId], references: [id])
+  internalUserId       String?          @db.Uuid
+  cofODocuments        CofODocument[]
+}
+
+model CofODocument {
+  id        String   @id @default(uuid()) @db.Uuid
+  cofOId    String   @db.Uuid
+  type      String
+  title     String
+  url       String
+  createdAt DateTime @default(now())
+
+  cofO CofOApplication @relation(fields: [cofOId], references: [id])
+
+  inboxMessage   InboxMessage? @relation(fields: [inboxMessageId], references: [id])
+  inboxMessageId String?   @db.Uuid
 }
 
 enum PaymentStatus {
@@ -253,10 +285,10 @@ model StageLog {
 }
 
 model InboxMessage {
-  id           String          @id @default(uuid())
+  id           String          @id @default(uuid()) @db.Uuid
   receiverId   String          @db.Uuid
   cofOId       String          @db.Uuid
-  documentList String[]
+  documentList CofODocument[]
   status       String
   timestamp    DateTime        @default(now())
   messageLink  String
@@ -274,14 +306,24 @@ model EmailVerificationToken {
 
 model CofOAuditLog {
   id              String   @id @default(uuid()) @db.Uuid
-  cofOId          String  @db.Uuid
+  cofOId          String   @db.Uuid
   action          String // SUBMITTED, APPROVED, REJECTED, FORWARDED
-  performedById   String  @db.Uuid
+  performedById   String   @db.Uuid
   performedByRole String
   comment         String?
   createdAt       DateTime @default(now())
 
   cofO CofOApplication @relation(fields: [cofOId], references: [id])
+}
+
+model ApprovalAudit {
+  id        String          @id @default(uuid())
+  cofOId    String          @db.Uuid
+  actorId   String
+  action    CofOStatus // APPROVED / REJECTED
+  comment   String?
+  createdAt DateTime        @default(now())
+  cofO      CofOApplication @relation(fields: [cofOId], references: [id])
 }
 
 model PasswordResetToken {

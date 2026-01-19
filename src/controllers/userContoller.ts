@@ -28,11 +28,11 @@ export const getUserDashboardOverview = async (
       }),
 
       prisma.cofOApplication.count({
-        where: { userId, status: "PENDING" },
+        where: { userId, status: "DRAFT" },
       }),
 
       prisma.cofOApplication.count({
-        where: { userId, status: "REJECTED" },
+        where: { userId, status: "NEEDS_CORRECTION" },
       }),
 
       prisma.cofOApplication.findMany({

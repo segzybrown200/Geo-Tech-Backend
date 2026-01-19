@@ -513,14 +513,6 @@ export type StageLogUncheckedUpdateManyWithoutCofONestedInput = {
   deleteMany?: Prisma.StageLogScalarWhereInput | Prisma.StageLogScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type StageLogCreateWithoutApproverInput = {
   id?: string
   stageNumber: number

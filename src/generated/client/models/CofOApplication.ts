@@ -20,32 +20,52 @@ export type CofOApplicationModel = runtime.Types.Result.DefaultSelection<Prisma.
 
 export type AggregateCofOApplication = {
   _count: CofOApplicationCountAggregateOutputType | null
+  _avg: CofOApplicationAvgAggregateOutputType | null
+  _sum: CofOApplicationSumAggregateOutputType | null
   _min: CofOApplicationMinAggregateOutputType | null
   _max: CofOApplicationMaxAggregateOutputType | null
+}
+
+export type CofOApplicationAvgAggregateOutputType = {
+  revisionCount: number | null
+}
+
+export type CofOApplicationSumAggregateOutputType = {
+  revisionCount: number | null
 }
 
 export type CofOApplicationMinAggregateOutputType = {
   id: string | null
   userId: string | null
   landId: string | null
-  status: $Enums.ApplicationStatus | null
+  status: $Enums.CofOStatus | null
   cofONumber: string | null
   signedAt: Date | null
   createdAt: Date | null
+  rejectedById: string | null
+  approvedById: string | null
+  revisionCount: number | null
+  currentReviewerId: string | null
   governorSignatureUrl: string | null
   applicationNumber: string | null
+  internalUserId: string | null
 }
 
 export type CofOApplicationMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   landId: string | null
-  status: $Enums.ApplicationStatus | null
+  status: $Enums.CofOStatus | null
   cofONumber: string | null
   signedAt: Date | null
   createdAt: Date | null
+  rejectedById: string | null
+  approvedById: string | null
+  revisionCount: number | null
+  currentReviewerId: string | null
   governorSignatureUrl: string | null
   applicationNumber: string | null
+  internalUserId: string | null
 }
 
 export type CofOApplicationCountAggregateOutputType = {
@@ -53,15 +73,27 @@ export type CofOApplicationCountAggregateOutputType = {
   userId: number
   landId: number
   status: number
-  documentUrls: number
   cofONumber: number
   signedAt: number
   createdAt: number
+  rejectedById: number
+  approvedById: number
+  revisionCount: number
+  currentReviewerId: number
   governorSignatureUrl: number
   applicationNumber: number
+  internalUserId: number
   _all: number
 }
 
+
+export type CofOApplicationAvgAggregateInputType = {
+  revisionCount?: true
+}
+
+export type CofOApplicationSumAggregateInputType = {
+  revisionCount?: true
+}
 
 export type CofOApplicationMinAggregateInputType = {
   id?: true
@@ -71,8 +103,13 @@ export type CofOApplicationMinAggregateInputType = {
   cofONumber?: true
   signedAt?: true
   createdAt?: true
+  rejectedById?: true
+  approvedById?: true
+  revisionCount?: true
+  currentReviewerId?: true
   governorSignatureUrl?: true
   applicationNumber?: true
+  internalUserId?: true
 }
 
 export type CofOApplicationMaxAggregateInputType = {
@@ -83,8 +120,13 @@ export type CofOApplicationMaxAggregateInputType = {
   cofONumber?: true
   signedAt?: true
   createdAt?: true
+  rejectedById?: true
+  approvedById?: true
+  revisionCount?: true
+  currentReviewerId?: true
   governorSignatureUrl?: true
   applicationNumber?: true
+  internalUserId?: true
 }
 
 export type CofOApplicationCountAggregateInputType = {
@@ -92,12 +134,16 @@ export type CofOApplicationCountAggregateInputType = {
   userId?: true
   landId?: true
   status?: true
-  documentUrls?: true
   cofONumber?: true
   signedAt?: true
   createdAt?: true
+  rejectedById?: true
+  approvedById?: true
+  revisionCount?: true
+  currentReviewerId?: true
   governorSignatureUrl?: true
   applicationNumber?: true
+  internalUserId?: true
   _all?: true
 }
 
@@ -139,6 +185,18 @@ export type CofOApplicationAggregateArgs<ExtArgs extends runtime.Types.Extension
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: CofOApplicationAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: CofOApplicationSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: CofOApplicationMinAggregateInputType
@@ -169,6 +227,8 @@ export type CofOApplicationGroupByArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   _count?: CofOApplicationCountAggregateInputType | true
+  _avg?: CofOApplicationAvgAggregateInputType
+  _sum?: CofOApplicationSumAggregateInputType
   _min?: CofOApplicationMinAggregateInputType
   _max?: CofOApplicationMaxAggregateInputType
 }
@@ -177,14 +237,20 @@ export type CofOApplicationGroupByOutputType = {
   id: string
   userId: string
   landId: string
-  status: $Enums.ApplicationStatus
-  documentUrls: string[]
+  status: $Enums.CofOStatus
   cofONumber: string | null
   signedAt: Date | null
   createdAt: Date
+  rejectedById: string | null
+  approvedById: string | null
+  revisionCount: number
+  currentReviewerId: string | null
   governorSignatureUrl: string | null
   applicationNumber: string | null
+  internalUserId: string | null
   _count: CofOApplicationCountAggregateOutputType | null
+  _avg: CofOApplicationAvgAggregateOutputType | null
+  _sum: CofOApplicationSumAggregateOutputType | null
   _min: CofOApplicationMinAggregateOutputType | null
   _max: CofOApplicationMaxAggregateOutputType | null
 }
@@ -211,19 +277,29 @@ export type CofOApplicationWhereInput = {
   id?: Prisma.UuidFilter<"CofOApplication"> | string
   userId?: Prisma.UuidFilter<"CofOApplication"> | string
   landId?: Prisma.UuidFilter<"CofOApplication"> | string
-  status?: Prisma.EnumApplicationStatusFilter<"CofOApplication"> | $Enums.ApplicationStatus
-  documentUrls?: Prisma.StringNullableListFilter<"CofOApplication">
+  status?: Prisma.EnumCofOStatusFilter<"CofOApplication"> | $Enums.CofOStatus
   cofONumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   signedAt?: Prisma.DateTimeNullableFilter<"CofOApplication"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOApplication"> | Date | string
+  rejectedById?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
+  approvedById?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
+  revisionCount?: Prisma.IntFilter<"CofOApplication"> | number
+  currentReviewerId?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
   governorSignatureUrl?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   applicationNumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
+  internalUserId?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
   logs?: Prisma.StageLogListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
   InboxMessage?: Prisma.InboxMessageListRelationFilter
+  rejectedBy?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
+  approvedBy?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
+  approvalAudits?: Prisma.ApprovalAuditListRelationFilter
+  currentReviewer?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
   payments?: Prisma.PaymentListRelationFilter
   cofOAuditLogs?: Prisma.CofOAuditLogListRelationFilter
+  internalUser?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
+  cofODocuments?: Prisma.CofODocumentListRelationFilter
 }
 
 export type CofOApplicationOrderByWithRelationInput = {
@@ -231,18 +307,28 @@ export type CofOApplicationOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  documentUrls?: Prisma.SortOrder
   cofONumber?: Prisma.SortOrderInput | Prisma.SortOrder
   signedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  rejectedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  approvedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  revisionCount?: Prisma.SortOrder
+  currentReviewerId?: Prisma.SortOrderInput | Prisma.SortOrder
   governorSignatureUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   applicationNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  internalUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   logs?: Prisma.StageLogOrderByRelationAggregateInput
   user?: Prisma.UserOrderByWithRelationInput
   land?: Prisma.LandRegistrationOrderByWithRelationInput
   InboxMessage?: Prisma.InboxMessageOrderByRelationAggregateInput
+  rejectedBy?: Prisma.InternalUserOrderByWithRelationInput
+  approvedBy?: Prisma.InternalUserOrderByWithRelationInput
+  approvalAudits?: Prisma.ApprovalAuditOrderByRelationAggregateInput
+  currentReviewer?: Prisma.InternalUserOrderByWithRelationInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
   cofOAuditLogs?: Prisma.CofOAuditLogOrderByRelationAggregateInput
+  internalUser?: Prisma.InternalUserOrderByWithRelationInput
+  cofODocuments?: Prisma.CofODocumentOrderByRelationAggregateInput
 }
 
 export type CofOApplicationWhereUniqueInput = Prisma.AtLeast<{
@@ -253,18 +339,28 @@ export type CofOApplicationWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.CofOApplicationWhereInput | Prisma.CofOApplicationWhereInput[]
   userId?: Prisma.UuidFilter<"CofOApplication"> | string
   landId?: Prisma.UuidFilter<"CofOApplication"> | string
-  status?: Prisma.EnumApplicationStatusFilter<"CofOApplication"> | $Enums.ApplicationStatus
-  documentUrls?: Prisma.StringNullableListFilter<"CofOApplication">
+  status?: Prisma.EnumCofOStatusFilter<"CofOApplication"> | $Enums.CofOStatus
   cofONumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   signedAt?: Prisma.DateTimeNullableFilter<"CofOApplication"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOApplication"> | Date | string
+  rejectedById?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
+  approvedById?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
+  revisionCount?: Prisma.IntFilter<"CofOApplication"> | number
+  currentReviewerId?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
   governorSignatureUrl?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
+  internalUserId?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
   logs?: Prisma.StageLogListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
   InboxMessage?: Prisma.InboxMessageListRelationFilter
+  rejectedBy?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
+  approvedBy?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
+  approvalAudits?: Prisma.ApprovalAuditListRelationFilter
+  currentReviewer?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
   payments?: Prisma.PaymentListRelationFilter
   cofOAuditLogs?: Prisma.CofOAuditLogListRelationFilter
+  internalUser?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
+  cofODocuments?: Prisma.CofODocumentListRelationFilter
 }, "id" | "applicationNumber">
 
 export type CofOApplicationOrderByWithAggregationInput = {
@@ -272,15 +368,21 @@ export type CofOApplicationOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  documentUrls?: Prisma.SortOrder
   cofONumber?: Prisma.SortOrderInput | Prisma.SortOrder
   signedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  rejectedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  approvedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  revisionCount?: Prisma.SortOrder
+  currentReviewerId?: Prisma.SortOrderInput | Prisma.SortOrder
   governorSignatureUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   applicationNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  internalUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CofOApplicationCountOrderByAggregateInput
+  _avg?: Prisma.CofOApplicationAvgOrderByAggregateInput
   _max?: Prisma.CofOApplicationMaxOrderByAggregateInput
   _min?: Prisma.CofOApplicationMinOrderByAggregateInput
+  _sum?: Prisma.CofOApplicationSumOrderByAggregateInput
 }
 
 export type CofOApplicationScalarWhereWithAggregatesInput = {
@@ -290,103 +392,135 @@ export type CofOApplicationScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"CofOApplication"> | string
   userId?: Prisma.UuidWithAggregatesFilter<"CofOApplication"> | string
   landId?: Prisma.UuidWithAggregatesFilter<"CofOApplication"> | string
-  status?: Prisma.EnumApplicationStatusWithAggregatesFilter<"CofOApplication"> | $Enums.ApplicationStatus
-  documentUrls?: Prisma.StringNullableListFilter<"CofOApplication">
+  status?: Prisma.EnumCofOStatusWithAggregatesFilter<"CofOApplication"> | $Enums.CofOStatus
   cofONumber?: Prisma.StringNullableWithAggregatesFilter<"CofOApplication"> | string | null
   signedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CofOApplication"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CofOApplication"> | Date | string
+  rejectedById?: Prisma.UuidNullableWithAggregatesFilter<"CofOApplication"> | string | null
+  approvedById?: Prisma.UuidNullableWithAggregatesFilter<"CofOApplication"> | string | null
+  revisionCount?: Prisma.IntWithAggregatesFilter<"CofOApplication"> | number
+  currentReviewerId?: Prisma.UuidNullableWithAggregatesFilter<"CofOApplication"> | string | null
   governorSignatureUrl?: Prisma.StringNullableWithAggregatesFilter<"CofOApplication"> | string | null
   applicationNumber?: Prisma.StringNullableWithAggregatesFilter<"CofOApplication"> | string | null
+  internalUserId?: Prisma.UuidNullableWithAggregatesFilter<"CofOApplication"> | string | null
 }
 
 export type CofOApplicationCreateInput = {
   id?: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  revisionCount?: number
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  rejectedBy?: Prisma.InternalUserCreateNestedOneWithoutRejectedApplicationsInput
+  approvedBy?: Prisma.InternalUserCreateNestedOneWithoutApprovedApplicationsInput
+  approvalAudits?: Prisma.ApprovalAuditCreateNestedManyWithoutCofOInput
+  currentReviewer?: Prisma.InternalUserCreateNestedOneWithoutReviewingApplicationsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
   cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
+  internalUser?: Prisma.InternalUserCreateNestedOneWithoutCofOApplicationsInput
+  cofODocuments?: Prisma.CofODocumentCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateInput = {
   id?: string
   userId: string
   landId: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
+  internalUserId?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
   cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
+  cofODocuments?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  rejectedBy?: Prisma.InternalUserUpdateOneWithoutRejectedApplicationsNestedInput
+  approvedBy?: Prisma.InternalUserUpdateOneWithoutApprovedApplicationsNestedInput
+  approvalAudits?: Prisma.ApprovalAuditUpdateManyWithoutCofONestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutReviewingApplicationsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
   cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
+  internalUser?: Prisma.InternalUserUpdateOneWithoutCofOApplicationsNestedInput
+  cofODocuments?: Prisma.CofODocumentUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
   cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
+  cofODocuments?: Prisma.CofODocumentUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationCreateManyInput = {
   id?: string
   userId: string
   landId: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
+  internalUserId?: string | null
 }
 
 export type CofOApplicationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -395,13 +529,17 @@ export type CofOApplicationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type CofOApplicationListRelationFilter = {
@@ -414,25 +552,25 @@ export type CofOApplicationOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type StringNullableListFilter<$PrismaModel = never> = {
-  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
-  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
-  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  isEmpty?: boolean
-}
-
 export type CofOApplicationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  documentUrls?: Prisma.SortOrder
   cofONumber?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  rejectedById?: Prisma.SortOrder
+  approvedById?: Prisma.SortOrder
+  revisionCount?: Prisma.SortOrder
+  currentReviewerId?: Prisma.SortOrder
   governorSignatureUrl?: Prisma.SortOrder
   applicationNumber?: Prisma.SortOrder
+  internalUserId?: Prisma.SortOrder
+}
+
+export type CofOApplicationAvgOrderByAggregateInput = {
+  revisionCount?: Prisma.SortOrder
 }
 
 export type CofOApplicationMaxOrderByAggregateInput = {
@@ -443,8 +581,13 @@ export type CofOApplicationMaxOrderByAggregateInput = {
   cofONumber?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  rejectedById?: Prisma.SortOrder
+  approvedById?: Prisma.SortOrder
+  revisionCount?: Prisma.SortOrder
+  currentReviewerId?: Prisma.SortOrder
   governorSignatureUrl?: Prisma.SortOrder
   applicationNumber?: Prisma.SortOrder
+  internalUserId?: Prisma.SortOrder
 }
 
 export type CofOApplicationMinOrderByAggregateInput = {
@@ -455,18 +598,27 @@ export type CofOApplicationMinOrderByAggregateInput = {
   cofONumber?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  rejectedById?: Prisma.SortOrder
+  approvedById?: Prisma.SortOrder
+  revisionCount?: Prisma.SortOrder
+  currentReviewerId?: Prisma.SortOrder
   governorSignatureUrl?: Prisma.SortOrder
   applicationNumber?: Prisma.SortOrder
+  internalUserId?: Prisma.SortOrder
 }
 
-export type CofOApplicationNullableScalarRelationFilter = {
-  is?: Prisma.CofOApplicationWhereInput | null
-  isNot?: Prisma.CofOApplicationWhereInput | null
+export type CofOApplicationSumOrderByAggregateInput = {
+  revisionCount?: Prisma.SortOrder
 }
 
 export type CofOApplicationScalarRelationFilter = {
   is?: Prisma.CofOApplicationWhereInput
   isNot?: Prisma.CofOApplicationWhereInput
+}
+
+export type CofOApplicationNullableScalarRelationFilter = {
+  is?: Prisma.CofOApplicationWhereInput | null
+  isNot?: Prisma.CofOApplicationWhereInput | null
 }
 
 export type CofOApplicationCreateNestedManyWithoutUserInput = {
@@ -508,6 +660,174 @@ export type CofOApplicationUncheckedUpdateManyWithoutUserNestedInput = {
   connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
   update?: Prisma.CofOApplicationUpdateWithWhereUniqueWithoutUserInput | Prisma.CofOApplicationUpdateWithWhereUniqueWithoutUserInput[]
   updateMany?: Prisma.CofOApplicationUpdateManyWithWhereWithoutUserInput | Prisma.CofOApplicationUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.CofOApplicationScalarWhereInput | Prisma.CofOApplicationScalarWhereInput[]
+}
+
+export type CofOApplicationCreateNestedManyWithoutInternalUserInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutInternalUserInput, Prisma.CofOApplicationUncheckedCreateWithoutInternalUserInput> | Prisma.CofOApplicationCreateWithoutInternalUserInput[] | Prisma.CofOApplicationUncheckedCreateWithoutInternalUserInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutInternalUserInput | Prisma.CofOApplicationCreateOrConnectWithoutInternalUserInput[]
+  createMany?: Prisma.CofOApplicationCreateManyInternalUserInputEnvelope
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+}
+
+export type CofOApplicationCreateNestedManyWithoutRejectedByInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutRejectedByInput, Prisma.CofOApplicationUncheckedCreateWithoutRejectedByInput> | Prisma.CofOApplicationCreateWithoutRejectedByInput[] | Prisma.CofOApplicationUncheckedCreateWithoutRejectedByInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutRejectedByInput | Prisma.CofOApplicationCreateOrConnectWithoutRejectedByInput[]
+  createMany?: Prisma.CofOApplicationCreateManyRejectedByInputEnvelope
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+}
+
+export type CofOApplicationCreateNestedManyWithoutApprovedByInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutApprovedByInput, Prisma.CofOApplicationUncheckedCreateWithoutApprovedByInput> | Prisma.CofOApplicationCreateWithoutApprovedByInput[] | Prisma.CofOApplicationUncheckedCreateWithoutApprovedByInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutApprovedByInput | Prisma.CofOApplicationCreateOrConnectWithoutApprovedByInput[]
+  createMany?: Prisma.CofOApplicationCreateManyApprovedByInputEnvelope
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+}
+
+export type CofOApplicationCreateNestedManyWithoutCurrentReviewerInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCurrentReviewerInput, Prisma.CofOApplicationUncheckedCreateWithoutCurrentReviewerInput> | Prisma.CofOApplicationCreateWithoutCurrentReviewerInput[] | Prisma.CofOApplicationUncheckedCreateWithoutCurrentReviewerInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutCurrentReviewerInput | Prisma.CofOApplicationCreateOrConnectWithoutCurrentReviewerInput[]
+  createMany?: Prisma.CofOApplicationCreateManyCurrentReviewerInputEnvelope
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+}
+
+export type CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutInternalUserInput, Prisma.CofOApplicationUncheckedCreateWithoutInternalUserInput> | Prisma.CofOApplicationCreateWithoutInternalUserInput[] | Prisma.CofOApplicationUncheckedCreateWithoutInternalUserInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutInternalUserInput | Prisma.CofOApplicationCreateOrConnectWithoutInternalUserInput[]
+  createMany?: Prisma.CofOApplicationCreateManyInternalUserInputEnvelope
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+}
+
+export type CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutRejectedByInput, Prisma.CofOApplicationUncheckedCreateWithoutRejectedByInput> | Prisma.CofOApplicationCreateWithoutRejectedByInput[] | Prisma.CofOApplicationUncheckedCreateWithoutRejectedByInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutRejectedByInput | Prisma.CofOApplicationCreateOrConnectWithoutRejectedByInput[]
+  createMany?: Prisma.CofOApplicationCreateManyRejectedByInputEnvelope
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+}
+
+export type CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutApprovedByInput, Prisma.CofOApplicationUncheckedCreateWithoutApprovedByInput> | Prisma.CofOApplicationCreateWithoutApprovedByInput[] | Prisma.CofOApplicationUncheckedCreateWithoutApprovedByInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutApprovedByInput | Prisma.CofOApplicationCreateOrConnectWithoutApprovedByInput[]
+  createMany?: Prisma.CofOApplicationCreateManyApprovedByInputEnvelope
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+}
+
+export type CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCurrentReviewerInput, Prisma.CofOApplicationUncheckedCreateWithoutCurrentReviewerInput> | Prisma.CofOApplicationCreateWithoutCurrentReviewerInput[] | Prisma.CofOApplicationUncheckedCreateWithoutCurrentReviewerInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutCurrentReviewerInput | Prisma.CofOApplicationCreateOrConnectWithoutCurrentReviewerInput[]
+  createMany?: Prisma.CofOApplicationCreateManyCurrentReviewerInputEnvelope
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+}
+
+export type CofOApplicationUpdateManyWithoutInternalUserNestedInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutInternalUserInput, Prisma.CofOApplicationUncheckedCreateWithoutInternalUserInput> | Prisma.CofOApplicationCreateWithoutInternalUserInput[] | Prisma.CofOApplicationUncheckedCreateWithoutInternalUserInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutInternalUserInput | Prisma.CofOApplicationCreateOrConnectWithoutInternalUserInput[]
+  upsert?: Prisma.CofOApplicationUpsertWithWhereUniqueWithoutInternalUserInput | Prisma.CofOApplicationUpsertWithWhereUniqueWithoutInternalUserInput[]
+  createMany?: Prisma.CofOApplicationCreateManyInternalUserInputEnvelope
+  set?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  disconnect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  delete?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  update?: Prisma.CofOApplicationUpdateWithWhereUniqueWithoutInternalUserInput | Prisma.CofOApplicationUpdateWithWhereUniqueWithoutInternalUserInput[]
+  updateMany?: Prisma.CofOApplicationUpdateManyWithWhereWithoutInternalUserInput | Prisma.CofOApplicationUpdateManyWithWhereWithoutInternalUserInput[]
+  deleteMany?: Prisma.CofOApplicationScalarWhereInput | Prisma.CofOApplicationScalarWhereInput[]
+}
+
+export type CofOApplicationUpdateManyWithoutRejectedByNestedInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutRejectedByInput, Prisma.CofOApplicationUncheckedCreateWithoutRejectedByInput> | Prisma.CofOApplicationCreateWithoutRejectedByInput[] | Prisma.CofOApplicationUncheckedCreateWithoutRejectedByInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutRejectedByInput | Prisma.CofOApplicationCreateOrConnectWithoutRejectedByInput[]
+  upsert?: Prisma.CofOApplicationUpsertWithWhereUniqueWithoutRejectedByInput | Prisma.CofOApplicationUpsertWithWhereUniqueWithoutRejectedByInput[]
+  createMany?: Prisma.CofOApplicationCreateManyRejectedByInputEnvelope
+  set?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  disconnect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  delete?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  update?: Prisma.CofOApplicationUpdateWithWhereUniqueWithoutRejectedByInput | Prisma.CofOApplicationUpdateWithWhereUniqueWithoutRejectedByInput[]
+  updateMany?: Prisma.CofOApplicationUpdateManyWithWhereWithoutRejectedByInput | Prisma.CofOApplicationUpdateManyWithWhereWithoutRejectedByInput[]
+  deleteMany?: Prisma.CofOApplicationScalarWhereInput | Prisma.CofOApplicationScalarWhereInput[]
+}
+
+export type CofOApplicationUpdateManyWithoutApprovedByNestedInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutApprovedByInput, Prisma.CofOApplicationUncheckedCreateWithoutApprovedByInput> | Prisma.CofOApplicationCreateWithoutApprovedByInput[] | Prisma.CofOApplicationUncheckedCreateWithoutApprovedByInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutApprovedByInput | Prisma.CofOApplicationCreateOrConnectWithoutApprovedByInput[]
+  upsert?: Prisma.CofOApplicationUpsertWithWhereUniqueWithoutApprovedByInput | Prisma.CofOApplicationUpsertWithWhereUniqueWithoutApprovedByInput[]
+  createMany?: Prisma.CofOApplicationCreateManyApprovedByInputEnvelope
+  set?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  disconnect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  delete?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  update?: Prisma.CofOApplicationUpdateWithWhereUniqueWithoutApprovedByInput | Prisma.CofOApplicationUpdateWithWhereUniqueWithoutApprovedByInput[]
+  updateMany?: Prisma.CofOApplicationUpdateManyWithWhereWithoutApprovedByInput | Prisma.CofOApplicationUpdateManyWithWhereWithoutApprovedByInput[]
+  deleteMany?: Prisma.CofOApplicationScalarWhereInput | Prisma.CofOApplicationScalarWhereInput[]
+}
+
+export type CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCurrentReviewerInput, Prisma.CofOApplicationUncheckedCreateWithoutCurrentReviewerInput> | Prisma.CofOApplicationCreateWithoutCurrentReviewerInput[] | Prisma.CofOApplicationUncheckedCreateWithoutCurrentReviewerInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutCurrentReviewerInput | Prisma.CofOApplicationCreateOrConnectWithoutCurrentReviewerInput[]
+  upsert?: Prisma.CofOApplicationUpsertWithWhereUniqueWithoutCurrentReviewerInput | Prisma.CofOApplicationUpsertWithWhereUniqueWithoutCurrentReviewerInput[]
+  createMany?: Prisma.CofOApplicationCreateManyCurrentReviewerInputEnvelope
+  set?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  disconnect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  delete?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  update?: Prisma.CofOApplicationUpdateWithWhereUniqueWithoutCurrentReviewerInput | Prisma.CofOApplicationUpdateWithWhereUniqueWithoutCurrentReviewerInput[]
+  updateMany?: Prisma.CofOApplicationUpdateManyWithWhereWithoutCurrentReviewerInput | Prisma.CofOApplicationUpdateManyWithWhereWithoutCurrentReviewerInput[]
+  deleteMany?: Prisma.CofOApplicationScalarWhereInput | Prisma.CofOApplicationScalarWhereInput[]
+}
+
+export type CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutInternalUserInput, Prisma.CofOApplicationUncheckedCreateWithoutInternalUserInput> | Prisma.CofOApplicationCreateWithoutInternalUserInput[] | Prisma.CofOApplicationUncheckedCreateWithoutInternalUserInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutInternalUserInput | Prisma.CofOApplicationCreateOrConnectWithoutInternalUserInput[]
+  upsert?: Prisma.CofOApplicationUpsertWithWhereUniqueWithoutInternalUserInput | Prisma.CofOApplicationUpsertWithWhereUniqueWithoutInternalUserInput[]
+  createMany?: Prisma.CofOApplicationCreateManyInternalUserInputEnvelope
+  set?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  disconnect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  delete?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  update?: Prisma.CofOApplicationUpdateWithWhereUniqueWithoutInternalUserInput | Prisma.CofOApplicationUpdateWithWhereUniqueWithoutInternalUserInput[]
+  updateMany?: Prisma.CofOApplicationUpdateManyWithWhereWithoutInternalUserInput | Prisma.CofOApplicationUpdateManyWithWhereWithoutInternalUserInput[]
+  deleteMany?: Prisma.CofOApplicationScalarWhereInput | Prisma.CofOApplicationScalarWhereInput[]
+}
+
+export type CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutRejectedByInput, Prisma.CofOApplicationUncheckedCreateWithoutRejectedByInput> | Prisma.CofOApplicationCreateWithoutRejectedByInput[] | Prisma.CofOApplicationUncheckedCreateWithoutRejectedByInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutRejectedByInput | Prisma.CofOApplicationCreateOrConnectWithoutRejectedByInput[]
+  upsert?: Prisma.CofOApplicationUpsertWithWhereUniqueWithoutRejectedByInput | Prisma.CofOApplicationUpsertWithWhereUniqueWithoutRejectedByInput[]
+  createMany?: Prisma.CofOApplicationCreateManyRejectedByInputEnvelope
+  set?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  disconnect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  delete?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  update?: Prisma.CofOApplicationUpdateWithWhereUniqueWithoutRejectedByInput | Prisma.CofOApplicationUpdateWithWhereUniqueWithoutRejectedByInput[]
+  updateMany?: Prisma.CofOApplicationUpdateManyWithWhereWithoutRejectedByInput | Prisma.CofOApplicationUpdateManyWithWhereWithoutRejectedByInput[]
+  deleteMany?: Prisma.CofOApplicationScalarWhereInput | Prisma.CofOApplicationScalarWhereInput[]
+}
+
+export type CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutApprovedByInput, Prisma.CofOApplicationUncheckedCreateWithoutApprovedByInput> | Prisma.CofOApplicationCreateWithoutApprovedByInput[] | Prisma.CofOApplicationUncheckedCreateWithoutApprovedByInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutApprovedByInput | Prisma.CofOApplicationCreateOrConnectWithoutApprovedByInput[]
+  upsert?: Prisma.CofOApplicationUpsertWithWhereUniqueWithoutApprovedByInput | Prisma.CofOApplicationUpsertWithWhereUniqueWithoutApprovedByInput[]
+  createMany?: Prisma.CofOApplicationCreateManyApprovedByInputEnvelope
+  set?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  disconnect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  delete?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  update?: Prisma.CofOApplicationUpdateWithWhereUniqueWithoutApprovedByInput | Prisma.CofOApplicationUpdateWithWhereUniqueWithoutApprovedByInput[]
+  updateMany?: Prisma.CofOApplicationUpdateManyWithWhereWithoutApprovedByInput | Prisma.CofOApplicationUpdateManyWithWhereWithoutApprovedByInput[]
+  deleteMany?: Prisma.CofOApplicationScalarWhereInput | Prisma.CofOApplicationScalarWhereInput[]
+}
+
+export type CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCurrentReviewerInput, Prisma.CofOApplicationUncheckedCreateWithoutCurrentReviewerInput> | Prisma.CofOApplicationCreateWithoutCurrentReviewerInput[] | Prisma.CofOApplicationUncheckedCreateWithoutCurrentReviewerInput[]
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutCurrentReviewerInput | Prisma.CofOApplicationCreateOrConnectWithoutCurrentReviewerInput[]
+  upsert?: Prisma.CofOApplicationUpsertWithWhereUniqueWithoutCurrentReviewerInput | Prisma.CofOApplicationUpsertWithWhereUniqueWithoutCurrentReviewerInput[]
+  createMany?: Prisma.CofOApplicationCreateManyCurrentReviewerInputEnvelope
+  set?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  disconnect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  delete?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
+  update?: Prisma.CofOApplicationUpdateWithWhereUniqueWithoutCurrentReviewerInput | Prisma.CofOApplicationUpdateWithWhereUniqueWithoutCurrentReviewerInput[]
+  updateMany?: Prisma.CofOApplicationUpdateManyWithWhereWithoutCurrentReviewerInput | Prisma.CofOApplicationUpdateManyWithWhereWithoutCurrentReviewerInput[]
   deleteMany?: Prisma.CofOApplicationScalarWhereInput | Prisma.CofOApplicationScalarWhereInput[]
 }
 
@@ -553,17 +873,30 @@ export type CofOApplicationUncheckedUpdateManyWithoutLandNestedInput = {
   deleteMany?: Prisma.CofOApplicationScalarWhereInput | Prisma.CofOApplicationScalarWhereInput[]
 }
 
-export type CofOApplicationCreatedocumentUrlsInput = {
-  set: string[]
+export type EnumCofOStatusFieldUpdateOperationsInput = {
+  set?: $Enums.CofOStatus
 }
 
-export type EnumApplicationStatusFieldUpdateOperationsInput = {
-  set?: $Enums.ApplicationStatus
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
-export type CofOApplicationUpdatedocumentUrlsInput = {
-  set?: string[]
-  push?: string | string[]
+export type CofOApplicationCreateNestedOneWithoutCofODocumentsInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCofODocumentsInput, Prisma.CofOApplicationUncheckedCreateWithoutCofODocumentsInput>
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutCofODocumentsInput
+  connect?: Prisma.CofOApplicationWhereUniqueInput
+}
+
+export type CofOApplicationUpdateOneRequiredWithoutCofODocumentsNestedInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCofODocumentsInput, Prisma.CofOApplicationUncheckedCreateWithoutCofODocumentsInput>
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutCofODocumentsInput
+  upsert?: Prisma.CofOApplicationUpsertWithoutCofODocumentsInput
+  connect?: Prisma.CofOApplicationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CofOApplicationUpdateToOneWithWhereWithoutCofODocumentsInput, Prisma.CofOApplicationUpdateWithoutCofODocumentsInput>, Prisma.CofOApplicationUncheckedUpdateWithoutCofODocumentsInput>
 }
 
 export type CofOApplicationCreateNestedOneWithoutPaymentsInput = {
@@ -624,36 +957,62 @@ export type CofOApplicationUpdateOneRequiredWithoutCofOAuditLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CofOApplicationUpdateToOneWithWhereWithoutCofOAuditLogsInput, Prisma.CofOApplicationUpdateWithoutCofOAuditLogsInput>, Prisma.CofOApplicationUncheckedUpdateWithoutCofOAuditLogsInput>
 }
 
+export type CofOApplicationCreateNestedOneWithoutApprovalAuditsInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutApprovalAuditsInput, Prisma.CofOApplicationUncheckedCreateWithoutApprovalAuditsInput>
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutApprovalAuditsInput
+  connect?: Prisma.CofOApplicationWhereUniqueInput
+}
+
+export type CofOApplicationUpdateOneRequiredWithoutApprovalAuditsNestedInput = {
+  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutApprovalAuditsInput, Prisma.CofOApplicationUncheckedCreateWithoutApprovalAuditsInput>
+  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutApprovalAuditsInput
+  upsert?: Prisma.CofOApplicationUpsertWithoutApprovalAuditsInput
+  connect?: Prisma.CofOApplicationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CofOApplicationUpdateToOneWithWhereWithoutApprovalAuditsInput, Prisma.CofOApplicationUpdateWithoutApprovalAuditsInput>, Prisma.CofOApplicationUncheckedUpdateWithoutApprovalAuditsInput>
+}
+
 export type CofOApplicationCreateWithoutUserInput = {
   id?: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  revisionCount?: number
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  rejectedBy?: Prisma.InternalUserCreateNestedOneWithoutRejectedApplicationsInput
+  approvedBy?: Prisma.InternalUserCreateNestedOneWithoutApprovedApplicationsInput
+  approvalAudits?: Prisma.ApprovalAuditCreateNestedManyWithoutCofOInput
+  currentReviewer?: Prisma.InternalUserCreateNestedOneWithoutReviewingApplicationsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
   cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
+  internalUser?: Prisma.InternalUserCreateNestedOneWithoutCofOApplicationsInput
+  cofODocuments?: Prisma.CofODocumentCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutUserInput = {
   id?: string
   landId: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
+  internalUserId?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
   cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
+  cofODocuments?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutUserInput = {
@@ -689,45 +1048,341 @@ export type CofOApplicationScalarWhereInput = {
   id?: Prisma.UuidFilter<"CofOApplication"> | string
   userId?: Prisma.UuidFilter<"CofOApplication"> | string
   landId?: Prisma.UuidFilter<"CofOApplication"> | string
-  status?: Prisma.EnumApplicationStatusFilter<"CofOApplication"> | $Enums.ApplicationStatus
-  documentUrls?: Prisma.StringNullableListFilter<"CofOApplication">
+  status?: Prisma.EnumCofOStatusFilter<"CofOApplication"> | $Enums.CofOStatus
   cofONumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   signedAt?: Prisma.DateTimeNullableFilter<"CofOApplication"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOApplication"> | Date | string
+  rejectedById?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
+  approvedById?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
+  revisionCount?: Prisma.IntFilter<"CofOApplication"> | number
+  currentReviewerId?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
   governorSignatureUrl?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   applicationNumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
+  internalUserId?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
+}
+
+export type CofOApplicationCreateWithoutInternalUserInput = {
+  id?: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  revisionCount?: number
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
+  user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  rejectedBy?: Prisma.InternalUserCreateNestedOneWithoutRejectedApplicationsInput
+  approvedBy?: Prisma.InternalUserCreateNestedOneWithoutApprovedApplicationsInput
+  approvalAudits?: Prisma.ApprovalAuditCreateNestedManyWithoutCofOInput
+  currentReviewer?: Prisma.InternalUserCreateNestedOneWithoutReviewingApplicationsInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
+  cofODocuments?: Prisma.CofODocumentCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationUncheckedCreateWithoutInternalUserInput = {
+  id?: string
+  userId: string
+  landId: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
+  cofODocuments?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationCreateOrConnectWithoutInternalUserInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutInternalUserInput, Prisma.CofOApplicationUncheckedCreateWithoutInternalUserInput>
+}
+
+export type CofOApplicationCreateManyInternalUserInputEnvelope = {
+  data: Prisma.CofOApplicationCreateManyInternalUserInput | Prisma.CofOApplicationCreateManyInternalUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type CofOApplicationCreateWithoutRejectedByInput = {
+  id?: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  revisionCount?: number
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
+  user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  approvedBy?: Prisma.InternalUserCreateNestedOneWithoutApprovedApplicationsInput
+  approvalAudits?: Prisma.ApprovalAuditCreateNestedManyWithoutCofOInput
+  currentReviewer?: Prisma.InternalUserCreateNestedOneWithoutReviewingApplicationsInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
+  internalUser?: Prisma.InternalUserCreateNestedOneWithoutCofOApplicationsInput
+  cofODocuments?: Prisma.CofODocumentCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationUncheckedCreateWithoutRejectedByInput = {
+  id?: string
+  userId: string
+  landId: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  internalUserId?: string | null
+  logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
+  cofODocuments?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationCreateOrConnectWithoutRejectedByInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutRejectedByInput, Prisma.CofOApplicationUncheckedCreateWithoutRejectedByInput>
+}
+
+export type CofOApplicationCreateManyRejectedByInputEnvelope = {
+  data: Prisma.CofOApplicationCreateManyRejectedByInput | Prisma.CofOApplicationCreateManyRejectedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type CofOApplicationCreateWithoutApprovedByInput = {
+  id?: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  revisionCount?: number
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
+  user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  rejectedBy?: Prisma.InternalUserCreateNestedOneWithoutRejectedApplicationsInput
+  approvalAudits?: Prisma.ApprovalAuditCreateNestedManyWithoutCofOInput
+  currentReviewer?: Prisma.InternalUserCreateNestedOneWithoutReviewingApplicationsInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
+  internalUser?: Prisma.InternalUserCreateNestedOneWithoutCofOApplicationsInput
+  cofODocuments?: Prisma.CofODocumentCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationUncheckedCreateWithoutApprovedByInput = {
+  id?: string
+  userId: string
+  landId: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  rejectedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  internalUserId?: string | null
+  logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
+  cofODocuments?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationCreateOrConnectWithoutApprovedByInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutApprovedByInput, Prisma.CofOApplicationUncheckedCreateWithoutApprovedByInput>
+}
+
+export type CofOApplicationCreateManyApprovedByInputEnvelope = {
+  data: Prisma.CofOApplicationCreateManyApprovedByInput | Prisma.CofOApplicationCreateManyApprovedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type CofOApplicationCreateWithoutCurrentReviewerInput = {
+  id?: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  revisionCount?: number
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
+  user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  rejectedBy?: Prisma.InternalUserCreateNestedOneWithoutRejectedApplicationsInput
+  approvedBy?: Prisma.InternalUserCreateNestedOneWithoutApprovedApplicationsInput
+  approvalAudits?: Prisma.ApprovalAuditCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
+  internalUser?: Prisma.InternalUserCreateNestedOneWithoutCofOApplicationsInput
+  cofODocuments?: Prisma.CofODocumentCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationUncheckedCreateWithoutCurrentReviewerInput = {
+  id?: string
+  userId: string
+  landId: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  internalUserId?: string | null
+  logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
+  cofODocuments?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationCreateOrConnectWithoutCurrentReviewerInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCurrentReviewerInput, Prisma.CofOApplicationUncheckedCreateWithoutCurrentReviewerInput>
+}
+
+export type CofOApplicationCreateManyCurrentReviewerInputEnvelope = {
+  data: Prisma.CofOApplicationCreateManyCurrentReviewerInput | Prisma.CofOApplicationCreateManyCurrentReviewerInput[]
+  skipDuplicates?: boolean
+}
+
+export type CofOApplicationUpsertWithWhereUniqueWithoutInternalUserInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  update: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutInternalUserInput, Prisma.CofOApplicationUncheckedUpdateWithoutInternalUserInput>
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutInternalUserInput, Prisma.CofOApplicationUncheckedCreateWithoutInternalUserInput>
+}
+
+export type CofOApplicationUpdateWithWhereUniqueWithoutInternalUserInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  data: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutInternalUserInput, Prisma.CofOApplicationUncheckedUpdateWithoutInternalUserInput>
+}
+
+export type CofOApplicationUpdateManyWithWhereWithoutInternalUserInput = {
+  where: Prisma.CofOApplicationScalarWhereInput
+  data: Prisma.XOR<Prisma.CofOApplicationUpdateManyMutationInput, Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserInput>
+}
+
+export type CofOApplicationUpsertWithWhereUniqueWithoutRejectedByInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  update: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutRejectedByInput, Prisma.CofOApplicationUncheckedUpdateWithoutRejectedByInput>
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutRejectedByInput, Prisma.CofOApplicationUncheckedCreateWithoutRejectedByInput>
+}
+
+export type CofOApplicationUpdateWithWhereUniqueWithoutRejectedByInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  data: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutRejectedByInput, Prisma.CofOApplicationUncheckedUpdateWithoutRejectedByInput>
+}
+
+export type CofOApplicationUpdateManyWithWhereWithoutRejectedByInput = {
+  where: Prisma.CofOApplicationScalarWhereInput
+  data: Prisma.XOR<Prisma.CofOApplicationUpdateManyMutationInput, Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByInput>
+}
+
+export type CofOApplicationUpsertWithWhereUniqueWithoutApprovedByInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  update: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutApprovedByInput, Prisma.CofOApplicationUncheckedUpdateWithoutApprovedByInput>
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutApprovedByInput, Prisma.CofOApplicationUncheckedCreateWithoutApprovedByInput>
+}
+
+export type CofOApplicationUpdateWithWhereUniqueWithoutApprovedByInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  data: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutApprovedByInput, Prisma.CofOApplicationUncheckedUpdateWithoutApprovedByInput>
+}
+
+export type CofOApplicationUpdateManyWithWhereWithoutApprovedByInput = {
+  where: Prisma.CofOApplicationScalarWhereInput
+  data: Prisma.XOR<Prisma.CofOApplicationUpdateManyMutationInput, Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByInput>
+}
+
+export type CofOApplicationUpsertWithWhereUniqueWithoutCurrentReviewerInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  update: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutCurrentReviewerInput, Prisma.CofOApplicationUncheckedUpdateWithoutCurrentReviewerInput>
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCurrentReviewerInput, Prisma.CofOApplicationUncheckedCreateWithoutCurrentReviewerInput>
+}
+
+export type CofOApplicationUpdateWithWhereUniqueWithoutCurrentReviewerInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  data: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutCurrentReviewerInput, Prisma.CofOApplicationUncheckedUpdateWithoutCurrentReviewerInput>
+}
+
+export type CofOApplicationUpdateManyWithWhereWithoutCurrentReviewerInput = {
+  where: Prisma.CofOApplicationScalarWhereInput
+  data: Prisma.XOR<Prisma.CofOApplicationUpdateManyMutationInput, Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerInput>
 }
 
 export type CofOApplicationCreateWithoutLandInput = {
   id?: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  revisionCount?: number
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  rejectedBy?: Prisma.InternalUserCreateNestedOneWithoutRejectedApplicationsInput
+  approvedBy?: Prisma.InternalUserCreateNestedOneWithoutApprovedApplicationsInput
+  approvalAudits?: Prisma.ApprovalAuditCreateNestedManyWithoutCofOInput
+  currentReviewer?: Prisma.InternalUserCreateNestedOneWithoutReviewingApplicationsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
   cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
+  internalUser?: Prisma.InternalUserCreateNestedOneWithoutCofOApplicationsInput
+  cofODocuments?: Prisma.CofODocumentCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutLandInput = {
   id?: string
   userId: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
+  internalUserId?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
   cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
+  cofODocuments?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutLandInput = {
@@ -756,36 +1411,152 @@ export type CofOApplicationUpdateManyWithWhereWithoutLandInput = {
   data: Prisma.XOR<Prisma.CofOApplicationUpdateManyMutationInput, Prisma.CofOApplicationUncheckedUpdateManyWithoutLandInput>
 }
 
-export type CofOApplicationCreateWithoutPaymentsInput = {
+export type CofOApplicationCreateWithoutCofODocumentsInput = {
   id?: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  revisionCount?: number
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  rejectedBy?: Prisma.InternalUserCreateNestedOneWithoutRejectedApplicationsInput
+  approvedBy?: Prisma.InternalUserCreateNestedOneWithoutApprovedApplicationsInput
+  approvalAudits?: Prisma.ApprovalAuditCreateNestedManyWithoutCofOInput
+  currentReviewer?: Prisma.InternalUserCreateNestedOneWithoutReviewingApplicationsInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
   cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
+  internalUser?: Prisma.InternalUserCreateNestedOneWithoutCofOApplicationsInput
+}
+
+export type CofOApplicationUncheckedCreateWithoutCofODocumentsInput = {
+  id?: string
+  userId: string
+  landId: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  internalUserId?: string | null
+  logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationCreateOrConnectWithoutCofODocumentsInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCofODocumentsInput, Prisma.CofOApplicationUncheckedCreateWithoutCofODocumentsInput>
+}
+
+export type CofOApplicationUpsertWithoutCofODocumentsInput = {
+  update: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutCofODocumentsInput, Prisma.CofOApplicationUncheckedUpdateWithoutCofODocumentsInput>
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutCofODocumentsInput, Prisma.CofOApplicationUncheckedCreateWithoutCofODocumentsInput>
+  where?: Prisma.CofOApplicationWhereInput
+}
+
+export type CofOApplicationUpdateToOneWithWhereWithoutCofODocumentsInput = {
+  where?: Prisma.CofOApplicationWhereInput
+  data: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutCofODocumentsInput, Prisma.CofOApplicationUncheckedUpdateWithoutCofODocumentsInput>
+}
+
+export type CofOApplicationUpdateWithoutCofODocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  rejectedBy?: Prisma.InternalUserUpdateOneWithoutRejectedApplicationsNestedInput
+  approvedBy?: Prisma.InternalUserUpdateOneWithoutApprovedApplicationsNestedInput
+  approvalAudits?: Prisma.ApprovalAuditUpdateManyWithoutCofONestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutReviewingApplicationsNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
+  internalUser?: Prisma.InternalUserUpdateOneWithoutCofOApplicationsNestedInput
+}
+
+export type CofOApplicationUncheckedUpdateWithoutCofODocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationCreateWithoutPaymentsInput = {
+  id?: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  revisionCount?: number
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
+  user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  rejectedBy?: Prisma.InternalUserCreateNestedOneWithoutRejectedApplicationsInput
+  approvedBy?: Prisma.InternalUserCreateNestedOneWithoutApprovedApplicationsInput
+  approvalAudits?: Prisma.ApprovalAuditCreateNestedManyWithoutCofOInput
+  currentReviewer?: Prisma.InternalUserCreateNestedOneWithoutReviewingApplicationsInput
+  cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
+  internalUser?: Prisma.InternalUserCreateNestedOneWithoutCofOApplicationsInput
+  cofODocuments?: Prisma.CofODocumentCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutPaymentsInput = {
   id?: string
   userId: string
   landId: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
+  internalUserId?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedCreateNestedManyWithoutCofOInput
   cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
+  cofODocuments?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutPaymentsInput = {
@@ -806,66 +1577,90 @@ export type CofOApplicationUpdateToOneWithWhereWithoutPaymentsInput = {
 
 export type CofOApplicationUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  rejectedBy?: Prisma.InternalUserUpdateOneWithoutRejectedApplicationsNestedInput
+  approvedBy?: Prisma.InternalUserUpdateOneWithoutApprovedApplicationsNestedInput
+  approvalAudits?: Prisma.ApprovalAuditUpdateManyWithoutCofONestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutReviewingApplicationsNestedInput
   cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
+  internalUser?: Prisma.InternalUserUpdateOneWithoutCofOApplicationsNestedInput
+  cofODocuments?: Prisma.CofODocumentUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedUpdateManyWithoutCofONestedInput
   cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
+  cofODocuments?: Prisma.CofODocumentUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationCreateWithoutLogsInput = {
   id?: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  revisionCount?: number
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  rejectedBy?: Prisma.InternalUserCreateNestedOneWithoutRejectedApplicationsInput
+  approvedBy?: Prisma.InternalUserCreateNestedOneWithoutApprovedApplicationsInput
+  approvalAudits?: Prisma.ApprovalAuditCreateNestedManyWithoutCofOInput
+  currentReviewer?: Prisma.InternalUserCreateNestedOneWithoutReviewingApplicationsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
   cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
+  internalUser?: Prisma.InternalUserCreateNestedOneWithoutCofOApplicationsInput
+  cofODocuments?: Prisma.CofODocumentCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutLogsInput = {
   id?: string
   userId: string
   landId: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
+  internalUserId?: string | null
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
   cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
+  cofODocuments?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutLogsInput = {
@@ -886,66 +1681,90 @@ export type CofOApplicationUpdateToOneWithWhereWithoutLogsInput = {
 
 export type CofOApplicationUpdateWithoutLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  rejectedBy?: Prisma.InternalUserUpdateOneWithoutRejectedApplicationsNestedInput
+  approvedBy?: Prisma.InternalUserUpdateOneWithoutApprovedApplicationsNestedInput
+  approvalAudits?: Prisma.ApprovalAuditUpdateManyWithoutCofONestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutReviewingApplicationsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
   cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
+  internalUser?: Prisma.InternalUserUpdateOneWithoutCofOApplicationsNestedInput
+  cofODocuments?: Prisma.CofODocumentUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
   cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
+  cofODocuments?: Prisma.CofODocumentUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationCreateWithoutInboxMessageInput = {
   id?: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  revisionCount?: number
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
+  rejectedBy?: Prisma.InternalUserCreateNestedOneWithoutRejectedApplicationsInput
+  approvedBy?: Prisma.InternalUserCreateNestedOneWithoutApprovedApplicationsInput
+  approvalAudits?: Prisma.ApprovalAuditCreateNestedManyWithoutCofOInput
+  currentReviewer?: Prisma.InternalUserCreateNestedOneWithoutReviewingApplicationsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
   cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
+  internalUser?: Prisma.InternalUserCreateNestedOneWithoutCofOApplicationsInput
+  cofODocuments?: Prisma.CofODocumentCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutInboxMessageInput = {
   id?: string
   userId: string
   landId: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
+  internalUserId?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
   cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
+  cofODocuments?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutInboxMessageInput = {
@@ -966,66 +1785,90 @@ export type CofOApplicationUpdateToOneWithWhereWithoutInboxMessageInput = {
 
 export type CofOApplicationUpdateWithoutInboxMessageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
+  rejectedBy?: Prisma.InternalUserUpdateOneWithoutRejectedApplicationsNestedInput
+  approvedBy?: Prisma.InternalUserUpdateOneWithoutApprovedApplicationsNestedInput
+  approvalAudits?: Prisma.ApprovalAuditUpdateManyWithoutCofONestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutReviewingApplicationsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
   cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
+  internalUser?: Prisma.InternalUserUpdateOneWithoutCofOApplicationsNestedInput
+  cofODocuments?: Prisma.CofODocumentUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutInboxMessageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
   cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
+  cofODocuments?: Prisma.CofODocumentUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationCreateWithoutCofOAuditLogsInput = {
   id?: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  revisionCount?: number
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
   logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
   user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
   InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  rejectedBy?: Prisma.InternalUserCreateNestedOneWithoutRejectedApplicationsInput
+  approvedBy?: Prisma.InternalUserCreateNestedOneWithoutApprovedApplicationsInput
+  approvalAudits?: Prisma.ApprovalAuditCreateNestedManyWithoutCofOInput
+  currentReviewer?: Prisma.InternalUserCreateNestedOneWithoutReviewingApplicationsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
+  internalUser?: Prisma.InternalUserCreateNestedOneWithoutCofOApplicationsInput
+  cofODocuments?: Prisma.CofODocumentCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationUncheckedCreateWithoutCofOAuditLogsInput = {
   id?: string
   userId: string
   landId: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
+  internalUserId?: string | null
   logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
   InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedCreateNestedManyWithoutCofOInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
+  cofODocuments?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutCofOInput
 }
 
 export type CofOApplicationCreateOrConnectWithoutCofOAuditLogsInput = {
@@ -1046,146 +1889,606 @@ export type CofOApplicationUpdateToOneWithWhereWithoutCofOAuditLogsInput = {
 
 export type CofOApplicationUpdateWithoutCofOAuditLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  rejectedBy?: Prisma.InternalUserUpdateOneWithoutRejectedApplicationsNestedInput
+  approvedBy?: Prisma.InternalUserUpdateOneWithoutApprovedApplicationsNestedInput
+  approvalAudits?: Prisma.ApprovalAuditUpdateManyWithoutCofONestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutReviewingApplicationsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
+  internalUser?: Prisma.InternalUserUpdateOneWithoutCofOApplicationsNestedInput
+  cofODocuments?: Prisma.CofODocumentUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutCofOAuditLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
+  cofODocuments?: Prisma.CofODocumentUncheckedUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationCreateWithoutApprovalAuditsInput = {
+  id?: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  revisionCount?: number
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  logs?: Prisma.StageLogCreateNestedManyWithoutCofOInput
+  user: Prisma.UserCreateNestedOneWithoutCofOApplicationInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutCofOApplicationInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutCofOInput
+  rejectedBy?: Prisma.InternalUserCreateNestedOneWithoutRejectedApplicationsInput
+  approvedBy?: Prisma.InternalUserCreateNestedOneWithoutApprovedApplicationsInput
+  currentReviewer?: Prisma.InternalUserCreateNestedOneWithoutReviewingApplicationsInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogCreateNestedManyWithoutCofOInput
+  internalUser?: Prisma.InternalUserCreateNestedOneWithoutCofOApplicationsInput
+  cofODocuments?: Prisma.CofODocumentCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationUncheckedCreateWithoutApprovalAuditsInput = {
+  id?: string
+  userId: string
+  landId: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  internalUserId?: string | null
+  logs?: Prisma.StageLogUncheckedCreateNestedManyWithoutCofOInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutCofOInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCofOInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedCreateNestedManyWithoutCofOInput
+  cofODocuments?: Prisma.CofODocumentUncheckedCreateNestedManyWithoutCofOInput
+}
+
+export type CofOApplicationCreateOrConnectWithoutApprovalAuditsInput = {
+  where: Prisma.CofOApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutApprovalAuditsInput, Prisma.CofOApplicationUncheckedCreateWithoutApprovalAuditsInput>
+}
+
+export type CofOApplicationUpsertWithoutApprovalAuditsInput = {
+  update: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutApprovalAuditsInput, Prisma.CofOApplicationUncheckedUpdateWithoutApprovalAuditsInput>
+  create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutApprovalAuditsInput, Prisma.CofOApplicationUncheckedCreateWithoutApprovalAuditsInput>
+  where?: Prisma.CofOApplicationWhereInput
+}
+
+export type CofOApplicationUpdateToOneWithWhereWithoutApprovalAuditsInput = {
+  where?: Prisma.CofOApplicationWhereInput
+  data: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutApprovalAuditsInput, Prisma.CofOApplicationUncheckedUpdateWithoutApprovalAuditsInput>
+}
+
+export type CofOApplicationUpdateWithoutApprovalAuditsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  rejectedBy?: Prisma.InternalUserUpdateOneWithoutRejectedApplicationsNestedInput
+  approvedBy?: Prisma.InternalUserUpdateOneWithoutApprovedApplicationsNestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutReviewingApplicationsNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
+  internalUser?: Prisma.InternalUserUpdateOneWithoutCofOApplicationsNestedInput
+  cofODocuments?: Prisma.CofODocumentUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationUncheckedUpdateWithoutApprovalAuditsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
+  cofODocuments?: Prisma.CofODocumentUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationCreateManyUserInput = {
   id?: string
   landId: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
+  internalUserId?: string | null
 }
 
 export type CofOApplicationUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  rejectedBy?: Prisma.InternalUserUpdateOneWithoutRejectedApplicationsNestedInput
+  approvedBy?: Prisma.InternalUserUpdateOneWithoutApprovedApplicationsNestedInput
+  approvalAudits?: Prisma.ApprovalAuditUpdateManyWithoutCofONestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutReviewingApplicationsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
   cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
+  internalUser?: Prisma.InternalUserUpdateOneWithoutCofOApplicationsNestedInput
+  cofODocuments?: Prisma.CofODocumentUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
   cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
+  cofODocuments?: Prisma.CofODocumentUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type CofOApplicationCreateManyInternalUserInput = {
+  id?: string
+  userId: string
+  landId: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+}
+
+export type CofOApplicationCreateManyRejectedByInput = {
+  id?: string
+  userId: string
+  landId: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  internalUserId?: string | null
+}
+
+export type CofOApplicationCreateManyApprovedByInput = {
+  id?: string
+  userId: string
+  landId: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  rejectedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  internalUserId?: string | null
+}
+
+export type CofOApplicationCreateManyCurrentReviewerInput = {
+  id?: string
+  userId: string
+  landId: string
+  status?: $Enums.CofOStatus
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  internalUserId?: string | null
+}
+
+export type CofOApplicationUpdateWithoutInternalUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  rejectedBy?: Prisma.InternalUserUpdateOneWithoutRejectedApplicationsNestedInput
+  approvedBy?: Prisma.InternalUserUpdateOneWithoutApprovedApplicationsNestedInput
+  approvalAudits?: Prisma.ApprovalAuditUpdateManyWithoutCofONestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutReviewingApplicationsNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
+  cofODocuments?: Prisma.CofODocumentUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationUncheckedUpdateWithoutInternalUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
+  cofODocuments?: Prisma.CofODocumentUncheckedUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationUncheckedUpdateManyWithoutInternalUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type CofOApplicationUpdateWithoutRejectedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  approvedBy?: Prisma.InternalUserUpdateOneWithoutApprovedApplicationsNestedInput
+  approvalAudits?: Prisma.ApprovalAuditUpdateManyWithoutCofONestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutReviewingApplicationsNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
+  internalUser?: Prisma.InternalUserUpdateOneWithoutCofOApplicationsNestedInput
+  cofODocuments?: Prisma.CofODocumentUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationUncheckedUpdateWithoutRejectedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
+  cofODocuments?: Prisma.CofODocumentUncheckedUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationUncheckedUpdateManyWithoutRejectedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type CofOApplicationUpdateWithoutApprovedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  rejectedBy?: Prisma.InternalUserUpdateOneWithoutRejectedApplicationsNestedInput
+  approvalAudits?: Prisma.ApprovalAuditUpdateManyWithoutCofONestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutReviewingApplicationsNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
+  internalUser?: Prisma.InternalUserUpdateOneWithoutCofOApplicationsNestedInput
+  cofODocuments?: Prisma.CofODocumentUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationUncheckedUpdateWithoutApprovedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
+  cofODocuments?: Prisma.CofODocumentUncheckedUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationUncheckedUpdateManyWithoutApprovedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type CofOApplicationUpdateWithoutCurrentReviewerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutCofOApplicationNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  rejectedBy?: Prisma.InternalUserUpdateOneWithoutRejectedApplicationsNestedInput
+  approvedBy?: Prisma.InternalUserUpdateOneWithoutApprovedApplicationsNestedInput
+  approvalAudits?: Prisma.ApprovalAuditUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
+  internalUser?: Prisma.InternalUserUpdateOneWithoutCofOApplicationsNestedInput
+  cofODocuments?: Prisma.CofODocumentUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationUncheckedUpdateWithoutCurrentReviewerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedUpdateManyWithoutCofONestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
+  cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
+  cofODocuments?: Prisma.CofODocumentUncheckedUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type CofOApplicationCreateManyLandInput = {
   id?: string
   userId: string
-  status?: $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationCreatedocumentUrlsInput | string[]
+  status?: $Enums.CofOStatus
   cofONumber?: string | null
   signedAt?: Date | string | null
   createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
   governorSignatureUrl?: string | null
   applicationNumber?: string | null
+  internalUserId?: string | null
 }
 
 export type CofOApplicationUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUpdateManyWithoutCofONestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCofOApplicationNestedInput
   InboxMessage?: Prisma.InboxMessageUpdateManyWithoutCofONestedInput
+  rejectedBy?: Prisma.InternalUserUpdateOneWithoutRejectedApplicationsNestedInput
+  approvedBy?: Prisma.InternalUserUpdateOneWithoutApprovedApplicationsNestedInput
+  approvalAudits?: Prisma.ApprovalAuditUpdateManyWithoutCofONestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutReviewingApplicationsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCofONestedInput
   cofOAuditLogs?: Prisma.CofOAuditLogUpdateManyWithoutCofONestedInput
+  internalUser?: Prisma.InternalUserUpdateOneWithoutCofOApplicationsNestedInput
+  cofODocuments?: Prisma.CofODocumentUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.StageLogUncheckedUpdateManyWithoutCofONestedInput
   InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutCofONestedInput
+  approvalAudits?: Prisma.ApprovalAuditUncheckedUpdateManyWithoutCofONestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
   cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
+  cofODocuments?: Prisma.CofODocumentUncheckedUpdateManyWithoutCofONestedInput
 }
 
 export type CofOApplicationUncheckedUpdateManyWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  documentUrls?: Prisma.CofOApplicationUpdatedocumentUrlsInput | string[]
+  status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1196,15 +2499,19 @@ export type CofOApplicationUncheckedUpdateManyWithoutLandInput = {
 export type CofOApplicationCountOutputType = {
   logs: number
   InboxMessage: number
+  approvalAudits: number
   payments: number
   cofOAuditLogs: number
+  cofODocuments: number
 }
 
 export type CofOApplicationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   logs?: boolean | CofOApplicationCountOutputTypeCountLogsArgs
   InboxMessage?: boolean | CofOApplicationCountOutputTypeCountInboxMessageArgs
+  approvalAudits?: boolean | CofOApplicationCountOutputTypeCountApprovalAuditsArgs
   payments?: boolean | CofOApplicationCountOutputTypeCountPaymentsArgs
   cofOAuditLogs?: boolean | CofOApplicationCountOutputTypeCountCofOAuditLogsArgs
+  cofODocuments?: boolean | CofOApplicationCountOutputTypeCountCofODocumentsArgs
 }
 
 /**
@@ -1234,6 +2541,13 @@ export type CofOApplicationCountOutputTypeCountInboxMessageArgs<ExtArgs extends 
 /**
  * CofOApplicationCountOutputType without action
  */
+export type CofOApplicationCountOutputTypeCountApprovalAuditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApprovalAuditWhereInput
+}
+
+/**
+ * CofOApplicationCountOutputType without action
+ */
 export type CofOApplicationCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PaymentWhereInput
 }
@@ -1245,24 +2559,41 @@ export type CofOApplicationCountOutputTypeCountCofOAuditLogsArgs<ExtArgs extends
   where?: Prisma.CofOAuditLogWhereInput
 }
 
+/**
+ * CofOApplicationCountOutputType without action
+ */
+export type CofOApplicationCountOutputTypeCountCofODocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CofODocumentWhereInput
+}
+
 
 export type CofOApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   landId?: boolean
   status?: boolean
-  documentUrls?: boolean
   cofONumber?: boolean
   signedAt?: boolean
   createdAt?: boolean
+  rejectedById?: boolean
+  approvedById?: boolean
+  revisionCount?: boolean
+  currentReviewerId?: boolean
   governorSignatureUrl?: boolean
   applicationNumber?: boolean
+  internalUserId?: boolean
   logs?: boolean | Prisma.CofOApplication$logsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   InboxMessage?: boolean | Prisma.CofOApplication$InboxMessageArgs<ExtArgs>
+  rejectedBy?: boolean | Prisma.CofOApplication$rejectedByArgs<ExtArgs>
+  approvedBy?: boolean | Prisma.CofOApplication$approvedByArgs<ExtArgs>
+  approvalAudits?: boolean | Prisma.CofOApplication$approvalAuditsArgs<ExtArgs>
+  currentReviewer?: boolean | Prisma.CofOApplication$currentReviewerArgs<ExtArgs>
   payments?: boolean | Prisma.CofOApplication$paymentsArgs<ExtArgs>
   cofOAuditLogs?: boolean | Prisma.CofOApplication$cofOAuditLogsArgs<ExtArgs>
+  internalUser?: boolean | Prisma.CofOApplication$internalUserArgs<ExtArgs>
+  cofODocuments?: boolean | Prisma.CofOApplication$cofODocumentsArgs<ExtArgs>
   _count?: boolean | Prisma.CofOApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cofOApplication"]>
 
@@ -1271,14 +2602,22 @@ export type CofOApplicationSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   userId?: boolean
   landId?: boolean
   status?: boolean
-  documentUrls?: boolean
   cofONumber?: boolean
   signedAt?: boolean
   createdAt?: boolean
+  rejectedById?: boolean
+  approvedById?: boolean
+  revisionCount?: boolean
+  currentReviewerId?: boolean
   governorSignatureUrl?: boolean
   applicationNumber?: boolean
+  internalUserId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
+  rejectedBy?: boolean | Prisma.CofOApplication$rejectedByArgs<ExtArgs>
+  approvedBy?: boolean | Prisma.CofOApplication$approvedByArgs<ExtArgs>
+  currentReviewer?: boolean | Prisma.CofOApplication$currentReviewerArgs<ExtArgs>
+  internalUser?: boolean | Prisma.CofOApplication$internalUserArgs<ExtArgs>
 }, ExtArgs["result"]["cofOApplication"]>
 
 export type CofOApplicationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1286,14 +2625,22 @@ export type CofOApplicationSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   userId?: boolean
   landId?: boolean
   status?: boolean
-  documentUrls?: boolean
   cofONumber?: boolean
   signedAt?: boolean
   createdAt?: boolean
+  rejectedById?: boolean
+  approvedById?: boolean
+  revisionCount?: boolean
+  currentReviewerId?: boolean
   governorSignatureUrl?: boolean
   applicationNumber?: boolean
+  internalUserId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
+  rejectedBy?: boolean | Prisma.CofOApplication$rejectedByArgs<ExtArgs>
+  approvedBy?: boolean | Prisma.CofOApplication$approvedByArgs<ExtArgs>
+  currentReviewer?: boolean | Prisma.CofOApplication$currentReviewerArgs<ExtArgs>
+  internalUser?: boolean | Prisma.CofOApplication$internalUserArgs<ExtArgs>
 }, ExtArgs["result"]["cofOApplication"]>
 
 export type CofOApplicationSelectScalar = {
@@ -1301,31 +2648,49 @@ export type CofOApplicationSelectScalar = {
   userId?: boolean
   landId?: boolean
   status?: boolean
-  documentUrls?: boolean
   cofONumber?: boolean
   signedAt?: boolean
   createdAt?: boolean
+  rejectedById?: boolean
+  approvedById?: boolean
+  revisionCount?: boolean
+  currentReviewerId?: boolean
   governorSignatureUrl?: boolean
   applicationNumber?: boolean
+  internalUserId?: boolean
 }
 
-export type CofOApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "landId" | "status" | "documentUrls" | "cofONumber" | "signedAt" | "createdAt" | "governorSignatureUrl" | "applicationNumber", ExtArgs["result"]["cofOApplication"]>
+export type CofOApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "landId" | "status" | "cofONumber" | "signedAt" | "createdAt" | "rejectedById" | "approvedById" | "revisionCount" | "currentReviewerId" | "governorSignatureUrl" | "applicationNumber" | "internalUserId", ExtArgs["result"]["cofOApplication"]>
 export type CofOApplicationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   logs?: boolean | Prisma.CofOApplication$logsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   InboxMessage?: boolean | Prisma.CofOApplication$InboxMessageArgs<ExtArgs>
+  rejectedBy?: boolean | Prisma.CofOApplication$rejectedByArgs<ExtArgs>
+  approvedBy?: boolean | Prisma.CofOApplication$approvedByArgs<ExtArgs>
+  approvalAudits?: boolean | Prisma.CofOApplication$approvalAuditsArgs<ExtArgs>
+  currentReviewer?: boolean | Prisma.CofOApplication$currentReviewerArgs<ExtArgs>
   payments?: boolean | Prisma.CofOApplication$paymentsArgs<ExtArgs>
   cofOAuditLogs?: boolean | Prisma.CofOApplication$cofOAuditLogsArgs<ExtArgs>
+  internalUser?: boolean | Prisma.CofOApplication$internalUserArgs<ExtArgs>
+  cofODocuments?: boolean | Prisma.CofOApplication$cofODocumentsArgs<ExtArgs>
   _count?: boolean | Prisma.CofOApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CofOApplicationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
+  rejectedBy?: boolean | Prisma.CofOApplication$rejectedByArgs<ExtArgs>
+  approvedBy?: boolean | Prisma.CofOApplication$approvedByArgs<ExtArgs>
+  currentReviewer?: boolean | Prisma.CofOApplication$currentReviewerArgs<ExtArgs>
+  internalUser?: boolean | Prisma.CofOApplication$internalUserArgs<ExtArgs>
 }
 export type CofOApplicationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
+  rejectedBy?: boolean | Prisma.CofOApplication$rejectedByArgs<ExtArgs>
+  approvedBy?: boolean | Prisma.CofOApplication$approvedByArgs<ExtArgs>
+  currentReviewer?: boolean | Prisma.CofOApplication$currentReviewerArgs<ExtArgs>
+  internalUser?: boolean | Prisma.CofOApplication$internalUserArgs<ExtArgs>
 }
 
 export type $CofOApplicationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1335,20 +2700,30 @@ export type $CofOApplicationPayload<ExtArgs extends runtime.Types.Extensions.Int
     user: Prisma.$UserPayload<ExtArgs>
     land: Prisma.$LandRegistrationPayload<ExtArgs>
     InboxMessage: Prisma.$InboxMessagePayload<ExtArgs>[]
+    rejectedBy: Prisma.$InternalUserPayload<ExtArgs> | null
+    approvedBy: Prisma.$InternalUserPayload<ExtArgs> | null
+    approvalAudits: Prisma.$ApprovalAuditPayload<ExtArgs>[]
+    currentReviewer: Prisma.$InternalUserPayload<ExtArgs> | null
     payments: Prisma.$PaymentPayload<ExtArgs>[]
     cofOAuditLogs: Prisma.$CofOAuditLogPayload<ExtArgs>[]
+    internalUser: Prisma.$InternalUserPayload<ExtArgs> | null
+    cofODocuments: Prisma.$CofODocumentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
     landId: string
-    status: $Enums.ApplicationStatus
-    documentUrls: string[]
+    status: $Enums.CofOStatus
     cofONumber: string | null
     signedAt: Date | null
     createdAt: Date
+    rejectedById: string | null
+    approvedById: string | null
+    revisionCount: number
+    currentReviewerId: string | null
     governorSignatureUrl: string | null
     applicationNumber: string | null
+    internalUserId: string | null
   }, ExtArgs["result"]["cofOApplication"]>
   composites: {}
 }
@@ -1747,8 +3122,14 @@ export interface Prisma__CofOApplicationClient<T, Null = never, ExtArgs extends 
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   land<T extends Prisma.LandRegistrationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistrationDefaultArgs<ExtArgs>>): Prisma.Prisma__LandRegistrationClient<runtime.Types.Result.GetResult<Prisma.$LandRegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   InboxMessage<T extends Prisma.CofOApplication$InboxMessageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$InboxMessageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InboxMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  rejectedBy<T extends Prisma.CofOApplication$rejectedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$rejectedByArgs<ExtArgs>>): Prisma.Prisma__InternalUserClient<runtime.Types.Result.GetResult<Prisma.$InternalUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  approvedBy<T extends Prisma.CofOApplication$approvedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$approvedByArgs<ExtArgs>>): Prisma.Prisma__InternalUserClient<runtime.Types.Result.GetResult<Prisma.$InternalUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  approvalAudits<T extends Prisma.CofOApplication$approvalAuditsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$approvalAuditsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApprovalAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  currentReviewer<T extends Prisma.CofOApplication$currentReviewerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$currentReviewerArgs<ExtArgs>>): Prisma.Prisma__InternalUserClient<runtime.Types.Result.GetResult<Prisma.$InternalUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   payments<T extends Prisma.CofOApplication$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   cofOAuditLogs<T extends Prisma.CofOApplication$cofOAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$cofOAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  internalUser<T extends Prisma.CofOApplication$internalUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$internalUserArgs<ExtArgs>>): Prisma.Prisma__InternalUserClient<runtime.Types.Result.GetResult<Prisma.$InternalUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  cofODocuments<T extends Prisma.CofOApplication$cofODocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CofOApplication$cofODocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofODocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1781,13 +3162,17 @@ export interface CofOApplicationFieldRefs {
   readonly id: Prisma.FieldRef<"CofOApplication", 'String'>
   readonly userId: Prisma.FieldRef<"CofOApplication", 'String'>
   readonly landId: Prisma.FieldRef<"CofOApplication", 'String'>
-  readonly status: Prisma.FieldRef<"CofOApplication", 'ApplicationStatus'>
-  readonly documentUrls: Prisma.FieldRef<"CofOApplication", 'String[]'>
+  readonly status: Prisma.FieldRef<"CofOApplication", 'CofOStatus'>
   readonly cofONumber: Prisma.FieldRef<"CofOApplication", 'String'>
   readonly signedAt: Prisma.FieldRef<"CofOApplication", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"CofOApplication", 'DateTime'>
+  readonly rejectedById: Prisma.FieldRef<"CofOApplication", 'String'>
+  readonly approvedById: Prisma.FieldRef<"CofOApplication", 'String'>
+  readonly revisionCount: Prisma.FieldRef<"CofOApplication", 'Int'>
+  readonly currentReviewerId: Prisma.FieldRef<"CofOApplication", 'String'>
   readonly governorSignatureUrl: Prisma.FieldRef<"CofOApplication", 'String'>
   readonly applicationNumber: Prisma.FieldRef<"CofOApplication", 'String'>
+  readonly internalUserId: Prisma.FieldRef<"CofOApplication", 'String'>
 }
     
 
@@ -2232,6 +3617,87 @@ export type CofOApplication$InboxMessageArgs<ExtArgs extends runtime.Types.Exten
 }
 
 /**
+ * CofOApplication.rejectedBy
+ */
+export type CofOApplication$rejectedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InternalUser
+   */
+  select?: Prisma.InternalUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InternalUser
+   */
+  omit?: Prisma.InternalUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InternalUserInclude<ExtArgs> | null
+  where?: Prisma.InternalUserWhereInput
+}
+
+/**
+ * CofOApplication.approvedBy
+ */
+export type CofOApplication$approvedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InternalUser
+   */
+  select?: Prisma.InternalUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InternalUser
+   */
+  omit?: Prisma.InternalUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InternalUserInclude<ExtArgs> | null
+  where?: Prisma.InternalUserWhereInput
+}
+
+/**
+ * CofOApplication.approvalAudits
+ */
+export type CofOApplication$approvalAuditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApprovalAudit
+   */
+  select?: Prisma.ApprovalAuditSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApprovalAudit
+   */
+  omit?: Prisma.ApprovalAuditOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApprovalAuditInclude<ExtArgs> | null
+  where?: Prisma.ApprovalAuditWhereInput
+  orderBy?: Prisma.ApprovalAuditOrderByWithRelationInput | Prisma.ApprovalAuditOrderByWithRelationInput[]
+  cursor?: Prisma.ApprovalAuditWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApprovalAuditScalarFieldEnum | Prisma.ApprovalAuditScalarFieldEnum[]
+}
+
+/**
+ * CofOApplication.currentReviewer
+ */
+export type CofOApplication$currentReviewerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InternalUser
+   */
+  select?: Prisma.InternalUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InternalUser
+   */
+  omit?: Prisma.InternalUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InternalUserInclude<ExtArgs> | null
+  where?: Prisma.InternalUserWhereInput
+}
+
+/**
  * CofOApplication.payments
  */
 export type CofOApplication$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2277,6 +3743,49 @@ export type CofOApplication$cofOAuditLogsArgs<ExtArgs extends runtime.Types.Exte
   take?: number
   skip?: number
   distinct?: Prisma.CofOAuditLogScalarFieldEnum | Prisma.CofOAuditLogScalarFieldEnum[]
+}
+
+/**
+ * CofOApplication.internalUser
+ */
+export type CofOApplication$internalUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InternalUser
+   */
+  select?: Prisma.InternalUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InternalUser
+   */
+  omit?: Prisma.InternalUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InternalUserInclude<ExtArgs> | null
+  where?: Prisma.InternalUserWhereInput
+}
+
+/**
+ * CofOApplication.cofODocuments
+ */
+export type CofOApplication$cofODocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CofODocument
+   */
+  select?: Prisma.CofODocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CofODocument
+   */
+  omit?: Prisma.CofODocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CofODocumentInclude<ExtArgs> | null
+  where?: Prisma.CofODocumentWhereInput
+  orderBy?: Prisma.CofODocumentOrderByWithRelationInput | Prisma.CofODocumentOrderByWithRelationInput[]
+  cursor?: Prisma.CofODocumentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CofODocumentScalarFieldEnum | Prisma.CofODocumentScalarFieldEnum[]
 }
 
 /**
