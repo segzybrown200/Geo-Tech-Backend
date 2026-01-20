@@ -80,6 +80,20 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
         });
       })
     );
+    
+    // ✅ Create audit log 
+    await prisma.landAuditLog.create({
+      data:{
+        landId: land.id,
+        action: "REGISTERED",
+        userId: userId,
+        metadata: { 
+          ownerName,
+          latitude,
+          longitude,
+        }
+      }
+    })
 
     res.status(201).json({
       message: "Land registered successfully",
