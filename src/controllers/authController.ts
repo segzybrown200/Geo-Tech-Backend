@@ -369,6 +369,10 @@ export const refresh = async (req: Request, res: Response) => {
     type: session.userType,
   });
 
-  res.json({ accessToken });
+  const user = await prisma.user.findUnique({ where: { id: session.userId } });
+
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  res.json({ accessToken, user: { name: user.fullName, email: user.email, role: user.role } });
 };
 
