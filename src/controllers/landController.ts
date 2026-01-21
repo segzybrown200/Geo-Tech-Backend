@@ -91,7 +91,7 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
     const uploadedDocs = await Promise.all(
       (req.files as Express.Multer.File[]).map(async (file) => {
         const buffer = (file as any).buffer as Buffer;
-        const uploaded = await uploadToCloudinary(buffer, file.originalname);
+        const uploaded = await uploadToCloudinary(buffer, file.originalname, file.mimetype);
         return prisma.landDocument.create({
           data: {
             landId: land.id,

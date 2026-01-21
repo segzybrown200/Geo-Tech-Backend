@@ -15,6 +15,24 @@ const ALLOWED_MIME_TYPES = [
 
 const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.pdf', '.doc', '.docx'];
 
+// Determine resource type based on file extension or MIME type
+const getResourceType = (filename: string, mimeType: string): 'image' | 'raw' => {
+  const ext = filename.toLowerCase().slice(filename.lastIndexOf('.'));
+  
+  // Image types
+  if (['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(ext)) {
+    return 'image';
+  }
+  
+  // Document types (PDF, DOC, DOCX, etc.)
+  if (['.pdf', '.doc', '.docx'].includes(ext)) {
+    return 'raw';
+  }
+  
+  // Default to raw for unknown types
+  return 'raw';
+};
+
 export const validateDocumentFile = (
   buffer: Buffer,
   filename: string,
@@ -49,12 +67,14 @@ export const validateDocumentFile = (
   return { valid: true };
 };
 
-export const uploadToCloudinary = (buffer: Buffer, filename?: string) => {
+export const uploadToCloudinary = (buffer: Buffer, filename?: string, mimeType?: string) => {
   return new Promise<any>((resolve, reject) => {
+    const resourceType = getResourceType(filename || '', mimeType || '');
+    
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder: 'geotech_documents',
-        resource_type: 'auto',
+        resource_type: resourceType,
         public_id: filename ? filename.replace(/\.[^.]+$/, '') : undefined,
       },
       (error: any, result: any) => {

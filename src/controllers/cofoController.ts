@@ -80,7 +80,7 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
       });
     }
     const uploadResults = await Promise.all(
-      files.map((file) => uploadToCloudinary(file.buffer, file.originalname)),
+      files.map((file) => uploadToCloudinary(file.buffer, file.originalname, file.mimetype)),
     );
 
     const documentUrls = uploadResults.map((r) => r.secure_url);
@@ -266,6 +266,7 @@ export const resubmitCofO = async (req: AuthRequest, res: Response) => {
       const upload = await uploadToCloudinary(
         files[i].buffer,
         files[i].originalname,
+        files[i].mimetype,
       );
 
       await tx.cofODocument.update({
