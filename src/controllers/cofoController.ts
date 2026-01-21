@@ -623,6 +623,8 @@ export const getCofOById = async (req: Request, res: Response) => {
         logs: true,
         cofODocuments: true,
         InboxMessage: true,
+        currentReviewer: true,
+        approvedBy: true,
       },
     });
     if (!cofO) {
