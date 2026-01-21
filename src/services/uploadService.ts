@@ -2,6 +2,53 @@
 import cloudinary from '../config/cloudinary';
 import streamifier from 'streamifier';
 
+// Allowed file types for CofO documents
+const ALLOWED_MIME_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'image/webp',
+  'application/pdf',
+  'application/msword', // .doc
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+];
+
+const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.pdf', '.doc', '.docx'];
+
+export const validateDocumentFile = (
+  buffer: Buffer,
+  filename: string,
+  mimeType: string
+): { valid: boolean; error?: string } => {
+  // Check file extension
+  const ext = filename.toLowerCase().slice(filename.lastIndexOf('.'));
+  if (!ALLOWED_EXTENSIONS.includes(ext)) {
+    return {
+      valid: false,
+      error: `File type ${ext} not allowed. Allowed types: ${ALLOWED_EXTENSIONS.join(', ')}`,
+    };
+  }
+
+  // Check MIME type
+  if (!ALLOWED_MIME_TYPES.includes(mimeType)) {
+    return {
+      valid: false,
+      error: `MIME type ${mimeType} not allowed`,
+    };
+  }
+
+  // Check file size (max 10MB)
+  const maxSize = 10 * 1024 * 1024; // 10MB
+  if (buffer.length > maxSize) {
+    return {
+      valid: false,
+      error: `File size exceeds 10MB limit`,
+    };
+  }
+
+  return { valid: true };
+};
+
 export const uploadToCloudinary = (buffer: Buffer, filename?: string) => {
   return new Promise<any>((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(

@@ -1,6 +1,6 @@
 import prisma from "../lib/prisma";
 import { landRegistrationSchema } from "../utils/zodSchemas";
-import { uploadToCloudinary } from "../services/uploadService";
+import { uploadToCloudinary, validateDocumentFile } from "../services/uploadService";
 import { Request, Response } from "express";
 import { AuthRequest } from "../middlewares/authMiddleware";
 
@@ -27,6 +27,27 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
 
   if (!req.files || !(req.files instanceof Array) || req.files.length === 0) {
     return res.status(400).json({ message: "No documents uploaded" });
+  }
+
+  // Validate each file before processing
+  const files = req.files as Express.Multer.File[];
+  const validationErrors: string[] = [];
+  files.forEach((file, index) => {
+    const validation = validateDocumentFile(
+      file.buffer,
+      file.originalname,
+      file.mimetype
+    );
+    if (!validation.valid) {
+      validationErrors.push(`File ${index + 1} (${file.originalname}): ${validation.error}`);
+    }
+  });
+
+  if (validationErrors.length > 0) {
+    return res.status(400).json({
+      message: "Document validation failed",
+      errors: validationErrors,
+    });
   }
 
   try {

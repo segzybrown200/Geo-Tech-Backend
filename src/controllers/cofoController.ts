@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
-import { uploadToCloudinary } from "../services/uploadService";
+import { uploadToCloudinary, validateDocumentFile } from "../services/uploadService";
 import { AuthRequest } from "../middlewares/authMiddleware";
 import { cofoBatchSignSchema, cofoReviewSchema } from "../utils/zodSchemas";
 import { sendEmail } from "../services/emailSevices";
@@ -17,6 +17,27 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
         message: "CofO ID and documents are required",
       });
     }
+
+    // Validate each file before processing
+    const validationErrors: string[] = [];
+    files.forEach((file, index) => {
+      const validation = validateDocumentFile(
+        file.buffer,
+        file.originalname,
+        file.mimetype
+      );
+      if (!validation.valid) {
+        validationErrors.push(`File ${index + 1} (${file.originalname}): ${validation.error}`);
+      }
+    });
+
+    if (validationErrors.length > 0) {
+      return res.status(400).json({
+        message: "Document validation failed",
+        errors: validationErrors,
+      });
+    }
+
     const documents: { type: string; title: string }[] = JSON.parse(
       req.body.documentsMeta || "[]",
     );
@@ -208,6 +229,26 @@ export const resubmitCofO = async (req: AuthRequest, res: Response) => {
   const { cofOId } = req.params;
   const files = req.files as Express.Multer.File[];
   const documents = req.body.documents; // [{ docId, title, type }]
+
+  // Validate each file before processing
+  const validationErrors: string[] = [];
+  files.forEach((file, index) => {
+    const validation = validateDocumentFile(
+      file.buffer,
+      file.originalname,
+      file.mimetype
+    );
+    if (!validation.valid) {
+      validationErrors.push(`File ${index + 1} (${file.originalname}): ${validation.error}`);
+    }
+  });
+
+  if (validationErrors.length > 0) {
+    return res.status(400).json({
+      message: "Document validation failed",
+      errors: validationErrors,
+    });
+  }
 
   const cofO = await prisma.cofOApplication.findUnique({
     where: { id: cofOId },
