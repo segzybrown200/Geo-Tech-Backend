@@ -613,7 +613,7 @@ export const batchSignCofOs = async (req: AuthRequest, res: Response) => {
   }
 };
 export const getCofOById = async (req: Request, res: Response) => {
-  const cofOId = req.params.id;
+  const cofOId = req.params.cofOId;
   try {
     const cofO = await prisma.cofOApplication.findUnique({
       where: { id: cofOId },
