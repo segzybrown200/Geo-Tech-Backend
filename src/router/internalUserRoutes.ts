@@ -1,10 +1,13 @@
 import express from "express";
 import {
+  completeInboxTask,
   createInternalUser,
   getCofOActivityLogs,
   getCofOForReview,
+  getCofOMonthlyTrends,
   getDashboardStats,
   getInternalUserSession,
+  getMyInboxTasks,
   getReviewerApplications,
   loginInternalUser,
   refreshInternalToken,
@@ -51,10 +54,32 @@ router.post("/login", loginInternalUser);
 router.get("/session", internalUserAuth, getInternalUserSession);
 router.get("/refresh", AdminverifyToken, refreshInternalToken);
 
-router.get("/dashboard", internalUserAuth, authorizeRoles(["GOVERNOR", "APPROVER"]), getDashboardStats);
-router.get("/activity", internalUserAuth,  authorizeRoles(["GOVERNOR", "APPROVER"]),getCofOActivityLogs);
-router.get("/reviewer/applications", internalUserAuth,  authorizeRoles(["GOVERNOR", "APPROVER"]),getReviewerApplications);
-router.get("/review/:id", internalUserAuth, authorizeRoles(["GOVERNOR", "APPROVER"]), getCofOForReview);
-
+router.get(
+  "/dashboard",
+  internalUserAuth,
+  authorizeRoles(["GOVERNOR", "APPROVER"]),
+  getDashboardStats,
+);
+router.get(
+  "/activity",
+  internalUserAuth,
+  authorizeRoles(["GOVERNOR", "APPROVER"]),
+  getCofOActivityLogs,
+);
+router.get(
+  "/reviewer/applications",
+  internalUserAuth,
+  authorizeRoles(["GOVERNOR", "APPROVER"]),
+  getReviewerApplications,
+);
+router.get(
+  "/review/:id",
+  internalUserAuth,
+  authorizeRoles(["GOVERNOR", "APPROVER"]),
+  getCofOForReview,
+);
+router.get("/monthly-trends", internalUserAuth, authorizeRoles(["GOVERNOR", "APPROVER"]), getCofOMonthlyTrends);
+router.get("/inbox/my-tasks", internalUserAuth, authorizeRoles(["GOVERNOR", "APPROVER"]), getMyInboxTasks);
+router.post("/inbox/:id/complete", internalUserAuth, authorizeRoles(["GOVERNOR", "APPROVER"]), completeInboxTask);
 
 export default router;

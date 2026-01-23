@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-
+import { startOfMonth, endOfMonth, subMonths } from "date-fns";
 import { internalUserSchema } from "../utils/zodSchemas";
 import { uploadToCloudinary } from "../services/uploadService";
 import fs from "fs";
@@ -527,22 +527,96 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
   res.json({ total, pending, needsCorrection, approved, rejected });
 };
 
-export const getDashboardCharts = async (_req: Request, res: Response) => {
 
-  const data = await prisma.$queryRaw`
-    SELECT 
-      to_char("createdAt", 'Month') as month,
-      count(*) FILTER (WHERE status='APPROVED') as approved,
-      count(*) FILTER (WHERE status='NEEDS_CORRECTION') as rejected,
-      count(*) FILTER (WHERE status='RESUBMITTED') as resubmitted,
-      count(*) FILTER (WHERE status='IN_REVIEW') as pending
-    FROM "CofOApplication"
-    GROUP BY month
-    ORDER BY min("createdAt")
-  `;
 
-  res.json(data);
+export const getCofOMonthlyTrends = async (req: AuthRequest, res: Response) => {
+  try {
+    const user = await prisma.internalUser.findUnique({
+      where: { id: req.user.id },
+      select: { stateId: true },
+    });
+
+    if (!user?.stateId) return res.status(403).json({ message: "No state assigned" });
+
+    const data = [];
+
+    for (let i = 5; i >= 0; i--) {
+      const start = startOfMonth(subMonths(new Date(), i));
+      const end = endOfMonth(subMonths(new Date(), i));
+
+      const apps = await prisma.cofOApplication.findMany({
+        where: {
+          createdAt: { gte: start, lte: end },
+          land: { stateId: user.stateId },
+        },
+        select: { status: true },
+      });
+
+      data.push({
+        month: start.toLocaleString("default", { month: "short" }),
+        approved: apps.filter(a => a.status === "APPROVED").length,
+        rejected: apps.filter(a => a.status === "REJECTED_FINAL").length,
+        pending: apps.filter(a => a.status === "IN_REVIEW").length,
+      });
+    }
+
+    res.json(data);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Failed to load trends" });
+  }
 };
+
+export const getMyInboxTasks = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user.id;
+
+    const tasks = await prisma.inboxMessage.findMany({
+      where: {
+        receiverId: userId,
+        status: "PENDING",
+      },
+      orderBy: { timestamp: "desc" },
+      include: {
+        cofO: {
+          select: {
+            id: true,
+            cofODocuments: true,
+            user: true,
+            createdAt: true,
+            applicationNumber: true,
+            status: true,
+            land: { include: { 
+              documents: true, state: true
+
+             } },
+          },
+        },
+      },
+    });
+
+    res.json(tasks);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Failed to load inbox tasks" });
+  }
+};
+
+export const completeInboxTask = async (req: AuthRequest, res: Response) => {
+  try {
+    await prisma.inboxMessage.update({
+      where: { id: req.params.id },
+      data: { status: "DONE" },
+    });
+
+    res.json({ message: "Task completed" });
+  } catch (e) {
+    res.status(500).json({ message: "Failed to complete task" });
+  }
+};
+
+
+
 // controllers/reviewerController.ts
 export const getAssignedApplications = async (req: AuthRequest, res: Response) => {
   const reviewerId = req.user.id;
