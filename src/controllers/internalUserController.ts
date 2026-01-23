@@ -628,7 +628,8 @@ export const getAssignedApplications = async (req: AuthRequest, res: Response) =
     },
     orderBy: { createdAt: "desc" },
     include: {
-      user: true
+      user: true,
+      
     }
   });
 
