@@ -401,7 +401,6 @@ export const loginInternalUser = async (req: Request, res: Response) => {
     res.json({
       message: "Login successful",
       user: {
-        id: user.id,
         email: user.email,
         name: user.name,
         role: user.role,
@@ -471,4 +470,215 @@ export const refreshInternalToken = async (req: AuthRequest, res: Response) => {
     console.error("Token refresh error:", error);
     res.status(500).json({ message: "Server error" });
   }
+};
+export const getDashboardStats = async (req: AuthRequest, res: Response) => {
+  const userId = req.user.id;
+
+    const reviewer = await prisma.internalUser.findUnique({
+    where: { id: userId },
+  });
+
+  if (!reviewer) {
+    return res.status(403).json({ message: "Not an internal user" });
+  }
+
+  const stateId = reviewer.stateId;
+
+  if (!stateId) {
+    return res.status(403).json({ message: "Reviewer has no assigned state" });
+  }
+
+  const total = await prisma.cofOApplication.count({
+    where:{
+      land: {
+        stateId: stateId, // 👈 join filter
+    }
+    }
+  });
+
+  const pending = await prisma.cofOApplication.count({
+    where: { status: "IN_REVIEW", currentReviewerId: userId }
+  });
+
+  const approved = await prisma.cofOApplication.count({
+    where: { status: "APPROVED",
+      land: {
+        stateId: reviewer.stateId as string, // 👈 join filter
+     }
+    }
+  });
+
+  const needsCorrection = await prisma.cofOApplication.count({
+    where: { status: "NEEDS_CORRECTION",
+      land: {
+        stateId: reviewer.stateId as string, // 👈 join filter
+     }
+    }
+  }); 
+
+  const rejected = await prisma.cofOApplication.count({
+    where: { status: "REJECTED_FINAL"
+    , land: {
+        stateId: reviewer.stateId as string, // 👈 join filter
+     }
+    }
+  });
+
+  res.json({ total, pending, needsCorrection, approved, rejected });
+};
+
+export const getDashboardCharts = async (_req: Request, res: Response) => {
+
+  const data = await prisma.$queryRaw`
+    SELECT 
+      to_char("createdAt", 'Month') as month,
+      count(*) FILTER (WHERE status='APPROVED') as approved,
+      count(*) FILTER (WHERE status='NEEDS_CORRECTION') as rejected,
+      count(*) FILTER (WHERE status='RESUBMITTED') as resubmitted,
+      count(*) FILTER (WHERE status='IN_REVIEW') as pending
+    FROM "CofOApplication"
+    GROUP BY month
+    ORDER BY min("createdAt")
+  `;
+
+  res.json(data);
+};
+// controllers/reviewerController.ts
+export const getAssignedApplications = async (req: AuthRequest, res: Response) => {
+  const reviewerId = req.user.id;
+
+  const apps = await prisma.cofOApplication.findMany({
+    where: {
+      currentReviewerId: reviewerId,
+      status: "IN_REVIEW"
+    },
+    orderBy: { createdAt: "desc" },
+    include: {
+      user: true
+    }
+  });
+
+  res.json(apps);
+};
+export const getCofOActivityLogs = async (req: AuthRequest, res: Response) => {
+  const internalUserId = req.user.id;
+
+  const user = await prisma.internalUser.findUnique({
+    where: { id: internalUserId },
+  });
+
+  if(!user){
+    return res.status(404).json({
+      message: "user not found"
+    })
+  }
+
+  const logs = await prisma.cofOAuditLog.findMany({
+    where: {
+      cofO: {
+        land: { stateId: user.stateId as string },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+    take: 10,
+    include: {
+      cofO: true,
+    },
+  });
+
+  res.json(logs);
+};
+
+export const getReviewerApplications = async (req: AuthRequest, res: Response) => {
+  const reviewerId = req.user.id;
+
+  const reviewer = await prisma.internalUser.findUnique({
+    where: { id: reviewerId },
+  });
+
+  if (!reviewer) {
+    return res.status(403).json({ message: "Not an internal user" });
+  }
+
+  const applications = await prisma.cofOApplication.findMany({
+    where: {
+      land: {
+        stateId: reviewer.stateId as string, // 👈 join filter
+      },
+      status: {in: ["IN_REVIEW", "NEEDS_CORRECTION"]},
+    },
+    include: {
+      user: true,
+      land: {
+        include: { state: true },
+      },
+      logs: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  res.json(applications);
+};
+export const getCofOForReview = async (req: AuthRequest, res: Response) => {
+  const reviewerId = req.user.id;
+  const { id } = req.params;
+
+  const reviewer = await prisma.internalUser.findUnique({
+    where: { id: reviewerId },
+  });
+
+  if (!reviewer) return res.status(403).json({ message: "Unauthorized" });
+
+  const app = await prisma.cofOApplication.findUnique({
+    where: { id },
+    include: {
+      user: true,
+      land: true,
+      cofODocuments: true,
+      cofOAuditLogs: true,
+      InboxMessage: true,
+      approvalAudits: {
+        include: { cofO: true },
+        orderBy: { createdAt: "asc" },
+      },
+    },
+  });
+
+  if (!app) return res.status(404).json({ message: "Application not found" });
+
+  // State-based access
+  if (app.land.stateId !== reviewer.stateId) {
+    return res.status(403).json({ message: "Access denied" });
+  }
+
+  res.json(app);
+};
+
+
+export const governorDashboard = async (req: AuthRequest, res: Response) => {
+  const governorId = req.user.sub;
+
+  const governor = await prisma.internalUser.findUnique({
+    where: { id: governorId },
+  });
+
+  if (!governor) {
+    return res.status(403).json({ message: "Not authorized" });
+  }
+
+  const applications = await prisma.cofOApplication.findMany({
+    where: {
+      land: {
+        stateId: governor.stateId as string, // 👈 same join
+      },
+      status: "IN_REVIEW",
+    },
+    include: {
+      user: true,
+      land: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  res.json(applications);
 };
