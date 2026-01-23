@@ -10,6 +10,7 @@ import {
   getMyInboxTasks,
   getReviewerApplications,
   loginInternalUser,
+  logoutInternalUser,
   refreshInternalToken,
   resendInternalVerification,
   setInternalUserPassword,
@@ -53,7 +54,7 @@ router.post("/resend-verification", resendInternalVerification);
 router.post("/login", loginInternalUser);
 router.get("/session", internalUserAuth, getInternalUserSession);
 router.get("/refresh", AdminverifyToken, refreshInternalToken);
-
+router.get("/logout", logoutInternalUser);
 router.get(
   "/dashboard",
   internalUserAuth,

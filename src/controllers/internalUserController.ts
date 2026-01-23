@@ -471,6 +471,17 @@ export const refreshInternalToken = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const logoutInternalUser = async (req: AuthRequest, res: Response) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
+  res.json({ message: "Logged out successfully" });
+}
+
+
 export const getDashboardStats = async (req: AuthRequest, res: Response) => {
   const userId = req.user.id;
 
