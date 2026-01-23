@@ -708,7 +708,7 @@ export const getCofOForReview = async (req: AuthRequest, res: Response) => {
     where: { id },
     include: {
       user: true,
-      land: true,
+      land: { include: { state: true } },
       cofODocuments: true,
       cofOAuditLogs: true,
       InboxMessage: true,
