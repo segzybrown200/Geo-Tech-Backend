@@ -680,7 +680,7 @@ export const getReviewerApplications = async (req: AuthRequest, res: Response) =
       land: {
         stateId: reviewer.stateId as string, // 👈 join filter
       },
-      status: {in: ["IN_REVIEW", "NEEDS_CORRECTION"]},
+      status: {in: ["IN_REVIEW", "NEEDS_CORRECTION", "RESUBMITTED"]},
     },
     include: {
       user: true,
