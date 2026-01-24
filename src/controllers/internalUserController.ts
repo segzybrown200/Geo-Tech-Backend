@@ -688,6 +688,7 @@ export const getReviewerApplications = async (req: AuthRequest, res: Response) =
 
   const applications = await prisma.cofOApplication.findMany({
     where: {
+      currentReviewerId: reviewerId,
       land: {
         stateId: reviewer.stateId as string, // 👈 join filter
       },
