@@ -323,7 +323,7 @@ export const resubmitCofO = async (req: AuthRequest, res: Response) => {
 };
 
 export const reviewCofO = async (req: AuthRequest, res: Response) => {
-  const reviewer = req.user; // { id, role }
+  const {id, role} = req.user; // { id, role }
   const { id: cofOId } = req.params;
   const parse = cofoReviewSchema.safeParse(req.body);
 
@@ -358,7 +358,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
     //    - internal user in same state OR
     //    - governor (or admin) with rights
     const internalReviewer = await prisma.internalUser.findUnique({
-      where: { id: reviewer.id },
+      where: { id: id },
     });
     if (!internalReviewer) {
       return res
@@ -373,7 +373,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
 
     // 3) Check inbox: ensure there is a pending inbox message for this reviewer for this CofO
     const inbox = await prisma.inboxMessage.findFirst({
-      where: { receiverId: reviewer.id, cofOId, status: "PENDING" },
+      where: { receiverId: id, cofOId, status: "PENDING" },
     });
     if (!inbox) {
       // allow governor to sign at final step even if no explicit inbox (optional)
@@ -387,7 +387,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
     await prisma.stageLog.create({
       data: {
         cofOId,
-        internalUserId: reviewer.id,
+        internalUserId: id,
         stageNumber,
         status: action === "APPROVE" ? "APPROVED" : "REJECTED",
         message: message ?? null,
@@ -408,15 +408,15 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
           where: { id: cofOId },
           data: {
             status: "NEEDS_CORRECTION",
-            rejectedById: reviewer.id,
-            currentReviewerId: reviewer.id,
+            rejectedById: id,
+            currentReviewerId: id,
           },
         });
 
         await tx.stageLog.create({
           data: {
             cofOId,
-            internalUserId: reviewer.id,
+            internalUserId: id,
             stageNumber: cofO.logs.length + 1,
             status: "REJECTED",
             message,
@@ -441,7 +441,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
     // get ordered approvers for this state
     const approvers = await getStateApprovers(state.id);
     // find index of current reviewer in approvers list
-    const idx = approvers.findIndex((a) => a.id === reviewer.id);
+    const idx = approvers.findIndex((a) => a.id === id);
 
     if (idx === -1) {
       // safety net
@@ -487,7 +487,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
     // If governor exists and is different than the last approver, create an inbox for governor
     if (
       stateWithGovernor?.governor &&
-      stateWithGovernor.governor.id !== reviewer.id
+      stateWithGovernor.governor.id !== id
     ) {
       await enqueueInbox(
         stateWithGovernor.governor.id,
