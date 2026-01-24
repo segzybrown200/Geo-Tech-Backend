@@ -519,20 +519,12 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
     }
   });
 
-  const needsCorrection = await prisma.cofOApplication.count({
-    where: { status: "NEEDS_CORRECTION",
-      land: {
-        stateId: reviewer.stateId as string, // 👈 join filter
-     }
-    }
+  const needsCorrection = await prisma.inboxMessage.count({
+    where: { status: "COMPLETED", receiverId: userId }
   }); 
 
-  const rejected = await prisma.cofOApplication.count({
-    where: { status: "REJECTED_FINAL"
-    , land: {
-        stateId: reviewer.stateId as string, // 👈 join filter
-     }
-    }
+  const rejected = await prisma.inboxMessage.count({
+    where: { status: "REJECTED", receiverId: userId },
   });
 
   res.json({ total, pending, needsCorrection, approved, rejected });
