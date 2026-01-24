@@ -168,7 +168,7 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
  */
 async function getStateApprovers(stateId: string) {
   return prisma.internalUser.findMany({
-    where: { stateId, role: { in: ["ADMIN", "GOVERNOR"] } },
+    where: { stateId, role: { in: ["APPROVER", "GOVERNOR"] } },
     orderBy: { createdAt: "asc" },
   });
 }
