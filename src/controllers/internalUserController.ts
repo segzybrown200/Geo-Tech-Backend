@@ -693,6 +693,11 @@ export const getReviewerApplications = async (req: AuthRequest, res: Response) =
         stateId: reviewer.stateId as string, // 👈 join filter
       },
       status: {in: ["IN_REVIEW", "NEEDS_CORRECTION", "RESUBMITTED"]},
+      InboxMessage:{
+        every:{
+          status: "PENDING"
+        }
+      }
     },
     include: {
       user: true,
