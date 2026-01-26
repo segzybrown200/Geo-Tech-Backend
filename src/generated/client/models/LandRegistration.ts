@@ -45,10 +45,12 @@ export type LandRegistrationMinAggregateOutputType = {
   latitude: number | null
   longitude: number | null
   squareMeters: number | null
+  landStatus: $Enums.landStatus | null
   ownershipType: string | null
   stateId: string | null
   purpose: string | null
   titleType: string | null
+  address: string | null
   createdAt: Date | null
 }
 
@@ -59,10 +61,12 @@ export type LandRegistrationMaxAggregateOutputType = {
   latitude: number | null
   longitude: number | null
   squareMeters: number | null
+  landStatus: $Enums.landStatus | null
   ownershipType: string | null
   stateId: string | null
   purpose: string | null
   titleType: string | null
+  address: string | null
   createdAt: Date | null
 }
 
@@ -73,10 +77,12 @@ export type LandRegistrationCountAggregateOutputType = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus: number
   ownershipType: number
   stateId: number
   purpose: number
   titleType: number
+  address: number
   createdAt: number
   _all: number
 }
@@ -101,10 +107,12 @@ export type LandRegistrationMinAggregateInputType = {
   latitude?: true
   longitude?: true
   squareMeters?: true
+  landStatus?: true
   ownershipType?: true
   stateId?: true
   purpose?: true
   titleType?: true
+  address?: true
   createdAt?: true
 }
 
@@ -115,10 +123,12 @@ export type LandRegistrationMaxAggregateInputType = {
   latitude?: true
   longitude?: true
   squareMeters?: true
+  landStatus?: true
   ownershipType?: true
   stateId?: true
   purpose?: true
   titleType?: true
+  address?: true
   createdAt?: true
 }
 
@@ -129,10 +139,12 @@ export type LandRegistrationCountAggregateInputType = {
   latitude?: true
   longitude?: true
   squareMeters?: true
+  landStatus?: true
   ownershipType?: true
   stateId?: true
   purpose?: true
   titleType?: true
+  address?: true
   createdAt?: true
   _all?: true
 }
@@ -230,10 +242,12 @@ export type LandRegistrationGroupByOutputType = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus: $Enums.landStatus
   ownershipType: string
   stateId: string
   purpose: string
   titleType: string
+  address: string | null
   createdAt: Date
   _count: LandRegistrationCountAggregateOutputType | null
   _avg: LandRegistrationAvgAggregateOutputType | null
@@ -267,10 +281,12 @@ export type LandRegistrationWhereInput = {
   latitude?: Prisma.FloatFilter<"LandRegistration"> | number
   longitude?: Prisma.FloatFilter<"LandRegistration"> | number
   squareMeters?: Prisma.FloatFilter<"LandRegistration"> | number
+  landStatus?: Prisma.EnumlandStatusFilter<"LandRegistration"> | $Enums.landStatus
   ownershipType?: Prisma.StringFilter<"LandRegistration"> | string
   stateId?: Prisma.UuidFilter<"LandRegistration"> | string
   purpose?: Prisma.StringFilter<"LandRegistration"> | string
   titleType?: Prisma.StringFilter<"LandRegistration"> | string
+  address?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   state?: Prisma.XOR<Prisma.StateScalarRelationFilter, Prisma.StateWhereInput>
@@ -288,10 +304,12 @@ export type LandRegistrationOrderByWithRelationInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   squareMeters?: Prisma.SortOrder
+  landStatus?: Prisma.SortOrder
   ownershipType?: Prisma.SortOrder
   stateId?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
   state?: Prisma.StateOrderByWithRelationInput
@@ -312,10 +330,12 @@ export type LandRegistrationWhereUniqueInput = Prisma.AtLeast<{
   latitude?: Prisma.FloatFilter<"LandRegistration"> | number
   longitude?: Prisma.FloatFilter<"LandRegistration"> | number
   squareMeters?: Prisma.FloatFilter<"LandRegistration"> | number
+  landStatus?: Prisma.EnumlandStatusFilter<"LandRegistration"> | $Enums.landStatus
   ownershipType?: Prisma.StringFilter<"LandRegistration"> | string
   stateId?: Prisma.UuidFilter<"LandRegistration"> | string
   purpose?: Prisma.StringFilter<"LandRegistration"> | string
   titleType?: Prisma.StringFilter<"LandRegistration"> | string
+  address?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   state?: Prisma.XOR<Prisma.StateScalarRelationFilter, Prisma.StateWhereInput>
@@ -333,10 +353,12 @@ export type LandRegistrationOrderByWithAggregationInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   squareMeters?: Prisma.SortOrder
+  landStatus?: Prisma.SortOrder
   ownershipType?: Prisma.SortOrder
   stateId?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.LandRegistrationCountOrderByAggregateInput
   _avg?: Prisma.LandRegistrationAvgOrderByAggregateInput
@@ -355,10 +377,12 @@ export type LandRegistrationScalarWhereWithAggregatesInput = {
   latitude?: Prisma.FloatWithAggregatesFilter<"LandRegistration"> | number
   longitude?: Prisma.FloatWithAggregatesFilter<"LandRegistration"> | number
   squareMeters?: Prisma.FloatWithAggregatesFilter<"LandRegistration"> | number
+  landStatus?: Prisma.EnumlandStatusWithAggregatesFilter<"LandRegistration"> | $Enums.landStatus
   ownershipType?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
   stateId?: Prisma.UuidWithAggregatesFilter<"LandRegistration"> | string
   purpose?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
   titleType?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
+  address?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LandRegistration"> | Date | string
 }
 
@@ -368,9 +392,11 @@ export type LandRegistrationCreateInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   state: Prisma.StateCreateNestedOneWithoutLandsInput
@@ -388,10 +414,12 @@ export type LandRegistrationUncheckedCreateInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   stateId: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
@@ -406,9 +434,11 @@ export type LandRegistrationUpdateInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -426,10 +456,12 @@ export type LandRegistrationUncheckedUpdateInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   stateId?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -445,10 +477,12 @@ export type LandRegistrationCreateManyInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   stateId: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
 }
 
@@ -458,9 +492,11 @@ export type LandRegistrationUpdateManyMutationInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -471,10 +507,12 @@ export type LandRegistrationUncheckedUpdateManyInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   stateId?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -495,10 +533,12 @@ export type LandRegistrationCountOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   squareMeters?: Prisma.SortOrder
+  landStatus?: Prisma.SortOrder
   ownershipType?: Prisma.SortOrder
   stateId?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -515,10 +555,12 @@ export type LandRegistrationMaxOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   squareMeters?: Prisma.SortOrder
+  landStatus?: Prisma.SortOrder
   ownershipType?: Prisma.SortOrder
   stateId?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -529,10 +571,12 @@ export type LandRegistrationMinOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   squareMeters?: Prisma.SortOrder
+  landStatus?: Prisma.SortOrder
   ownershipType?: Prisma.SortOrder
   stateId?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -595,6 +639,10 @@ export type FloatFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type EnumlandStatusFieldUpdateOperationsInput = {
+  set?: $Enums.landStatus
 }
 
 export type LandRegistrationCreateNestedOneWithoutDocumentsInput = {
@@ -715,9 +763,11 @@ export type LandRegistrationCreateWithoutOwnerInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   state: Prisma.StateCreateNestedOneWithoutLandsInput
   documents?: Prisma.LandDocumentCreateNestedManyWithoutLandInput
@@ -733,10 +783,12 @@ export type LandRegistrationUncheckedCreateWithoutOwnerInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   stateId: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
@@ -781,10 +833,12 @@ export type LandRegistrationScalarWhereInput = {
   latitude?: Prisma.FloatFilter<"LandRegistration"> | number
   longitude?: Prisma.FloatFilter<"LandRegistration"> | number
   squareMeters?: Prisma.FloatFilter<"LandRegistration"> | number
+  landStatus?: Prisma.EnumlandStatusFilter<"LandRegistration"> | $Enums.landStatus
   ownershipType?: Prisma.StringFilter<"LandRegistration"> | string
   stateId?: Prisma.UuidFilter<"LandRegistration"> | string
   purpose?: Prisma.StringFilter<"LandRegistration"> | string
   titleType?: Prisma.StringFilter<"LandRegistration"> | string
+  address?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
 }
 
@@ -794,9 +848,11 @@ export type LandRegistrationCreateWithoutDocumentsInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   state: Prisma.StateCreateNestedOneWithoutLandsInput
@@ -813,10 +869,12 @@ export type LandRegistrationUncheckedCreateWithoutDocumentsInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   stateId: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
   CofOApplication?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutLandInput
@@ -846,9 +904,11 @@ export type LandRegistrationUpdateWithoutDocumentsInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -865,10 +925,12 @@ export type LandRegistrationUncheckedUpdateWithoutDocumentsInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   stateId?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
@@ -882,9 +944,11 @@ export type LandRegistrationCreateWithoutStateInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   documents?: Prisma.LandDocumentCreateNestedManyWithoutLandInput
@@ -901,9 +965,11 @@ export type LandRegistrationUncheckedCreateWithoutStateInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
@@ -944,9 +1010,11 @@ export type LandRegistrationCreateWithoutOwnershipTransferInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   state: Prisma.StateCreateNestedOneWithoutLandsInput
@@ -963,10 +1031,12 @@ export type LandRegistrationUncheckedCreateWithoutOwnershipTransferInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   stateId: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
@@ -996,9 +1066,11 @@ export type LandRegistrationUpdateWithoutOwnershipTransferInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1015,10 +1087,12 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipTransferInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   stateId?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1032,9 +1106,11 @@ export type LandRegistrationCreateWithoutOwnershipLogsInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   state: Prisma.StateCreateNestedOneWithoutLandsInput
@@ -1051,10 +1127,12 @@ export type LandRegistrationUncheckedCreateWithoutOwnershipLogsInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   stateId: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   CofOApplication?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutLandInput
@@ -1084,9 +1162,11 @@ export type LandRegistrationUpdateWithoutOwnershipLogsInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1103,10 +1183,12 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipLogsInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   stateId?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
@@ -1120,9 +1202,11 @@ export type LandRegistrationCreateWithoutCofOApplicationInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   state: Prisma.StateCreateNestedOneWithoutLandsInput
@@ -1139,10 +1223,12 @@ export type LandRegistrationUncheckedCreateWithoutCofOApplicationInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   stateId: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
@@ -1172,9 +1258,11 @@ export type LandRegistrationUpdateWithoutCofOApplicationInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1191,10 +1279,12 @@ export type LandRegistrationUncheckedUpdateWithoutCofOApplicationInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   stateId?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1208,9 +1298,11 @@ export type LandRegistrationCreateWithoutPaymentsInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   state: Prisma.StateCreateNestedOneWithoutLandsInput
@@ -1227,10 +1319,12 @@ export type LandRegistrationUncheckedCreateWithoutPaymentsInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   stateId: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
@@ -1260,9 +1354,11 @@ export type LandRegistrationUpdateWithoutPaymentsInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1279,10 +1375,12 @@ export type LandRegistrationUncheckedUpdateWithoutPaymentsInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   stateId?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1296,10 +1394,12 @@ export type LandRegistrationCreateManyOwnerInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   stateId: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
 }
 
@@ -1309,9 +1409,11 @@ export type LandRegistrationUpdateWithoutOwnerInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
@@ -1327,10 +1429,12 @@ export type LandRegistrationUncheckedUpdateWithoutOwnerInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   stateId?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1345,10 +1449,12 @@ export type LandRegistrationUncheckedUpdateManyWithoutOwnerInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   stateId?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1359,9 +1465,11 @@ export type LandRegistrationCreateManyStateInput = {
   latitude: number
   longitude: number
   squareMeters: number
+  landStatus?: $Enums.landStatus
   ownershipType: string
   purpose: string
   titleType: string
+  address?: string | null
   createdAt?: Date | string
 }
 
@@ -1371,9 +1479,11 @@ export type LandRegistrationUpdateWithoutStateInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
@@ -1390,9 +1500,11 @@ export type LandRegistrationUncheckedUpdateWithoutStateInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1408,9 +1520,11 @@ export type LandRegistrationUncheckedUpdateManyWithoutStateInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   squareMeters?: Prisma.FloatFieldUpdateOperationsInput | number
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1488,10 +1602,12 @@ export type LandRegistrationSelect<ExtArgs extends runtime.Types.Extensions.Inte
   latitude?: boolean
   longitude?: boolean
   squareMeters?: boolean
+  landStatus?: boolean
   ownershipType?: boolean
   stateId?: boolean
   purpose?: boolean
   titleType?: boolean
+  address?: boolean
   createdAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
@@ -1510,10 +1626,12 @@ export type LandRegistrationSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   latitude?: boolean
   longitude?: boolean
   squareMeters?: boolean
+  landStatus?: boolean
   ownershipType?: boolean
   stateId?: boolean
   purpose?: boolean
   titleType?: boolean
+  address?: boolean
   createdAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
@@ -1526,10 +1644,12 @@ export type LandRegistrationSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   latitude?: boolean
   longitude?: boolean
   squareMeters?: boolean
+  landStatus?: boolean
   ownershipType?: boolean
   stateId?: boolean
   purpose?: boolean
   titleType?: boolean
+  address?: boolean
   createdAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
@@ -1542,14 +1662,16 @@ export type LandRegistrationSelectScalar = {
   latitude?: boolean
   longitude?: boolean
   squareMeters?: boolean
+  landStatus?: boolean
   ownershipType?: boolean
   stateId?: boolean
   purpose?: boolean
   titleType?: boolean
+  address?: boolean
   createdAt?: boolean
 }
 
-export type LandRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "ownerName" | "latitude" | "longitude" | "squareMeters" | "ownershipType" | "stateId" | "purpose" | "titleType" | "createdAt", ExtArgs["result"]["landRegistration"]>
+export type LandRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "ownerName" | "latitude" | "longitude" | "squareMeters" | "landStatus" | "ownershipType" | "stateId" | "purpose" | "titleType" | "address" | "createdAt", ExtArgs["result"]["landRegistration"]>
 export type LandRegistrationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
@@ -1587,10 +1709,12 @@ export type $LandRegistrationPayload<ExtArgs extends runtime.Types.Extensions.In
     latitude: number
     longitude: number
     squareMeters: number
+    landStatus: $Enums.landStatus
     ownershipType: string
     stateId: string
     purpose: string
     titleType: string
+    address: string | null
     createdAt: Date
   }, ExtArgs["result"]["landRegistration"]>
   composites: {}
@@ -2028,10 +2152,12 @@ export interface LandRegistrationFieldRefs {
   readonly latitude: Prisma.FieldRef<"LandRegistration", 'Float'>
   readonly longitude: Prisma.FieldRef<"LandRegistration", 'Float'>
   readonly squareMeters: Prisma.FieldRef<"LandRegistration", 'Float'>
+  readonly landStatus: Prisma.FieldRef<"LandRegistration", 'landStatus'>
   readonly ownershipType: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly stateId: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly purpose: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly titleType: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly address: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly createdAt: Prisma.FieldRef<"LandRegistration", 'DateTime'>
 }
     

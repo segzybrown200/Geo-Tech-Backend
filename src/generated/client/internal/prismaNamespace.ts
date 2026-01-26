@@ -2015,10 +2015,12 @@ export const LandRegistrationScalarFieldEnum = {
   latitude: 'latitude',
   longitude: 'longitude',
   squareMeters: 'squareMeters',
+  landStatus: 'landStatus',
   ownershipType: 'ownershipType',
   stateId: 'stateId',
   purpose: 'purpose',
   titleType: 'titleType',
+  address: 'address',
   createdAt: 'createdAt'
 } as const
 
@@ -2355,6 +2357,20 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'landStatus'
+ */
+export type EnumlandStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'landStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'landStatus[]'
+ */
+export type ListEnumlandStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'landStatus[]'>
     
 
 

@@ -226,3 +226,44 @@ export const getAnalytics = async (req:AuthRequest, res:Response) => {
   });
   res.json({ totalApplications, approved, rejected,pending,review, revenue });
 };
+
+export const getLandRegistrationsCount = async (req:AuthRequest, res:Response) => {
+  const totalLands = await prisma.landRegistration.count();
+  const approved = await prisma.landRegistration.count({ where: { landStatus: "APPROVED" } });
+  const rejected = await prisma.landRegistration.count({ where: { landStatus: "REJECTED" } });
+  const pending = await prisma.landRegistration.count({ where: { landStatus: "PENDING" } });
+  res.json({ totalLands, approved, rejected, pending });
+};
+
+export const getOwnershipTransfersCount = async (req:AuthRequest, res:Response) => {
+  const totalTransfers = await prisma.ownershipTransfer.count();
+  const approved = await prisma.ownershipTransfer.count({ where: { status: "APPROVED" } });
+  const rejected = await prisma.ownershipTransfer.count({ where: { status: "REJECTED" } });
+  const pending = await prisma.ownershipTransfer.count({ where: { status: "PENDING" } });
+  res.json({ totalTransfers, approved, rejected, pending });
+}
+export const approveUserLand = async (req:AuthRequest, res:Response) => {
+  
+  const { landId } = req.params;
+  try {
+    const updatedLand = await prisma.landRegistration.update({
+      where: { id: landId },
+      data: { landStatus: "APPROVED" },
+    });
+    res.json({ message: "Land approved successfully", land: updatedLand });
+  } catch (err) {
+    res.status(500).json({ message: "Land approval failed", error: err });
+  }
+};
+export const rejectUserLand = async (req:AuthRequest, res:Response) => {
+  const { landId } = req.params;
+  try {
+    const updatedLand = await prisma.landRegistration.update({
+      where: { id: landId },
+      data: { landStatus: "REJECTED" },
+    });
+    res.json({ message: "Land rejected successfully", land: updatedLand });
+  } catch (err) {
+    res.status(500).json({ message: "Land rejection failed", error: err });
+  }
+};

@@ -18,6 +18,7 @@ export const landRegistrationSchema = z.object({
   latitude: z.string().transform(Number),
   longitude: z.string().transform(Number),
   squareMeters: z.string().transform(Number),
+  address: z.string().min(5).optional(),
   ownershipType: z.string(),
   purpose: z.string(),
   titleType: z.string(),

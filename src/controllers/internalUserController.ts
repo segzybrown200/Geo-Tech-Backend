@@ -514,7 +514,7 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
   const approved = await prisma.cofOApplication.count({
     where: { status: "APPROVED",
       land: {
-        stateId: reviewer.stateId as string, // 👈 join filter
+        stateId: reviewer.stateId as string, // 👈 join fixlter
      }
     }
   });
@@ -621,19 +621,24 @@ export const completeInboxTask = async (req: AuthRequest, res: Response) => {
 
 
 // controllers/reviewerController.ts
-export const getAssignedApplications = async (req: AuthRequest, res: Response) => {
+export const getReviewedApplications = async (req: AuthRequest, res: Response) => {
   const reviewerId = req.user.id;
-
-  const apps = await prisma.cofOApplication.findMany({
+  const apps = await prisma.inboxMessage.findMany({
     where: {
-      currentReviewerId: reviewerId,
-      status: "IN_REVIEW"
+      receiverId: reviewerId,
+      status: { in: ["COMPLETED", "REJECTED", "PENDING"] },
     },
-    orderBy: { createdAt: "desc" },
     include: {
-      user: true,
-      
-    }
+      cofO: {
+        include: {
+          user: true,
+          land: { include: { state: true } },
+          cofODocuments: true,
+          approvalAudits:true
+        },
+      },
+    },
+    orderBy: { timestamp: "desc" },
   });
 
   res.json(apps);

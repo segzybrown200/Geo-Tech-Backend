@@ -1,7 +1,8 @@
 import express from 'express';
-import { createFirstAdmin, getAllActivities, getAllApplications, getAllInternalUser, getAllUser, getAnalytics, getPayments, loginAdmin, refreshAdminToken, updateApplicationStatus } from '../controllers/adminController';
+import { approveUserLand, createFirstAdmin, getAllActivities, getAllApplications, getAllInternalUser, getAllUser, getAnalytics, getLandRegistrationsCount, getPayments, loginAdmin, refreshAdminToken, rejectUserLand, updateApplicationStatus } from '../controllers/adminController';
 import { authorizeRoles } from '../middlewares/roleMiddleware';
 import { verifyToken,AdminverifyToken } from '../middlewares/authMiddleware';
+import { getAllUserLands } from '../controllers/landController';
 const router = express.Router();
 
 router.get('/applications', getAllApplications);
@@ -14,6 +15,10 @@ router.get("/get-activties", AdminverifyToken, authorizeRoles(['ADMIN']), getAll
 router.get("/get-Analytics", AdminverifyToken, authorizeRoles(['ADMIN']), getAnalytics)
 router.get("/get-all-internal-user", AdminverifyToken, authorizeRoles(['ADMIN']), getAllInternalUser)
 router.get("/get-all-user", AdminverifyToken, authorizeRoles(['ADMIN']), getAllUser)
-
+router.get("/approve-user-land/:landId", AdminverifyToken, authorizeRoles(['ADMIN']), approveUserLand)
+router.get("/reject-user-land/:landId", AdminverifyToken, authorizeRoles(['ADMIN']), rejectUserLand)
+router.get("/")
+router.get("/get-registered-lands", AdminverifyToken, authorizeRoles(['ADMIN']),  getAllUserLands);
+router.get("/land-registered-count", AdminverifyToken, authorizeRoles(['ADMIN']),  getLandRegistrationsCount);
 
 export default router;

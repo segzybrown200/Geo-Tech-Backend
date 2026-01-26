@@ -191,13 +191,13 @@ export type CofODocumentWhereInput = {
   AND?: Prisma.CofODocumentWhereInput | Prisma.CofODocumentWhereInput[]
   OR?: Prisma.CofODocumentWhereInput[]
   NOT?: Prisma.CofODocumentWhereInput | Prisma.CofODocumentWhereInput[]
-  id?: Prisma.StringFilter<"CofODocument"> | string
-  cofOId?: Prisma.StringFilter<"CofODocument"> | string
+  id?: Prisma.UuidFilter<"CofODocument"> | string
+  cofOId?: Prisma.UuidFilter<"CofODocument"> | string
   type?: Prisma.StringFilter<"CofODocument"> | string
   title?: Prisma.StringFilter<"CofODocument"> | string
   url?: Prisma.StringFilter<"CofODocument"> | string
   createdAt?: Prisma.DateTimeFilter<"CofODocument"> | Date | string
-  inboxMessageId?: Prisma.StringNullableFilter<"CofODocument"> | string | null
+  inboxMessageId?: Prisma.UuidNullableFilter<"CofODocument"> | string | null
   cofO?: Prisma.XOR<Prisma.CofOApplicationScalarRelationFilter, Prisma.CofOApplicationWhereInput>
   inboxMessage?: Prisma.XOR<Prisma.InboxMessageNullableScalarRelationFilter, Prisma.InboxMessageWhereInput> | null
 }
@@ -219,12 +219,12 @@ export type CofODocumentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.CofODocumentWhereInput | Prisma.CofODocumentWhereInput[]
   OR?: Prisma.CofODocumentWhereInput[]
   NOT?: Prisma.CofODocumentWhereInput | Prisma.CofODocumentWhereInput[]
-  cofOId?: Prisma.StringFilter<"CofODocument"> | string
+  cofOId?: Prisma.UuidFilter<"CofODocument"> | string
   type?: Prisma.StringFilter<"CofODocument"> | string
   title?: Prisma.StringFilter<"CofODocument"> | string
   url?: Prisma.StringFilter<"CofODocument"> | string
   createdAt?: Prisma.DateTimeFilter<"CofODocument"> | Date | string
-  inboxMessageId?: Prisma.StringNullableFilter<"CofODocument"> | string | null
+  inboxMessageId?: Prisma.UuidNullableFilter<"CofODocument"> | string | null
   cofO?: Prisma.XOR<Prisma.CofOApplicationScalarRelationFilter, Prisma.CofOApplicationWhereInput>
   inboxMessage?: Prisma.XOR<Prisma.InboxMessageNullableScalarRelationFilter, Prisma.InboxMessageWhereInput> | null
 }, "id">
@@ -246,13 +246,13 @@ export type CofODocumentScalarWhereWithAggregatesInput = {
   AND?: Prisma.CofODocumentScalarWhereWithAggregatesInput | Prisma.CofODocumentScalarWhereWithAggregatesInput[]
   OR?: Prisma.CofODocumentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.CofODocumentScalarWhereWithAggregatesInput | Prisma.CofODocumentScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"CofODocument"> | string
-  cofOId?: Prisma.StringWithAggregatesFilter<"CofODocument"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"CofODocument"> | string
+  cofOId?: Prisma.UuidWithAggregatesFilter<"CofODocument"> | string
   type?: Prisma.StringWithAggregatesFilter<"CofODocument"> | string
   title?: Prisma.StringWithAggregatesFilter<"CofODocument"> | string
   url?: Prisma.StringWithAggregatesFilter<"CofODocument"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CofODocument"> | Date | string
-  inboxMessageId?: Prisma.StringNullableWithAggregatesFilter<"CofODocument"> | string | null
+  inboxMessageId?: Prisma.UuidNullableWithAggregatesFilter<"CofODocument"> | string | null
 }
 
 export type CofODocumentCreateInput = {
@@ -495,13 +495,13 @@ export type CofODocumentScalarWhereInput = {
   AND?: Prisma.CofODocumentScalarWhereInput | Prisma.CofODocumentScalarWhereInput[]
   OR?: Prisma.CofODocumentScalarWhereInput[]
   NOT?: Prisma.CofODocumentScalarWhereInput | Prisma.CofODocumentScalarWhereInput[]
-  id?: Prisma.StringFilter<"CofODocument"> | string
-  cofOId?: Prisma.StringFilter<"CofODocument"> | string
+  id?: Prisma.UuidFilter<"CofODocument"> | string
+  cofOId?: Prisma.UuidFilter<"CofODocument"> | string
   type?: Prisma.StringFilter<"CofODocument"> | string
   title?: Prisma.StringFilter<"CofODocument"> | string
   url?: Prisma.StringFilter<"CofODocument"> | string
   createdAt?: Prisma.DateTimeFilter<"CofODocument"> | Date | string
-  inboxMessageId?: Prisma.StringNullableFilter<"CofODocument"> | string | null
+  inboxMessageId?: Prisma.UuidNullableFilter<"CofODocument"> | string | null
 }
 
 export type CofODocumentCreateWithoutInboxMessageInput = {

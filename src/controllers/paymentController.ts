@@ -14,6 +14,14 @@ export const initializePayment = async (req: AuthRequest, res: Response) => {
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) return res.status(404).json({ message: "User not found" });
 
+    const verifiedLandApproved = await prisma.landRegistration.findUnique({
+      where: { id: landID, landStatus: "APPROVED" },
+    });
+    if (!verifiedLandApproved) {
+      return res
+        .status(400)
+        .json({ message: "Land not found or not approved for payment" });
+    }
     const response = await axios.post(
       "https://api.paystack.co/transaction/initialize",
       {

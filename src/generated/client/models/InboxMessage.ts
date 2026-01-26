@@ -184,7 +184,7 @@ export type InboxMessageWhereInput = {
   AND?: Prisma.InboxMessageWhereInput | Prisma.InboxMessageWhereInput[]
   OR?: Prisma.InboxMessageWhereInput[]
   NOT?: Prisma.InboxMessageWhereInput | Prisma.InboxMessageWhereInput[]
-  id?: Prisma.StringFilter<"InboxMessage"> | string
+  id?: Prisma.UuidFilter<"InboxMessage"> | string
   receiverId?: Prisma.UuidFilter<"InboxMessage"> | string
   cofOId?: Prisma.UuidFilter<"InboxMessage"> | string
   status?: Prisma.StringFilter<"InboxMessage"> | string
@@ -238,7 +238,7 @@ export type InboxMessageScalarWhereWithAggregatesInput = {
   AND?: Prisma.InboxMessageScalarWhereWithAggregatesInput | Prisma.InboxMessageScalarWhereWithAggregatesInput[]
   OR?: Prisma.InboxMessageScalarWhereWithAggregatesInput[]
   NOT?: Prisma.InboxMessageScalarWhereWithAggregatesInput | Prisma.InboxMessageScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"InboxMessage"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"InboxMessage"> | string
   receiverId?: Prisma.UuidWithAggregatesFilter<"InboxMessage"> | string
   cofOId?: Prisma.UuidWithAggregatesFilter<"InboxMessage"> | string
   status?: Prisma.StringWithAggregatesFilter<"InboxMessage"> | string
@@ -501,7 +501,7 @@ export type InboxMessageScalarWhereInput = {
   AND?: Prisma.InboxMessageScalarWhereInput | Prisma.InboxMessageScalarWhereInput[]
   OR?: Prisma.InboxMessageScalarWhereInput[]
   NOT?: Prisma.InboxMessageScalarWhereInput | Prisma.InboxMessageScalarWhereInput[]
-  id?: Prisma.StringFilter<"InboxMessage"> | string
+  id?: Prisma.UuidFilter<"InboxMessage"> | string
   receiverId?: Prisma.UuidFilter<"InboxMessage"> | string
   cofOId?: Prisma.UuidFilter<"InboxMessage"> | string
   status?: Prisma.StringFilter<"InboxMessage"> | string

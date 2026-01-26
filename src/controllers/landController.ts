@@ -22,7 +22,7 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
     return res.status(400).json({ message: "Invalid land input", errors: body.error.flatten() });
   }
 
-  const { ownerName, latitude, longitude, squareMeters, ownershipType, purpose, titleType, stateId } = body.data;
+  const { ownerName, latitude, longitude, squareMeters, ownershipType, purpose, titleType, stateId, address } = body.data;
   const userId = req.user.sub;
 
   if (!req.files || !(req.files instanceof Array) || req.files.length === 0) {
@@ -73,6 +73,8 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
         latitude,
         longitude,
         squareMeters,
+        address,
+        landStatus: "PENDING",
         ownershipType,
         purpose,
         titleType,
@@ -208,6 +210,7 @@ export const updateLand = async (req: AuthRequest, res: Response) => {
     ownershipType: true,
     purpose: true,
     titleType: true,
+    address: true,
   });
   const body = allowedSchema.safeParse(req.body);
     if (!body.success) {
@@ -311,6 +314,7 @@ export const searchLandExistence = async (req: Request, res: Response) => {
         titleType: string;
         stateId: string;
         ownershipType: string;
+        ownerName: string;
       }[]
     >(
       `
@@ -323,6 +327,7 @@ export const searchLandExistence = async (req: Request, res: Response) => {
         "ownershipType",
         "titleType",
         "stateId"
+        "ownerName"
       FROM "LandRegistration"
       WHERE ST_DWithin(
         boundary::geography,
@@ -347,6 +352,7 @@ export const searchLandExistence = async (req: Request, res: Response) => {
         titleType: l.titleType,
         stateId: l.stateId,
         ownershipType: l.ownershipType,
+        ownerName: l.ownerName,
       })),
     });
   } catch (error) {

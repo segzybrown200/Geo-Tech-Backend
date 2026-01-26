@@ -5,6 +5,9 @@ CREATE TYPE "CofOStatus" AS ENUM ('DRAFT', 'PAYMENT_PENDING', 'PAYMENT_CONFIRMED
 CREATE TYPE "Role" AS ENUM ('USER', 'APPROVER', 'ADMIN', 'GOVERNOR');
 
 -- CreateEnum
+CREATE TYPE "landStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
+
+-- CreateEnum
 CREATE TYPE "UserType" AS ENUM ('CITIZEN', 'INTERNAL');
 
 -- CreateEnum
@@ -84,10 +87,12 @@ CREATE TABLE "LandRegistration" (
     "latitude" DOUBLE PRECISION NOT NULL,
     "longitude" DOUBLE PRECISION NOT NULL,
     "squareMeters" DOUBLE PRECISION NOT NULL,
+    "landStatus" "landStatus" NOT NULL DEFAULT 'PENDING',
     "ownershipType" TEXT NOT NULL,
     "stateId" UUID NOT NULL,
     "purpose" TEXT NOT NULL,
     "titleType" TEXT NOT NULL,
+    "address" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "boundary" geometry,
 

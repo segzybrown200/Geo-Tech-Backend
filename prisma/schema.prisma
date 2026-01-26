@@ -47,6 +47,11 @@ enum Role {
   ADMIN
   GOVERNOR
 }
+enum landStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
 
 model InternalUser {
   id                    String            @id @default(uuid()) @db.Uuid
@@ -111,6 +116,8 @@ model InternalOtp {
   createdAt      DateTime     @default(now())
 }
 
+
+
 model LandRegistration {
   id                String                   @id @default(uuid()) @db.Uuid
   ownerId           String                   @db.Uuid
@@ -119,11 +126,13 @@ model LandRegistration {
   latitude          Float
   longitude         Float
   squareMeters      Float
+  landStatus        landStatus               @default(PENDING)
   ownershipType     String
   stateId           String                   @db.Uuid
   state             State                    @relation(fields: [stateId], references: [id])
   purpose           String
   titleType         String
+  address           String?
   documents         LandDocument[]
   ownershipLogs     OwnershipHistory[]
   createdAt         DateTime                 @default(now())

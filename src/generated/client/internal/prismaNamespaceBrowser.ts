@@ -162,10 +162,12 @@ export const LandRegistrationScalarFieldEnum = {
   latitude: 'latitude',
   longitude: 'longitude',
   squareMeters: 'squareMeters',
+  landStatus: 'landStatus',
   ownershipType: 'ownershipType',
   stateId: 'stateId',
   purpose: 'purpose',
   titleType: 'titleType',
+  address: 'address',
   createdAt: 'createdAt'
 } as const
 
