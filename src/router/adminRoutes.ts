@@ -2,7 +2,7 @@ import express from 'express';
 import { approveUserLand, createFirstAdmin, getAllActivities, getAllApplications, getAllInternalUser, getAllUser, getAnalytics, getLandRegistrationsCount, getPayments, loginAdmin, refreshAdminToken, rejectUserLand, updateApplicationStatus } from '../controllers/adminController';
 import { authorizeRoles } from '../middlewares/roleMiddleware';
 import { verifyToken,AdminverifyToken } from '../middlewares/authMiddleware';
-import { getAllUserLands } from '../controllers/landController';
+import { getAllLands, getAllUserLands } from '../controllers/landController';
 const router = express.Router();
 
 router.get('/applications', getAllApplications);
@@ -20,5 +20,6 @@ router.get("/reject-user-land/:landId", AdminverifyToken, authorizeRoles(['ADMIN
 router.get("/")
 router.get("/get-registered-lands", AdminverifyToken, authorizeRoles(['ADMIN']),  getAllUserLands);
 router.get("/land-registered-count", AdminverifyToken, authorizeRoles(['ADMIN']),  getLandRegistrationsCount);
+router.get("/get-all-lands", AdminverifyToken, authorizeRoles(['ADMIN']), getAllLands);
 
 export default router;
