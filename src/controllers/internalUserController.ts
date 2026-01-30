@@ -95,8 +95,7 @@ export const createInternalUser = async (req: Request, res: Response) => {
       currentApprovers = await prisma.internalUser.count({
         where: {
           stateId,
-          role: "APPROVER",
-          function: workflowFunction,
+          role: "APPROVER"
         },
       });
     
