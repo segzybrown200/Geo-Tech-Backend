@@ -739,7 +739,7 @@ export const getReviewerApplications = async (req: AuthRequest, res: Response) =
       status: {in: ["IN_REVIEW", "NEEDS_CORRECTION", "RESUBMITTED"]},
       InboxMessage:{
         every:{
-          status: "PENDING"
+          status: { in: ["PENDING", "COMPLETED", "REJECTED"]  }
         }
       }
     },
@@ -749,6 +749,7 @@ export const getReviewerApplications = async (req: AuthRequest, res: Response) =
         include: { state: true },
       },
       logs: true,
+      cofODocuments: true,
     },
     orderBy: { createdAt: "desc" },
   });
