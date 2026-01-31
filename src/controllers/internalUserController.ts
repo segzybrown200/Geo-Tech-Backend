@@ -481,7 +481,7 @@ export const logoutInternalUser = async (req: AuthRequest, res: Response) => {
 }
 
 
-export const getDashboardStats = async (req: AuthRequest, res: Response) => {
+export const getDashboardStatsForReviwer = async (req: AuthRequest, res: Response) => {
   const userId = req.user.id;
 
     const reviewer = await prisma.internalUser.findUnique({
@@ -506,28 +506,76 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
     }
   });
 
-  const pending = await prisma.cofOApplication.count({
-    where: { status: "IN_REVIEW", currentReviewerId: userId }
+  const pending = await prisma.inboxMessage.count({
+    where: { status: "PENDING", receiverId: userId }
   });
 
-  const approved = await prisma.cofOApplication.count({
-    where: { status: "APPROVED",
-      land: {
-        stateId: reviewer.stateId as string, // 👈 join fixlter
-     }
-    }
+  const completed = await prisma.inboxMessage.count({
+    where: { status: "COMPLETED", receiverId: userId },
   });
 
-  const needsCorrection = await prisma.inboxMessage.count({
-    where: { status: "COMPLETED", receiverId: userId }
+  const needsCorrection = await prisma.cofOApplication.count({
+    where: { status: "NEEDS_CORRECTION", currentReviewerId: userId },
+  });
+  
+
+  const RESUBMITTED = await prisma.cofOApplication.count({
+    where: { status: "RESUBMITTED", currentReviewerId: userId }
   }); 
 
   const rejected = await prisma.inboxMessage.count({
     where: { status: "REJECTED", receiverId: userId },
   });
 
-  res.json({ total, pending, needsCorrection, approved, rejected });
+  res.json({ total, pending, needsCorrection, completed, RESUBMITTED, rejected });
 };
+
+export const getDashboardStatsForGovernor = async (req: AuthRequest, res: Response) => {
+  const userId = req.user.id;
+    const governor = await prisma.internalUser.findUnique({
+    where: { id: userId },
+  });
+  if (!governor) {
+    return res.status(403).json({ message: "Not an internal user" });
+  }
+  const stateId = governor.stateId;
+
+  if (!stateId) {
+    return res.status(403).json({ message: "Governor has no assigned state" });
+  } 
+  const total = await prisma.cofOApplication.count({
+    where:{
+      land: {
+        stateId: stateId, // 👈 join filter
+    }
+    }
+  });
+  const pending = await prisma.cofOApplication.count({
+    where: { status: "IN_REVIEW",
+      land: {
+        stateId: governor.stateId as string, // 👈 join fixlter
+      }
+    }
+  });
+  const approved = await prisma.cofOApplication.count({
+    where: { status: "APPROVED",
+      land: {
+        stateId: governor.stateId as string, // 👈 join fixlter
+      }
+    }
+  });
+  const rejected = await prisma.cofOApplication.count({
+    where: { status: "REJECTED_FINAL",
+      land: {
+          stateId: governor.stateId as string, // 👈 join fixlter
+      }
+    }
+  });
+  
+
+
+  res.json({ total, pending, approved, rejected});
+}
 
 
 
@@ -535,7 +583,7 @@ export const getCofOMonthlyTrends = async (req: AuthRequest, res: Response) => {
   try {
     const user = await prisma.internalUser.findUnique({
       where: { id: req.user.id },
-      select: { stateId: true },
+      select: { stateId: true,id: true  },
     });
 
     if (!user?.stateId) return res.status(403).json({ message: "No state assigned" });
@@ -546,19 +594,19 @@ export const getCofOMonthlyTrends = async (req: AuthRequest, res: Response) => {
       const start = startOfMonth(subMonths(new Date(), i));
       const end = endOfMonth(subMonths(new Date(), i));
 
-      const apps = await prisma.cofOApplication.findMany({
+      const apps = await prisma.inboxMessage.findMany({
         where: {
-          createdAt: { gte: start, lte: end },
-          land: { stateId: user.stateId },
+          timestamp: { gte: start, lte: end },
+          receiverId: user?.id as string,
         },
         select: { status: true },
       });
 
       data.push({
         month: start.toLocaleString("default", { month: "short" }),
-        approved: apps.filter(a => a.status === "APPROVED").length,
-        rejected: apps.filter(a => a.status === "REJECTED_FINAL").length,
-        pending: apps.filter(a => a.status === "IN_REVIEW").length,
+        approved: apps.filter(a => a.status === "COMPLETED").length,
+        rejected: apps.filter(a => a.status === "REJECTED").length,
+        pending: apps.filter(a => a.status === "PENDING").length,
       });
     }
 

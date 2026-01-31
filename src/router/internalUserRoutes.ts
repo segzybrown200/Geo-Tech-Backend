@@ -5,7 +5,8 @@ import {
   getCofOActivityLogs,
   getCofOForReview,
   getCofOMonthlyTrends,
-  getDashboardStats,
+  getDashboardStatsForGovernor,
+  getDashboardStatsForReviwer,
   getInternalUserSession,
   getMyInboxTasks,
   getReviewerApplications,
@@ -58,9 +59,12 @@ router.get("/logout", logoutInternalUser);
 router.get(
   "/dashboard",
   internalUserAuth,
-  authorizeRoles(["GOVERNOR", "APPROVER"]),
-  getDashboardStats,
+  authorizeRoles([ "APPROVER"]),
+  getDashboardStatsForReviwer,
 );
+router.get(
+  "/dashboard/governor",
+  internalUserAuth, authorizeRoles([ "GOVERNOR"]), getDashboardStatsForGovernor)
 router.get(
   "/activity",
   internalUserAuth,

@@ -179,6 +179,7 @@ async function getStateApprovers(stateId: string) {
 async function enqueueInbox(
   receiverId: string,
   cofOId: string,
+  applicationNumber: string,
   documentList: any[],
 ) {
   return prisma.inboxMessage.create({
@@ -189,7 +190,7 @@ async function enqueueInbox(
         connect: documentList.map((doc) => ({ id: doc.id })),
       },
       status: "PENDING",
-      messageLink: `CofO/${cofOId}`,
+      messageLink: `CofO/${applicationNumber}`,
     },
   });
 }
@@ -456,11 +457,11 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
     if (!isLastApprover) {
       const nextApprover = approvers[idx + 1];
       // enqueue inbox for next approver
-      await enqueueInbox(nextApprover.id, cofOId, cofO.cofODocuments);
+      await enqueueInbox(nextApprover.id, cofOId, cofO.applicationNumber as string, cofO.cofODocuments);
       // update CofO status to IN_REVIEW
       await prisma.cofOApplication.update({
         where: { id: cofOId },
-        data: { status: "IN_REVIEW" },
+        data: { status: "IN_REVIEW", currentReviewerId: nextApprover.id },
       });
 
       // optional notify next approver
@@ -492,6 +493,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
       await enqueueInbox(
         stateWithGovernor.governor.id,
         cofOId,
+        cofO.applicationNumber as string,
         cofO.cofODocuments,
       );
       await prisma.cofOApplication.update({
@@ -518,7 +520,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
     // 9) If governor is the current reviewer (or no governor set), finalize approval
     await prisma.cofOApplication.update({
       where: { id: cofOId },
-      data: { status: "APPROVED" },
+      data: { status: "APPROVED",approvedById: id, signedAt: new Date()},
     });
 
     // Optionally: generate CofO number, sign, watermark doc etc. Implementers can add extra logic here.

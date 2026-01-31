@@ -173,8 +173,13 @@ export const refreshAdminToken = async (req: AuthRequest, res: Response) => {
 export const getAllActivities = async (req:AuthRequest, res:Response) => {
   const logs = await prisma.stageLog.findMany({
     include: {
-      approver: { select: { name: true, role: true, position: true } },
-      cofO: { select: { cofONumber: true, status: true } },
+      approver: { select: { name: true, role: true, position: true, phone:true } },
+      cofO: { include:{
+        cofODocuments:true,
+        user:{select:{fullName:true,email:true,phone:true}},
+        currentReviewer:true,
+        land:true,
+      } },
     },
     orderBy: { arrivedAt: "desc" },
   });
