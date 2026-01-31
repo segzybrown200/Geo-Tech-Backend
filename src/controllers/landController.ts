@@ -189,9 +189,16 @@ export const deleteLand = async (req: AuthRequest, res: Response) => {
     if (!land) {
       return res.status(404).json({ message: "Land not found" });
     }
+
     if (land.ownerId !== userId) {
       return res.status(403).json({ message: "Forbidden: You do not own this land" });
     } 
+    const associatedCofO = await prisma.cofOApplication.findFirst({
+      where: { landId: landId, status: "APPROVED" },
+    });
+    if (associatedCofO) {
+      return res.status(400).json({ message: "Cannot delete land with an approved Certificate of Occupancy" });
+    }
     await prisma.landRegistration.delete({
       where: { id: landId },
     });
