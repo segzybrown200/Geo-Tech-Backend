@@ -720,7 +720,7 @@ export const approveDocumentForCofO = async (
       },
       data: {
         status: "APPROVED",
-      },
+      },  
     });
 
     res.json({
