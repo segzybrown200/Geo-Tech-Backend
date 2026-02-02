@@ -724,7 +724,7 @@ export const approveDocumentForCofO = async (
     });
 
     res.json({
-      message: `Document of ${document.title} has been approved`,
+      message: `Document of ${document.type} has been approved`,
     });
   } catch (error) {
     return res.status(500).json({
