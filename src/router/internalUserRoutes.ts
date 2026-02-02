@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  approveDocumentForCofO,
   completeInboxTask,
   createInternalUser,
   getCofOActivityLogs,
@@ -83,6 +84,7 @@ router.get(
   authorizeRoles(["GOVERNOR", "APPROVER"]),
   getCofOForReview,
 );
+router.post("/approve-document/:documentId", internalUserAuth, approveDocumentForCofO)
 router.get("/monthly-trends", internalUserAuth, authorizeRoles(["GOVERNOR", "APPROVER"]), getCofOMonthlyTrends);
 router.get("/inbox/my-tasks", internalUserAuth, authorizeRoles(["GOVERNOR", "APPROVER"]), getMyInboxTasks);
 router.post("/inbox/:id/complete", internalUserAuth, authorizeRoles(["GOVERNOR", "APPROVER"]), completeInboxTask);

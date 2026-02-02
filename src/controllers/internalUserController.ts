@@ -91,14 +91,12 @@ export const createInternalUser = async (req: Request, res: Response) => {
 
       const governorLimit = state.governor.approvingPosition || 0;
 
-
       currentApprovers = await prisma.internalUser.count({
         where: {
           stateId,
-          role: "APPROVER"
+          role: "APPROVER",
         },
       });
-    
 
       if (currentApprovers >= governorLimit) {
         return res.status(400).json({
@@ -142,7 +140,7 @@ export const createInternalUser = async (req: Request, res: Response) => {
       `<p>Hello ${name},</p>
        <p>You have been registered as a ${role} on the GeoTech platform.</p>
        <p>Verify your email by clicking below (expires in 24 hours):</p>
-       <a href="${verifyLink}">${verifyLink}</a>`
+       <a href="${verifyLink}">${verifyLink}</a>`,
     );
 
     res.status(201).json({ message: "Internal user created", user });
@@ -320,7 +318,7 @@ export const setInternalUserPassword = async (req: Request, res: Response) => {
 };
 export const resendInternalVerification = async (
   req: Request,
-  res: Response
+  res: Response,
 ) => {
   const { email } = req.body;
 
@@ -345,7 +343,7 @@ export const resendInternalVerification = async (
       "Resend Verification - GeoTech",
       `<p>Hello ${user.name},</p>
        <p>Here’s a new verification link for your internal account (expires in 24 hours):</p>
-       <a href="${verifyLink}">${verifyLink}</a>`
+       <a href="${verifyLink}">${verifyLink}</a>`,
     );
 
     res.json({ message: "Verification email resent successfully" });
@@ -388,7 +386,7 @@ export const loginInternalUser = async (req: Request, res: Response) => {
     const token = jwt.sign(
       { id: user.id, role: user.role, email: user.email },
       JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
     res.cookie("token", token, {
       httpOnly: true,
@@ -446,7 +444,7 @@ export const refreshInternalToken = async (req: AuthRequest, res: Response) => {
         type: "internalUser",
       },
       process.env.JWT_SECRET!,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
 
     res.cookie("token", newToken, {
@@ -478,13 +476,15 @@ export const logoutInternalUser = async (req: AuthRequest, res: Response) => {
     sameSite: "none",
   });
   res.json({ message: "Logged out successfully" });
-}
+};
 
-
-export const getDashboardStatsForReviwer = async (req: AuthRequest, res: Response) => {
+export const getDashboardStatsForReviwer = async (
+  req: AuthRequest,
+  res: Response,
+) => {
   const userId = req.user.id;
 
-    const reviewer = await prisma.internalUser.findUnique({
+  const reviewer = await prisma.internalUser.findUnique({
     where: { id: userId },
   });
 
@@ -499,15 +499,15 @@ export const getDashboardStatsForReviwer = async (req: AuthRequest, res: Respons
   }
 
   const total = await prisma.cofOApplication.count({
-    where:{
+    where: {
       land: {
         stateId: stateId, // 👈 join filter
-    }
-    }
+      },
+    },
   });
 
   const pending = await prisma.inboxMessage.count({
-    where: { status: "PENDING", receiverId: userId }
+    where: { status: "PENDING", receiverId: userId },
   });
 
   const completed = await prisma.inboxMessage.count({
@@ -517,22 +517,31 @@ export const getDashboardStatsForReviwer = async (req: AuthRequest, res: Respons
   const needsCorrection = await prisma.cofOApplication.count({
     where: { status: "NEEDS_CORRECTION", currentReviewerId: userId },
   });
-  
 
   const RESUBMITTED = await prisma.cofOApplication.count({
-    where: { status: "RESUBMITTED", currentReviewerId: userId }
-  }); 
+    where: { status: "RESUBMITTED", currentReviewerId: userId },
+  });
 
   const rejected = await prisma.inboxMessage.count({
     where: { status: "REJECTED", receiverId: userId },
   });
 
-  res.json({ total, pending, needsCorrection, completed, RESUBMITTED, rejected });
+  res.json({
+    total,
+    pending,
+    needsCorrection,
+    completed,
+    RESUBMITTED,
+    rejected,
+  });
 };
 
-export const getDashboardStatsForGovernor = async (req: AuthRequest, res: Response) => {
+export const getDashboardStatsForGovernor = async (
+  req: AuthRequest,
+  res: Response,
+) => {
   const userId = req.user.id;
-    const governor = await prisma.internalUser.findUnique({
+  const governor = await prisma.internalUser.findUnique({
     where: { id: userId },
   });
   if (!governor) {
@@ -542,51 +551,51 @@ export const getDashboardStatsForGovernor = async (req: AuthRequest, res: Respon
 
   if (!stateId) {
     return res.status(403).json({ message: "Governor has no assigned state" });
-  } 
+  }
   const total = await prisma.cofOApplication.count({
-    where:{
+    where: {
       land: {
         stateId: stateId, // 👈 join filter
-    }
-    }
+      },
+    },
   });
   const pending = await prisma.cofOApplication.count({
-    where: { status: "IN_REVIEW",
+    where: {
+      status: "IN_REVIEW",
       land: {
         stateId: governor.stateId as string, // 👈 join fixlter
-      }
-    }
+      },
+    },
   });
   const approved = await prisma.cofOApplication.count({
-    where: { status: "APPROVED",
+    where: {
+      status: "APPROVED",
       land: {
         stateId: governor.stateId as string, // 👈 join fixlter
-      }
-    }
+      },
+    },
   });
   const rejected = await prisma.cofOApplication.count({
-    where: { status: "REJECTED_FINAL",
+    where: {
+      status: "REJECTED_FINAL",
       land: {
-          stateId: governor.stateId as string, // 👈 join fixlter
-      }
-    }
+        stateId: governor.stateId as string, // 👈 join fixlter
+      },
+    },
   });
-  
 
-
-  res.json({ total, pending, approved, rejected});
-}
-
-
+  res.json({ total, pending, approved, rejected });
+};
 
 export const getCofOMonthlyTrends = async (req: AuthRequest, res: Response) => {
   try {
     const user = await prisma.internalUser.findUnique({
       where: { id: req.user.id },
-      select: { stateId: true,id: true  },
+      select: { stateId: true, id: true },
     });
 
-    if (!user?.stateId) return res.status(403).json({ message: "No state assigned" });
+    if (!user?.stateId)
+      return res.status(403).json({ message: "No state assigned" });
 
     const data = [];
 
@@ -604,9 +613,9 @@ export const getCofOMonthlyTrends = async (req: AuthRequest, res: Response) => {
 
       data.push({
         month: start.toLocaleString("default", { month: "short" }),
-        approved: apps.filter(a => a.status === "COMPLETED").length,
-        rejected: apps.filter(a => a.status === "REJECTED").length,
-        pending: apps.filter(a => a.status === "PENDING").length,
+        approved: apps.filter((a) => a.status === "COMPLETED").length,
+        rejected: apps.filter((a) => a.status === "REJECTED").length,
+        pending: apps.filter((a) => a.status === "PENDING").length,
       });
     }
 
@@ -636,10 +645,12 @@ export const getMyInboxTasks = async (req: AuthRequest, res: Response) => {
             createdAt: true,
             applicationNumber: true,
             status: true,
-            land: { include: { 
-              documents: true, state: true
-
-             } },
+            land: {
+              include: {
+                documents: true,
+                state: true,
+              },
+            },
           },
         },
       },
@@ -665,10 +676,69 @@ export const completeInboxTask = async (req: AuthRequest, res: Response) => {
   }
 };
 
+export const approveDocumentForCofO = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  const { documentId } = req.params;
+  const reviewerId = req.user.id;
+  const { status } = req.body;
+  try {
+    const document = await prisma.cofODocument.findUnique({
+      where: {
+        id: documentId,
+        inboxMessage: {
+          internalUser: { id: reviewerId },
+        },
+      },
+    });
 
+    if (!document) {
+      return res.status(401).json({
+        message: "Document not found",
+      });
+    }
+
+    if (status === "REJECTED") {
+      const ApproveDocument = await prisma.cofODocument.update({
+        where: {
+          id: document?.id,
+        },
+        data: {
+          status: "REJECTED",
+        },
+      });
+
+      return res.status(401).json({
+        message: `Doument of ${ApproveDocument.title} has been rejected`,
+      });
+    }
+
+    await prisma.cofODocument.update({
+      where: {
+        id: document.id,
+      },
+      data: {
+        status: "APPROVED",
+      },
+    });
+
+    res.json({
+      message: `Document of ${document.title} has been approved`,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Unexpected Error happened",
+      error,
+    });
+  }
+};
 
 // controllers/reviewerController.ts
-export const getReviewedApplications = async (req: AuthRequest, res: Response) => {
+export const getReviewedApplications = async (
+  req: AuthRequest,
+  res: Response,
+) => {
   const reviewerId = req.user.id;
   const apps = await prisma.inboxMessage.findMany({
     where: {
@@ -681,7 +751,7 @@ export const getReviewedApplications = async (req: AuthRequest, res: Response) =
           user: true,
           land: { include: { state: true } },
           cofODocuments: true,
-          approvalAudits:true
+          approvalAudits: true,
         },
       },
     },
@@ -697,10 +767,10 @@ export const getCofOActivityLogs = async (req: AuthRequest, res: Response) => {
     where: { id: internalUserId },
   });
 
-  if(!user){
+  if (!user) {
     return res.status(404).json({
-      message: "user not found"
-    })
+      message: "user not found",
+    });
   }
 
   const logs = await prisma.cofOAuditLog.findMany({
@@ -719,7 +789,10 @@ export const getCofOActivityLogs = async (req: AuthRequest, res: Response) => {
   res.json(logs);
 };
 
-export const getReviewerApplications = async (req: AuthRequest, res: Response) => {
+export const getReviewerApplications = async (
+  req: AuthRequest,
+  res: Response,
+) => {
   const reviewerId = req.user.id;
 
   const reviewer = await prisma.internalUser.findUnique({
@@ -736,12 +809,12 @@ export const getReviewerApplications = async (req: AuthRequest, res: Response) =
       land: {
         stateId: reviewer.stateId as string, // 👈 join filter
       },
-      status: {in: ["IN_REVIEW", "NEEDS_CORRECTION", "RESUBMITTED"]},
-      InboxMessage:{
-        every:{
-          status: { in: ["PENDING", "COMPLETED", "REJECTED"]  }
-        }
-      }
+      status: { in: ["IN_REVIEW", "NEEDS_CORRECTION", "RESUBMITTED"] },
+      InboxMessage: {
+        every: {
+          status: { in: ["PENDING", "COMPLETED", "REJECTED"] },
+        },
+      },
     },
     include: {
       user: true,
@@ -790,7 +863,6 @@ export const getCofOForReview = async (req: AuthRequest, res: Response) => {
 
   res.json(app);
 };
-
 
 export const governorDashboard = async (req: AuthRequest, res: Response) => {
   const governorId = req.user.sub;
