@@ -702,14 +702,14 @@ export const approveDocumentForCofO = async (
     if (status === "REJECTED") {
       const ApproveDocument = await prisma.cofODocument.update({
         where: {
-          id: document?.id,
+          id: document.id,
         },
         data: {
           status: "REJECTED",
         },
       });
 
-      return res.status(401).json({
+      return res.status(201).json({
         message: `Doument of ${ApproveDocument.title} has been rejected`,
       });
     }
@@ -727,7 +727,7 @@ export const approveDocumentForCofO = async (
       message: `Document of ${document.type} has been approved`,
     });
   } catch (error) {
-    return res.status(500).json({
+     res.status(500).json({
       message: "Unexpected Error happened",
       error,
     });
