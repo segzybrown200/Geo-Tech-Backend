@@ -242,7 +242,11 @@ model CofOApplication {
   internalUserId       String?          @db.Uuid
   cofODocuments        CofODocument[]
 }
-
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
 model CofODocument {
   id        String   @id @default(uuid()) @db.Uuid
   cofOId    String   @db.Uuid
@@ -250,6 +254,7 @@ model CofODocument {
   title     String
   url       String
   createdAt DateTime @default(now())
+  status    DocumentStatus @default(PENDING)
 
   cofO CofOApplication @relation(fields: [cofOId], references: [id])
 

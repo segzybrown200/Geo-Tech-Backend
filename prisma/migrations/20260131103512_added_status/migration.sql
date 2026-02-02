@@ -11,6 +11,9 @@ CREATE TYPE "landStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
 CREATE TYPE "UserType" AS ENUM ('CITIZEN', 'INTERNAL');
 
 -- CreateEnum
+CREATE TYPE "DocumentStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
+
+-- CreateEnum
 CREATE TYPE "PaymentStatus" AS ENUM ('PENDING', 'SUCCESS', 'UNPAID', 'FAILED');
 
 -- CreateTable
@@ -203,6 +206,7 @@ CREATE TABLE "CofODocument" (
     "title" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "status" "DocumentStatus" NOT NULL DEFAULT 'PENDING',
     "inboxMessageId" UUID,
 
     CONSTRAINT "CofODocument_pkey" PRIMARY KEY ("id")

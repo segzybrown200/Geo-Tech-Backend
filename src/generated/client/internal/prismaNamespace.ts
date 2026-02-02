@@ -2129,6 +2129,7 @@ export const CofODocumentScalarFieldEnum = {
   title: 'title',
   url: 'url',
   createdAt: 'createdAt',
+  status: 'status',
   inboxMessageId: 'inboxMessageId'
 } as const
 
@@ -2399,6 +2400,20 @@ export type EnumCofOStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'CofOStatus[]'
  */
 export type ListEnumCofOStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CofOStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DocumentStatus'
+ */
+export type EnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DocumentStatus[]'
+ */
+export type ListEnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus[]'>
     
 
 
