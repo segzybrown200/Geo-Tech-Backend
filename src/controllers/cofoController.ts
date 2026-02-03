@@ -285,55 +285,60 @@ export const resubmitCofO = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ message: "One or more document ids are invalid for this application" });
     }
 
-    await prisma.$transaction(async (tx) => {
-      for (let i = 0; i < files.length; i++) {
-        const upload = await uploadToCloudinary(
-          files[i].buffer,
-          files[i].originalname,
-          files[i].mimetype,
-        );
+    if (!cofO.rejectedById) {
+      return res.status(400).json({ message: "No reviewer found to resend to" });
+    }
 
-        await tx.cofODocument.update({
-          where: { id: documents[i].docId },
+    // Upload files to Cloudinary OUTSIDE transaction to avoid timeout
+    const uploadResults = await Promise.all(
+      files.map((file) =>
+        uploadToCloudinary(file.buffer, file.originalname, file.mimetype)
+      )
+    );
+
+    // Now run DB updates in transaction
+    await prisma.$transaction(
+      async (tx) => {
+        for (let i = 0; i < uploadResults.length; i++) {
+          await tx.cofODocument.update({
+            where: { id: documents[i].docId },
+            data: {
+              url: uploadResults[i].secure_url,
+              title: documents[i].title ?? existingDocs.find((d) => d.id === documents[i].docId)!.title,
+              type: documents[i].type ?? existingDocs.find((d) => d.id === documents[i].docId)!.type,
+              status: "PENDING",
+            },
+          });
+        }
+
+        await tx.cofOApplication.update({
+          where: { id: cofOId },
           data: {
-            url: upload.secure_url,
-            title: documents[i].title ?? existingDocs.find((d) => d.id === documents[i].docId)!.title,
-            type: documents[i].type ?? existingDocs.find((d) => d.id === documents[i].docId)!.type,
-            status: "PENDING",
+            status: "RESUBMITTED",
+            currentReviewerId: cofO.rejectedById,
           },
         });
-      }
 
-      if (!cofO.rejectedById) {
-        throw new Error("No reviewer found to resend to");
-      }
+        await tx.inboxMessage.create({
+          data: {
+            receiverId: cofO.rejectedById!,
+            cofOId,
+            status: "PENDING",
+            messageLink: `CofO/${cofO.applicationNumber}`,
+          },
+        });
 
-      await tx.cofOApplication.update({
-        where: { id: cofOId },
-        data: {
-          status: "RESUBMITTED",
-          currentReviewerId: cofO.rejectedById,
-        },
-      });
-
-      await tx.inboxMessage.create({
-        data: {
-          receiverId: cofO.rejectedById!,
-          cofOId,
-          status: "PENDING",
-          messageLink: `CofO/${cofO.applicationNumber}`,
-        },
-      });
-
-      await tx.cofOAuditLog.create({
-        data: {
-          cofOId,
-          action: "RESUBMITTED",
-          performedById: userId,
-          performedByRole: "APPLICANT",
-        },
-      });
-    });
+        await tx.cofOAuditLog.create({
+          data: {
+            cofOId,
+            action: "RESUBMITTED",
+            performedById: userId,
+            performedByRole: "APPLICANT",
+          },
+        });
+      },
+      { timeout: 10000 } // Increase timeout to 10 seconds for safety
+    );
 
     try {
       if (cofO.rejectedBy?.email) {
