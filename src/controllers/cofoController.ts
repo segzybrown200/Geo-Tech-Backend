@@ -299,6 +299,7 @@ export const resubmitCofO = async (req: AuthRequest, res: Response) => {
             url: upload.secure_url,
             title: documents[i].title ?? existingDocs.find((d) => d.id === documents[i].docId)!.title,
             type: documents[i].type ?? existingDocs.find((d) => d.id === documents[i].docId)!.type,
+            status: "PENDING",
           },
         });
       }
