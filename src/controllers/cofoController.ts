@@ -226,101 +226,135 @@ export async function generateCofONumber() {
  */
 
 export const resubmitCofO = async (req: AuthRequest, res: Response) => {
-  const userId = req.user.sub;
-  const { cofOId } = req.params;
-  const files = req.files as Express.Multer.File[];
-  const documents = req.body.documents; // [{ docId, title, type }]
+  try {
+    const userId = req.user.sub;
+    const { cofOId } = req.params;
+    const files = (req.files as Express.Multer.File[]) || [];
 
-  // Validate each file before processing
-  const validationErrors: string[] = [];
-  files.forEach((file, index) => {
-    const validation = validateDocumentFile(
-      file.buffer,
-      file.originalname,
-      file.mimetype
-    );
-    if (!validation.valid) {
-      validationErrors.push(`File ${index + 1} (${file.originalname}): ${validation.error}`);
+    // Frontend sends documents metadata as `documentsMeta` (stringified JSON)
+    let documents: { docId: string; title?: string; type?: string }[] = [];
+    try {
+      documents = JSON.parse(req.body.documentsMeta || "[]");
+    } catch (e) {
+      return res.status(400).json({ message: "Invalid documents metadata" });
     }
-  });
 
-  if (validationErrors.length > 0) {
-    return res.status(400).json({
-      message: "Document validation failed",
-      errors: validationErrors,
-    });
-  }
+    if (!files.length) {
+      return res.status(400).json({ message: "No files uploaded" });
+    }
 
-  const cofO = await prisma.cofOApplication.findUnique({
-    where: { id: cofOId },
-    include: { cofODocuments: true, rejectedBy: true },
-  });
+    if (documents.length !== files.length) {
+      return res.status(400).json({ message: "Documents metadata does not match uploaded files" });
+    }
 
-  if (!cofO || cofO.userId !== userId)
-    return res.status(403).json({ message: "Unauthorized" });
-
-  if (cofO.status !== "NEEDS_CORRECTION")
-    return res.status(400).json({ message: "Application not editable" });
-
-  await prisma.$transaction(async (tx) => {
-    for (let i = 0; i < files.length; i++) {
-      const upload = await uploadToCloudinary(
-        files[i].buffer,
-        files[i].originalname,
-        files[i].mimetype,
+    // Validate each file before processing
+    const validationErrors: string[] = [];
+    files.forEach((file, index) => {
+      const validation = validateDocumentFile(
+        file.buffer,
+        file.originalname,
+        file.mimetype
       );
+      if (!validation.valid) {
+        validationErrors.push(`File ${index + 1} (${file.originalname}): ${validation.error}`);
+      }
+    });
 
-      await tx.cofODocument.update({
-        where: { id: documents[i].docId },
-        data: {
-          url: upload.secure_url,
-          title: documents[i].title,
-          type: documents[i].type,
-        },
+    if (validationErrors.length > 0) {
+      return res.status(400).json({
+        message: "Document validation failed",
+        errors: validationErrors,
       });
     }
 
-    await tx.cofOApplication.update({
+    const cofO = await prisma.cofOApplication.findUnique({
       where: { id: cofOId },
-      data: {
-        status: "RESUBMITTED",
-        currentReviewerId: cofO.rejectedById,
-      },
+      include: { cofODocuments: true, rejectedBy: true },
     });
 
-    await tx.inboxMessage.create({
-      data: {
-        receiverId: cofO.rejectedById!,
-        cofOId,
-        status: "PENDING",
-        messageLink: `CofO/${cofO.applicationNumber}`,
-      },
+    if (!cofO || cofO.userId !== userId)
+      return res.status(403).json({ message: "Unauthorized" });
+
+    if (cofO.status !== "NEEDS_CORRECTION")
+      return res.status(400).json({ message: "Application not editable" });
+
+    // Ensure provided docIds belong to this CofO
+    const docIds = documents.map((d) => d.docId);
+    const existingDocs = await prisma.cofODocument.findMany({ where: { id: { in: docIds } } });
+    if (existingDocs.length !== docIds.length || existingDocs.some((d) => d.cofOId !== cofOId)) {
+      return res.status(400).json({ message: "One or more document ids are invalid for this application" });
+    }
+
+    await prisma.$transaction(async (tx) => {
+      for (let i = 0; i < files.length; i++) {
+        const upload = await uploadToCloudinary(
+          files[i].buffer,
+          files[i].originalname,
+          files[i].mimetype,
+        );
+
+        await tx.cofODocument.update({
+          where: { id: documents[i].docId },
+          data: {
+            url: upload.secure_url,
+            title: documents[i].title ?? existingDocs.find((d) => d.id === documents[i].docId)!.title,
+            type: documents[i].type ?? existingDocs.find((d) => d.id === documents[i].docId)!.type,
+          },
+        });
+      }
+
+      if (!cofO.rejectedById) {
+        throw new Error("No reviewer found to resend to");
+      }
+
+      await tx.cofOApplication.update({
+        where: { id: cofOId },
+        data: {
+          status: "RESUBMITTED",
+          currentReviewerId: cofO.rejectedById,
+        },
+      });
+
+      await tx.inboxMessage.create({
+        data: {
+          receiverId: cofO.rejectedById!,
+          cofOId,
+          status: "PENDING",
+          messageLink: `CofO/${cofO.applicationNumber}`,
+        },
+      });
+
+      await tx.cofOAuditLog.create({
+        data: {
+          cofOId,
+          action: "RESUBMITTED",
+          performedById: userId,
+          performedByRole: "APPLICANT",
+        },
+      });
     });
 
-    await tx.cofOAuditLog.create({
-      data: {
-        cofOId,
-        action: "RESUBMITTED",
-        performedById: userId,
-        performedByRole: "APPLICANT",
-      },
-    });
-  });
-  try {
-    await sendEmail(
-      cofO.rejectedBy?.email!,
-      "CofO application resubmitted for your review",
-      `
-         <p>Hello ${cofO.rejectedBy?.name},</p>
-        <p>The Certificate of Occupancy application with Application Number: ${cofO.applicationNumber} has been resubmitted and awaits your review.</p>
-        <p>Please log in to review and take action.</p>
-        `,
-    );
-  } catch (e) {
-    console.warn("email fail", e);
+    try {
+      if (cofO.rejectedBy?.email) {
+        await sendEmail(
+          cofO.rejectedBy.email,
+          "CofO application resubmitted for your review",
+          `
+           <p>Hello ${cofO.rejectedBy.name},</p>
+          <p>The Certificate of Occupancy application with Application Number: ${cofO.applicationNumber} has been resubmitted and awaits your review.</p>
+          <p>Please log in to review and take action.</p>
+          `,
+        );
+      }
+    } catch (e) {
+      console.warn("email fail", e);
+    }
+
+    return res.json({ message: "Application resubmitted successfully" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Resubmission failed", error: (err as any)?.message ?? err });
   }
-
-  res.json({ message: "Application resubmitted successfully" });
 };
 
 export const reviewCofO = async (req: AuthRequest, res: Response) => {
