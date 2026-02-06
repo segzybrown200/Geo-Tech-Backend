@@ -748,7 +748,7 @@ export const listCofOsForGovernor = async (req: any, res: Response) => {
     const cofOs = await prisma.cofOApplication.findMany({
       where: {
         land: { stateId: internal.stateId as string },
-        status: { in: ["IN_REVIEW", "RESUBMITTED"] },
+        status: { in: ["IN_REVIEW", "RESUBMITTED", "APPROVED", "NEEDS_CORRECTION", "DRAFT"] },
       },
       orderBy: { createdAt: "desc" },
       include: { land: true, user: true, logs: true, cofODocuments: true },
