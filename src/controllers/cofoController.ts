@@ -738,28 +738,28 @@ export const getMyCofOApplications = async (req: AuthRequest, res: Response) => 
 };
 
 // List CofOs for governor of their state
-export const listCofOsForGovernor = async (req: any, res: Response) => {
-  try {
-    const user = req.user;
-    const internal = await prisma.internalUser.findUnique({ where: { id: user.id } });
-    if (!internal || internal.role !== "GOVERNOR")
-      return res.status(403).json({ message: "Only governors can access this resource" });
+// export const listCofOsForGovernor = async (req: any, res: Response) => {
+//   try {
+//     const user = req.user;
+//     const internal = await prisma.internalUser.findUnique({ where: { id: user.id } });
+//     if (!internal || internal.role !== "GOVERNOR")
+//       return res.status(403).json({ message: "Only governors can access this resource" });
 
-    const cofOs = await prisma.cofOApplication.findMany({
-      where: {
-        land: { stateId: internal.stateId as string },
-        status: { in: ["IN_REVIEW", "RESUBMITTED", "APPROVED", "NEEDS_CORRECTION", "DRAFT"] },
-      },
-      orderBy: { createdAt: "desc" },
-      include: { land: true, user: true, logs: true, cofODocuments: true },
-    });
+//     const cofOs = await prisma.cofOApplication.findMany({
+//       where: {
+//         land: { stateId: internal.stateId as string },
+//         status: { in: ["IN_REVIEW", "RESUBMITTED", "APPROVED", "NEEDS_CORRECTION", "DRAFT"] },
+//       },
+//       orderBy: { createdAt: "desc" },
+//       include: { land: true, user: true, logs: true, cofODocuments: true },
+//     });
 
-    return res.json({ results: cofOs });
-  } catch (err) {
-    console.error("listCofOsForGovernor failed", err);
-    return res.status(500).json({ message: "Failed to fetch CofOs", error: err });
-  }
-};
+//     return res.json({ results: cofOs });
+//   } catch (err) {
+//     console.error("listCofOsForGovernor failed", err);
+//     return res.status(500).json({ message: "Failed to fetch CofOs", error: err });
+//   }
+// };
 
 // Get one CofO for governor ensuring it belongs to governor's state
 export const getCofOForGovernor = async (req: any, res: Response) => {
@@ -782,5 +782,58 @@ export const getCofOForGovernor = async (req: any, res: Response) => {
   } catch (err) {
     console.error("getCofOForGovernor failed", err);
     return res.status(500).json({ message: "Failed to fetch CofO", error: err });
+  }
+};
+
+const ALLOWED_STATUSES = [
+  "IN_REVIEW",
+  "RESUBMITTED",
+  "APPROVED",
+  "NEEDS_CORRECTION",
+  "DRAFT",
+];
+
+
+
+export const listCofOsForGovernor = async (req: AuthRequest, res: Response) => {
+  try {
+    const user = req.user;
+    if (!user?.id) return res.status(401).json({ message: "Unauthorized" });
+
+    const internal = await prisma.internalUser.findUnique({ where: { id: user.id } });
+    if (!internal || internal.role !== "GOVERNOR")
+      return res.status(403).json({ message: "Only governors can access this resource" });
+
+    const page = Math.max(1, parseInt(String(req.query.page ?? "1"), 10));
+    const limit = Math.min(100, Math.max(1, parseInt(String(req.query.limit ?? "20"), 10)));
+    const skip = (page - 1) * limit;
+
+    const statuses = (req.query.status
+      ? String(req.query.status).split(",").map(s => s.trim()).filter(Boolean)
+      : ALLOWED_STATUSES) as any[];
+
+    const baseWhere = {
+      land: { stateId: internal.stateId as string },
+      status: { in: statuses as any },
+    };
+
+    const [total, cofOs] = await prisma.$transaction([
+      prisma.cofOApplication.count({ where: baseWhere }),
+      prisma.cofOApplication.findMany({
+        where: baseWhere,
+        orderBy: { createdAt: "desc" },
+        include: { land: true, user: true, logs: true, cofODocuments: true, currentReviewer: true },
+        skip,
+        take: limit,
+      }),
+    ]);
+
+    return res.json({
+      meta: { total, page, limit },
+      results: cofOs,
+    });
+  } catch (err) {
+    console.error("listCofOsForGovernor failed", err);
+    return res.status(500).json({ message: "Failed to fetch CofOs" });
   }
 };
