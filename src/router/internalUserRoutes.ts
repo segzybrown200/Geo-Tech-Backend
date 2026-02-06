@@ -11,6 +11,14 @@ import {
   getInternalUserSession,
   getMyInboxTasks,
   getReviewerApplications,
+  governorApproverPerformance,
+  governorInboxBacklog,
+  governorLocationReport,
+  governorProcessingTimeReport,
+  governorReviewerPerformance,
+  governorStageDelayReport,
+  governorStatusReport,
+  governorTrendReport,
   loginInternalUser,
   logoutInternalUser,
   refreshInternalToken,
@@ -88,5 +96,17 @@ router.post("/approve-document/:documentId", internalUserAuth, approveDocumentFo
 router.get("/monthly-trends", internalUserAuth, authorizeRoles(["GOVERNOR", "APPROVER"]), getCofOMonthlyTrends);
 router.get("/inbox/my-tasks", internalUserAuth, authorizeRoles(["GOVERNOR", "APPROVER"]), getMyInboxTasks);
 router.post("/inbox/:id/complete", internalUserAuth, authorizeRoles(["GOVERNOR", "APPROVER"]), completeInboxTask);
+router.get("/governor/reports/approver-performance", internalUserAuth, authorizeRoles(["GOVERNOR"]), governorApproverPerformance);
+
+router.get("/governor/reports/stage-delays", internalUserAuth, authorizeRoles(["GOVERNOR"]), governorStageDelayReport);
+
+router.get("/governor/reports/inbox-backlog", internalUserAuth, authorizeRoles(["GOVERNOR"]), governorInboxBacklog);
+router.get("/reports/status", internalUserAuth, authorizeRoles(["GOVERNOR"]), governorStatusReport);
+router.get("/reports/processing-time", internalUserAuth, authorizeRoles(["GOVERNOR"]), governorProcessingTimeReport);
+router.get("/reports/location", internalUserAuth, authorizeRoles(["GOVERNOR"]), governorLocationReport);
+router.get("/reports/trends", internalUserAuth, authorizeRoles(["GOVERNOR"]), governorTrendReport);
+router.get("/reports/reviewer-performance", internalUserAuth, authorizeRoles(["GOVERNOR"]), governorReviewerPerformance);
+
+
 
 export default router;

@@ -891,3 +891,261 @@ export const governorDashboard = async (req: AuthRequest, res: Response) => {
 
   res.json(applications);
 };
+export const governorStatusReport = async (req: AuthRequest, res: Response) => {
+  const governor = await prisma.internalUser.findUnique({
+    where: { id: req.user.id },
+  });
+
+  const stateId = governor?.stateId;
+
+  if (!stateId) return res.status(400).json({ message: "No state assigned" });
+
+  const baseWhere = {
+    land: { stateId }
+  };
+
+  const [
+    total,
+    inReview,
+    needsCorrection,
+    resubmitted,
+    approved,
+    rejected
+  ] = await Promise.all([
+    prisma.cofOApplication.count({ where: baseWhere }),
+    prisma.cofOApplication.count({ where: { ...baseWhere, status: "IN_REVIEW" }}),
+    prisma.cofOApplication.count({ where: { ...baseWhere, status: "NEEDS_CORRECTION" }}),
+    prisma.cofOApplication.count({ where: { ...baseWhere, status: "RESUBMITTED" }}),
+    prisma.cofOApplication.count({ where: { ...baseWhere, status: "APPROVED" }}),
+    prisma.cofOApplication.count({ where: { ...baseWhere, status: "REJECTED_FINAL" }}),
+  ]);
+
+  res.json({
+    total,
+    inReview,
+    needsCorrection,
+    resubmitted,
+    approved,
+    rejected,
+  });
+};
+export const governorProcessingTimeReport = async (req: AuthRequest, res: Response) => {
+  const governor = await prisma.internalUser.findUnique({
+    where: { id: req.user.id },
+  });
+
+  const stateId = governor?.stateId;
+
+  const approvedApps = await prisma.cofOApplication.findMany({
+    where: {
+      status: "APPROVED",
+      land: { stateId: stateId as string },
+    },
+    select: {
+      createdAt: true,
+      signedAt: true,
+    },
+  });
+
+  const durations = approvedApps
+    .filter(a => a.signedAt)
+    .map(a =>
+      (a.signedAt!.getTime() - a.createdAt.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+  const avgDays =
+    durations.reduce((a, b) => a + b, 0) / (durations.length || 1);
+
+  res.json({
+    approvedCount: durations.length,
+    averageProcessingDays: Number(avgDays.toFixed(2)),
+  });
+};
+export const governorLocationReport = async (req: AuthRequest, res: Response) => {
+  const governor = await prisma.internalUser.findUnique({
+    where: { id: req.user.id },
+  });
+
+  const stateId = governor?.stateId;
+
+  const grouped = await prisma.cofOApplication.groupBy({
+    by: ["landId"],
+    _count: { _all: true },
+    where: {
+      land: { stateId: stateId as string },
+    },
+  });
+
+  const withLga = await Promise.all(
+    grouped.map(async g => {
+      const land = await prisma.landRegistration.findUnique({
+        where: { id: g.landId },
+      });
+
+      return {
+        total: g._count._all,
+      };
+    })
+  );
+
+  res.json(withLga);
+};
+export const governorTrendReport = async (req: AuthRequest, res: Response) => {
+  const governor = await prisma.internalUser.findUnique({
+    where: { id: req.user.id },
+  });
+
+  const stateId = governor?.stateId;
+
+  const apps = await prisma.cofOApplication.findMany({
+    where: { land: { stateId: stateId as string } },
+    select: { createdAt: true },
+  });
+
+  const trend: Record<string, number> = {};
+
+  apps.forEach(app => {
+    const key = `${app.createdAt.getFullYear()}-${app.createdAt.getMonth() + 1}`;
+    trend[key] = (trend[key] || 0) + 1;
+  });
+
+  res.json(trend);
+};
+export const governorReviewerPerformance = async (req: AuthRequest, res: Response) => {
+  const governor = await prisma.internalUser.findUnique({
+    where: { id: req.user.id },
+  });
+
+  const stateId = governor?.stateId;
+
+  const reviewers = await prisma.internalUser.findMany({
+    where: { role: "APPROVER", stateId },
+    select: { id: true, name: true },
+  });
+
+  const stats = await Promise.all(
+    reviewers.map(async r => {
+      const handled = await prisma.cofOApplication.count({
+        where: { currentReviewerId: r.id },
+      });
+
+      const corrections = await prisma.cofOApplication.count({
+        where: { currentReviewerId: r.id, status: "NEEDS_CORRECTION" },
+      });
+
+      return {
+        reviewer: r.name,
+        handled,
+        corrections,
+      };
+    })
+  );
+
+  res.json(stats);
+};
+
+export const governorApproverPerformance = async (req: AuthRequest, res: Response) => {
+  const governor = await prisma.internalUser.findUnique({
+    where: { id: req.user.id },
+  });
+
+  const stateId = governor?.stateId;
+
+  const logs = await prisma.stageLog.findMany({
+    where: {
+      approver: { stateId },
+      approvedAt: { not: null },
+    },
+    include: {
+      approver: { select: { id: true, name: true } },
+    },
+  });
+
+  const stats: Record<string, any> = {};
+
+  logs.forEach(log => {
+    const hours =
+      (log.approvedAt!.getTime() - log.arrivedAt.getTime()) / 3600000;
+
+    if (!stats[log.internalUserId]) {
+      stats[log.internalUserId] = {
+        approver: log.approver.name,
+        totalHandled: 0,
+        totalHours: 0,
+      };
+    }
+
+    stats[log.internalUserId].totalHandled++;
+    stats[log.internalUserId].totalHours += hours;
+  });
+
+  const result = Object.values(stats).map((s: any) => ({
+    approver: s.approver,
+    totalHandled: s.totalHandled,
+    avgHours: Number((s.totalHours / s.totalHandled).toFixed(2)),
+  }));
+
+  res.json(result);
+};
+
+export const governorStageDelayReport = async (req: AuthRequest, res: Response) => {
+  const governor = await prisma.internalUser.findUnique({
+    where: { id: req.user.id },
+  });
+
+  const logs = await prisma.stageLog.findMany({
+    where: {
+      approver: { stateId: governor?.stateId },
+      approvedAt: { not: null },
+    },
+  });
+
+  const stageStats: Record<number, number[]> = {};
+
+  logs.forEach(log => {
+    const hours =
+      (log.approvedAt!.getTime() - log.arrivedAt.getTime()) / 3600000;
+
+    if (!stageStats[log.stageNumber]) {
+      stageStats[log.stageNumber] = [];
+    }
+
+    stageStats[log.stageNumber].push(hours);
+  });
+
+  const report = Object.entries(stageStats).map(([stage, times]) => ({
+    stage: Number(stage),
+    avgHours:
+      times.reduce((a, b) => a + b, 0) / (times.length || 1),
+    totalHandled: times.length,
+  }));
+
+  res.json(report);
+};
+export const governorInboxBacklog = async (req: AuthRequest, res: Response) => {
+  const governor = await prisma.internalUser.findUnique({
+    where: { id: req.user.id },
+  });
+
+  const messages = await prisma.inboxMessage.findMany({
+    where: {
+      internalUser: { stateId: governor?.stateId },
+    },
+    include: {
+      internalUser: { select: { name: true } },
+    },
+  });
+
+  const now = Date.now();
+
+  const result = messages.map(msg => ({
+    approver: msg.internalUser.name,
+    cofOId: msg.cofOId,
+    hoursWaiting:
+      (now - msg.timestamp.getTime()) / 3600000,
+    status: msg.status,
+  }));
+
+  res.json(result);
+};
+
