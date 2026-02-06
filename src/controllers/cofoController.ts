@@ -538,7 +538,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
       );
       await prisma.cofOApplication.update({
         where: { id: cofOId },
-        data: { status: "IN_REVIEW" },
+        data: { status: "IN_REVIEW", currentReviewerId: stateWithGovernor.governor.id },
       });
 
       // notify governor
