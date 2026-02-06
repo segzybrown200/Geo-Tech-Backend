@@ -39,8 +39,10 @@ export type CofOApplicationMinAggregateOutputType = {
   userId: string | null
   landId: string | null
   status: $Enums.CofOStatus | null
+  plotNumber: string | null
   cofONumber: string | null
   signedAt: Date | null
+  certificateUrl: string | null
   createdAt: Date | null
   rejectedById: string | null
   approvedById: string | null
@@ -56,8 +58,10 @@ export type CofOApplicationMaxAggregateOutputType = {
   userId: string | null
   landId: string | null
   status: $Enums.CofOStatus | null
+  plotNumber: string | null
   cofONumber: string | null
   signedAt: Date | null
+  certificateUrl: string | null
   createdAt: Date | null
   rejectedById: string | null
   approvedById: string | null
@@ -73,8 +77,10 @@ export type CofOApplicationCountAggregateOutputType = {
   userId: number
   landId: number
   status: number
+  plotNumber: number
   cofONumber: number
   signedAt: number
+  certificateUrl: number
   createdAt: number
   rejectedById: number
   approvedById: number
@@ -100,8 +106,10 @@ export type CofOApplicationMinAggregateInputType = {
   userId?: true
   landId?: true
   status?: true
+  plotNumber?: true
   cofONumber?: true
   signedAt?: true
+  certificateUrl?: true
   createdAt?: true
   rejectedById?: true
   approvedById?: true
@@ -117,8 +125,10 @@ export type CofOApplicationMaxAggregateInputType = {
   userId?: true
   landId?: true
   status?: true
+  plotNumber?: true
   cofONumber?: true
   signedAt?: true
+  certificateUrl?: true
   createdAt?: true
   rejectedById?: true
   approvedById?: true
@@ -134,8 +144,10 @@ export type CofOApplicationCountAggregateInputType = {
   userId?: true
   landId?: true
   status?: true
+  plotNumber?: true
   cofONumber?: true
   signedAt?: true
+  certificateUrl?: true
   createdAt?: true
   rejectedById?: true
   approvedById?: true
@@ -238,8 +250,10 @@ export type CofOApplicationGroupByOutputType = {
   userId: string
   landId: string
   status: $Enums.CofOStatus
+  plotNumber: string | null
   cofONumber: string | null
   signedAt: Date | null
+  certificateUrl: string | null
   createdAt: Date
   rejectedById: string | null
   approvedById: string | null
@@ -278,8 +292,10 @@ export type CofOApplicationWhereInput = {
   userId?: Prisma.UuidFilter<"CofOApplication"> | string
   landId?: Prisma.UuidFilter<"CofOApplication"> | string
   status?: Prisma.EnumCofOStatusFilter<"CofOApplication"> | $Enums.CofOStatus
+  plotNumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   cofONumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   signedAt?: Prisma.DateTimeNullableFilter<"CofOApplication"> | Date | string | null
+  certificateUrl?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOApplication"> | Date | string
   rejectedById?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
   approvedById?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
@@ -307,8 +323,10 @@ export type CofOApplicationOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  plotNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   cofONumber?: Prisma.SortOrderInput | Prisma.SortOrder
   signedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  certificateUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   rejectedById?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedById?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -340,8 +358,10 @@ export type CofOApplicationWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.UuidFilter<"CofOApplication"> | string
   landId?: Prisma.UuidFilter<"CofOApplication"> | string
   status?: Prisma.EnumCofOStatusFilter<"CofOApplication"> | $Enums.CofOStatus
+  plotNumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   cofONumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   signedAt?: Prisma.DateTimeNullableFilter<"CofOApplication"> | Date | string | null
+  certificateUrl?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOApplication"> | Date | string
   rejectedById?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
   approvedById?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
@@ -368,8 +388,10 @@ export type CofOApplicationOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  plotNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   cofONumber?: Prisma.SortOrderInput | Prisma.SortOrder
   signedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  certificateUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   rejectedById?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedById?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -393,8 +415,10 @@ export type CofOApplicationScalarWhereWithAggregatesInput = {
   userId?: Prisma.UuidWithAggregatesFilter<"CofOApplication"> | string
   landId?: Prisma.UuidWithAggregatesFilter<"CofOApplication"> | string
   status?: Prisma.EnumCofOStatusWithAggregatesFilter<"CofOApplication"> | $Enums.CofOStatus
+  plotNumber?: Prisma.StringNullableWithAggregatesFilter<"CofOApplication"> | string | null
   cofONumber?: Prisma.StringNullableWithAggregatesFilter<"CofOApplication"> | string | null
   signedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CofOApplication"> | Date | string | null
+  certificateUrl?: Prisma.StringNullableWithAggregatesFilter<"CofOApplication"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CofOApplication"> | Date | string
   rejectedById?: Prisma.UuidNullableWithAggregatesFilter<"CofOApplication"> | string | null
   approvedById?: Prisma.UuidNullableWithAggregatesFilter<"CofOApplication"> | string | null
@@ -408,8 +432,10 @@ export type CofOApplicationScalarWhereWithAggregatesInput = {
 export type CofOApplicationCreateInput = {
   id?: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   revisionCount?: number
   governorSignatureUrl?: string | null
@@ -433,8 +459,10 @@ export type CofOApplicationUncheckedCreateInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -454,8 +482,10 @@ export type CofOApplicationUncheckedCreateInput = {
 export type CofOApplicationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -479,8 +509,10 @@ export type CofOApplicationUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -502,8 +534,10 @@ export type CofOApplicationCreateManyInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -517,8 +551,10 @@ export type CofOApplicationCreateManyInput = {
 export type CofOApplicationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -530,8 +566,10 @@ export type CofOApplicationUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -557,8 +595,10 @@ export type CofOApplicationCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  plotNumber?: Prisma.SortOrder
   cofONumber?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
+  certificateUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   rejectedById?: Prisma.SortOrder
   approvedById?: Prisma.SortOrder
@@ -578,8 +618,10 @@ export type CofOApplicationMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  plotNumber?: Prisma.SortOrder
   cofONumber?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
+  certificateUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   rejectedById?: Prisma.SortOrder
   approvedById?: Prisma.SortOrder
@@ -595,8 +637,10 @@ export type CofOApplicationMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  plotNumber?: Prisma.SortOrder
   cofONumber?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
+  certificateUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   rejectedById?: Prisma.SortOrder
   approvedById?: Prisma.SortOrder
@@ -974,8 +1018,10 @@ export type CofOApplicationUpdateOneRequiredWithoutApprovalAuditsNestedInput = {
 export type CofOApplicationCreateWithoutUserInput = {
   id?: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   revisionCount?: number
   governorSignatureUrl?: string | null
@@ -997,8 +1043,10 @@ export type CofOApplicationUncheckedCreateWithoutUserInput = {
   id?: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -1049,8 +1097,10 @@ export type CofOApplicationScalarWhereInput = {
   userId?: Prisma.UuidFilter<"CofOApplication"> | string
   landId?: Prisma.UuidFilter<"CofOApplication"> | string
   status?: Prisma.EnumCofOStatusFilter<"CofOApplication"> | $Enums.CofOStatus
+  plotNumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   cofONumber?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   signedAt?: Prisma.DateTimeNullableFilter<"CofOApplication"> | Date | string | null
+  certificateUrl?: Prisma.StringNullableFilter<"CofOApplication"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CofOApplication"> | Date | string
   rejectedById?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
   approvedById?: Prisma.UuidNullableFilter<"CofOApplication"> | string | null
@@ -1064,8 +1114,10 @@ export type CofOApplicationScalarWhereInput = {
 export type CofOApplicationCreateWithoutInternalUserInput = {
   id?: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   revisionCount?: number
   governorSignatureUrl?: string | null
@@ -1088,8 +1140,10 @@ export type CofOApplicationUncheckedCreateWithoutInternalUserInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -1118,8 +1172,10 @@ export type CofOApplicationCreateManyInternalUserInputEnvelope = {
 export type CofOApplicationCreateWithoutRejectedByInput = {
   id?: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   revisionCount?: number
   governorSignatureUrl?: string | null
@@ -1142,8 +1198,10 @@ export type CofOApplicationUncheckedCreateWithoutRejectedByInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   approvedById?: string | null
   revisionCount?: number
@@ -1172,8 +1230,10 @@ export type CofOApplicationCreateManyRejectedByInputEnvelope = {
 export type CofOApplicationCreateWithoutApprovedByInput = {
   id?: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   revisionCount?: number
   governorSignatureUrl?: string | null
@@ -1196,8 +1256,10 @@ export type CofOApplicationUncheckedCreateWithoutApprovedByInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   revisionCount?: number
@@ -1226,8 +1288,10 @@ export type CofOApplicationCreateManyApprovedByInputEnvelope = {
 export type CofOApplicationCreateWithoutCurrentReviewerInput = {
   id?: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   revisionCount?: number
   governorSignatureUrl?: string | null
@@ -1250,8 +1314,10 @@ export type CofOApplicationUncheckedCreateWithoutCurrentReviewerInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -1344,8 +1410,10 @@ export type CofOApplicationUpdateManyWithWhereWithoutCurrentReviewerInput = {
 export type CofOApplicationCreateWithoutLandInput = {
   id?: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   revisionCount?: number
   governorSignatureUrl?: string | null
@@ -1367,8 +1435,10 @@ export type CofOApplicationUncheckedCreateWithoutLandInput = {
   id?: string
   userId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -1414,8 +1484,10 @@ export type CofOApplicationUpdateManyWithWhereWithoutLandInput = {
 export type CofOApplicationCreateWithoutCofODocumentsInput = {
   id?: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   revisionCount?: number
   governorSignatureUrl?: string | null
@@ -1438,8 +1510,10 @@ export type CofOApplicationUncheckedCreateWithoutCofODocumentsInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -1474,8 +1548,10 @@ export type CofOApplicationUpdateToOneWithWhereWithoutCofODocumentsInput = {
 export type CofOApplicationUpdateWithoutCofODocumentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1498,8 +1574,10 @@ export type CofOApplicationUncheckedUpdateWithoutCofODocumentsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1518,8 +1596,10 @@ export type CofOApplicationUncheckedUpdateWithoutCofODocumentsInput = {
 export type CofOApplicationCreateWithoutPaymentsInput = {
   id?: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   revisionCount?: number
   governorSignatureUrl?: string | null
@@ -1542,8 +1622,10 @@ export type CofOApplicationUncheckedCreateWithoutPaymentsInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -1578,8 +1660,10 @@ export type CofOApplicationUpdateToOneWithWhereWithoutPaymentsInput = {
 export type CofOApplicationUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1602,8 +1686,10 @@ export type CofOApplicationUncheckedUpdateWithoutPaymentsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1622,8 +1708,10 @@ export type CofOApplicationUncheckedUpdateWithoutPaymentsInput = {
 export type CofOApplicationCreateWithoutLogsInput = {
   id?: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   revisionCount?: number
   governorSignatureUrl?: string | null
@@ -1646,8 +1734,10 @@ export type CofOApplicationUncheckedCreateWithoutLogsInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -1682,8 +1772,10 @@ export type CofOApplicationUpdateToOneWithWhereWithoutLogsInput = {
 export type CofOApplicationUpdateWithoutLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1706,8 +1798,10 @@ export type CofOApplicationUncheckedUpdateWithoutLogsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1726,8 +1820,10 @@ export type CofOApplicationUncheckedUpdateWithoutLogsInput = {
 export type CofOApplicationCreateWithoutInboxMessageInput = {
   id?: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   revisionCount?: number
   governorSignatureUrl?: string | null
@@ -1750,8 +1846,10 @@ export type CofOApplicationUncheckedCreateWithoutInboxMessageInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -1786,8 +1884,10 @@ export type CofOApplicationUpdateToOneWithWhereWithoutInboxMessageInput = {
 export type CofOApplicationUpdateWithoutInboxMessageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1810,8 +1910,10 @@ export type CofOApplicationUncheckedUpdateWithoutInboxMessageInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1830,8 +1932,10 @@ export type CofOApplicationUncheckedUpdateWithoutInboxMessageInput = {
 export type CofOApplicationCreateWithoutCofOAuditLogsInput = {
   id?: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   revisionCount?: number
   governorSignatureUrl?: string | null
@@ -1854,8 +1958,10 @@ export type CofOApplicationUncheckedCreateWithoutCofOAuditLogsInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -1890,8 +1996,10 @@ export type CofOApplicationUpdateToOneWithWhereWithoutCofOAuditLogsInput = {
 export type CofOApplicationUpdateWithoutCofOAuditLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1914,8 +2022,10 @@ export type CofOApplicationUncheckedUpdateWithoutCofOAuditLogsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1934,8 +2044,10 @@ export type CofOApplicationUncheckedUpdateWithoutCofOAuditLogsInput = {
 export type CofOApplicationCreateWithoutApprovalAuditsInput = {
   id?: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   revisionCount?: number
   governorSignatureUrl?: string | null
@@ -1958,8 +2070,10 @@ export type CofOApplicationUncheckedCreateWithoutApprovalAuditsInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -1994,8 +2108,10 @@ export type CofOApplicationUpdateToOneWithWhereWithoutApprovalAuditsInput = {
 export type CofOApplicationUpdateWithoutApprovalAuditsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2018,8 +2134,10 @@ export type CofOApplicationUncheckedUpdateWithoutApprovalAuditsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2039,8 +2157,10 @@ export type CofOApplicationCreateManyUserInput = {
   id?: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -2054,8 +2174,10 @@ export type CofOApplicationCreateManyUserInput = {
 export type CofOApplicationUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2077,8 +2199,10 @@ export type CofOApplicationUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2099,8 +2223,10 @@ export type CofOApplicationUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2116,8 +2242,10 @@ export type CofOApplicationCreateManyInternalUserInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -2132,8 +2260,10 @@ export type CofOApplicationCreateManyRejectedByInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   approvedById?: string | null
   revisionCount?: number
@@ -2148,8 +2278,10 @@ export type CofOApplicationCreateManyApprovedByInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   revisionCount?: number
@@ -2164,8 +2296,10 @@ export type CofOApplicationCreateManyCurrentReviewerInput = {
   userId: string
   landId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -2178,8 +2312,10 @@ export type CofOApplicationCreateManyCurrentReviewerInput = {
 export type CofOApplicationUpdateWithoutInternalUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2202,8 +2338,10 @@ export type CofOApplicationUncheckedUpdateWithoutInternalUserInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2224,8 +2362,10 @@ export type CofOApplicationUncheckedUpdateManyWithoutInternalUserInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2238,8 +2378,10 @@ export type CofOApplicationUncheckedUpdateManyWithoutInternalUserInput = {
 export type CofOApplicationUpdateWithoutRejectedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2262,8 +2404,10 @@ export type CofOApplicationUncheckedUpdateWithoutRejectedByInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2284,8 +2428,10 @@ export type CofOApplicationUncheckedUpdateManyWithoutRejectedByInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2298,8 +2444,10 @@ export type CofOApplicationUncheckedUpdateManyWithoutRejectedByInput = {
 export type CofOApplicationUpdateWithoutApprovedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2322,8 +2470,10 @@ export type CofOApplicationUncheckedUpdateWithoutApprovedByInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2344,8 +2494,10 @@ export type CofOApplicationUncheckedUpdateManyWithoutApprovedByInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2358,8 +2510,10 @@ export type CofOApplicationUncheckedUpdateManyWithoutApprovedByInput = {
 export type CofOApplicationUpdateWithoutCurrentReviewerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2382,8 +2536,10 @@ export type CofOApplicationUncheckedUpdateWithoutCurrentReviewerInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2404,8 +2560,10 @@ export type CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2419,8 +2577,10 @@ export type CofOApplicationCreateManyLandInput = {
   id?: string
   userId: string
   status?: $Enums.CofOStatus
+  plotNumber?: string | null
   cofONumber?: string | null
   signedAt?: Date | string | null
+  certificateUrl?: string | null
   createdAt?: Date | string
   rejectedById?: string | null
   approvedById?: string | null
@@ -2434,8 +2594,10 @@ export type CofOApplicationCreateManyLandInput = {
 export type CofOApplicationUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   governorSignatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2457,8 +2619,10 @@ export type CofOApplicationUncheckedUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2479,8 +2643,10 @@ export type CofOApplicationUncheckedUpdateManyWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  certificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejectedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2572,8 +2738,10 @@ export type CofOApplicationSelect<ExtArgs extends runtime.Types.Extensions.Inter
   userId?: boolean
   landId?: boolean
   status?: boolean
+  plotNumber?: boolean
   cofONumber?: boolean
   signedAt?: boolean
+  certificateUrl?: boolean
   createdAt?: boolean
   rejectedById?: boolean
   approvedById?: boolean
@@ -2602,8 +2770,10 @@ export type CofOApplicationSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   userId?: boolean
   landId?: boolean
   status?: boolean
+  plotNumber?: boolean
   cofONumber?: boolean
   signedAt?: boolean
+  certificateUrl?: boolean
   createdAt?: boolean
   rejectedById?: boolean
   approvedById?: boolean
@@ -2625,8 +2795,10 @@ export type CofOApplicationSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   userId?: boolean
   landId?: boolean
   status?: boolean
+  plotNumber?: boolean
   cofONumber?: boolean
   signedAt?: boolean
+  certificateUrl?: boolean
   createdAt?: boolean
   rejectedById?: boolean
   approvedById?: boolean
@@ -2648,8 +2820,10 @@ export type CofOApplicationSelectScalar = {
   userId?: boolean
   landId?: boolean
   status?: boolean
+  plotNumber?: boolean
   cofONumber?: boolean
   signedAt?: boolean
+  certificateUrl?: boolean
   createdAt?: boolean
   rejectedById?: boolean
   approvedById?: boolean
@@ -2660,7 +2834,7 @@ export type CofOApplicationSelectScalar = {
   internalUserId?: boolean
 }
 
-export type CofOApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "landId" | "status" | "cofONumber" | "signedAt" | "createdAt" | "rejectedById" | "approvedById" | "revisionCount" | "currentReviewerId" | "governorSignatureUrl" | "applicationNumber" | "internalUserId", ExtArgs["result"]["cofOApplication"]>
+export type CofOApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "landId" | "status" | "plotNumber" | "cofONumber" | "signedAt" | "certificateUrl" | "createdAt" | "rejectedById" | "approvedById" | "revisionCount" | "currentReviewerId" | "governorSignatureUrl" | "applicationNumber" | "internalUserId", ExtArgs["result"]["cofOApplication"]>
 export type CofOApplicationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   logs?: boolean | Prisma.CofOApplication$logsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -2714,8 +2888,10 @@ export type $CofOApplicationPayload<ExtArgs extends runtime.Types.Extensions.Int
     userId: string
     landId: string
     status: $Enums.CofOStatus
+    plotNumber: string | null
     cofONumber: string | null
     signedAt: Date | null
+    certificateUrl: string | null
     createdAt: Date
     rejectedById: string | null
     approvedById: string | null
@@ -3163,8 +3339,10 @@ export interface CofOApplicationFieldRefs {
   readonly userId: Prisma.FieldRef<"CofOApplication", 'String'>
   readonly landId: Prisma.FieldRef<"CofOApplication", 'String'>
   readonly status: Prisma.FieldRef<"CofOApplication", 'CofOStatus'>
+  readonly plotNumber: Prisma.FieldRef<"CofOApplication", 'String'>
   readonly cofONumber: Prisma.FieldRef<"CofOApplication", 'String'>
   readonly signedAt: Prisma.FieldRef<"CofOApplication", 'DateTime'>
+  readonly certificateUrl: Prisma.FieldRef<"CofOApplication", 'String'>
   readonly createdAt: Prisma.FieldRef<"CofOApplication", 'DateTime'>
   readonly rejectedById: Prisma.FieldRef<"CofOApplication", 'String'>
   readonly approvedById: Prisma.FieldRef<"CofOApplication", 'String'>

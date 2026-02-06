@@ -51,6 +51,7 @@ export type LandRegistrationMinAggregateOutputType = {
   purpose: string | null
   titleType: string | null
   address: string | null
+  plotNumber: string | null
   createdAt: Date | null
 }
 
@@ -67,6 +68,7 @@ export type LandRegistrationMaxAggregateOutputType = {
   purpose: string | null
   titleType: string | null
   address: string | null
+  plotNumber: string | null
   createdAt: Date | null
 }
 
@@ -83,6 +85,7 @@ export type LandRegistrationCountAggregateOutputType = {
   purpose: number
   titleType: number
   address: number
+  plotNumber: number
   createdAt: number
   _all: number
 }
@@ -113,6 +116,7 @@ export type LandRegistrationMinAggregateInputType = {
   purpose?: true
   titleType?: true
   address?: true
+  plotNumber?: true
   createdAt?: true
 }
 
@@ -129,6 +133,7 @@ export type LandRegistrationMaxAggregateInputType = {
   purpose?: true
   titleType?: true
   address?: true
+  plotNumber?: true
   createdAt?: true
 }
 
@@ -145,6 +150,7 @@ export type LandRegistrationCountAggregateInputType = {
   purpose?: true
   titleType?: true
   address?: true
+  plotNumber?: true
   createdAt?: true
   _all?: true
 }
@@ -248,6 +254,7 @@ export type LandRegistrationGroupByOutputType = {
   purpose: string
   titleType: string
   address: string | null
+  plotNumber: string | null
   createdAt: Date
   _count: LandRegistrationCountAggregateOutputType | null
   _avg: LandRegistrationAvgAggregateOutputType | null
@@ -287,6 +294,7 @@ export type LandRegistrationWhereInput = {
   purpose?: Prisma.StringFilter<"LandRegistration"> | string
   titleType?: Prisma.StringFilter<"LandRegistration"> | string
   address?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  plotNumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   state?: Prisma.XOR<Prisma.StateScalarRelationFilter, Prisma.StateWhereInput>
@@ -310,6 +318,7 @@ export type LandRegistrationOrderByWithRelationInput = {
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
+  plotNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
   state?: Prisma.StateOrderByWithRelationInput
@@ -336,6 +345,7 @@ export type LandRegistrationWhereUniqueInput = Prisma.AtLeast<{
   purpose?: Prisma.StringFilter<"LandRegistration"> | string
   titleType?: Prisma.StringFilter<"LandRegistration"> | string
   address?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  plotNumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   state?: Prisma.XOR<Prisma.StateScalarRelationFilter, Prisma.StateWhereInput>
@@ -359,6 +369,7 @@ export type LandRegistrationOrderByWithAggregationInput = {
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
+  plotNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.LandRegistrationCountOrderByAggregateInput
   _avg?: Prisma.LandRegistrationAvgOrderByAggregateInput
@@ -383,6 +394,7 @@ export type LandRegistrationScalarWhereWithAggregatesInput = {
   purpose?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
   titleType?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
   address?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
+  plotNumber?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LandRegistration"> | Date | string
 }
 
@@ -397,6 +409,7 @@ export type LandRegistrationCreateInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   state: Prisma.StateCreateNestedOneWithoutLandsInput
@@ -420,6 +433,7 @@ export type LandRegistrationUncheckedCreateInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
@@ -439,6 +453,7 @@ export type LandRegistrationUpdateInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -462,6 +477,7 @@ export type LandRegistrationUncheckedUpdateInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -483,6 +499,7 @@ export type LandRegistrationCreateManyInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
 }
 
@@ -497,6 +514,7 @@ export type LandRegistrationUpdateManyMutationInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -513,6 +531,7 @@ export type LandRegistrationUncheckedUpdateManyInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -539,6 +558,7 @@ export type LandRegistrationCountOrderByAggregateInput = {
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  plotNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -561,6 +581,7 @@ export type LandRegistrationMaxOrderByAggregateInput = {
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  plotNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -577,6 +598,7 @@ export type LandRegistrationMinOrderByAggregateInput = {
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  plotNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -768,6 +790,7 @@ export type LandRegistrationCreateWithoutOwnerInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   state: Prisma.StateCreateNestedOneWithoutLandsInput
   documents?: Prisma.LandDocumentCreateNestedManyWithoutLandInput
@@ -789,6 +812,7 @@ export type LandRegistrationUncheckedCreateWithoutOwnerInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
@@ -839,6 +863,7 @@ export type LandRegistrationScalarWhereInput = {
   purpose?: Prisma.StringFilter<"LandRegistration"> | string
   titleType?: Prisma.StringFilter<"LandRegistration"> | string
   address?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  plotNumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
 }
 
@@ -853,6 +878,7 @@ export type LandRegistrationCreateWithoutDocumentsInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   state: Prisma.StateCreateNestedOneWithoutLandsInput
@@ -875,6 +901,7 @@ export type LandRegistrationUncheckedCreateWithoutDocumentsInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
   CofOApplication?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutLandInput
@@ -909,6 +936,7 @@ export type LandRegistrationUpdateWithoutDocumentsInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -931,6 +959,7 @@ export type LandRegistrationUncheckedUpdateWithoutDocumentsInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
@@ -949,6 +978,7 @@ export type LandRegistrationCreateWithoutStateInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   documents?: Prisma.LandDocumentCreateNestedManyWithoutLandInput
@@ -970,6 +1000,7 @@ export type LandRegistrationUncheckedCreateWithoutStateInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
@@ -1015,6 +1046,7 @@ export type LandRegistrationCreateWithoutOwnershipTransferInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   state: Prisma.StateCreateNestedOneWithoutLandsInput
@@ -1037,6 +1069,7 @@ export type LandRegistrationUncheckedCreateWithoutOwnershipTransferInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
@@ -1071,6 +1104,7 @@ export type LandRegistrationUpdateWithoutOwnershipTransferInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1093,6 +1127,7 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipTransferInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1111,6 +1146,7 @@ export type LandRegistrationCreateWithoutOwnershipLogsInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   state: Prisma.StateCreateNestedOneWithoutLandsInput
@@ -1133,6 +1169,7 @@ export type LandRegistrationUncheckedCreateWithoutOwnershipLogsInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   CofOApplication?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutLandInput
@@ -1167,6 +1204,7 @@ export type LandRegistrationUpdateWithoutOwnershipLogsInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1189,6 +1227,7 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipLogsInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
@@ -1207,6 +1246,7 @@ export type LandRegistrationCreateWithoutCofOApplicationInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   state: Prisma.StateCreateNestedOneWithoutLandsInput
@@ -1229,6 +1269,7 @@ export type LandRegistrationUncheckedCreateWithoutCofOApplicationInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
@@ -1263,6 +1304,7 @@ export type LandRegistrationUpdateWithoutCofOApplicationInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1285,6 +1327,7 @@ export type LandRegistrationUncheckedUpdateWithoutCofOApplicationInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1303,6 +1346,7 @@ export type LandRegistrationCreateWithoutPaymentsInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutLandRegistrationInput
   state: Prisma.StateCreateNestedOneWithoutLandsInput
@@ -1325,6 +1369,7 @@ export type LandRegistrationUncheckedCreateWithoutPaymentsInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
   documents?: Prisma.LandDocumentUncheckedCreateNestedManyWithoutLandInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput
@@ -1359,6 +1404,7 @@ export type LandRegistrationUpdateWithoutPaymentsInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1381,6 +1427,7 @@ export type LandRegistrationUncheckedUpdateWithoutPaymentsInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1400,6 +1447,7 @@ export type LandRegistrationCreateManyOwnerInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
 }
 
@@ -1414,6 +1462,7 @@ export type LandRegistrationUpdateWithoutOwnerInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
@@ -1435,6 +1484,7 @@ export type LandRegistrationUncheckedUpdateWithoutOwnerInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1455,6 +1505,7 @@ export type LandRegistrationUncheckedUpdateManyWithoutOwnerInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1470,6 +1521,7 @@ export type LandRegistrationCreateManyStateInput = {
   purpose: string
   titleType: string
   address?: string | null
+  plotNumber?: string | null
   createdAt?: Date | string
 }
 
@@ -1484,6 +1536,7 @@ export type LandRegistrationUpdateWithoutStateInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
@@ -1505,6 +1558,7 @@ export type LandRegistrationUncheckedUpdateWithoutStateInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1525,6 +1579,7 @@ export type LandRegistrationUncheckedUpdateManyWithoutStateInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1608,6 +1663,7 @@ export type LandRegistrationSelect<ExtArgs extends runtime.Types.Extensions.Inte
   purpose?: boolean
   titleType?: boolean
   address?: boolean
+  plotNumber?: boolean
   createdAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
@@ -1632,6 +1688,7 @@ export type LandRegistrationSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   purpose?: boolean
   titleType?: boolean
   address?: boolean
+  plotNumber?: boolean
   createdAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
@@ -1650,6 +1707,7 @@ export type LandRegistrationSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   purpose?: boolean
   titleType?: boolean
   address?: boolean
+  plotNumber?: boolean
   createdAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
@@ -1668,10 +1726,11 @@ export type LandRegistrationSelectScalar = {
   purpose?: boolean
   titleType?: boolean
   address?: boolean
+  plotNumber?: boolean
   createdAt?: boolean
 }
 
-export type LandRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "ownerName" | "latitude" | "longitude" | "squareMeters" | "landStatus" | "ownershipType" | "stateId" | "purpose" | "titleType" | "address" | "createdAt", ExtArgs["result"]["landRegistration"]>
+export type LandRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "ownerName" | "latitude" | "longitude" | "squareMeters" | "landStatus" | "ownershipType" | "stateId" | "purpose" | "titleType" | "address" | "plotNumber" | "createdAt", ExtArgs["result"]["landRegistration"]>
 export type LandRegistrationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
@@ -1715,6 +1774,7 @@ export type $LandRegistrationPayload<ExtArgs extends runtime.Types.Extensions.In
     purpose: string
     titleType: string
     address: string | null
+    plotNumber: string | null
     createdAt: Date
   }, ExtArgs["result"]["landRegistration"]>
   composites: {}
@@ -2158,6 +2218,7 @@ export interface LandRegistrationFieldRefs {
   readonly purpose: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly titleType: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly address: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly plotNumber: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly createdAt: Prisma.FieldRef<"LandRegistration", 'DateTime'>
 }
     

@@ -2021,6 +2021,7 @@ export const LandRegistrationScalarFieldEnum = {
   purpose: 'purpose',
   titleType: 'titleType',
   address: 'address',
+  plotNumber: 'plotNumber',
   createdAt: 'createdAt'
 } as const
 
@@ -2107,8 +2108,10 @@ export const CofOApplicationScalarFieldEnum = {
   userId: 'userId',
   landId: 'landId',
   status: 'status',
+  plotNumber: 'plotNumber',
   cofONumber: 'cofONumber',
   signedAt: 'signedAt',
+  certificateUrl: 'certificateUrl',
   createdAt: 'createdAt',
   rejectedById: 'rejectedById',
   approvedById: 'approvedById',

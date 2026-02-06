@@ -133,6 +133,7 @@ model LandRegistration {
   purpose           String
   titleType         String
   address           String?
+  plotNumber        String?
   documents         LandDocument[]
   ownershipLogs     OwnershipHistory[]
   createdAt         DateTime                 @default(now())
@@ -218,9 +219,11 @@ model CofOApplication {
   userId String     @db.Uuid
   landId String     @db.Uuid
   status CofOStatus @default(DRAFT)
+  plotNumber           String? // new
 
   cofONumber           String? // new
   signedAt             DateTime? // new
+  certificateUrl       String? // Cloudinary URL for the generated PDF certificate
   logs                 StageLog[]
   createdAt            DateTime         @default(now())
   user                 User             @relation(fields: [userId], references: [id])

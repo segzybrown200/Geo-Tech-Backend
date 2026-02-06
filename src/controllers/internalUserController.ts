@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import { startOfMonth, endOfMonth, subMonths } from "date-fns";
 import { internalUserSchema } from "../utils/zodSchemas";
 import { uploadToCloudinary } from "../services/uploadService";
-import fs from "fs";
-import path from "path";
 import crypto from "crypto";
 import { sendEmail } from "../services/emailSevices";
 import jwt from "jsonwebtoken";
@@ -165,8 +163,11 @@ export const uploadSignature = async (req: any, res: Response) => {
   }
 
   try {
-    const uploaded = await uploadToCloudinary(req.file.path);
-    fs.unlinkSync(path.resolve(req.file.path));
+    const uploaded = await uploadToCloudinary(
+      req.file.buffer,
+      req.file.originalname,
+      req.file.mimetype
+    );
 
     await prisma.internalUser.update({
       where: { id: userId },
@@ -197,8 +198,11 @@ export const updateSignature = async (req: any, res: Response) => {
   }
 
   try {
-    const uploaded = await uploadToCloudinary(req.file.path);
-    fs.unlinkSync(path.resolve(req.file.path));
+    const uploaded = await uploadToCloudinary(
+      req.file.buffer,
+      req.file.originalname,
+      req.file.mimetype
+    );
 
     const updated = await prisma.internalUser.update({
       where: { id: userId },

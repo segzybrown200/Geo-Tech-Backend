@@ -4,6 +4,7 @@ import { uploadToCloudinary, validateDocumentFile } from "../services/uploadServ
 import { AuthRequest } from "../middlewares/authMiddleware";
 import { cofoBatchSignSchema, cofoReviewSchema } from "../utils/zodSchemas";
 import { sendEmail } from "../services/emailSevices";
+import { generateCofOCertificate } from "../utils/generateCofOCertificate";
 
 export const applyForCofO = async (req: AuthRequest, res: Response) => {
   try {
@@ -411,6 +412,12 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
         .status(403)
         .json({ message: "You are not an approver for this state" });
     }
+    // check if governor role has a signature on file (optional, can be used for signing the PDF certificate later)
+      if (internalReviewer.role === "GOVERNOR" && !internalReviewer.signatureUrl) {
+        return res.status(400).json({
+          message: "Governor signature not found. Please upload your signature before approving.",
+        });
+      }
 
     // 3) Check inbox: ensure there is a pending inbox message for this reviewer for this CofO
     const inbox = await prisma.inboxMessage.findFirst({
@@ -452,20 +459,6 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
             rejectedById: id,
             currentReviewerId: id,
           },
-        });
-
-        await tx.stageLog.create({
-          data: {
-            cofOId,
-            internalUserId: id,
-            stageNumber: cofO.logs.length + 1,
-            status: "REJECTED",
-            message,
-          },
-        });
-        await tx.inboxMessage.update({
-          where: { id: inbox.id },
-          data: { status: "REJECTED" },
         });
       });
 
@@ -568,27 +561,107 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
     const cofONumber = `COFO-${new Date().getFullYear()}-${cofOId
       .slice(0, 8)
       .toUpperCase()}`;
-    await prisma.cofOApplication.update({
+    
+    // Fetch the updated CofO with all necessary data for PDF generation
+    const updatedCofO = await prisma.cofOApplication.findUnique({
       where: { id: cofOId },
-      data: {
-        /* store cofONumber or signature metadata if you have fields */
-        cofONumber,
+      include: {
+        user: true,
+        land: {
+          include: {
+            state: true,
+          },
+        },
+        approvedBy: true,
       },
     });
 
+    let certificateUrl: string | null = null;
+    
+    // Generate PDF certificate automatically
+    try {
+      if (updatedCofO) {
+        const certificateData = {
+          applicationNumber: updatedCofO.applicationNumber || updatedCofO.id,
+          cofONumber: cofONumber,
+          user: {
+            fullName: updatedCofO.user.fullName || "Unknown",
+            email: updatedCofO.user.email,
+            phone: updatedCofO.user.phone || undefined,
+          },
+          land: {
+            address: updatedCofO.land.address || "Not specified",
+            plotNumber: updatedCofO.land.plotNumber || "Not specified",
+            state: {
+              name: updatedCofO.land.state.name,
+            },
+            squareMeters: updatedCofO.land.squareMeters,
+            ownershipType: updatedCofO.land.ownershipType,
+            purpose: updatedCofO.land.purpose,
+            latitude: updatedCofO.land.latitude,
+            longitude: updatedCofO.land.longitude,
+          },
+          signedAt: new Date(),
+          governorSignatureUrl: cofO.governorSignatureUrl || undefined,
+          approvedBy: internalReviewer ? {
+            name: internalReviewer.name,
+            position: "Governor",
+          } : undefined,
+        };
+
+        certificateUrl = await generateCofOCertificate(certificateData);
+      }
+    } catch (e) {
+      console.warn("Certificate generation failed", e);
+    }
+
+    // Update cofO with number
+    await prisma.cofOApplication.update({
+      where: { id: cofOId },
+      data: {
+        cofONumber,
+        // certificateUrl will be stored after schema migration
+        certificateUrl,
+        plotNumber: req.body.plotNumber || null,
+      },
+    });
+
+    await prisma.cofOAuditLog.create({
+      data: {
+        cofOId,
+        action: "FINALIZED",
+        performedById: id,
+        performedByRole: "GOVERNOR",
+      },
+    });
+
+    await prisma.inboxMessage.updateMany({
+
+      where: { cofOId, status: "PENDING" },
+      data: { status: "COMPLETED" },
+    });
+    await prisma.landRegistration.update({
+      where: { id: cofO.landId },
+      data: { plotNumber: req.body.plotNumber || null },
+    });
     // Notify applicant of final approval
     try {
       await sendEmail(
         cofO.user.email,
         "Your C of O application has been approved",
         `<p>Congratulations — your application ${cofO.id} has been APPROVED and finalized.</p>
-         <p>CofO Number: ${cofONumber}</p>`,
+         <p>CofO Number: ${cofONumber}</p>
+         ${certificateUrl ? `<p><a href="${certificateUrl}">Download your Certificate of Occupancy</a></p>` : ""}`,
       );
     } catch (e) {
       console.warn("notify applicant fail", e);
     }
 
-    return res.json({ message: "Application fully approved and finalized" });
+    return res.json({ 
+      message: "Application fully approved and finalized",
+      cofONumber,
+      certificateUrl: certificateUrl || null,
+    });
   } catch (err) {
     console.error("Review failed", err);
     res.status(500).json({ message: "Review failed", error: err });
@@ -618,7 +691,15 @@ export const batchSignCofOs = async (req: AuthRequest, res: Response) => {
         id: { in: ids },
         status: "IN_REVIEW",
       },
-      include: { land: true, user: true, logs: true },
+      include: { 
+        land: {
+          include: {
+            state: true,
+          },
+        }, 
+        user: true, 
+        logs: true 
+      },
     });
 
     // ensure all requested cofOs belong to the governor's state
@@ -676,18 +757,62 @@ export const batchSignCofOs = async (req: AuthRequest, res: Response) => {
         data: { status: "COMPLETED" },
       });
 
+      // Generate PDF certificate for the approved CofO
+      let certificateUrl: string | null = null;
+      try {
+        const certificateData = {
+          applicationNumber: cofO.applicationNumber || cofO.id,
+          cofONumber: cofONumber,
+          user: {
+            fullName: cofO.user.fullName || "Unknown",
+            email: cofO.user.email,
+            phone: cofO.user.phone || undefined,
+          },
+          land: {
+            address: cofO.land.address || "Not specified",
+            state: {
+              name: cofO.land.state.name,
+            },
+            squareMeters: cofO.land.squareMeters,
+            ownershipType: cofO.land.ownershipType,
+            purpose: cofO.land.purpose,
+            latitude: cofO.land.latitude,
+            longitude: cofO.land.longitude,
+          },
+          signedAt: new Date(),
+          governorSignatureUrl: effectiveSignatureUrl,
+          approvedBy: internal ? {
+            name: internal.name,
+            position: String(internal.position || "Governor"),
+          } : undefined,
+        };
+
+        certificateUrl = await generateCofOCertificate(certificateData);
+        
+        // Certificate URL will be stored after schema migration
+        // await prisma.cofOApplication.update({
+        //   where: { id: cofO.id },
+        //   data: {
+        //     certificateUrl,
+        //   },
+        // });
+      } catch (e) {
+        console.warn(`Certificate generation failed for ${cofO.id}:`, e);
+      }
+
       // notify applicant
       try {
         await sendEmail(
           cofO.user.email,
           "Your CofO has been signed",
-          `<p>Your CofO ${cofO.id} is now approved. CofO Number: ${cofONumber}</p>`,
+          `<p>Your CofO ${cofO.id} is now approved. CofO Number: ${cofONumber}</p>
+           ${certificateUrl ? `<p><a href="${certificateUrl}">Download your Certificate of Occupancy</a></p>` : ""}`,
         );
       } catch (e) {
         console.warn("email fail", e);
       }
 
-      results.push({ id: cofO.id, cofONumber });
+      results.push({ id: cofO.id, cofONumber, certificateUrl });
     }
 
     return res.json({ message: "Batch sign complete", results });
