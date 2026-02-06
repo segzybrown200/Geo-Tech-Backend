@@ -736,3 +736,51 @@ export const getMyCofOApplications = async (req: AuthRequest, res: Response) => 
 
   res.json(applications);
 };
+
+// List CofOs for governor of their state
+export const listCofOsForGovernor = async (req: any, res: Response) => {
+  try {
+    const user = req.user;
+    const internal = await prisma.internalUser.findUnique({ where: { id: user.id } });
+    if (!internal || internal.role !== "GOVERNOR")
+      return res.status(403).json({ message: "Only governors can access this resource" });
+
+    const cofOs = await prisma.cofOApplication.findMany({
+      where: {
+        land: { stateId: internal.stateId as string },
+        status: { in: ["IN_REVIEW", "RESUBMITTED"] },
+      },
+      orderBy: { createdAt: "desc" },
+      include: { land: true, user: true, logs: true, cofODocuments: true },
+    });
+
+    return res.json({ results: cofOs });
+  } catch (err) {
+    console.error("listCofOsForGovernor failed", err);
+    return res.status(500).json({ message: "Failed to fetch CofOs", error: err });
+  }
+};
+
+// Get one CofO for governor ensuring it belongs to governor's state
+export const getCofOForGovernor = async (req: any, res: Response) => {
+  try {
+    const { cofOId } = req.params;
+    const user = req.user;
+    const internal = await prisma.internalUser.findUnique({ where: { id: user.id } });
+    if (!internal || internal.role !== "GOVERNOR")
+      return res.status(403).json({ message: "Only governors can access this resource" });
+
+    const cofO = await prisma.cofOApplication.findUnique({
+      where: { id: cofOId },
+      include: { land: true, user: true, logs: true, cofODocuments: true, currentReviewer: true },
+    });
+    if (!cofO) return res.status(404).json({ message: "CofO application not found" });
+    if (cofO.land.stateId !== internal.stateId)
+      return res.status(403).json({ message: "This CofO does not belong to your state" });
+
+    return res.json({ cofO });
+  } catch (err) {
+    console.error("getCofOForGovernor failed", err);
+    return res.status(500).json({ message: "Failed to fetch CofO", error: err });
+  }
+};
