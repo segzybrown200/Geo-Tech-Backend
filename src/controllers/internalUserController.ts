@@ -688,14 +688,30 @@ export const approveDocumentForCofO = async (
   const reviewerId = req.user.id;
   const { status } = req.body;
   try {
+
+    const reviewer = await prisma.internalUser.findUnique({
+      where: { id: reviewerId },
+    });
+    if (!reviewer) {
+      return res.status(403).json({ message: "Not an internal user" });
+    }
+
+
     const document = await prisma.cofODocument.findUnique({
       where: {
         id: documentId,
-        inboxMessage: {
-          internalUser: { id: reviewerId },
-        },
       },
     });
+
+
+
+    const inboxMessage = await prisma.inboxMessage.findFirst({
+      where: { cofOId: document?.cofOId, receiverId: reviewer.id },
+    });
+
+    if(!inboxMessage){
+      return res.status(403).json({ message: "No pending task found for this document" });
+    }
 
     if (!document) {
       return res.status(401).json({
@@ -710,6 +726,7 @@ export const approveDocumentForCofO = async (
         },
         data: {
           status: "REJECTED",
+          inboxMessageId:inboxMessage?.id ,
         },
       });
 
@@ -724,6 +741,7 @@ export const approveDocumentForCofO = async (
       },
       data: {
         status: "APPROVED",
+        inboxMessageId:inboxMessage?.id,
       },  
     });
 
