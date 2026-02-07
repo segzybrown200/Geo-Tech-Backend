@@ -55,14 +55,21 @@ export const initiateTransfer = async (req:AuthRequest, res:Response) => {
       });
 
       if (type === "email") {
-        await sendEmail(
-          value,
-          "Land Ownership Transfer Authorization",
-          `<p>Hello,</p>
-          <p>A request was made to transfer land ownership (ID: <b>${landId}</b>).</p>
-          <p>Your authorization code is: <b>${code}</b></p>
-          <p>This code expires in 15 minutes.</p>`
-        );
+        const html = `
+          <div style="font-family: Arial, sans-serif; max-width:680px;margin:auto;border:1px solid #eee;border-radius:8px;">
+            <div style="background:#004CFF;color:#fff;padding:16px;text-align:center;"><h3>Land Ownership Transfer — Authorization Code</h3></div>
+            <div style="padding:16px;color:#222;line-height:1.5;">
+              <p>Dear Recipient,</p>
+              <p>A request has been initiated to transfer ownership of the land record with ID <strong>${landId}</strong>. To authorize and validate this transfer, please use the code provided below.</p>
+              <p style="font-size:18px;font-weight:700;">Authorization Code: ${code}</p>
+              <p>This code will expire in <strong>15 minutes</strong>. Do not share this code with anyone. If you did not expect this request, please contact GeoTech Support immediately and do not use the code.</p>
+              <p>To proceed, enter the code in the transfer verification page in the GeoTech portal. If you experience any difficulty, contact support for assistance.</p>
+              <p>Regards,<br/>GeoTech Security Team</p>
+            </div>
+          </div>
+        `;
+
+        await sendEmail(value, "Land Ownership Transfer Authorization", html);
       } else {
         // ⚠️ Replace this with actual SMS provider later (Twilio, Termii, etc.)
         console.log(`📱 SMS to ${value}: Your GeoTech transfer code is ${code}`);

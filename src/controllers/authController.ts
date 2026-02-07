@@ -44,25 +44,27 @@ export const register = async (req: Request, res: Response) => {
       data: { email, token, expiresAt },
     });
     const html = `
-  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
-    <div style="background: #004CFF; color: #fff; padding: 20px; text-align: center;">
-      <h2>GeoTech Account Verification</h2>
+  <div style="font-family: Arial, sans-serif; max-width: 680px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+    <div style="background: #004CFF; color: #fff; padding: 24px; text-align: center;">
+      <h2>GeoTech Account Verification — Action Required</h2>
     </div>
-    <div style="padding: 20px; color: #333;">
-      <p>Hi there,</p>
-      <p>Thanks for registering with <strong>GeoTech</strong>. To finish setting up your account, please verify your email address.</p>
-      <div style="text-align: center; margin: 30px 0;">
+    <div style="padding: 22px; color: #222; line-height: 1.5;">
+      <p>Dear Applicant,</p>
+      <p>Thank you for registering an account with GeoTech. To ensure the security and proper activation of your account, please confirm your email address by following the verification link below. This verifies that you have access to the email address provided and completes the first step of the registration process.</p>
+      <div style="text-align: center; margin: 28px 0;">
         <a href="http://localhost:5173/auth/verify-email?email=${email}&token=${token}"
-           style="background: #004CFF; color: #fff; padding: 12px 20px; text-decoration: none; border-radius: 6px; font-weight: bold;">
-          Verify My Email
+           style="background: #004CFF; color: #fff; padding: 12px 22px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">
+          Verify Your Email Address
         </a>
       </div>
-      <p>If the button above doesn’t work, copy and paste this link into your browser:</p>
+      <p>If you are unable to click the button, please copy and paste the following URL into your web browser to complete verification:</p>
       <p style="word-break: break-all; color: #004CFF;">http://localhost:5173/auth/verify-email?email=${email}&token=${token}</p>
-      <p>This link will expire in <strong>30 minutes</strong>.</p>
+      <p>Please note: this verification link will expire in <strong>30 minutes</strong>. If the link expires, you may request a new verification email through your account registration flow.</p>
+      <p>If you did not initiate this registration, please disregard this message or contact our support team immediately so we may investigate.</p>
+      <p>Kind regards,<br/>The GeoTech Team</p>
     </div>
-    <div style="background: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #888;">
-      <p>GeoTech © 2025. All rights reserved.</p>
+    <div style="background: #f7f7f7; padding: 14px 18px; text-align: center; font-size: 12px; color: #666;">
+      <p>GeoTech — Secure Land & Property Registry. For assistance, contact support@geotech.example (replace with actual support address).</p>
     </div>
   </div>
 `;
@@ -214,25 +216,26 @@ export const resendVerification = async (req: Request, res: Response) => {
     });
 
     const html = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+      <div style="font-family: Arial, sans-serif; max-width: 680px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
         <div style="background: #004CFF; color: #fff; padding: 20px; text-align: center;">
-          <h2>Resend: GeoTech Account Verification</h2>
+          <h2>GeoTech Account Verification — Resent Link</h2>
         </div>
-        <div style="padding: 20px; color: #333;">
-          <p>Hi there,</p>
-          <p>We received a request to resend your verification code for <strong>GeoTech</strong>. Click the button below to verify your email address.</p>
-          <div style="text-align: center; margin: 30px 0;">
+        <div style="padding: 20px; color: #222; line-height: 1.5;">
+          <p>Dear Applicant,</p>
+          <p>We received a request to resend the email verification link associated with your GeoTech account. To complete account activation, please follow the verification link below at your earliest convenience.</p>
+          <div style="text-align: center; margin: 24px 0;">
             <a href="http://localhost:5173/auth/verify-email?email=${email}&token=${token}"
-               style="background: #004CFF; color: #fff; padding: 12px 20px; text-decoration: none; border-radius: 6px; font-weight: bold;">
-              Verify My Email
+               style="background: #004CFF; color: #fff; padding: 12px 22px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">
+              Verify Your Email Address
             </a>
           </div>
-          <p>If the button above doesn’t work, copy and paste this link into your browser:</p>
+          <p>If you cannot use the button, copy and paste this URL into your browser:</p>
           <p style="word-break: break-all; color: #004CFF;">http://localhost:5173/auth/verify-email?email=${email}&token=${token}</p>
-          <p>This link will expire in <strong>30 minutes</strong>.</p>
+          <p>This link will expire in <strong>30 minutes</strong>. If you continue to have trouble, contact our support team for assistance.</p>
+          <p>Sincerely,<br/>GeoTech Support</p>
         </div>
-        <div style="background: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #888;">
-          <p>GeoTech © 2025. All rights reserved.</p>
+        <div style="background: #f7f7f7; padding: 14px 18px; text-align: center; font-size: 12px; color: #666;">
+          <p>GeoTech — Secure Land & Property Registry. For assistance, contact support@geotech.example.</p>
         </div>
       </div>
     `;
@@ -265,29 +268,30 @@ export const requestPasswordReset = async (req: Request, res: Response) => {
       data: { userId: user.id, token, expiresAt },
     });
     const html = `
-  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
-    <div style="background: #E63946; color: #fff; padding: 20px; text-align: center;">
-      <h2>Password Reset Request</h2>
+  <div style="font-family: Arial, sans-serif; max-width: 680px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+    <div style="background: #E63946; color: #fff; padding: 22px; text-align: center;">
+      <h2>GeoTech — Password Reset Request</h2>
     </div>
-    <div style="padding: 20px; color: #333;">
-      <p>Hello,</p>
-      <p>We received a request to reset your password for your <strong>GeoTech</strong> account. If this was you, please click the button below to set a new password.</p>
-      <div style="text-align: center; margin: 30px 0;">
+    <div style="padding: 20px; color: #222; line-height: 1.5;">
+      <p>Dear User,</p>
+      <p>We have received a request to reset the password for the GeoTech account associated with this email address. To proceed with resetting your password, please click the button below and follow the instructions on the page.</p>
+      <div style="text-align: center; margin: 28px 0;">
         <a href="http://localhost:5173/auth/reset-password?token=${token}"
-           style="background: #E63946; color: #fff; padding: 12px 20px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+           style="background: #E63946; color: #fff; padding: 12px 22px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">
           Reset My Password
         </a>
       </div>
-      <p>If you didn’t request this, you can safely ignore this email.</p>
-      <p>This link will expire in <strong>30 minutes</strong>.</p>
+      <p>If you did not request a password reset, please ignore this email. No changes will be made to your account. If you are concerned that your account may be compromised, contact GeoTech Support immediately.</p>
+      <p>This password reset link will expire in <strong>30 minutes</strong>. For continued assistance, contact support@geotech.example.</p>
+      <p>Respectfully,<br/>GeoTech Security Team</p>
     </div>
-    <div style="background: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #888;">
-      <p>GeoTech © 2025. All rights reserved.</p>
+    <div style="background: #f7f7f7; padding: 14px 18px; text-align: center; font-size: 12px; color: #666;">
+      <p>GeoTech — Secure Land & Property Registry. For assistance, contact support@geotech.example.</p>
     </div>
   </div>
 `;
 
-    await sendEmail(email, "Resend Verification - GeoTech Account", html);
+    await sendEmail(email, "Password Reset Request - GeoTech", html);
 
     res.json({ message: "Password reset link sent to email" });
   } catch (err) {

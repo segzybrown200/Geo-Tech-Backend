@@ -62,7 +62,7 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
 
     const application = await prisma.cofOApplication.findUnique({
       where: { id: cofOApplicationId },
-      include: { land: true },
+      include: { land: true,user: true, payments: true },
     });
     if (!application) {
       return res.status(404).json({ message: "CofO application not found" });
@@ -138,16 +138,22 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
     });
     // Send notification email to first approver
     try {
-      await sendEmail(
-        firstApprover.email,
-        "New CofO application awaiting your review",
-        `
-         <p>Hello ${firstApprover.name},</p>
-        <p>A new Certificate of Occupancy application has been assigned to you.</p>
-        <p><b>Application NUmber:</b> ${application.applicationNumber}</p>
-          <p>Please log in to review and take action.</p>
-        `,
-      );
+      const html = `
+        <div style="font-family: Arial, sans-serif; max-width: 680px; margin:auto; border:1px solid #eee; border-radius:8px;">
+          <div style="background:#004CFF;color:#fff;padding:16px;text-align:center;"><h3>New CofO Application Assigned</h3></div>
+          <div style="padding:16px;color:#222;line-height:1.5;">
+            <p>Dear ${firstApprover.name},</p>
+            <p>A new Certificate of Occupancy application has been assigned to you for review. Details are provided below for your reference.</p>
+            <p><strong>Application Number:</strong> ${application.applicationNumber}</p>
+            <p><strong>Applicant:</strong> ${application.user?.fullName ?? 'N/A'}</p>
+            <p>Please log in to the GeoTech internal portal to inspect the submitted documents, validate the information, and record your decision. If you require any clarification or supporting documentation, please use the inbox/task interface to request it from the applicant or escalate as required.</p>
+            <p>Thank you for attending to this matter promptly.</p>
+            <p>Sincerely,<br/>GeoTech Administration</p>
+          </div>
+        </div>
+      `;
+
+      await sendEmail(firstApprover.email, "New CofO application awaiting your review", html);
     } catch (e) {
       console.warn("email fail", e);
     }
@@ -341,17 +347,22 @@ export const resubmitCofO = async (req: AuthRequest, res: Response) => {
       { timeout: 10000 } // Increase timeout to 10 seconds for safety
     );
 
-    try {
+      try {
       if (cofO.rejectedBy?.email) {
-        await sendEmail(
-          cofO.rejectedBy.email,
-          "CofO application resubmitted for your review",
-          `
-           <p>Hello ${cofO.rejectedBy.name},</p>
-          <p>The Certificate of Occupancy application with Application Number: ${cofO.applicationNumber} has been resubmitted and awaits your review.</p>
-          <p>Please log in to review and take action.</p>
-          `,
-        );
+        const html = `
+          <div style="font-family: Arial, sans-serif; max-width:680px;margin:auto;border:1px solid #eee;border-radius:8px;">
+            <div style="background:#004CFF;color:#fff;padding:16px;text-align:center;"><h3>Resubmitted: CofO Application</h3></div>
+            <div style="padding:16px;color:#222;line-height:1.5;">
+              <p>Dear ${cofO.rejectedBy.name},</p>
+              <p>The Certificate of Occupancy application that was previously returned for corrections has been resubmitted by the applicant. Please find the application details below and proceed to review the updated documents.</p>
+              <p><strong>Application Number:</strong> ${cofO.applicationNumber}</p>
+              <p>Please log in to the GeoTech portal to examine the revised documents and confirm whether the submission now meets the requirements.</p>
+              <p>Regards,<br/>GeoTech Administration</p>
+            </div>
+          </div>
+        `;
+
+        await sendEmail(cofO.rejectedBy.email, "Resubmitted CofO application awaiting your review", html);
       }
     } catch (e) {
       console.warn("email fail", e);
@@ -462,11 +473,21 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
         });
       });
 
-      await sendEmail(
-        cofO.user.email,
-        `C of O with Application Number ${cofO.applicationNumber} requires correction`,
-        `<p>${message}</p>`,
-      );
+      const html = `
+        <div style="font-family: Arial, sans-serif; max-width:680px;margin:auto;border:1px solid #eee;border-radius:8px;">
+          <div style="background:#E63946;color:#fff;padding:16px;text-align:center;"><h3>Action Required: Application Requires Correction</h3></div>
+          <div style="padding:16px;color:#222;line-height:1.5;">
+            <p>Dear ${cofO.user.fullName ?? 'Applicant'},</p>
+            <p>Upon review, your Certificate of Occupancy application (Application Number: <strong>${cofO.applicationNumber}</strong>) requires corrections before it can proceed. The reviewer has provided the following guidance:</p>
+            <blockquote style="background:#f7f7f7;padding:12px;border-left:4px solid #E63946;">${message ?? 'No details provided'}</blockquote>
+            <p>Please address the points listed above, upload the corrected documents, and resubmit the application through your account portal. After resubmission the application will return to the reviewer for re-evaluation.</p>
+            <p>If you need assistance understanding the requested changes, contact support or respond via the application inbox.</p>
+            <p>Sincerely,<br/>GeoTech Review Team</p>
+          </div>
+        </div>
+      `;
+
+      await sendEmail(cofO.user.email, `Action Required: Corrections needed for CofO ${cofO.applicationNumber}`, html);
 
       return res.json({ message: "Application returned for correction" });
     }
@@ -499,11 +520,21 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
 
       // optional notify next approver
       try {
-        await sendEmail(
-          nextApprover.email,
-          "New CofO application awaiting your review",
-          `<p>You have a new C of O application awaiting review: <strong>${cofO.applicationNumber}</strong></p>`,
-        );
+        const html = `
+          <div style="font-family: Arial, sans-serif; max-width:680px;margin:auto;border:1px solid #eee;border-radius:8px;">
+            <div style="background:#004CFF;color:#fff;padding:16px;text-align:center;"><h3>New CofO Application Assigned</h3></div>
+            <div style="padding:16px;color:#222;line-height:1.5;">
+              <p>Dear ${nextApprover.name},</p>
+              <p>You have been assigned a new Certificate of Occupancy application for review.</p>
+              <p><strong>Application Number:</strong> ${cofO.applicationNumber}</p>
+              <p>Please access the GeoTech internal portal to examine the submitted materials and render your decision according to the established review procedures.</p>
+              <p>Thank you for your prompt attention.</p>
+              <p>Sincerely,<br/>GeoTech Administration</p>
+            </div>
+          </div>
+        `;
+
+        await sendEmail(nextApprover.email, "New CofO application awaiting your review", html);
       } catch (e) {
         console.warn("email fail", e);
       }
@@ -536,11 +567,21 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
 
       // notify governor
       try {
-        await sendEmail(
-          stateWithGovernor.governor.email,
-          "C of O pending your signature",
-          `<p>CofO Application ${cofO.applicationNumber} has reached final stage and awaits your signature.</p>`,
-        );
+        const html = `
+          <div style="font-family: Arial, sans-serif; max-width:680px;margin:auto;border:1px solid #eee;border-radius:8px;">
+            <div style="background:#004CFF;color:#fff;padding:16px;text-align:center;"><h3>CofO Application Awaiting Signature</h3></div>
+            <div style="padding:16px;color:#222;line-height:1.5;">
+              <p>Dear ${stateWithGovernor.governor.name},</p>
+              <p>The Certificate of Occupancy application identified below has completed the internal review stages and requires your final signature to be finalized.</p>
+              <p><strong>Application Number:</strong> ${cofO.applicationNumber}</p>
+              <p>Please review the application and, if satisfied, apply your signature via the governor workflow in the GeoTech portal.</p>
+              <p>If you have questions about the package, consult the review history or contact the relevant approver.</p>
+              <p>Respectfully,<br/>GeoTech Administration</p>
+            </div>
+          </div>
+        `;
+
+        await sendEmail(stateWithGovernor.governor.email, "C of O pending your signature", html);
       } catch (e) {
         console.warn("notify governor fail", e);
       }
@@ -646,13 +687,22 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
     });
     // Notify applicant of final approval
     try {
-      await sendEmail(
-        cofO.user.email,
-        "Your C of O application has been approved",
-        `<p>Congratulations — your application ${cofO.id} has been APPROVED and finalized.</p>
-         <p>CofO Number: ${cofONumber}</p>
-         ${certificateUrl ? `<p><a href="${certificateUrl}">Download your Certificate of Occupancy</a></p>` : ""}`,
-      );
+      const html = `
+        <div style="font-family: Arial, sans-serif; max-width:680px;margin:auto;border:1px solid #eee;border-radius:8px;">
+          <div style="background:#0B8457;color:#fff;padding:16px;text-align:center;"><h3>Certificate of Occupancy — Approved</h3></div>
+          <div style="padding:16px;color:#222;line-height:1.5;">
+            <p>Dear ${cofO.user.fullName ?? 'Applicant'},</p>
+            <p>We are pleased to inform you that your Certificate of Occupancy application has been approved and finalized.</p>
+            <p><strong>Application Number:</strong> ${cofO.applicationNumber}</p>
+            <p><strong>CofO Number:</strong> ${cofONumber}</p>
+            ${certificateUrl ? `<p>You may download your official Certificate of Occupancy using the link below:</p><p><a href="${certificateUrl}">Download Certificate of Occupancy</a></p>` : '<p>The official certificate will be available in your account shortly.</p>'}
+            <p>Please retain this document for your records. If you require any further assistance or require certified copies, contact GeoTech Support.</p>
+            <p>Sincerely,<br/>GeoTech Registry Office</p>
+          </div>
+        </div>
+      `;
+
+      await sendEmail(cofO.user.email, "GeoTech — Your CofO application has been approved", html);
     } catch (e) {
       console.warn("notify applicant fail", e);
     }
@@ -803,12 +853,22 @@ export const batchSignCofOs = async (req: AuthRequest, res: Response) => {
 
       // notify applicant
       try {
-        await sendEmail(
-          cofO.user.email,
-          "Your CofO has been signed",
-          `<p>Your CofO ${cofO.id} is now approved. CofO Number: ${cofONumber}</p>
-           ${certificateUrl ? `<p><a href="${certificateUrl}">Download your Certificate of Occupancy</a></p>` : ""}`,
-        );
+        const html = `
+          <div style="font-family: Arial, sans-serif; max-width:680px;margin:auto;border:1px solid #eee;border-radius:8px;">
+            <div style="background:#0B8457;color:#fff;padding:16px;text-align:center;"><h3>Certificate of Occupancy Issued</h3></div>
+            <div style="padding:16px;color:#222;line-height:1.5;">
+              <p>Dear ${cofO.user.fullName || 'Applicant'},</p>
+              <p>Your Certificate of Occupancy application has been approved and the document has been signed.</p>
+              <p><strong>Application Number:</strong> ${cofO.applicationNumber}</p>
+              <p><strong>CofO Number:</strong> ${cofONumber}</p>
+              ${certificateUrl ? `<p>You may download your official Certificate of Occupancy using the link below:</p><p><a href="${certificateUrl}">Download Certificate of Occupancy</a></p>` : '<p>The official certificate will be available in your account shortly.</p>'}
+              <p>If you require notarized or certified copies, please contact GeoTech Support for further assistance.</p>
+              <p>Sincerely,<br/>GeoTech Registry Office</p>
+            </div>
+          </div>
+        `;
+
+        await sendEmail(cofO.user.email, "GeoTech — Your CofO has been issued", html);
       } catch (e) {
         console.warn("email fail", e);
       }

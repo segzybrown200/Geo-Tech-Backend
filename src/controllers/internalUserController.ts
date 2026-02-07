@@ -134,11 +134,24 @@ export const createInternalUser = async (req: Request, res: Response) => {
     const verifyLink = `http://localhost:5173/verify?token=${token}`;
     await sendEmail(
       email,
-      "Verify Your Internal Account",
-      `<p>Hello ${name},</p>
-       <p>You have been registered as a ${role} on the GeoTech platform.</p>
-       <p>Verify your email by clicking below (expires in 24 hours):</p>
-       <a href="${verifyLink}">${verifyLink}</a>`,
+      "Verify Your Internal GeoTech Account — Action Required",
+      `
+        <div style="font-family: Arial, sans-serif; max-width: 680px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+          <div style="background: #004CFF; color: #fff; padding: 18px; text-align: center;">
+            <h2>Internal Account Verification</h2>
+          </div>
+          <div style="padding: 18px; color: #222; line-height: 1.5;">
+            <p>Dear ${name},</p>
+            <p>You have been provisioned an internal user account on the GeoTech platform with the role of <strong>${role}</strong>. To complete your account setup and to establish secure access, please verify your email address by following the link below. This link will expire in 24 hours.</p>
+            <div style="text-align: center; margin: 20px 0;">
+              <a href="${verifyLink}" style="background: #004CFF; color: #fff; padding: 10px 18px; text-decoration: none; border-radius: 6px; font-weight: 600;">Verify Internal Account</a>
+            </div>
+            <p>If you did not expect this email or do not recognize this action, please notify the administrator immediately.</p>
+            <p>Regards,<br/>GeoTech Administration</p>
+          </div>
+          <div style="background: #f7f7f7; padding: 12px 16px; text-align: center; font-size: 12px; color: #666;">GeoTech — Internal Users</div>
+        </div>
+      `,
     );
 
     res.status(201).json({ message: "Internal user created", user });
@@ -344,10 +357,22 @@ export const resendInternalVerification = async (
     const verifyLink = `https://localhost:5173/resend-verify?token=${token}`;
     await sendEmail(
       email,
-      "Resend Verification - GeoTech",
-      `<p>Hello ${user.name},</p>
-       <p>Here’s a new verification link for your internal account (expires in 24 hours):</p>
-       <a href="${verifyLink}">${verifyLink}</a>`,
+      "GeoTech Internal Account — Verification Link Resent",
+      `
+        <div style="font-family: Arial, sans-serif; max-width: 680px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+          <div style="background: #004CFF; color: #fff; padding: 18px; text-align: center;">
+            <h2>Verification Link Resent</h2>
+          </div>
+          <div style="padding: 18px; color: #222; line-height: 1.5;">
+            <p>Dear ${user.name},</p>
+            <p>As requested, we have issued a new verification link for your internal GeoTech account. Please follow the link below to verify your email and complete your account activation. This link will expire in 24 hours.</p>
+            <p style="text-align: center; margin: 18px 0;"><a href="${verifyLink}" style="color: #004CFF;">${verifyLink}</a></p>
+            <p>If you did not request this link, please contact your administrator immediately.</p>
+            <p>Sincerely,<br/>GeoTech Administration</p>
+          </div>
+          <div style="background: #f7f7f7; padding: 12px 16px; text-align: center; font-size: 12px; color: #666;">For system support contact support@geotech.example.</div>
+        </div>
+      `,
     );
 
     res.json({ message: "Verification email resent successfully" });
