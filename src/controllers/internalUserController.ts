@@ -686,7 +686,7 @@ export const approveDocumentForCofO = async (
 ) => {
   const { documentId } = req.params;
   const reviewerId = req.user.id;
-  const { status } = req.body;
+  const { status, rejectionMessage } = req.body;
   try {
 
     const reviewer = await prisma.internalUser.findUnique({
@@ -727,6 +727,7 @@ export const approveDocumentForCofO = async (
         data: {
           status: "REJECTED",
           inboxMessageId:inboxMessage?.id ,
+          rejectionMessage: rejectionMessage || "No reason provided",
         },
       });
 

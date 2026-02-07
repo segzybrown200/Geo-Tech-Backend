@@ -256,6 +256,7 @@ model CofODocument {
   type      String
   title     String
   url       String
+  rejectionMessage String?
   createdAt DateTime @default(now())
   status    DocumentStatus @default(PENDING)
 

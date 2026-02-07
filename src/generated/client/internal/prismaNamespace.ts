@@ -2131,6 +2131,7 @@ export const CofODocumentScalarFieldEnum = {
   type: 'type',
   title: 'title',
   url: 'url',
+  rejectionMessage: 'rejectionMessage',
   createdAt: 'createdAt',
   status: 'status',
   inboxMessageId: 'inboxMessageId'

@@ -207,6 +207,7 @@ CREATE TABLE "CofODocument" (
     "cofOId" UUID NOT NULL,
     "type" TEXT NOT NULL,
     "title" TEXT NOT NULL,
+    "rejectionMessage" TEXT,
     "url" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "status" "DocumentStatus" NOT NULL DEFAULT 'PENDING',

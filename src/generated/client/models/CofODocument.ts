@@ -30,6 +30,7 @@ export type CofODocumentMinAggregateOutputType = {
   type: string | null
   title: string | null
   url: string | null
+  rejectionMessage: string | null
   createdAt: Date | null
   status: $Enums.DocumentStatus | null
   inboxMessageId: string | null
@@ -41,6 +42,7 @@ export type CofODocumentMaxAggregateOutputType = {
   type: string | null
   title: string | null
   url: string | null
+  rejectionMessage: string | null
   createdAt: Date | null
   status: $Enums.DocumentStatus | null
   inboxMessageId: string | null
@@ -52,6 +54,7 @@ export type CofODocumentCountAggregateOutputType = {
   type: number
   title: number
   url: number
+  rejectionMessage: number
   createdAt: number
   status: number
   inboxMessageId: number
@@ -65,6 +68,7 @@ export type CofODocumentMinAggregateInputType = {
   type?: true
   title?: true
   url?: true
+  rejectionMessage?: true
   createdAt?: true
   status?: true
   inboxMessageId?: true
@@ -76,6 +80,7 @@ export type CofODocumentMaxAggregateInputType = {
   type?: true
   title?: true
   url?: true
+  rejectionMessage?: true
   createdAt?: true
   status?: true
   inboxMessageId?: true
@@ -87,6 +92,7 @@ export type CofODocumentCountAggregateInputType = {
   type?: true
   title?: true
   url?: true
+  rejectionMessage?: true
   createdAt?: true
   status?: true
   inboxMessageId?: true
@@ -171,6 +177,7 @@ export type CofODocumentGroupByOutputType = {
   type: string
   title: string
   url: string
+  rejectionMessage: string | null
   createdAt: Date
   status: $Enums.DocumentStatus
   inboxMessageId: string | null
@@ -203,6 +210,7 @@ export type CofODocumentWhereInput = {
   type?: Prisma.StringFilter<"CofODocument"> | string
   title?: Prisma.StringFilter<"CofODocument"> | string
   url?: Prisma.StringFilter<"CofODocument"> | string
+  rejectionMessage?: Prisma.StringNullableFilter<"CofODocument"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CofODocument"> | Date | string
   status?: Prisma.EnumDocumentStatusFilter<"CofODocument"> | $Enums.DocumentStatus
   inboxMessageId?: Prisma.UuidNullableFilter<"CofODocument"> | string | null
@@ -216,6 +224,7 @@ export type CofODocumentOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
+  rejectionMessage?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   inboxMessageId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -232,6 +241,7 @@ export type CofODocumentWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.StringFilter<"CofODocument"> | string
   title?: Prisma.StringFilter<"CofODocument"> | string
   url?: Prisma.StringFilter<"CofODocument"> | string
+  rejectionMessage?: Prisma.StringNullableFilter<"CofODocument"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CofODocument"> | Date | string
   status?: Prisma.EnumDocumentStatusFilter<"CofODocument"> | $Enums.DocumentStatus
   inboxMessageId?: Prisma.UuidNullableFilter<"CofODocument"> | string | null
@@ -245,6 +255,7 @@ export type CofODocumentOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
+  rejectionMessage?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   inboxMessageId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -262,6 +273,7 @@ export type CofODocumentScalarWhereWithAggregatesInput = {
   type?: Prisma.StringWithAggregatesFilter<"CofODocument"> | string
   title?: Prisma.StringWithAggregatesFilter<"CofODocument"> | string
   url?: Prisma.StringWithAggregatesFilter<"CofODocument"> | string
+  rejectionMessage?: Prisma.StringNullableWithAggregatesFilter<"CofODocument"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CofODocument"> | Date | string
   status?: Prisma.EnumDocumentStatusWithAggregatesFilter<"CofODocument"> | $Enums.DocumentStatus
   inboxMessageId?: Prisma.UuidNullableWithAggregatesFilter<"CofODocument"> | string | null
@@ -272,6 +284,7 @@ export type CofODocumentCreateInput = {
   type: string
   title: string
   url: string
+  rejectionMessage?: string | null
   createdAt?: Date | string
   status?: $Enums.DocumentStatus
   cofO: Prisma.CofOApplicationCreateNestedOneWithoutCofODocumentsInput
@@ -284,6 +297,7 @@ export type CofODocumentUncheckedCreateInput = {
   type: string
   title: string
   url: string
+  rejectionMessage?: string | null
   createdAt?: Date | string
   status?: $Enums.DocumentStatus
   inboxMessageId?: string | null
@@ -294,6 +308,7 @@ export type CofODocumentUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   cofO?: Prisma.CofOApplicationUpdateOneRequiredWithoutCofODocumentsNestedInput
@@ -306,6 +321,7 @@ export type CofODocumentUncheckedUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   inboxMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -317,6 +333,7 @@ export type CofODocumentCreateManyInput = {
   type: string
   title: string
   url: string
+  rejectionMessage?: string | null
   createdAt?: Date | string
   status?: $Enums.DocumentStatus
   inboxMessageId?: string | null
@@ -327,6 +344,7 @@ export type CofODocumentUpdateManyMutationInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
 }
@@ -337,6 +355,7 @@ export type CofODocumentUncheckedUpdateManyInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   inboxMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -358,6 +377,7 @@ export type CofODocumentCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
+  rejectionMessage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   inboxMessageId?: Prisma.SortOrder
@@ -369,6 +389,7 @@ export type CofODocumentMaxOrderByAggregateInput = {
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
+  rejectionMessage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   inboxMessageId?: Prisma.SortOrder
@@ -380,6 +401,7 @@ export type CofODocumentMinOrderByAggregateInput = {
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
+  rejectionMessage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   inboxMessageId?: Prisma.SortOrder
@@ -478,6 +500,7 @@ export type CofODocumentCreateWithoutCofOInput = {
   type: string
   title: string
   url: string
+  rejectionMessage?: string | null
   createdAt?: Date | string
   status?: $Enums.DocumentStatus
   inboxMessage?: Prisma.InboxMessageCreateNestedOneWithoutDocumentListInput
@@ -488,6 +511,7 @@ export type CofODocumentUncheckedCreateWithoutCofOInput = {
   type: string
   title: string
   url: string
+  rejectionMessage?: string | null
   createdAt?: Date | string
   status?: $Enums.DocumentStatus
   inboxMessageId?: string | null
@@ -528,6 +552,7 @@ export type CofODocumentScalarWhereInput = {
   type?: Prisma.StringFilter<"CofODocument"> | string
   title?: Prisma.StringFilter<"CofODocument"> | string
   url?: Prisma.StringFilter<"CofODocument"> | string
+  rejectionMessage?: Prisma.StringNullableFilter<"CofODocument"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CofODocument"> | Date | string
   status?: Prisma.EnumDocumentStatusFilter<"CofODocument"> | $Enums.DocumentStatus
   inboxMessageId?: Prisma.UuidNullableFilter<"CofODocument"> | string | null
@@ -538,6 +563,7 @@ export type CofODocumentCreateWithoutInboxMessageInput = {
   type: string
   title: string
   url: string
+  rejectionMessage?: string | null
   createdAt?: Date | string
   status?: $Enums.DocumentStatus
   cofO: Prisma.CofOApplicationCreateNestedOneWithoutCofODocumentsInput
@@ -549,6 +575,7 @@ export type CofODocumentUncheckedCreateWithoutInboxMessageInput = {
   type: string
   title: string
   url: string
+  rejectionMessage?: string | null
   createdAt?: Date | string
   status?: $Enums.DocumentStatus
 }
@@ -584,6 +611,7 @@ export type CofODocumentCreateManyCofOInput = {
   type: string
   title: string
   url: string
+  rejectionMessage?: string | null
   createdAt?: Date | string
   status?: $Enums.DocumentStatus
   inboxMessageId?: string | null
@@ -594,6 +622,7 @@ export type CofODocumentUpdateWithoutCofOInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   inboxMessage?: Prisma.InboxMessageUpdateOneWithoutDocumentListNestedInput
@@ -604,6 +633,7 @@ export type CofODocumentUncheckedUpdateWithoutCofOInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   inboxMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -614,6 +644,7 @@ export type CofODocumentUncheckedUpdateManyWithoutCofOInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   inboxMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -625,6 +656,7 @@ export type CofODocumentCreateManyInboxMessageInput = {
   type: string
   title: string
   url: string
+  rejectionMessage?: string | null
   createdAt?: Date | string
   status?: $Enums.DocumentStatus
 }
@@ -634,6 +666,7 @@ export type CofODocumentUpdateWithoutInboxMessageInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   cofO?: Prisma.CofOApplicationUpdateOneRequiredWithoutCofODocumentsNestedInput
@@ -645,6 +678,7 @@ export type CofODocumentUncheckedUpdateWithoutInboxMessageInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
 }
@@ -655,6 +689,7 @@ export type CofODocumentUncheckedUpdateManyWithoutInboxMessageInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
+  rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
 }
@@ -667,6 +702,7 @@ export type CofODocumentSelect<ExtArgs extends runtime.Types.Extensions.Internal
   type?: boolean
   title?: boolean
   url?: boolean
+  rejectionMessage?: boolean
   createdAt?: boolean
   status?: boolean
   inboxMessageId?: boolean
@@ -680,6 +716,7 @@ export type CofODocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   type?: boolean
   title?: boolean
   url?: boolean
+  rejectionMessage?: boolean
   createdAt?: boolean
   status?: boolean
   inboxMessageId?: boolean
@@ -693,6 +730,7 @@ export type CofODocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   type?: boolean
   title?: boolean
   url?: boolean
+  rejectionMessage?: boolean
   createdAt?: boolean
   status?: boolean
   inboxMessageId?: boolean
@@ -706,12 +744,13 @@ export type CofODocumentSelectScalar = {
   type?: boolean
   title?: boolean
   url?: boolean
+  rejectionMessage?: boolean
   createdAt?: boolean
   status?: boolean
   inboxMessageId?: boolean
 }
 
-export type CofODocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cofOId" | "type" | "title" | "url" | "createdAt" | "status" | "inboxMessageId", ExtArgs["result"]["cofODocument"]>
+export type CofODocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cofOId" | "type" | "title" | "url" | "rejectionMessage" | "createdAt" | "status" | "inboxMessageId", ExtArgs["result"]["cofODocument"]>
 export type CofODocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   cofO?: boolean | Prisma.CofOApplicationDefaultArgs<ExtArgs>
   inboxMessage?: boolean | Prisma.CofODocument$inboxMessageArgs<ExtArgs>
@@ -737,6 +776,7 @@ export type $CofODocumentPayload<ExtArgs extends runtime.Types.Extensions.Intern
     type: string
     title: string
     url: string
+    rejectionMessage: string | null
     createdAt: Date
     status: $Enums.DocumentStatus
     inboxMessageId: string | null
@@ -1170,6 +1210,7 @@ export interface CofODocumentFieldRefs {
   readonly type: Prisma.FieldRef<"CofODocument", 'String'>
   readonly title: Prisma.FieldRef<"CofODocument", 'String'>
   readonly url: Prisma.FieldRef<"CofODocument", 'String'>
+  readonly rejectionMessage: Prisma.FieldRef<"CofODocument", 'String'>
   readonly createdAt: Prisma.FieldRef<"CofODocument", 'DateTime'>
   readonly status: Prisma.FieldRef<"CofODocument", 'DocumentStatus'>
   readonly inboxMessageId: Prisma.FieldRef<"CofODocument", 'String'>
