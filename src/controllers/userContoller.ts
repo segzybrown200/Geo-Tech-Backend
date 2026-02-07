@@ -67,7 +67,7 @@ export const getUserDashboardOverview = async (
         status: app.status,
         applicationNumber: app.applicationNumber,
         submittedAt: app.createdAt,
-        paymentStatus: app.payments?.[0]?.status ?? "PENDING",
+        paymentStatus: app.payments[0].status ?? "PENDING",
       })),
       recentPayments: recentPayments.map((p) => ({
         reference: p.reference,

@@ -105,7 +105,7 @@ export const verifyPayment = async (req: Request, res: Response) => {
 
     await prisma.payment.update({
       where: { id: payment.id },
-      data: { status: "SUCCESS" },
+      data: { status: "SUCCESS", cofOId: cofO.id },
     });
     
     res.json({

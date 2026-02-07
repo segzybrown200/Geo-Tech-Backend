@@ -770,6 +770,7 @@ export const batchSignCofOs = async (req: AuthRequest, res: Response) => {
           },
           land: {
             address: cofO.land.address || "Not specified",
+            plotNumber: req.body.plotNumber || cofO.land.plotNumber || "Not specified",
             state: {
               name: cofO.land.state.name,
             },
@@ -790,12 +791,12 @@ export const batchSignCofOs = async (req: AuthRequest, res: Response) => {
         certificateUrl = await generateCofOCertificate(certificateData);
         
         // Certificate URL will be stored after schema migration
-        // await prisma.cofOApplication.update({
-        //   where: { id: cofO.id },
-        //   data: {
-        //     certificateUrl,
-        //   },
-        // });
+        await prisma.cofOApplication.update({
+          where: { id: cofO.id },
+          data: {
+            certificateUrl,
+          },
+        });
       } catch (e) {
         console.warn(`Certificate generation failed for ${cofO.id}:`, e);
       }

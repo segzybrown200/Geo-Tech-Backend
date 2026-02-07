@@ -12,6 +12,7 @@ interface CofOData {
   };
   land: {
     address: string;
+    plotNumber: string | null;
     state: {
       name: string;
     };
@@ -142,6 +143,7 @@ export async function generateCofOCertificate(cofO: CofOData): Promise<string> {
       doc.fontSize(9).font("Helvetica");
       doc.text(`Location/Address: ${cofO.land.address}`, { indent: 20 });
       doc.text(`State: ${cofO.land.state.name}`, { indent: 20 });
+      doc.text(`Plot Number: ${cofO.land.plotNumber || "N/A"}`, { indent: 20 });
       doc.text(`Land Area: ${cofO.land.squareMeters.toLocaleString()} square meters`, {
         indent: 20,
       });
