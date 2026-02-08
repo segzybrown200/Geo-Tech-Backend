@@ -1,6 +1,6 @@
 import PDFDocument from "pdfkit";
 import { Readable } from "stream";
-import cloudinary from "../config/cloudinary";
+import { uploadToCloudinary } from "../services/uploadService";
 
 interface CofOData {
   applicationNumber: string;
@@ -42,24 +42,25 @@ export async function generateCofOCertificate(cofO: CofOData): Promise<string> {
         try {
           const pdfBuffer = Buffer.concat(buffers);
           
-          // Upload to Cloudinary
-          // Build a stable public_id without duplicating the COFO- prefix
-          const baseId = (cofO.cofONumber ?? cofO.applicationNumber ?? "UNKNOWN").toString().replace(/^COFO-/, "");
-          const uploadStream = cloudinary.uploader.upload_stream(
-            {
+          // Upload PDF using centralized upload service
+          const baseId = (cofO.cofONumber ?? cofO.applicationNumber ?? "UNKNOWN")
+            .toString()
+            .replace(/^COFO-/, "");
+          const filename = `COFO-${baseId}-${Date.now()}.pdf`;
+          try {
+            const result = await uploadToCloudinary(pdfBuffer, filename, "application/pdf", {
               folder: "geotech_certificates",
-              resource_type: "raw",
-              public_id: `COFO-${baseId}-${Date.now()}`,
-              format: "pdf",
-            },
-            (error: any, result: any) => {
-              if (error) reject(error);
-              else resolve(result.secure_url);
-            }
-          );
+              resourceType: "raw",
+            });
 
-          const readableStream = Readable.from(pdfBuffer);
-          readableStream.pipe(uploadStream);
+            if (result && result.secure_url) {
+              resolve(result.secure_url);
+            } else {
+              reject(new Error("Cloudinary upload did not return secure_url"));
+            }
+          } catch (err) {
+            reject(err);
+          }
         } catch (error) {
           reject(error);
         }

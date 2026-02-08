@@ -67,13 +67,20 @@ export const validateDocumentFile = (
   return { valid: true };
 };
 
-export const uploadToCloudinary = (buffer: Buffer, filename?: string, mimeType?: string) => {
+export const uploadToCloudinary = (
+  buffer: Buffer,
+  filename?: string,
+  mimeType?: string,
+  options?: { folder?: string; resourceType?: 'image' | 'raw' }
+) => {
   return new Promise<any>((resolve, reject) => {
-    const resourceType = getResourceType(filename || '', mimeType || '');
-    
+    const inferredResource = getResourceType(filename || '', mimeType || '');
+    const resourceType = options?.resourceType ?? inferredResource;
+    const folder = options?.folder ?? 'geotech_documents';
+
     const uploadStream = cloudinary.uploader.upload_stream(
       {
-        folder: 'geotech_documents',
+        folder,
         resource_type: resourceType,
         public_id: filename ? filename.replace(/\.[^.]+$/, '') : undefined,
       },

@@ -469,6 +469,18 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
       data: { status: action === "APPROVE" ? "COMPLETED" : "REJECTED" },
     });
 
+    // Record approval audit for this reviewer (captures both APPROVER and GOVERNOR actions)
+    if (action === "APPROVE") {
+      await prisma.cofOAuditLog.create({
+        data: {
+          cofOId,
+          action: "APPROVED",
+          performedById: id,
+          performedByRole: internalReviewer.role,
+        },
+      });
+    }
+
     // 6) If REJECT => set CofO status to REJECTED, notify applicant, and stop pipeline
     if (action === "REJECT") {
       await prisma.$transaction(async (tx) => {
