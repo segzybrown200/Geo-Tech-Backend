@@ -1,5 +1,6 @@
 import PDFDocument from "pdfkit";
 import { Readable } from "stream";
+import axios from "axios";
 import { uploadToCloudinary } from "../services/uploadService";
 
 interface CofOData {
@@ -30,203 +31,157 @@ interface CofOData {
   };
 }
 
+
+
 export async function generateCofOCertificate(cofO: CofOData): Promise<string> {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
-      const doc = new PDFDocument({ size: "A4", margin: 40 });
+      const doc = new PDFDocument({ size: "A4", margin: 50 });
       const buffers: Buffer[] = [];
 
-      // Collect PDF data
-      doc.on("data", (chunk: Buffer) => buffers.push(chunk));
+      doc.on("data", buffers.push.bind(buffers));
       doc.on("end", async () => {
-        try {
-          const pdfBuffer = Buffer.concat(buffers);
-          
-          // Upload PDF using centralized upload service
-          const baseId = (cofO.cofONumber ?? cofO.applicationNumber ?? "UNKNOWN")
-            .toString()
-            .replace(/^COFO-/, "");
-          const filename = `COFO-${baseId}-${Date.now()}.pdf`;
-          try {
-            const result = await uploadToCloudinary(pdfBuffer, filename, "application/pdf", {
-              folder: "geotech_certificates",
-              resourceType: "raw",
-            });
+        const pdfBuffer = Buffer.concat(buffers);
 
-            if (result && result.secure_url) {
-              resolve(result.secure_url);
-            } else {
-              reject(new Error("Cloudinary upload did not return secure_url"));
-            }
-          } catch (err) {
-            reject(err);
-          }
-        } catch (error) {
-          reject(error);
-        }
+        const filename = `COFO-${Date.now()}.pdf`;
+
+        const result = await uploadToCloudinary(
+          pdfBuffer,
+          filename,
+          "application/pdf",
+          { folder: "geotech_certificates", resourceType: "raw" }
+        );
+
+        resolve(result.secure_url);
       });
 
-      doc.on("error", reject);
+      const WIDTH = doc.page.width - 100;
 
-      // ============ HEADER - GOVERNMENT COAT OF ARMS ============
-      doc.fontSize(10).text("FEDERAL REPUBLIC OF NIGERIA", { align: "center" });
-      doc.fontSize(9).text("Office of the State Governor", { align: "center" });
-      doc.fontSize(9).text(cofO.land.state.name.toUpperCase(), { align: "center" });
-      
-      doc.moveTo(40, 80).lineTo(555, 80).stroke();
+      // ================= HEADER =================
+      doc
+        .font("Helvetica-Bold")
+        .fontSize(12)
+        .text("FEDERAL REPUBLIC OF NIGERIA", { align: "center" });
+
+      doc
+        .fontSize(10)
+        .text(`GOVERNMENT OF ${cofO.land.state.name.toUpperCase()} STATE`, { align: "center" });
+
       doc.moveDown(0.5);
+      doc.moveTo(50, doc.y).lineTo(545, doc.y).stroke();
 
-      // ============ TITLE ============
-      doc.fontSize(16)
+      doc.moveDown();
+
+      // ================= TITLE =================
+      doc
+        .fontSize(18)
         .font("Helvetica-Bold")
         .text("CERTIFICATE OF OCCUPANCY", { align: "center" });
-      doc.moveDown(0.2);
-      
-      doc.fontSize(11)
+
+      doc
+        .moveDown(0.5)
+        .fontSize(10)
         .font("Helvetica")
-        .text(`Issued under the Land Use Act (Cap. L5, Laws of the Federation of Nigeria, 1990)`, {
-          align: "center",
-        });
-      
-      doc.moveTo(40, 130).lineTo(555, 130).stroke();
-      doc.moveDown();
-
-      // ============ CERTIFICATE NUMBER & DATE ============
-      doc.fontSize(10).font("Helvetica-Bold");
-      doc.text(`Certificate No: ${cofO.cofONumber || cofO.applicationNumber}`, {
-        align: "right",
-      });
-      doc.text(
-        `Date of Issue: ${cofO.signedAt ? new Date(cofO.signedAt).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }) : new Date().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}`,
-        { align: "right" }
-      );
-
-      doc.moveDown();
-
-      // ============ CERTIFICATE BODY ============
-      doc.fontSize(11).font("Helvetica");
-
-      doc.text("TO WHOM IT MAY CONCERN:", { underline: true });
-      doc.moveDown();
-
-      doc.fontSize(10).text(
-        `This is to certify that under the authority vested in the Governor of ${cofO.land.state.name} by Section 31(1) of the Land Use Act, Cap. L5, Laws of the Federation of Nigeria, 1990, and based on the complete documentation provided, the Certificate of Occupancy is hereby granted to:`,
-        { align: "justify" }
-      );
-
-      doc.moveDown();
-
-      // ============ HOLDER DETAILS ============
-      doc.fontSize(10).font("Helvetica-Bold");
-      doc.text("APPLICANT DETAILS");
-      doc.moveDown(0.3);
-
-      doc.fontSize(9).font("Helvetica");
-      doc.text(`Full Name: ${cofO.user.fullName}`, { indent: 20 });
-      doc.text(`Email Address: ${cofO.user.email}`, { indent: 20 });
-      if (cofO.user.phone) {
-        doc.text(`Phone Number: ${cofO.user.phone}`, { indent: 20 });
-      }
-
-      doc.moveDown();
-
-      // ============ LAND DETAILS ============
-      doc.fontSize(10).font("Helvetica-Bold");
-      doc.text("PROPERTY DETAILS");
-      doc.moveDown(0.3);
-
-      doc.fontSize(9).font("Helvetica");
-      doc.text(`Location/Address: ${cofO.land.address}`, { indent: 20 });
-      doc.text(`State: ${cofO.land.state.name}`, { indent: 20 });
-      doc.text(`Plot Number: ${cofO.land.plotNumber || "N/A"}`, { indent: 20 });
-      doc.text(`Land Area: ${cofO.land.squareMeters.toLocaleString()} square meters`, {
-        indent: 20,
-      });
-      
-      if (cofO.land.latitude && cofO.land.longitude) {
-        doc.text(
-          `Coordinates: ${cofO.land.latitude.toFixed(6)}, ${cofO.land.longitude.toFixed(6)}`,
-          { indent: 20 }
+        .text(
+          "Issued pursuant to the Land Use Act, Cap L5 Laws of the Federation of Nigeria 2004",
+          { align: "center", width: WIDTH }
         );
-      }
-
-      doc.text(`Ownership Type: ${cofO.land.ownershipType}`, { indent: 20 });
-      doc.text(`Purpose of Land: ${cofO.land.purpose}`, { indent: 20 });
 
       doc.moveDown();
 
-      // ============ CERTIFICATE CONDITIONS ============
-      doc.fontSize(10).font("Helvetica-Bold");
-      doc.text("TERMS AND CONDITIONS");
-      doc.moveDown(0.3);
+      // ================= META =================
+      doc.font("Helvetica-Bold").fontSize(10);
+      doc.text(`Certificate No: ${cofO.cofONumber}`, { align: "right" });
+      doc.text(`Date: ${new Date().toDateString()}`, { align: "right" });
 
-      doc.fontSize(9).font("Helvetica");
-      const conditions = [
-        "This Certificate of Occupancy is granted for a period of Ninety-Nine (99) years from the date of issue.",
-        "The holder shall use the land in accordance with the purposes stated herein and shall not engage in any activity that contravenes the land use plan or applicable laws.",
-        "The holder is responsible for the payment of all statutory dues and taxes as prescribed by the State Government.",
-        "This Certificate is non-transferable without the consent of the Governor, and any transfer shall be subject to applicable fees.",
-        "The State Government reserves the right to recover the land for public purposes on payment of compensation in accordance with law.",
-        "The holder shall maintain the property in good condition and prevent its abandonment.",
+      doc.moveDown(1.5);
+
+      // ================= BODY =================
+      doc.font("Helvetica").fontSize(11);
+
+      doc.text(
+        `This is to certify that the Governor of ${cofO.land.state.name} State hereby grants a Right of Occupancy over the land described below to:`,
+        { width: WIDTH, align: "justify" }
+      );
+
+      doc.moveDown();
+
+      // ================= APPLICANT =================
+      section(doc, "GRANTEE DETAILS");
+
+      info(doc, "Name", cofO.user.fullName);
+      info(doc, "Email", cofO.user.email);
+      if (cofO.user.phone) info(doc, "Phone", cofO.user.phone);
+
+      doc.moveDown();
+
+      // ================= LAND =================
+      section(doc, "LAND DESCRIPTION");
+
+      info(doc, "Address", cofO.land.address);
+      info(doc, "Plot Number", cofO.land.plotNumber ?? "N/A");
+      info(doc, "Area", `${cofO.land.squareMeters} sqm`);
+      info(doc, "Purpose", cofO.land.purpose);
+
+      if (cofO.land.latitude && cofO.land.longitude) {
+        info(doc, "Coordinates", `${cofO.land.latitude}, ${cofO.land.longitude}`);
+      }
+
+      doc.moveDown();
+
+      // ================= TERMS =================
+      section(doc, "CONDITIONS");
+
+      const terms = [
+        "Tenure of 99 years from date of issue.",
+        "Land shall be used only for approved purpose.",
+        "No transfer without Governor’s consent.",
+        "Government reserves right of revocation.",
       ];
 
-      conditions.forEach((condition, index) => {
-        doc.text(`${index + 1}. ${condition}`, { indent: 20, align: "justify" });
+      terms.forEach((t, i) => {
+        doc.text(`${i + 1}. ${t}`, { width: WIDTH });
         doc.moveDown(0.3);
-      });
-
-      doc.moveDown();
-
-      // ============ SIGNATURE & SEAL SECTION ============
-      doc.fontSize(9).font("Helvetica-Bold");
-      doc.text("IN WITNESS WHEREOF, the Governor of " + cofO.land.state.name + " has caused this Certificate to be issued.", {
-        align: "justify",
       });
 
       doc.moveDown(2);
 
-      if (cofO.governorSignatureUrl) {
-        try {
-          doc.image(cofO.governorSignatureUrl, 60, doc.y, { width: 80 });
-        } catch (e) {
-          doc.fontSize(9).text("[Governor Signature]");
-        }
-      } else {
-        doc.fontSize(9).text("[Governor Signature]");
-      }
-
-      doc.moveTo(40, doc.y + 40).lineTo(140, doc.y + 40).stroke();
-      doc.moveDown(2.5);
-      doc.fontSize(9).font("Helvetica-Bold").text("Governor", { width: 100 });
-
-      doc.moveDown(1);
-
-      doc.fontSize(8).font("Helvetica");
-      if (cofO.approvedBy) {
-        doc.text(`Approved by: ${cofO.approvedBy.name}`);
-        doc.text(`Position: ${cofO.approvedBy.position}`);
-      }
-
-      // ============ FOOTER ============
-      doc.moveTo(40, 750).lineTo(555, 750).stroke();
-      doc.moveDown(0.3);
-      doc.fontSize(8).font("Helvetica").text(
-        `Certificate No: ${cofO.cofONumber || cofO.applicationNumber} | Application No: ${cofO.applicationNumber} | Issued: ${new Date().getFullYear()}`,
-        { align: "center" }
+      // ================= SIGNATURE =================
+      doc.text(
+        `Given under my hand this ${new Date().toDateString()}`,
+        { width: WIDTH }
       );
 
-      // Finalize PDF
+      doc.moveDown(2);
+
+      if (cofO.governorSignatureUrl) {
+        const res = await axios.get(cofO.governorSignatureUrl, {
+          responseType: "arraybuffer",
+        });
+
+        doc.image(res.data, doc.x, doc.y, { width: 120 });
+      }
+
+      doc.moveDown(3);
+
+      doc.font("Helvetica-Bold").text("GOVERNOR", { align: "left" });
+
       doc.end();
-    } catch (error) {
-      reject(error);
+    } catch (err) {
+      reject(err);
     }
   });
 }
+
+// ============ helpers ============
+
+function section(doc: PDFKit.PDFDocument, title: string) {
+  doc.font("Helvetica-Bold").fontSize(12).text(title);
+  doc.moveDown(0.3);
+}
+
+function info(doc: PDFKit.PDFDocument, label: string, value: string) {
+  doc.font("Helvetica-Bold").text(`${label}: `, { continued: true });
+  doc.font("Helvetica").text(value);
+}
+
