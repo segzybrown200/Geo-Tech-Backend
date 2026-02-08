@@ -174,10 +174,19 @@ export const applyForCofO = async (req: AuthRequest, res: Response) => {
  * Returns array ordered by some ordering field (createdAt ascending by default)
  */
 async function getStateApprovers(stateId: string) {
-  return prisma.internalUser.findMany({
-    where: { stateId, role: { in: ["APPROVER", "GOVERNOR"] } },
-    orderBy: { createdAt: "asc" },
+  // Order approvers by their assigned `position` (review order), then
+  // ensure the governor (final signer) is placed last in the returned list.
+  const approvers = await prisma.internalUser.findMany({
+    where: { stateId, role: "APPROVER" },
+    orderBy: { position: "asc" },
   });
+
+  const governor = await prisma.internalUser.findFirst({
+    where: { stateId, role: "GOVERNOR" },
+  });
+
+  if (governor) approvers.push(governor);
+  return approvers;
 }
 
 /**
