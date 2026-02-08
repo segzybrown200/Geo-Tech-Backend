@@ -78,11 +78,26 @@ export const uploadToCloudinary = (
     const resourceType = options?.resourceType ?? inferredResource;
     const folder = options?.folder ?? 'geotech_documents';
 
+    // For 'raw' type (PDFs, docs, etc), keep the extension in public_id
+    // For images, strip extension as Cloudinary adds it back
+    let publicId: string | undefined;
+    if (filename) {
+      if (resourceType === 'raw') {
+        // Keep extension for raw files (PDF, DOC, etc)
+        publicId = filename.replace(/\.[^.]+$/, ''); // Still remove for Cloudinary, but format will be explicit
+      } else {
+        // Strip extension for images
+        publicId = filename.replace(/\.[^.]+$/, '');
+      }
+    }
+
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder,
         resource_type: resourceType,
-        public_id: filename ? filename.replace(/\.[^.]+$/, '') : undefined,
+        public_id: publicId,
+        // For raw files, explicitly specify format based on extension
+        ...(resourceType === 'raw' && filename ? { format: filename.split('.').pop() } : {}),
       },
       (error: any, result: any) => {
         if (error) return reject(error);

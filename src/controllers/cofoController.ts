@@ -618,7 +618,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
             longitude: updatedCofO.land.longitude,
           },
           signedAt: new Date(),
-          governorSignatureUrl: cofO.governorSignatureUrl || undefined,
+          governorSignatureUrl: internalReviewer.signatureUrl || undefined,
           approvedBy: internalReviewer ? {
             name: internalReviewer.name,
             position: "Governor",
