@@ -552,58 +552,12 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
     }
 
     // 8) If last approver, now involve Governor (final signature) logic
-    // Read state governor
-    const stateWithGovernor = await prisma.state.findUnique({
-      where: { id: state.id },
-      include: { governor: true },
-    });
-
-    // If governor exists and is different than the last approver, create an inbox for governor
-    if (
-      stateWithGovernor?.governor &&
-      stateWithGovernor.governor.id !== id
-    ) {
-      await enqueueInbox(
-        stateWithGovernor.governor.id,
-        cofOId,
-        cofO.applicationNumber as string,
-        cofO.cofODocuments,
-      );
-      await prisma.cofOApplication.update({
-        where: { id: cofOId },
-        data: { status: "IN_REVIEW", currentReviewerId: stateWithGovernor.governor.id },
-      });
-
-      // notify governor
-      try {
-        const html = `
-          <div style="font-family: Arial, sans-serif; max-width:680px;margin:auto;border:1px solid #eee;border-radius:8px;">
-            <div style="background:#004CFF;color:#fff;padding:16px;text-align:center;"><h3>CofO Application Awaiting Signature</h3></div>
-            <div style="padding:16px;color:#222;line-height:1.5;">
-              <p>Dear ${stateWithGovernor.governor.name},</p>
-              <p>The Certificate of Occupancy application identified below has completed the internal review stages and requires your final signature to be finalized.</p>
-              <p><strong>Application Number:</strong> ${cofO.applicationNumber}</p>
-              <p>Please review the application and, if satisfied, apply your signature via the governor workflow in the GeoTech portal.</p>
-              <p>If you have questions about the package, consult the review history or contact the relevant approver.</p>
-              <p>Respectfully,<br/>GeoTech Administration</p>
-            </div>
-          </div>
-        `;
-
-        await sendEmail(stateWithGovernor.governor.email, "C of O pending your signature", html);
-      } catch (e) {
-        console.warn("notify governor fail", e);
-      }
-
-      return res.json({
-        message: "Approved and sent to governor for final signature",
-      });
-    }
-
-    // 9) If governor is the current reviewer (or no governor set), finalize approval
+    // 9) Check if current user is GOVERNOR role - only then finalize
+    if (internalReviewer.role === "GOVERNOR") {
+      // Governor is approving - finalize immediately
     await prisma.cofOApplication.update({
       where: { id: cofOId },
-      data: { status: "APPROVED",approvedById: id, signedAt: new Date()},
+      data: { status: "APPROVED",approvedById: id, signedAt: new Date(), governorSignatureUrl: internalReviewer.signatureUrl || null, },
     });
 
     // Optionally: generate CofO number, sign, watermark doc etc. Implementers can add extra logic here.
@@ -721,6 +675,57 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
       cofONumber,
       certificateUrl: certificateUrl || null,
     });
+    } else {
+      // Current user is APPROVER and is last in list - need to forward to governor or error
+      const stateWithGovernor = await prisma.state.findUnique({
+        where: { id: state.id },
+        include: { governor: true },
+      });
+
+      // If governor exists, forward approval to governor
+      if (stateWithGovernor?.governor) {
+        await enqueueInbox(
+          stateWithGovernor.governor.id,
+          cofOId,
+          cofO.applicationNumber as string,
+          cofO.cofODocuments,
+        );
+        await prisma.cofOApplication.update({
+          where: { id: cofOId },
+          data: { status: "IN_REVIEW", currentReviewerId: stateWithGovernor.governor.id },
+        });
+
+        // notify governor
+        try {
+          const html = `
+            <div style="font-family: Arial, sans-serif; max-width:680px;margin:auto;border:1px solid #eee;border-radius:8px;">
+              <div style="background:#004CFF;color:#fff;padding:16px;text-align:center;"><h3>CofO Application Awaiting Signature</h3></div>
+              <div style="padding:16px;color:#222;line-height:1.5;">
+                <p>Dear ${stateWithGovernor.governor.name},</p>
+                <p>The Certificate of Occupancy application identified below has completed the internal review stages and requires your final signature to be finalized.</p>
+                <p><strong>Application Number:</strong> ${cofO.applicationNumber}</p>
+                <p>Please review the application and, if satisfied, apply your signature via the governor workflow in the GeoTech portal.</p>
+                <p>If you have questions about the package, consult the review history or contact the relevant approver.</p>
+                <p>Respectfully,<br/>GeoTech Administration</p>
+              </div>
+            </div>
+          `;
+
+          await sendEmail(stateWithGovernor.governor.email, "C of O pending your signature", html);
+        } catch (e) {
+          console.warn("notify governor fail", e);
+        }
+
+        return res.json({
+          message: "Approved and sent to governor for final signature",
+        });
+      } else {
+        // No governor exists - cannot finalize as approver
+        return res.status(400).json({
+          message: "Cannot approve: No governor configured for this state to finalize the certificate",
+        });
+      }
+    }
   } catch (err) {
     console.error("Review failed", err);
     res.status(500).json({ message: "Review failed", error: err });
