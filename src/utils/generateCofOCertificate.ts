@@ -43,11 +43,13 @@ export async function generateCofOCertificate(cofO: CofOData): Promise<string> {
           const pdfBuffer = Buffer.concat(buffers);
           
           // Upload to Cloudinary
+          // Build a stable public_id without duplicating the COFO- prefix
+          const baseId = (cofO.cofONumber ?? cofO.applicationNumber ?? "UNKNOWN").toString().replace(/^COFO-/, "");
           const uploadStream = cloudinary.uploader.upload_stream(
             {
               folder: "geotech_certificates",
               resource_type: "raw",
-              public_id: `COFO-${cofO.applicationNumber}-${Date.now()}`,
+              public_id: `COFO-${baseId}-${Date.now()}`,
               format: "pdf",
             },
             (error: any, result: any) => {
