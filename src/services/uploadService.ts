@@ -93,3 +93,30 @@ export const uploadToCloudinary = (
     streamifier.createReadStream(buffer).pipe(uploadStream);
   });
 };
+export const uploadToCerificateCloudinary = (
+  buffer: Buffer,
+  filename?: string,
+  mimeType?: string,
+  options?: { folder?: string; resourceType?: 'image' | 'raw' }
+) => {
+  return new Promise<any>((resolve, reject) => {
+    const inferredResource = getResourceType(filename || '', mimeType || '');
+    const resourceType = options?.resourceType ?? inferredResource;
+    const folder = options?.folder ?? 'geotech_documents';
+    const publicId = filename ?? `${Date.now()}`;
+
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder,
+        resource_type: resourceType,
+        public_id: publicId,
+      },
+      (error: any, result: any) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+
+    streamifier.createReadStream(buffer).pipe(uploadStream);
+  });
+};

@@ -1,7 +1,7 @@
 import PDFDocument from "pdfkit";
 import { Readable } from "stream";
 import axios from "axios";
-import { uploadToCloudinary } from "../services/uploadService";
+import { uploadToCerificateCloudinary } from "../services/uploadService";
 
 interface CofOData {
   applicationNumber: string;
@@ -45,7 +45,7 @@ export async function generateCofOCertificate(cofO: CofOData): Promise<string> {
 
         const filename = `COFO-${Date.now()}.pdf`;
 
-        const result = await uploadToCloudinary(
+        const result = await uploadToCerificateCloudinary(
           pdfBuffer,
           filename,
           "application/pdf",
