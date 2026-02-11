@@ -22,5 +22,4 @@ router.get("/get-registered-lands", AdminverifyToken, authorizeRoles(['ADMIN']),
 router.get("/land-registered-count", AdminverifyToken, authorizeRoles(['ADMIN']),  getLandRegistrationsCount);
 router.get("/get-all-lands", AdminverifyToken, authorizeRoles(['ADMIN']), getAllLands);
 router.get('/get-land-info-byID/:landId', AdminverifyToken, authorizeRoles(['ADMIN']), getLandById );
-router.post()
 export default router;
