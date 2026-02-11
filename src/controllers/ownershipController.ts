@@ -870,6 +870,11 @@ export const getTransferProgress = async (
         details: {
           verified: verifiedCount,
           total: totalVerifications,
+          targets: transfer.verifications.map((v) => ({
+            target: v.target,
+            channelType: v.channelType,
+            isVerified: v.isVerified,
+          })),
         },
       },
       {
@@ -1083,6 +1088,11 @@ export const getUserOwnershipTransfers = async (
               : 0,
         },
         progressPercentage: calculateProgressPercentage(transfer.status),
+        targets: transfer.verifications.map((v) => ({
+          target: v.target,
+          channelType: v.channelType,
+          isVerified: v.isVerified,
+        })),
       };
     });
 
