@@ -18,9 +18,8 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   "http://localhost:5173", // local dev
-  "https://geo-tech-six.vercel.app/", // production
-  "https://geo-tech-six.vercel.app/", // production
-  "https://www.geo-tech-six.vercel.app", // production
+  "https://geo-tech-six.vercel.app", // production (exact origin used by Vercel)
+  "https://www.geo-tech-six.vercel.app", // production www
 ];
 
 app.use(
