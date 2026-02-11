@@ -201,7 +201,8 @@ export const getAllUser = async (req:AuthRequest, res:Response) => {
     include: {
       CofOApplication: true,
       LandRegistration: true,
-      OwnershipTransfer:true
+      currentOwnerTransfers: true,
+      newOwnerTransfers: true,
     },
     orderBy: { createdAt: "desc" },
   });
@@ -244,7 +245,7 @@ export const getOwnershipTransfersCount = async (req:AuthRequest, res:Response) 
   const totalTransfers = await prisma.ownershipTransfer.count();
   const approved = await prisma.ownershipTransfer.count({ where: { status: "APPROVED" } });
   const rejected = await prisma.ownershipTransfer.count({ where: { status: "REJECTED" } });
-  const pending = await prisma.ownershipTransfer.count({ where: { status: "PENDING" } });
+  const pending = await prisma.ownershipTransfer.count({ where: { status: "INITIATED" } });
   res.json({ totalTransfers, approved, rejected, pending });
 }
 export const approveUserLand = async (req:AuthRequest, res:Response) => {
