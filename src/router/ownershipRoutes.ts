@@ -1,6 +1,6 @@
 // src/routes/ownershipRoutes.ts
 import express, { Request, Response } from "express";
-import { requireAuth, verifyToken } from "../middlewares/authMiddleware";
+import { internalUserAuth, requireAuth, verifyToken } from "../middlewares/authMiddleware";
 import {
   initiateOwnershipTransfer,
   verifyTransferOTP,
@@ -10,6 +10,7 @@ import {
   getTransferForReview,
   getTransferProgress,
   listTransfersForGovernor,
+  getUserOwnershipTransfers,
 } from "../controllers/ownershipController";
 import { authorizeRoles } from "../middlewares/roleMiddleware";
 import multer from "multer";
@@ -35,6 +36,8 @@ router.post(
   submitTransferDocuments
 );
 
+router.get("/user-transfer-list", requireAuth, getUserOwnershipTransfers);
+
 // Get transfer progress and status
 router.get("/:transferId/progress", requireAuth, getTransferProgress);
 
@@ -43,12 +46,12 @@ router.get("/:transferId/progress", requireAuth, getTransferProgress);
    ======================== */
 
 // List all transfers pending review
-router.get("/governor/list", requireAuth, authorizeRoles(["GOVERNOR"]), listTransfersForGovernor);
+router.get("/governor/list", internalUserAuth, authorizeRoles(["GOVERNOR"]), listTransfersForGovernor);
 
 // Get transfer details for review
 router.get(
   "/governor/review/:transferId",
-  requireAuth,
+  internalUserAuth,
   authorizeRoles(["GOVERNOR"]),
   getTransferForReview
 );
@@ -56,7 +59,7 @@ router.get(
 // Approve transfer
 router.post(
   "/:transferId/approve",
-  requireAuth,
+  internalUserAuth,
   authorizeRoles(["GOVERNOR"]),
   approveOwnershipTransfer
 );
@@ -64,7 +67,7 @@ router.post(
 // Reject transfer with reason
 router.post(
   "/:transferId/reject",
-  requireAuth,
+  internalUserAuth,
   authorizeRoles(["GOVERNOR"]),
   rejectOwnershipTransfer
 );

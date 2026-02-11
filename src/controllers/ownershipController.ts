@@ -13,7 +13,7 @@ export const initiateOwnershipTransfer = async (
   req: AuthRequest,
   res: Response
 ) => {
-  const ownerId = req.user.id;
+  const ownerId = req.user.sub;
   const { landId, newOwnerEmail, newOwnerPhone, emails = [], phones = [] } = req.body;
 
   try {
@@ -165,7 +165,7 @@ export const initiateOwnershipTransfer = async (
 ================================ */
 
 export const verifyTransferOTP = async (req: AuthRequest, res: Response) => {
-  const userId = req.user.id;
+  const userId = req.user.sub;
   const { transferId, target, code } = req.body;
 
   try {
@@ -288,7 +288,7 @@ export const submitTransferDocuments = async (
   req: AuthRequest,
   res: Response
 ) => {
-  const ownerId = req.user.id;
+  const ownerId = req.user.sub;
   const { transferId } = req.body;
   const files = req.files as Express.Multer.File[];
 
@@ -999,3 +999,110 @@ function calculateProgressPercentage(status: string): number {
   };
   return statusMap[status] || 0;
 }
+/* ===============================
+   9. GET USER OWNERSHIP TRANSFERS
+================================ */
+
+export const getUserOwnershipTransfers = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  const userId = req.user.sub;
+
+  try {
+    // Get all transfers where user is current owner or new owner
+    const transfers = await prisma.ownershipTransfer.findMany({
+      where: {
+        OR: [
+          { currentOwnerId: userId },
+          { newOwnerId: userId },
+        ],
+      },
+      include: {
+        land: {
+          include: { state: true, owner: true },
+        },
+        documents: true,
+        currentOwner: true,
+        verifications: {
+          select: {
+            target: true,
+            channelType: true,
+            isVerified: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    // Transform and group by status
+    const groupedByStatus = {
+      initiated: transfers.filter((t) => t.status === "INITIATED"),
+      verifiedByParties: transfers.filter((t) => t.status === "VERIFIED_BY_PARTIES"),
+      pendingGovernor: transfers.filter((t) => t.status === "PENDING_GOVERNOR"),
+      approved: transfers.filter((t) => t.status === "APPROVED"),
+      rejected: transfers.filter((t) => t.status === "REJECTED"),
+      expired: transfers.filter((t) => t.status === "EXPIRED"),
+      all: transfers,
+    };
+
+    // Map transfers with additional data
+    const mappedTransfers = transfers.map((transfer) => {
+      const verifiedCount = transfer.verifications.filter(
+        (v) => v.isVerified
+      ).length;
+      const totalVerifications = transfer.verifications.length;
+
+      return {
+        id: transfer.id,
+        landId: transfer.landId,
+        status: transfer.status,
+        createdAt: transfer.createdAt,
+        reviewedAt: transfer.reviewedAt,
+        expiresAt: transfer.expiresAt,
+        userRole: transfer.currentOwnerId === userId ? "CURRENT_OWNER" : "NEW_OWNER",
+        land: {
+          id: transfer.land.id,
+          address: transfer.land.address,
+          size: transfer.land.squareMeters,
+          state: transfer.land.state.name,
+          currentOwner: transfer.land.owner.fullName,
+        },
+        documentation: {
+          submitted: transfer.documents.length,
+          approved: transfer.documents.filter((d) => d.status === "APPROVED").length,
+          rejected: transfer.documents.filter((d) => d.status === "REJECTED").length,
+          pending: transfer.documents.filter((d) => d.status === "PENDING").length,
+        },
+        verification: {
+          verified: verifiedCount,
+          total: totalVerifications,
+          progress:
+            totalVerifications > 0
+              ? Math.round((verifiedCount / totalVerifications) * 100)
+              : 0,
+        },
+        progressPercentage: calculateProgressPercentage(transfer.status),
+      };
+    });
+
+    res.json({
+      summary: {
+        total: transfers.length,
+        initiated: groupedByStatus.initiated.length,
+        verifiedByParties: groupedByStatus.verifiedByParties.length,
+        pendingGovernor: groupedByStatus.pendingGovernor.length,
+        approved: groupedByStatus.approved.length,
+        rejected: groupedByStatus.rejected.length,
+        expired: groupedByStatus.expired.length,
+      },
+      transfers: mappedTransfers,
+    });
+  } catch (err) {
+    console.error("Get user transfers error:", err);
+    res.status(500).json({
+      message: "Failed to retrieve user transfers",
+      error: String(err),
+    });
+  }
+};
