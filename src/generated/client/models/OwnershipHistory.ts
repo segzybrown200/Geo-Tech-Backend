@@ -186,9 +186,9 @@ export type OwnershipHistoryWhereInput = {
   NOT?: Prisma.OwnershipHistoryWhereInput | Prisma.OwnershipHistoryWhereInput[]
   id?: Prisma.UuidFilter<"OwnershipHistory"> | string
   landId?: Prisma.UuidFilter<"OwnershipHistory"> | string
-  fromUserId?: Prisma.StringFilter<"OwnershipHistory"> | string
-  toUserId?: Prisma.StringFilter<"OwnershipHistory"> | string
-  authorizedBy?: Prisma.StringFilter<"OwnershipHistory"> | string
+  fromUserId?: Prisma.UuidFilter<"OwnershipHistory"> | string
+  toUserId?: Prisma.UuidFilter<"OwnershipHistory"> | string
+  authorizedBy?: Prisma.UuidFilter<"OwnershipHistory"> | string
   transferDate?: Prisma.DateTimeFilter<"OwnershipHistory"> | Date | string
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
 }
@@ -209,9 +209,9 @@ export type OwnershipHistoryWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.OwnershipHistoryWhereInput[]
   NOT?: Prisma.OwnershipHistoryWhereInput | Prisma.OwnershipHistoryWhereInput[]
   landId?: Prisma.UuidFilter<"OwnershipHistory"> | string
-  fromUserId?: Prisma.StringFilter<"OwnershipHistory"> | string
-  toUserId?: Prisma.StringFilter<"OwnershipHistory"> | string
-  authorizedBy?: Prisma.StringFilter<"OwnershipHistory"> | string
+  fromUserId?: Prisma.UuidFilter<"OwnershipHistory"> | string
+  toUserId?: Prisma.UuidFilter<"OwnershipHistory"> | string
+  authorizedBy?: Prisma.UuidFilter<"OwnershipHistory"> | string
   transferDate?: Prisma.DateTimeFilter<"OwnershipHistory"> | Date | string
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
 }, "id">
@@ -234,9 +234,9 @@ export type OwnershipHistoryScalarWhereWithAggregatesInput = {
   NOT?: Prisma.OwnershipHistoryScalarWhereWithAggregatesInput | Prisma.OwnershipHistoryScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"OwnershipHistory"> | string
   landId?: Prisma.UuidWithAggregatesFilter<"OwnershipHistory"> | string
-  fromUserId?: Prisma.StringWithAggregatesFilter<"OwnershipHistory"> | string
-  toUserId?: Prisma.StringWithAggregatesFilter<"OwnershipHistory"> | string
-  authorizedBy?: Prisma.StringWithAggregatesFilter<"OwnershipHistory"> | string
+  fromUserId?: Prisma.UuidWithAggregatesFilter<"OwnershipHistory"> | string
+  toUserId?: Prisma.UuidWithAggregatesFilter<"OwnershipHistory"> | string
+  authorizedBy?: Prisma.UuidWithAggregatesFilter<"OwnershipHistory"> | string
   transferDate?: Prisma.DateTimeWithAggregatesFilter<"OwnershipHistory"> | Date | string
 }
 
@@ -429,9 +429,9 @@ export type OwnershipHistoryScalarWhereInput = {
   NOT?: Prisma.OwnershipHistoryScalarWhereInput | Prisma.OwnershipHistoryScalarWhereInput[]
   id?: Prisma.UuidFilter<"OwnershipHistory"> | string
   landId?: Prisma.UuidFilter<"OwnershipHistory"> | string
-  fromUserId?: Prisma.StringFilter<"OwnershipHistory"> | string
-  toUserId?: Prisma.StringFilter<"OwnershipHistory"> | string
-  authorizedBy?: Prisma.StringFilter<"OwnershipHistory"> | string
+  fromUserId?: Prisma.UuidFilter<"OwnershipHistory"> | string
+  toUserId?: Prisma.UuidFilter<"OwnershipHistory"> | string
+  authorizedBy?: Prisma.UuidFilter<"OwnershipHistory"> | string
   transferDate?: Prisma.DateTimeFilter<"OwnershipHistory"> | Date | string
 }
 

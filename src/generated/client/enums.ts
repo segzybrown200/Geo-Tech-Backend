@@ -51,6 +51,18 @@ export const UserType = {
 export type UserType = (typeof UserType)[keyof typeof UserType]
 
 
+export const TransferStatus = {
+  INITIATED: 'INITIATED',
+  VERIFIED_BY_PARTIES: 'VERIFIED_BY_PARTIES',
+  PENDING_GOVERNOR: 'PENDING_GOVERNOR',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type TransferStatus = (typeof TransferStatus)[keyof typeof TransferStatus]
+
+
 export const DocumentStatus = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',

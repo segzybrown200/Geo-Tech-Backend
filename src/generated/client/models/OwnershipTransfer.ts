@@ -28,8 +28,14 @@ export type OwnershipTransferMinAggregateOutputType = {
   id: string | null
   landId: string | null
   currentOwnerId: string | null
+  newOwnerId: string | null
+  governorId: string | null
   newOwnerEmail: string | null
-  status: string | null
+  newOwnerPhone: string | null
+  status: $Enums.TransferStatus | null
+  governorComment: string | null
+  reviewedAt: Date | null
+  rejectionReason: string | null
   expiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -39,8 +45,14 @@ export type OwnershipTransferMaxAggregateOutputType = {
   id: string | null
   landId: string | null
   currentOwnerId: string | null
+  newOwnerId: string | null
+  governorId: string | null
   newOwnerEmail: string | null
-  status: string | null
+  newOwnerPhone: string | null
+  status: $Enums.TransferStatus | null
+  governorComment: string | null
+  reviewedAt: Date | null
+  rejectionReason: string | null
   expiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -50,8 +62,14 @@ export type OwnershipTransferCountAggregateOutputType = {
   id: number
   landId: number
   currentOwnerId: number
+  newOwnerId: number
+  governorId: number
   newOwnerEmail: number
+  newOwnerPhone: number
   status: number
+  governorComment: number
+  reviewedAt: number
+  rejectionReason: number
   expiresAt: number
   createdAt: number
   updatedAt: number
@@ -63,8 +81,14 @@ export type OwnershipTransferMinAggregateInputType = {
   id?: true
   landId?: true
   currentOwnerId?: true
+  newOwnerId?: true
+  governorId?: true
   newOwnerEmail?: true
+  newOwnerPhone?: true
   status?: true
+  governorComment?: true
+  reviewedAt?: true
+  rejectionReason?: true
   expiresAt?: true
   createdAt?: true
   updatedAt?: true
@@ -74,8 +98,14 @@ export type OwnershipTransferMaxAggregateInputType = {
   id?: true
   landId?: true
   currentOwnerId?: true
+  newOwnerId?: true
+  governorId?: true
   newOwnerEmail?: true
+  newOwnerPhone?: true
   status?: true
+  governorComment?: true
+  reviewedAt?: true
+  rejectionReason?: true
   expiresAt?: true
   createdAt?: true
   updatedAt?: true
@@ -85,8 +115,14 @@ export type OwnershipTransferCountAggregateInputType = {
   id?: true
   landId?: true
   currentOwnerId?: true
+  newOwnerId?: true
+  governorId?: true
   newOwnerEmail?: true
+  newOwnerPhone?: true
   status?: true
+  governorComment?: true
+  reviewedAt?: true
+  rejectionReason?: true
   expiresAt?: true
   createdAt?: true
   updatedAt?: true
@@ -169,8 +205,14 @@ export type OwnershipTransferGroupByOutputType = {
   id: string
   landId: string
   currentOwnerId: string
-  newOwnerEmail: string
-  status: string
+  newOwnerId: string | null
+  governorId: string | null
+  newOwnerEmail: string | null
+  newOwnerPhone: string | null
+  status: $Enums.TransferStatus
+  governorComment: string | null
+  reviewedAt: Date | null
+  rejectionReason: string | null
   expiresAt: Date
   createdAt: Date
   updatedAt: Date
@@ -201,28 +243,48 @@ export type OwnershipTransferWhereInput = {
   id?: Prisma.UuidFilter<"OwnershipTransfer"> | string
   landId?: Prisma.UuidFilter<"OwnershipTransfer"> | string
   currentOwnerId?: Prisma.UuidFilter<"OwnershipTransfer"> | string
-  newOwnerEmail?: Prisma.StringFilter<"OwnershipTransfer"> | string
-  status?: Prisma.StringFilter<"OwnershipTransfer"> | string
+  newOwnerId?: Prisma.UuidNullableFilter<"OwnershipTransfer"> | string | null
+  governorId?: Prisma.UuidNullableFilter<"OwnershipTransfer"> | string | null
+  newOwnerEmail?: Prisma.StringNullableFilter<"OwnershipTransfer"> | string | null
+  newOwnerPhone?: Prisma.StringNullableFilter<"OwnershipTransfer"> | string | null
+  status?: Prisma.EnumTransferStatusFilter<"OwnershipTransfer"> | $Enums.TransferStatus
+  governorComment?: Prisma.StringNullableFilter<"OwnershipTransfer"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"OwnershipTransfer"> | Date | string | null
+  rejectionReason?: Prisma.StringNullableFilter<"OwnershipTransfer"> | string | null
   expiresAt?: Prisma.DateTimeFilter<"OwnershipTransfer"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"OwnershipTransfer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OwnershipTransfer"> | Date | string
   verifications?: Prisma.TransferVerificationListRelationFilter
+  documents?: Prisma.OwnershipTransferDocumentListRelationFilter
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogListRelationFilter
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
   currentOwner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  newOwner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  governor?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
 }
 
 export type OwnershipTransferOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   currentOwnerId?: Prisma.SortOrder
-  newOwnerEmail?: Prisma.SortOrder
+  newOwnerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  governorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  newOwnerEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  newOwnerPhone?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  governorComment?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   verifications?: Prisma.TransferVerificationOrderByRelationAggregateInput
+  documents?: Prisma.OwnershipTransferDocumentOrderByRelationAggregateInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogOrderByRelationAggregateInput
   land?: Prisma.LandRegistrationOrderByWithRelationInput
   currentOwner?: Prisma.UserOrderByWithRelationInput
+  newOwner?: Prisma.UserOrderByWithRelationInput
+  governor?: Prisma.InternalUserOrderByWithRelationInput
 }
 
 export type OwnershipTransferWhereUniqueInput = Prisma.AtLeast<{
@@ -232,22 +294,38 @@ export type OwnershipTransferWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.OwnershipTransferWhereInput | Prisma.OwnershipTransferWhereInput[]
   landId?: Prisma.UuidFilter<"OwnershipTransfer"> | string
   currentOwnerId?: Prisma.UuidFilter<"OwnershipTransfer"> | string
-  newOwnerEmail?: Prisma.StringFilter<"OwnershipTransfer"> | string
-  status?: Prisma.StringFilter<"OwnershipTransfer"> | string
+  newOwnerId?: Prisma.UuidNullableFilter<"OwnershipTransfer"> | string | null
+  governorId?: Prisma.UuidNullableFilter<"OwnershipTransfer"> | string | null
+  newOwnerEmail?: Prisma.StringNullableFilter<"OwnershipTransfer"> | string | null
+  newOwnerPhone?: Prisma.StringNullableFilter<"OwnershipTransfer"> | string | null
+  status?: Prisma.EnumTransferStatusFilter<"OwnershipTransfer"> | $Enums.TransferStatus
+  governorComment?: Prisma.StringNullableFilter<"OwnershipTransfer"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"OwnershipTransfer"> | Date | string | null
+  rejectionReason?: Prisma.StringNullableFilter<"OwnershipTransfer"> | string | null
   expiresAt?: Prisma.DateTimeFilter<"OwnershipTransfer"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"OwnershipTransfer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OwnershipTransfer"> | Date | string
   verifications?: Prisma.TransferVerificationListRelationFilter
+  documents?: Prisma.OwnershipTransferDocumentListRelationFilter
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogListRelationFilter
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
   currentOwner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  newOwner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  governor?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
 }, "id">
 
 export type OwnershipTransferOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   currentOwnerId?: Prisma.SortOrder
-  newOwnerEmail?: Prisma.SortOrder
+  newOwnerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  governorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  newOwnerEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  newOwnerPhone?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  governorComment?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -263,8 +341,14 @@ export type OwnershipTransferScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"OwnershipTransfer"> | string
   landId?: Prisma.UuidWithAggregatesFilter<"OwnershipTransfer"> | string
   currentOwnerId?: Prisma.UuidWithAggregatesFilter<"OwnershipTransfer"> | string
-  newOwnerEmail?: Prisma.StringWithAggregatesFilter<"OwnershipTransfer"> | string
-  status?: Prisma.StringWithAggregatesFilter<"OwnershipTransfer"> | string
+  newOwnerId?: Prisma.UuidNullableWithAggregatesFilter<"OwnershipTransfer"> | string | null
+  governorId?: Prisma.UuidNullableWithAggregatesFilter<"OwnershipTransfer"> | string | null
+  newOwnerEmail?: Prisma.StringNullableWithAggregatesFilter<"OwnershipTransfer"> | string | null
+  newOwnerPhone?: Prisma.StringNullableWithAggregatesFilter<"OwnershipTransfer"> | string | null
+  status?: Prisma.EnumTransferStatusWithAggregatesFilter<"OwnershipTransfer"> | $Enums.TransferStatus
+  governorComment?: Prisma.StringNullableWithAggregatesFilter<"OwnershipTransfer"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"OwnershipTransfer"> | Date | string | null
+  rejectionReason?: Prisma.StringNullableWithAggregatesFilter<"OwnershipTransfer"> | string | null
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"OwnershipTransfer"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"OwnershipTransfer"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"OwnershipTransfer"> | Date | string
@@ -272,58 +356,96 @@ export type OwnershipTransferScalarWhereWithAggregatesInput = {
 
 export type OwnershipTransferCreateInput = {
   id?: string
-  newOwnerEmail: string
-  status?: string
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   expiresAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   verifications?: Prisma.TransferVerificationCreateNestedManyWithoutTransferInput
+  documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
-  currentOwner: Prisma.UserCreateNestedOneWithoutOwnershipTransferInput
+  currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
+  newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
+  governor?: Prisma.InternalUserCreateNestedOneWithoutOwnershipTransfersReviewedInput
 }
 
 export type OwnershipTransferUncheckedCreateInput = {
   id?: string
   landId: string
   currentOwnerId: string
-  newOwnerEmail: string
-  status?: string
+  newOwnerId?: string | null
+  governorId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   expiresAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   verifications?: Prisma.TransferVerificationUncheckedCreateNestedManyWithoutTransferInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  newOwnerEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   verifications?: Prisma.TransferVerificationUpdateManyWithoutTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
-  currentOwner?: Prisma.UserUpdateOneRequiredWithoutOwnershipTransferNestedInput
+  currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
+  newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
+  governor?: Prisma.InternalUserUpdateOneWithoutOwnershipTransfersReviewedNestedInput
 }
 
 export type OwnershipTransferUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   currentOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
-  newOwnerEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   verifications?: Prisma.TransferVerificationUncheckedUpdateManyWithoutTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferCreateManyInput = {
   id?: string
   landId: string
   currentOwnerId: string
-  newOwnerEmail: string
-  status?: string
+  newOwnerId?: string | null
+  governorId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   expiresAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -331,8 +453,12 @@ export type OwnershipTransferCreateManyInput = {
 
 export type OwnershipTransferUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  newOwnerEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -342,8 +468,14 @@ export type OwnershipTransferUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   currentOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
-  newOwnerEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -363,8 +495,14 @@ export type OwnershipTransferCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   currentOwnerId?: Prisma.SortOrder
+  newOwnerId?: Prisma.SortOrder
+  governorId?: Prisma.SortOrder
   newOwnerEmail?: Prisma.SortOrder
+  newOwnerPhone?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  governorComment?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -374,8 +512,14 @@ export type OwnershipTransferMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   currentOwnerId?: Prisma.SortOrder
+  newOwnerId?: Prisma.SortOrder
+  governorId?: Prisma.SortOrder
   newOwnerEmail?: Prisma.SortOrder
+  newOwnerPhone?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  governorComment?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -385,8 +529,14 @@ export type OwnershipTransferMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   landId?: Prisma.SortOrder
   currentOwnerId?: Prisma.SortOrder
+  newOwnerId?: Prisma.SortOrder
+  governorId?: Prisma.SortOrder
   newOwnerEmail?: Prisma.SortOrder
+  newOwnerPhone?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  governorComment?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -404,10 +554,24 @@ export type OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput = {
   connect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
 }
 
+export type OwnershipTransferCreateNestedManyWithoutNewOwnerInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutNewOwnerInput, Prisma.OwnershipTransferUncheckedCreateWithoutNewOwnerInput> | Prisma.OwnershipTransferCreateWithoutNewOwnerInput[] | Prisma.OwnershipTransferUncheckedCreateWithoutNewOwnerInput[]
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutNewOwnerInput | Prisma.OwnershipTransferCreateOrConnectWithoutNewOwnerInput[]
+  createMany?: Prisma.OwnershipTransferCreateManyNewOwnerInputEnvelope
+  connect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+}
+
 export type OwnershipTransferUncheckedCreateNestedManyWithoutCurrentOwnerInput = {
   create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutCurrentOwnerInput, Prisma.OwnershipTransferUncheckedCreateWithoutCurrentOwnerInput> | Prisma.OwnershipTransferCreateWithoutCurrentOwnerInput[] | Prisma.OwnershipTransferUncheckedCreateWithoutCurrentOwnerInput[]
   connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutCurrentOwnerInput | Prisma.OwnershipTransferCreateOrConnectWithoutCurrentOwnerInput[]
   createMany?: Prisma.OwnershipTransferCreateManyCurrentOwnerInputEnvelope
+  connect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+}
+
+export type OwnershipTransferUncheckedCreateNestedManyWithoutNewOwnerInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutNewOwnerInput, Prisma.OwnershipTransferUncheckedCreateWithoutNewOwnerInput> | Prisma.OwnershipTransferCreateWithoutNewOwnerInput[] | Prisma.OwnershipTransferUncheckedCreateWithoutNewOwnerInput[]
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutNewOwnerInput | Prisma.OwnershipTransferCreateOrConnectWithoutNewOwnerInput[]
+  createMany?: Prisma.OwnershipTransferCreateManyNewOwnerInputEnvelope
   connect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
 }
 
@@ -425,6 +589,20 @@ export type OwnershipTransferUpdateManyWithoutCurrentOwnerNestedInput = {
   deleteMany?: Prisma.OwnershipTransferScalarWhereInput | Prisma.OwnershipTransferScalarWhereInput[]
 }
 
+export type OwnershipTransferUpdateManyWithoutNewOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutNewOwnerInput, Prisma.OwnershipTransferUncheckedCreateWithoutNewOwnerInput> | Prisma.OwnershipTransferCreateWithoutNewOwnerInput[] | Prisma.OwnershipTransferUncheckedCreateWithoutNewOwnerInput[]
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutNewOwnerInput | Prisma.OwnershipTransferCreateOrConnectWithoutNewOwnerInput[]
+  upsert?: Prisma.OwnershipTransferUpsertWithWhereUniqueWithoutNewOwnerInput | Prisma.OwnershipTransferUpsertWithWhereUniqueWithoutNewOwnerInput[]
+  createMany?: Prisma.OwnershipTransferCreateManyNewOwnerInputEnvelope
+  set?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  disconnect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  delete?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  connect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  update?: Prisma.OwnershipTransferUpdateWithWhereUniqueWithoutNewOwnerInput | Prisma.OwnershipTransferUpdateWithWhereUniqueWithoutNewOwnerInput[]
+  updateMany?: Prisma.OwnershipTransferUpdateManyWithWhereWithoutNewOwnerInput | Prisma.OwnershipTransferUpdateManyWithWhereWithoutNewOwnerInput[]
+  deleteMany?: Prisma.OwnershipTransferScalarWhereInput | Prisma.OwnershipTransferScalarWhereInput[]
+}
+
 export type OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput = {
   create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutCurrentOwnerInput, Prisma.OwnershipTransferUncheckedCreateWithoutCurrentOwnerInput> | Prisma.OwnershipTransferCreateWithoutCurrentOwnerInput[] | Prisma.OwnershipTransferUncheckedCreateWithoutCurrentOwnerInput[]
   connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutCurrentOwnerInput | Prisma.OwnershipTransferCreateOrConnectWithoutCurrentOwnerInput[]
@@ -436,6 +614,62 @@ export type OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput =
   connect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
   update?: Prisma.OwnershipTransferUpdateWithWhereUniqueWithoutCurrentOwnerInput | Prisma.OwnershipTransferUpdateWithWhereUniqueWithoutCurrentOwnerInput[]
   updateMany?: Prisma.OwnershipTransferUpdateManyWithWhereWithoutCurrentOwnerInput | Prisma.OwnershipTransferUpdateManyWithWhereWithoutCurrentOwnerInput[]
+  deleteMany?: Prisma.OwnershipTransferScalarWhereInput | Prisma.OwnershipTransferScalarWhereInput[]
+}
+
+export type OwnershipTransferUncheckedUpdateManyWithoutNewOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutNewOwnerInput, Prisma.OwnershipTransferUncheckedCreateWithoutNewOwnerInput> | Prisma.OwnershipTransferCreateWithoutNewOwnerInput[] | Prisma.OwnershipTransferUncheckedCreateWithoutNewOwnerInput[]
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutNewOwnerInput | Prisma.OwnershipTransferCreateOrConnectWithoutNewOwnerInput[]
+  upsert?: Prisma.OwnershipTransferUpsertWithWhereUniqueWithoutNewOwnerInput | Prisma.OwnershipTransferUpsertWithWhereUniqueWithoutNewOwnerInput[]
+  createMany?: Prisma.OwnershipTransferCreateManyNewOwnerInputEnvelope
+  set?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  disconnect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  delete?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  connect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  update?: Prisma.OwnershipTransferUpdateWithWhereUniqueWithoutNewOwnerInput | Prisma.OwnershipTransferUpdateWithWhereUniqueWithoutNewOwnerInput[]
+  updateMany?: Prisma.OwnershipTransferUpdateManyWithWhereWithoutNewOwnerInput | Prisma.OwnershipTransferUpdateManyWithWhereWithoutNewOwnerInput[]
+  deleteMany?: Prisma.OwnershipTransferScalarWhereInput | Prisma.OwnershipTransferScalarWhereInput[]
+}
+
+export type OwnershipTransferCreateNestedManyWithoutGovernorInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutGovernorInput, Prisma.OwnershipTransferUncheckedCreateWithoutGovernorInput> | Prisma.OwnershipTransferCreateWithoutGovernorInput[] | Prisma.OwnershipTransferUncheckedCreateWithoutGovernorInput[]
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutGovernorInput | Prisma.OwnershipTransferCreateOrConnectWithoutGovernorInput[]
+  createMany?: Prisma.OwnershipTransferCreateManyGovernorInputEnvelope
+  connect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+}
+
+export type OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutGovernorInput, Prisma.OwnershipTransferUncheckedCreateWithoutGovernorInput> | Prisma.OwnershipTransferCreateWithoutGovernorInput[] | Prisma.OwnershipTransferUncheckedCreateWithoutGovernorInput[]
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutGovernorInput | Prisma.OwnershipTransferCreateOrConnectWithoutGovernorInput[]
+  createMany?: Prisma.OwnershipTransferCreateManyGovernorInputEnvelope
+  connect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+}
+
+export type OwnershipTransferUpdateManyWithoutGovernorNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutGovernorInput, Prisma.OwnershipTransferUncheckedCreateWithoutGovernorInput> | Prisma.OwnershipTransferCreateWithoutGovernorInput[] | Prisma.OwnershipTransferUncheckedCreateWithoutGovernorInput[]
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutGovernorInput | Prisma.OwnershipTransferCreateOrConnectWithoutGovernorInput[]
+  upsert?: Prisma.OwnershipTransferUpsertWithWhereUniqueWithoutGovernorInput | Prisma.OwnershipTransferUpsertWithWhereUniqueWithoutGovernorInput[]
+  createMany?: Prisma.OwnershipTransferCreateManyGovernorInputEnvelope
+  set?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  disconnect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  delete?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  connect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  update?: Prisma.OwnershipTransferUpdateWithWhereUniqueWithoutGovernorInput | Prisma.OwnershipTransferUpdateWithWhereUniqueWithoutGovernorInput[]
+  updateMany?: Prisma.OwnershipTransferUpdateManyWithWhereWithoutGovernorInput | Prisma.OwnershipTransferUpdateManyWithWhereWithoutGovernorInput[]
+  deleteMany?: Prisma.OwnershipTransferScalarWhereInput | Prisma.OwnershipTransferScalarWhereInput[]
+}
+
+export type OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutGovernorInput, Prisma.OwnershipTransferUncheckedCreateWithoutGovernorInput> | Prisma.OwnershipTransferCreateWithoutGovernorInput[] | Prisma.OwnershipTransferUncheckedCreateWithoutGovernorInput[]
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutGovernorInput | Prisma.OwnershipTransferCreateOrConnectWithoutGovernorInput[]
+  upsert?: Prisma.OwnershipTransferUpsertWithWhereUniqueWithoutGovernorInput | Prisma.OwnershipTransferUpsertWithWhereUniqueWithoutGovernorInput[]
+  createMany?: Prisma.OwnershipTransferCreateManyGovernorInputEnvelope
+  set?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  disconnect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  delete?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  connect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
+  update?: Prisma.OwnershipTransferUpdateWithWhereUniqueWithoutGovernorInput | Prisma.OwnershipTransferUpdateWithWhereUniqueWithoutGovernorInput[]
+  updateMany?: Prisma.OwnershipTransferUpdateManyWithWhereWithoutGovernorInput | Prisma.OwnershipTransferUpdateManyWithWhereWithoutGovernorInput[]
   deleteMany?: Prisma.OwnershipTransferScalarWhereInput | Prisma.OwnershipTransferScalarWhereInput[]
 }
 
@@ -481,6 +715,10 @@ export type OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput = {
   deleteMany?: Prisma.OwnershipTransferScalarWhereInput | Prisma.OwnershipTransferScalarWhereInput[]
 }
 
+export type EnumTransferStatusFieldUpdateOperationsInput = {
+  set?: $Enums.TransferStatus
+}
+
 export type OwnershipTransferCreateNestedOneWithoutVerificationsInput = {
   create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutVerificationsInput, Prisma.OwnershipTransferUncheckedCreateWithoutVerificationsInput>
   connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutVerificationsInput
@@ -495,26 +733,70 @@ export type OwnershipTransferUpdateOneRequiredWithoutVerificationsNestedInput = 
   update?: Prisma.XOR<Prisma.XOR<Prisma.OwnershipTransferUpdateToOneWithWhereWithoutVerificationsInput, Prisma.OwnershipTransferUpdateWithoutVerificationsInput>, Prisma.OwnershipTransferUncheckedUpdateWithoutVerificationsInput>
 }
 
+export type OwnershipTransferCreateNestedOneWithoutDocumentsInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutDocumentsInput, Prisma.OwnershipTransferUncheckedCreateWithoutDocumentsInput>
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutDocumentsInput
+  connect?: Prisma.OwnershipTransferWhereUniqueInput
+}
+
+export type OwnershipTransferUpdateOneRequiredWithoutDocumentsNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutDocumentsInput, Prisma.OwnershipTransferUncheckedCreateWithoutDocumentsInput>
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutDocumentsInput
+  upsert?: Prisma.OwnershipTransferUpsertWithoutDocumentsInput
+  connect?: Prisma.OwnershipTransferWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OwnershipTransferUpdateToOneWithWhereWithoutDocumentsInput, Prisma.OwnershipTransferUpdateWithoutDocumentsInput>, Prisma.OwnershipTransferUncheckedUpdateWithoutDocumentsInput>
+}
+
+export type OwnershipTransferCreateNestedOneWithoutTransferAuditLogsInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutTransferAuditLogsInput, Prisma.OwnershipTransferUncheckedCreateWithoutTransferAuditLogsInput>
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutTransferAuditLogsInput
+  connect?: Prisma.OwnershipTransferWhereUniqueInput
+}
+
+export type OwnershipTransferUpdateOneRequiredWithoutTransferAuditLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutTransferAuditLogsInput, Prisma.OwnershipTransferUncheckedCreateWithoutTransferAuditLogsInput>
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutTransferAuditLogsInput
+  upsert?: Prisma.OwnershipTransferUpsertWithoutTransferAuditLogsInput
+  connect?: Prisma.OwnershipTransferWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OwnershipTransferUpdateToOneWithWhereWithoutTransferAuditLogsInput, Prisma.OwnershipTransferUpdateWithoutTransferAuditLogsInput>, Prisma.OwnershipTransferUncheckedUpdateWithoutTransferAuditLogsInput>
+}
+
 export type OwnershipTransferCreateWithoutCurrentOwnerInput = {
   id?: string
-  newOwnerEmail: string
-  status?: string
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   expiresAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   verifications?: Prisma.TransferVerificationCreateNestedManyWithoutTransferInput
+  documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
+  newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
+  governor?: Prisma.InternalUserCreateNestedOneWithoutOwnershipTransfersReviewedInput
 }
 
 export type OwnershipTransferUncheckedCreateWithoutCurrentOwnerInput = {
   id?: string
   landId: string
-  newOwnerEmail: string
-  status?: string
+  newOwnerId?: string | null
+  governorId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   expiresAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   verifications?: Prisma.TransferVerificationUncheckedCreateNestedManyWithoutTransferInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferCreateOrConnectWithoutCurrentOwnerInput = {
@@ -524,6 +806,54 @@ export type OwnershipTransferCreateOrConnectWithoutCurrentOwnerInput = {
 
 export type OwnershipTransferCreateManyCurrentOwnerInputEnvelope = {
   data: Prisma.OwnershipTransferCreateManyCurrentOwnerInput | Prisma.OwnershipTransferCreateManyCurrentOwnerInput[]
+  skipDuplicates?: boolean
+}
+
+export type OwnershipTransferCreateWithoutNewOwnerInput = {
+  id?: string
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  expiresAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verifications?: Prisma.TransferVerificationCreateNestedManyWithoutTransferInput
+  documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
+  currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
+  governor?: Prisma.InternalUserCreateNestedOneWithoutOwnershipTransfersReviewedInput
+}
+
+export type OwnershipTransferUncheckedCreateWithoutNewOwnerInput = {
+  id?: string
+  landId: string
+  currentOwnerId: string
+  governorId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  expiresAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verifications?: Prisma.TransferVerificationUncheckedCreateNestedManyWithoutTransferInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
+}
+
+export type OwnershipTransferCreateOrConnectWithoutNewOwnerInput = {
+  where: Prisma.OwnershipTransferWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutNewOwnerInput, Prisma.OwnershipTransferUncheckedCreateWithoutNewOwnerInput>
+}
+
+export type OwnershipTransferCreateManyNewOwnerInputEnvelope = {
+  data: Prisma.OwnershipTransferCreateManyNewOwnerInput | Prisma.OwnershipTransferCreateManyNewOwnerInput[]
   skipDuplicates?: boolean
 }
 
@@ -550,33 +880,135 @@ export type OwnershipTransferScalarWhereInput = {
   id?: Prisma.UuidFilter<"OwnershipTransfer"> | string
   landId?: Prisma.UuidFilter<"OwnershipTransfer"> | string
   currentOwnerId?: Prisma.UuidFilter<"OwnershipTransfer"> | string
-  newOwnerEmail?: Prisma.StringFilter<"OwnershipTransfer"> | string
-  status?: Prisma.StringFilter<"OwnershipTransfer"> | string
+  newOwnerId?: Prisma.UuidNullableFilter<"OwnershipTransfer"> | string | null
+  governorId?: Prisma.UuidNullableFilter<"OwnershipTransfer"> | string | null
+  newOwnerEmail?: Prisma.StringNullableFilter<"OwnershipTransfer"> | string | null
+  newOwnerPhone?: Prisma.StringNullableFilter<"OwnershipTransfer"> | string | null
+  status?: Prisma.EnumTransferStatusFilter<"OwnershipTransfer"> | $Enums.TransferStatus
+  governorComment?: Prisma.StringNullableFilter<"OwnershipTransfer"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"OwnershipTransfer"> | Date | string | null
+  rejectionReason?: Prisma.StringNullableFilter<"OwnershipTransfer"> | string | null
   expiresAt?: Prisma.DateTimeFilter<"OwnershipTransfer"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"OwnershipTransfer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OwnershipTransfer"> | Date | string
 }
 
-export type OwnershipTransferCreateWithoutLandInput = {
+export type OwnershipTransferUpsertWithWhereUniqueWithoutNewOwnerInput = {
+  where: Prisma.OwnershipTransferWhereUniqueInput
+  update: Prisma.XOR<Prisma.OwnershipTransferUpdateWithoutNewOwnerInput, Prisma.OwnershipTransferUncheckedUpdateWithoutNewOwnerInput>
+  create: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutNewOwnerInput, Prisma.OwnershipTransferUncheckedCreateWithoutNewOwnerInput>
+}
+
+export type OwnershipTransferUpdateWithWhereUniqueWithoutNewOwnerInput = {
+  where: Prisma.OwnershipTransferWhereUniqueInput
+  data: Prisma.XOR<Prisma.OwnershipTransferUpdateWithoutNewOwnerInput, Prisma.OwnershipTransferUncheckedUpdateWithoutNewOwnerInput>
+}
+
+export type OwnershipTransferUpdateManyWithWhereWithoutNewOwnerInput = {
+  where: Prisma.OwnershipTransferScalarWhereInput
+  data: Prisma.XOR<Prisma.OwnershipTransferUpdateManyMutationInput, Prisma.OwnershipTransferUncheckedUpdateManyWithoutNewOwnerInput>
+}
+
+export type OwnershipTransferCreateWithoutGovernorInput = {
   id?: string
-  newOwnerEmail: string
-  status?: string
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   expiresAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   verifications?: Prisma.TransferVerificationCreateNestedManyWithoutTransferInput
-  currentOwner: Prisma.UserCreateNestedOneWithoutOwnershipTransferInput
+  documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
+  currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
+  newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
+}
+
+export type OwnershipTransferUncheckedCreateWithoutGovernorInput = {
+  id?: string
+  landId: string
+  currentOwnerId: string
+  newOwnerId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  expiresAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verifications?: Prisma.TransferVerificationUncheckedCreateNestedManyWithoutTransferInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
+}
+
+export type OwnershipTransferCreateOrConnectWithoutGovernorInput = {
+  where: Prisma.OwnershipTransferWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutGovernorInput, Prisma.OwnershipTransferUncheckedCreateWithoutGovernorInput>
+}
+
+export type OwnershipTransferCreateManyGovernorInputEnvelope = {
+  data: Prisma.OwnershipTransferCreateManyGovernorInput | Prisma.OwnershipTransferCreateManyGovernorInput[]
+  skipDuplicates?: boolean
+}
+
+export type OwnershipTransferUpsertWithWhereUniqueWithoutGovernorInput = {
+  where: Prisma.OwnershipTransferWhereUniqueInput
+  update: Prisma.XOR<Prisma.OwnershipTransferUpdateWithoutGovernorInput, Prisma.OwnershipTransferUncheckedUpdateWithoutGovernorInput>
+  create: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutGovernorInput, Prisma.OwnershipTransferUncheckedCreateWithoutGovernorInput>
+}
+
+export type OwnershipTransferUpdateWithWhereUniqueWithoutGovernorInput = {
+  where: Prisma.OwnershipTransferWhereUniqueInput
+  data: Prisma.XOR<Prisma.OwnershipTransferUpdateWithoutGovernorInput, Prisma.OwnershipTransferUncheckedUpdateWithoutGovernorInput>
+}
+
+export type OwnershipTransferUpdateManyWithWhereWithoutGovernorInput = {
+  where: Prisma.OwnershipTransferScalarWhereInput
+  data: Prisma.XOR<Prisma.OwnershipTransferUpdateManyMutationInput, Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorInput>
+}
+
+export type OwnershipTransferCreateWithoutLandInput = {
+  id?: string
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  expiresAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verifications?: Prisma.TransferVerificationCreateNestedManyWithoutTransferInput
+  documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
+  currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
+  newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
+  governor?: Prisma.InternalUserCreateNestedOneWithoutOwnershipTransfersReviewedInput
 }
 
 export type OwnershipTransferUncheckedCreateWithoutLandInput = {
   id?: string
   currentOwnerId: string
-  newOwnerEmail: string
-  status?: string
+  newOwnerId?: string | null
+  governorId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   expiresAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   verifications?: Prisma.TransferVerificationUncheckedCreateNestedManyWithoutTransferInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferCreateOrConnectWithoutLandInput = {
@@ -607,24 +1039,40 @@ export type OwnershipTransferUpdateManyWithWhereWithoutLandInput = {
 
 export type OwnershipTransferCreateWithoutVerificationsInput = {
   id?: string
-  newOwnerEmail: string
-  status?: string
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   expiresAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
-  currentOwner: Prisma.UserCreateNestedOneWithoutOwnershipTransferInput
+  currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
+  newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
+  governor?: Prisma.InternalUserCreateNestedOneWithoutOwnershipTransfersReviewedInput
 }
 
 export type OwnershipTransferUncheckedCreateWithoutVerificationsInput = {
   id?: string
   landId: string
   currentOwnerId: string
-  newOwnerEmail: string
-  status?: string
+  newOwnerId?: string | null
+  governorId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   expiresAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferCreateOrConnectWithoutVerificationsInput = {
@@ -645,31 +1093,253 @@ export type OwnershipTransferUpdateToOneWithWhereWithoutVerificationsInput = {
 
 export type OwnershipTransferUpdateWithoutVerificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  newOwnerEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
-  currentOwner?: Prisma.UserUpdateOneRequiredWithoutOwnershipTransferNestedInput
+  currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
+  newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
+  governor?: Prisma.InternalUserUpdateOneWithoutOwnershipTransfersReviewedNestedInput
 }
 
 export type OwnershipTransferUncheckedUpdateWithoutVerificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
   currentOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
-  newOwnerEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
+}
+
+export type OwnershipTransferCreateWithoutDocumentsInput = {
+  id?: string
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  expiresAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verifications?: Prisma.TransferVerificationCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
+  currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
+  newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
+  governor?: Prisma.InternalUserCreateNestedOneWithoutOwnershipTransfersReviewedInput
+}
+
+export type OwnershipTransferUncheckedCreateWithoutDocumentsInput = {
+  id?: string
+  landId: string
+  currentOwnerId: string
+  newOwnerId?: string | null
+  governorId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  expiresAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verifications?: Prisma.TransferVerificationUncheckedCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
+}
+
+export type OwnershipTransferCreateOrConnectWithoutDocumentsInput = {
+  where: Prisma.OwnershipTransferWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutDocumentsInput, Prisma.OwnershipTransferUncheckedCreateWithoutDocumentsInput>
+}
+
+export type OwnershipTransferUpsertWithoutDocumentsInput = {
+  update: Prisma.XOR<Prisma.OwnershipTransferUpdateWithoutDocumentsInput, Prisma.OwnershipTransferUncheckedUpdateWithoutDocumentsInput>
+  create: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutDocumentsInput, Prisma.OwnershipTransferUncheckedCreateWithoutDocumentsInput>
+  where?: Prisma.OwnershipTransferWhereInput
+}
+
+export type OwnershipTransferUpdateToOneWithWhereWithoutDocumentsInput = {
+  where?: Prisma.OwnershipTransferWhereInput
+  data: Prisma.XOR<Prisma.OwnershipTransferUpdateWithoutDocumentsInput, Prisma.OwnershipTransferUncheckedUpdateWithoutDocumentsInput>
+}
+
+export type OwnershipTransferUpdateWithoutDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verifications?: Prisma.TransferVerificationUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
+  currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
+  newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
+  governor?: Prisma.InternalUserUpdateOneWithoutOwnershipTransfersReviewedNestedInput
+}
+
+export type OwnershipTransferUncheckedUpdateWithoutDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  currentOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verifications?: Prisma.TransferVerificationUncheckedUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
+}
+
+export type OwnershipTransferCreateWithoutTransferAuditLogsInput = {
+  id?: string
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  expiresAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verifications?: Prisma.TransferVerificationCreateNestedManyWithoutTransferInput
+  documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
+  currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
+  newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
+  governor?: Prisma.InternalUserCreateNestedOneWithoutOwnershipTransfersReviewedInput
+}
+
+export type OwnershipTransferUncheckedCreateWithoutTransferAuditLogsInput = {
+  id?: string
+  landId: string
+  currentOwnerId: string
+  newOwnerId?: string | null
+  governorId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  expiresAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verifications?: Prisma.TransferVerificationUncheckedCreateNestedManyWithoutTransferInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
+}
+
+export type OwnershipTransferCreateOrConnectWithoutTransferAuditLogsInput = {
+  where: Prisma.OwnershipTransferWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutTransferAuditLogsInput, Prisma.OwnershipTransferUncheckedCreateWithoutTransferAuditLogsInput>
+}
+
+export type OwnershipTransferUpsertWithoutTransferAuditLogsInput = {
+  update: Prisma.XOR<Prisma.OwnershipTransferUpdateWithoutTransferAuditLogsInput, Prisma.OwnershipTransferUncheckedUpdateWithoutTransferAuditLogsInput>
+  create: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutTransferAuditLogsInput, Prisma.OwnershipTransferUncheckedCreateWithoutTransferAuditLogsInput>
+  where?: Prisma.OwnershipTransferWhereInput
+}
+
+export type OwnershipTransferUpdateToOneWithWhereWithoutTransferAuditLogsInput = {
+  where?: Prisma.OwnershipTransferWhereInput
+  data: Prisma.XOR<Prisma.OwnershipTransferUpdateWithoutTransferAuditLogsInput, Prisma.OwnershipTransferUncheckedUpdateWithoutTransferAuditLogsInput>
+}
+
+export type OwnershipTransferUpdateWithoutTransferAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verifications?: Prisma.TransferVerificationUpdateManyWithoutTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
+  currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
+  newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
+  governor?: Prisma.InternalUserUpdateOneWithoutOwnershipTransfersReviewedNestedInput
+}
+
+export type OwnershipTransferUncheckedUpdateWithoutTransferAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  currentOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verifications?: Prisma.TransferVerificationUncheckedUpdateManyWithoutTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferCreateManyCurrentOwnerInput = {
   id?: string
   landId: string
-  newOwnerEmail: string
-  status?: string
+  newOwnerId?: string | null
+  governorId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  expiresAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type OwnershipTransferCreateManyNewOwnerInput = {
+  id?: string
+  landId: string
+  currentOwnerId: string
+  governorId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   expiresAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -677,31 +1347,177 @@ export type OwnershipTransferCreateManyCurrentOwnerInput = {
 
 export type OwnershipTransferUpdateWithoutCurrentOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  newOwnerEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   verifications?: Prisma.TransferVerificationUpdateManyWithoutTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
+  newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
+  governor?: Prisma.InternalUserUpdateOneWithoutOwnershipTransfersReviewedNestedInput
 }
 
 export type OwnershipTransferUncheckedUpdateWithoutCurrentOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
-  newOwnerEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   verifications?: Prisma.TransferVerificationUncheckedUpdateManyWithoutTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   landId?: Prisma.StringFieldUpdateOperationsInput | string
-  newOwnerEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type OwnershipTransferUpdateWithoutNewOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verifications?: Prisma.TransferVerificationUpdateManyWithoutTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
+  currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
+  governor?: Prisma.InternalUserUpdateOneWithoutOwnershipTransfersReviewedNestedInput
+}
+
+export type OwnershipTransferUncheckedUpdateWithoutNewOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  currentOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  governorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verifications?: Prisma.TransferVerificationUncheckedUpdateManyWithoutTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
+}
+
+export type OwnershipTransferUncheckedUpdateManyWithoutNewOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  currentOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  governorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type OwnershipTransferCreateManyGovernorInput = {
+  id?: string
+  landId: string
+  currentOwnerId: string
+  newOwnerId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  expiresAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type OwnershipTransferUpdateWithoutGovernorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verifications?: Prisma.TransferVerificationUpdateManyWithoutTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
+  currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
+  newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
+}
+
+export type OwnershipTransferUncheckedUpdateWithoutGovernorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  currentOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verifications?: Prisma.TransferVerificationUncheckedUpdateManyWithoutTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
+}
+
+export type OwnershipTransferUncheckedUpdateManyWithoutGovernorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  currentOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -710,8 +1526,14 @@ export type OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerInput = {
 export type OwnershipTransferCreateManyLandInput = {
   id?: string
   currentOwnerId: string
-  newOwnerEmail: string
-  status?: string
+  newOwnerId?: string | null
+  governorId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   expiresAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -719,31 +1541,53 @@ export type OwnershipTransferCreateManyLandInput = {
 
 export type OwnershipTransferUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  newOwnerEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   verifications?: Prisma.TransferVerificationUpdateManyWithoutTransferNestedInput
-  currentOwner?: Prisma.UserUpdateOneRequiredWithoutOwnershipTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
+  currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
+  newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
+  governor?: Prisma.InternalUserUpdateOneWithoutOwnershipTransfersReviewedNestedInput
 }
 
 export type OwnershipTransferUncheckedUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   currentOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
-  newOwnerEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   verifications?: Prisma.TransferVerificationUncheckedUpdateManyWithoutTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferUncheckedUpdateManyWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   currentOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
-  newOwnerEmail?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -756,10 +1600,14 @@ export type OwnershipTransferUncheckedUpdateManyWithoutLandInput = {
 
 export type OwnershipTransferCountOutputType = {
   verifications: number
+  documents: number
+  transferAuditLogs: number
 }
 
 export type OwnershipTransferCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   verifications?: boolean | OwnershipTransferCountOutputTypeCountVerificationsArgs
+  documents?: boolean | OwnershipTransferCountOutputTypeCountDocumentsArgs
+  transferAuditLogs?: boolean | OwnershipTransferCountOutputTypeCountTransferAuditLogsArgs
 }
 
 /**
@@ -779,19 +1627,43 @@ export type OwnershipTransferCountOutputTypeCountVerificationsArgs<ExtArgs exten
   where?: Prisma.TransferVerificationWhereInput
 }
 
+/**
+ * OwnershipTransferCountOutputType without action
+ */
+export type OwnershipTransferCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OwnershipTransferDocumentWhereInput
+}
+
+/**
+ * OwnershipTransferCountOutputType without action
+ */
+export type OwnershipTransferCountOutputTypeCountTransferAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OwnershipTransferAuditLogWhereInput
+}
+
 
 export type OwnershipTransferSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   landId?: boolean
   currentOwnerId?: boolean
+  newOwnerId?: boolean
+  governorId?: boolean
   newOwnerEmail?: boolean
+  newOwnerPhone?: boolean
   status?: boolean
+  governorComment?: boolean
+  reviewedAt?: boolean
+  rejectionReason?: boolean
   expiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   verifications?: boolean | Prisma.OwnershipTransfer$verificationsArgs<ExtArgs>
+  documents?: boolean | Prisma.OwnershipTransfer$documentsArgs<ExtArgs>
+  transferAuditLogs?: boolean | Prisma.OwnershipTransfer$transferAuditLogsArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   currentOwner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  newOwner?: boolean | Prisma.OwnershipTransfer$newOwnerArgs<ExtArgs>
+  governor?: boolean | Prisma.OwnershipTransfer$governorArgs<ExtArgs>
   _count?: boolean | Prisma.OwnershipTransferCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ownershipTransfer"]>
 
@@ -799,68 +1671,108 @@ export type OwnershipTransferSelectCreateManyAndReturn<ExtArgs extends runtime.T
   id?: boolean
   landId?: boolean
   currentOwnerId?: boolean
+  newOwnerId?: boolean
+  governorId?: boolean
   newOwnerEmail?: boolean
+  newOwnerPhone?: boolean
   status?: boolean
+  governorComment?: boolean
+  reviewedAt?: boolean
+  rejectionReason?: boolean
   expiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   currentOwner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  newOwner?: boolean | Prisma.OwnershipTransfer$newOwnerArgs<ExtArgs>
+  governor?: boolean | Prisma.OwnershipTransfer$governorArgs<ExtArgs>
 }, ExtArgs["result"]["ownershipTransfer"]>
 
 export type OwnershipTransferSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   landId?: boolean
   currentOwnerId?: boolean
+  newOwnerId?: boolean
+  governorId?: boolean
   newOwnerEmail?: boolean
+  newOwnerPhone?: boolean
   status?: boolean
+  governorComment?: boolean
+  reviewedAt?: boolean
+  rejectionReason?: boolean
   expiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   currentOwner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  newOwner?: boolean | Prisma.OwnershipTransfer$newOwnerArgs<ExtArgs>
+  governor?: boolean | Prisma.OwnershipTransfer$governorArgs<ExtArgs>
 }, ExtArgs["result"]["ownershipTransfer"]>
 
 export type OwnershipTransferSelectScalar = {
   id?: boolean
   landId?: boolean
   currentOwnerId?: boolean
+  newOwnerId?: boolean
+  governorId?: boolean
   newOwnerEmail?: boolean
+  newOwnerPhone?: boolean
   status?: boolean
+  governorComment?: boolean
+  reviewedAt?: boolean
+  rejectionReason?: boolean
   expiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type OwnershipTransferOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "landId" | "currentOwnerId" | "newOwnerEmail" | "status" | "expiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["ownershipTransfer"]>
+export type OwnershipTransferOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "landId" | "currentOwnerId" | "newOwnerId" | "governorId" | "newOwnerEmail" | "newOwnerPhone" | "status" | "governorComment" | "reviewedAt" | "rejectionReason" | "expiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["ownershipTransfer"]>
 export type OwnershipTransferInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   verifications?: boolean | Prisma.OwnershipTransfer$verificationsArgs<ExtArgs>
+  documents?: boolean | Prisma.OwnershipTransfer$documentsArgs<ExtArgs>
+  transferAuditLogs?: boolean | Prisma.OwnershipTransfer$transferAuditLogsArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   currentOwner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  newOwner?: boolean | Prisma.OwnershipTransfer$newOwnerArgs<ExtArgs>
+  governor?: boolean | Prisma.OwnershipTransfer$governorArgs<ExtArgs>
   _count?: boolean | Prisma.OwnershipTransferCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OwnershipTransferIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   currentOwner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  newOwner?: boolean | Prisma.OwnershipTransfer$newOwnerArgs<ExtArgs>
+  governor?: boolean | Prisma.OwnershipTransfer$governorArgs<ExtArgs>
 }
 export type OwnershipTransferIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   currentOwner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  newOwner?: boolean | Prisma.OwnershipTransfer$newOwnerArgs<ExtArgs>
+  governor?: boolean | Prisma.OwnershipTransfer$governorArgs<ExtArgs>
 }
 
 export type $OwnershipTransferPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "OwnershipTransfer"
   objects: {
     verifications: Prisma.$TransferVerificationPayload<ExtArgs>[]
+    documents: Prisma.$OwnershipTransferDocumentPayload<ExtArgs>[]
+    transferAuditLogs: Prisma.$OwnershipTransferAuditLogPayload<ExtArgs>[]
     land: Prisma.$LandRegistrationPayload<ExtArgs>
     currentOwner: Prisma.$UserPayload<ExtArgs>
+    newOwner: Prisma.$UserPayload<ExtArgs> | null
+    governor: Prisma.$InternalUserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     landId: string
     currentOwnerId: string
-    newOwnerEmail: string
-    status: string
+    newOwnerId: string | null
+    governorId: string | null
+    newOwnerEmail: string | null
+    newOwnerPhone: string | null
+    status: $Enums.TransferStatus
+    governorComment: string | null
+    reviewedAt: Date | null
+    rejectionReason: string | null
     expiresAt: Date
     createdAt: Date
     updatedAt: Date
@@ -1259,8 +2171,12 @@ readonly fields: OwnershipTransferFieldRefs;
 export interface Prisma__OwnershipTransferClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   verifications<T extends Prisma.OwnershipTransfer$verificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnershipTransfer$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransferVerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  documents<T extends Prisma.OwnershipTransfer$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnershipTransfer$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipTransferDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transferAuditLogs<T extends Prisma.OwnershipTransfer$transferAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnershipTransfer$transferAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipTransferAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   land<T extends Prisma.LandRegistrationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistrationDefaultArgs<ExtArgs>>): Prisma.Prisma__LandRegistrationClient<runtime.Types.Result.GetResult<Prisma.$LandRegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   currentOwner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  newOwner<T extends Prisma.OwnershipTransfer$newOwnerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnershipTransfer$newOwnerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  governor<T extends Prisma.OwnershipTransfer$governorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnershipTransfer$governorArgs<ExtArgs>>): Prisma.Prisma__InternalUserClient<runtime.Types.Result.GetResult<Prisma.$InternalUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1293,8 +2209,14 @@ export interface OwnershipTransferFieldRefs {
   readonly id: Prisma.FieldRef<"OwnershipTransfer", 'String'>
   readonly landId: Prisma.FieldRef<"OwnershipTransfer", 'String'>
   readonly currentOwnerId: Prisma.FieldRef<"OwnershipTransfer", 'String'>
+  readonly newOwnerId: Prisma.FieldRef<"OwnershipTransfer", 'String'>
+  readonly governorId: Prisma.FieldRef<"OwnershipTransfer", 'String'>
   readonly newOwnerEmail: Prisma.FieldRef<"OwnershipTransfer", 'String'>
-  readonly status: Prisma.FieldRef<"OwnershipTransfer", 'String'>
+  readonly newOwnerPhone: Prisma.FieldRef<"OwnershipTransfer", 'String'>
+  readonly status: Prisma.FieldRef<"OwnershipTransfer", 'TransferStatus'>
+  readonly governorComment: Prisma.FieldRef<"OwnershipTransfer", 'String'>
+  readonly reviewedAt: Prisma.FieldRef<"OwnershipTransfer", 'DateTime'>
+  readonly rejectionReason: Prisma.FieldRef<"OwnershipTransfer", 'String'>
   readonly expiresAt: Prisma.FieldRef<"OwnershipTransfer", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"OwnershipTransfer", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"OwnershipTransfer", 'DateTime'>
@@ -1715,6 +2637,92 @@ export type OwnershipTransfer$verificationsArgs<ExtArgs extends runtime.Types.Ex
   take?: number
   skip?: number
   distinct?: Prisma.TransferVerificationScalarFieldEnum | Prisma.TransferVerificationScalarFieldEnum[]
+}
+
+/**
+ * OwnershipTransfer.documents
+ */
+export type OwnershipTransfer$documentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnershipTransferDocument
+   */
+  select?: Prisma.OwnershipTransferDocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OwnershipTransferDocument
+   */
+  omit?: Prisma.OwnershipTransferDocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OwnershipTransferDocumentInclude<ExtArgs> | null
+  where?: Prisma.OwnershipTransferDocumentWhereInput
+  orderBy?: Prisma.OwnershipTransferDocumentOrderByWithRelationInput | Prisma.OwnershipTransferDocumentOrderByWithRelationInput[]
+  cursor?: Prisma.OwnershipTransferDocumentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OwnershipTransferDocumentScalarFieldEnum | Prisma.OwnershipTransferDocumentScalarFieldEnum[]
+}
+
+/**
+ * OwnershipTransfer.transferAuditLogs
+ */
+export type OwnershipTransfer$transferAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnershipTransferAuditLog
+   */
+  select?: Prisma.OwnershipTransferAuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OwnershipTransferAuditLog
+   */
+  omit?: Prisma.OwnershipTransferAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OwnershipTransferAuditLogInclude<ExtArgs> | null
+  where?: Prisma.OwnershipTransferAuditLogWhereInput
+  orderBy?: Prisma.OwnershipTransferAuditLogOrderByWithRelationInput | Prisma.OwnershipTransferAuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.OwnershipTransferAuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OwnershipTransferAuditLogScalarFieldEnum | Prisma.OwnershipTransferAuditLogScalarFieldEnum[]
+}
+
+/**
+ * OwnershipTransfer.newOwner
+ */
+export type OwnershipTransfer$newOwnerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * OwnershipTransfer.governor
+ */
+export type OwnershipTransfer$governorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InternalUser
+   */
+  select?: Prisma.InternalUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InternalUser
+   */
+  omit?: Prisma.InternalUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InternalUserInclude<ExtArgs> | null
+  where?: Prisma.InternalUserWhereInput
 }
 
 /**

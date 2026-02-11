@@ -394,6 +394,8 @@ export const ModelName = {
   LandAuditLog: 'LandAuditLog',
   OwnershipTransfer: 'OwnershipTransfer',
   TransferVerification: 'TransferVerification',
+  OwnershipTransferDocument: 'OwnershipTransferDocument',
+  OwnershipTransferAuditLog: 'OwnershipTransferAuditLog',
   OwnershipHistory: 'OwnershipHistory',
   CofOApplication: 'CofOApplication',
   CofODocument: 'CofODocument',
@@ -419,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "landAuditLog" | "ownershipTransfer" | "transferVerification" | "ownershipHistory" | "cofOApplication" | "cofODocument" | "payment" | "stageLog" | "inboxMessage" | "emailVerificationToken" | "cofOAuditLog" | "approvalAudit" | "passwordResetToken"
+    modelProps: "user" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "landAuditLog" | "ownershipTransfer" | "transferVerification" | "ownershipTransferDocument" | "ownershipTransferAuditLog" | "ownershipHistory" | "cofOApplication" | "cofODocument" | "payment" | "stageLog" | "inboxMessage" | "emailVerificationToken" | "cofOAuditLog" | "approvalAudit" | "passwordResetToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1160,6 +1162,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TransferVerificationCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TransferVerificationCountAggregateOutputType> | number
+        }
+      }
+    }
+    OwnershipTransferDocument: {
+      payload: Prisma.$OwnershipTransferDocumentPayload<ExtArgs>
+      fields: Prisma.OwnershipTransferDocumentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OwnershipTransferDocumentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferDocumentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OwnershipTransferDocumentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferDocumentPayload>
+        }
+        findFirst: {
+          args: Prisma.OwnershipTransferDocumentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferDocumentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OwnershipTransferDocumentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferDocumentPayload>
+        }
+        findMany: {
+          args: Prisma.OwnershipTransferDocumentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferDocumentPayload>[]
+        }
+        create: {
+          args: Prisma.OwnershipTransferDocumentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferDocumentPayload>
+        }
+        createMany: {
+          args: Prisma.OwnershipTransferDocumentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OwnershipTransferDocumentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferDocumentPayload>[]
+        }
+        delete: {
+          args: Prisma.OwnershipTransferDocumentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferDocumentPayload>
+        }
+        update: {
+          args: Prisma.OwnershipTransferDocumentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferDocumentPayload>
+        }
+        deleteMany: {
+          args: Prisma.OwnershipTransferDocumentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OwnershipTransferDocumentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OwnershipTransferDocumentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferDocumentPayload>[]
+        }
+        upsert: {
+          args: Prisma.OwnershipTransferDocumentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferDocumentPayload>
+        }
+        aggregate: {
+          args: Prisma.OwnershipTransferDocumentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOwnershipTransferDocument>
+        }
+        groupBy: {
+          args: Prisma.OwnershipTransferDocumentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OwnershipTransferDocumentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OwnershipTransferDocumentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OwnershipTransferDocumentCountAggregateOutputType> | number
+        }
+      }
+    }
+    OwnershipTransferAuditLog: {
+      payload: Prisma.$OwnershipTransferAuditLogPayload<ExtArgs>
+      fields: Prisma.OwnershipTransferAuditLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OwnershipTransferAuditLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferAuditLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OwnershipTransferAuditLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferAuditLogPayload>
+        }
+        findFirst: {
+          args: Prisma.OwnershipTransferAuditLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferAuditLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OwnershipTransferAuditLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferAuditLogPayload>
+        }
+        findMany: {
+          args: Prisma.OwnershipTransferAuditLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferAuditLogPayload>[]
+        }
+        create: {
+          args: Prisma.OwnershipTransferAuditLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferAuditLogPayload>
+        }
+        createMany: {
+          args: Prisma.OwnershipTransferAuditLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OwnershipTransferAuditLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferAuditLogPayload>[]
+        }
+        delete: {
+          args: Prisma.OwnershipTransferAuditLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferAuditLogPayload>
+        }
+        update: {
+          args: Prisma.OwnershipTransferAuditLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferAuditLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.OwnershipTransferAuditLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OwnershipTransferAuditLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OwnershipTransferAuditLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferAuditLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.OwnershipTransferAuditLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnershipTransferAuditLogPayload>
+        }
+        aggregate: {
+          args: Prisma.OwnershipTransferAuditLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOwnershipTransferAuditLog>
+        }
+        groupBy: {
+          args: Prisma.OwnershipTransferAuditLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OwnershipTransferAuditLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OwnershipTransferAuditLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OwnershipTransferAuditLogCountAggregateOutputType> | number
         }
       }
     }
@@ -2067,8 +2217,14 @@ export const OwnershipTransferScalarFieldEnum = {
   id: 'id',
   landId: 'landId',
   currentOwnerId: 'currentOwnerId',
+  newOwnerId: 'newOwnerId',
+  governorId: 'governorId',
   newOwnerEmail: 'newOwnerEmail',
+  newOwnerPhone: 'newOwnerPhone',
   status: 'status',
+  governorComment: 'governorComment',
+  reviewedAt: 'reviewedAt',
+  rejectionReason: 'rejectionReason',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -2089,6 +2245,34 @@ export const TransferVerificationScalarFieldEnum = {
 } as const
 
 export type TransferVerificationScalarFieldEnum = (typeof TransferVerificationScalarFieldEnum)[keyof typeof TransferVerificationScalarFieldEnum]
+
+
+export const OwnershipTransferDocumentScalarFieldEnum = {
+  id: 'id',
+  transferId: 'transferId',
+  type: 'type',
+  title: 'title',
+  url: 'url',
+  status: 'status',
+  rejectionMessage: 'rejectionMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OwnershipTransferDocumentScalarFieldEnum = (typeof OwnershipTransferDocumentScalarFieldEnum)[keyof typeof OwnershipTransferDocumentScalarFieldEnum]
+
+
+export const OwnershipTransferAuditLogScalarFieldEnum = {
+  id: 'id',
+  transferId: 'transferId',
+  action: 'action',
+  performedById: 'performedById',
+  performedByRole: 'performedByRole',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type OwnershipTransferAuditLogScalarFieldEnum = (typeof OwnershipTransferAuditLogScalarFieldEnum)[keyof typeof OwnershipTransferAuditLogScalarFieldEnum]
 
 
 export const OwnershipHistoryScalarFieldEnum = {
@@ -2394,16 +2578,16 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
- * Reference to a field of type 'CofOStatus'
+ * Reference to a field of type 'TransferStatus'
  */
-export type EnumCofOStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CofOStatus'>
+export type EnumTransferStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransferStatus'>
     
 
 
 /**
- * Reference to a field of type 'CofOStatus[]'
+ * Reference to a field of type 'TransferStatus[]'
  */
-export type ListEnumCofOStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CofOStatus[]'>
+export type ListEnumTransferStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransferStatus[]'>
     
 
 
@@ -2418,6 +2602,20 @@ export type EnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'DocumentStatus[]'
  */
 export type ListEnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CofOStatus'
+ */
+export type EnumCofOStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CofOStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CofOStatus[]'
+ */
+export type ListEnumCofOStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CofOStatus[]'>
     
 
 
@@ -2539,6 +2737,8 @@ export type GlobalOmitConfig = {
   landAuditLog?: Prisma.LandAuditLogOmit
   ownershipTransfer?: Prisma.OwnershipTransferOmit
   transferVerification?: Prisma.TransferVerificationOmit
+  ownershipTransferDocument?: Prisma.OwnershipTransferDocumentOmit
+  ownershipTransferAuditLog?: Prisma.OwnershipTransferAuditLogOmit
   ownershipHistory?: Prisma.OwnershipHistoryOmit
   cofOApplication?: Prisma.CofOApplicationOmit
   cofODocument?: Prisma.CofODocumentOmit

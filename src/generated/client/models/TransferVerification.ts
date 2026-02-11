@@ -223,6 +223,7 @@ export type TransferVerificationOrderByWithRelationInput = {
 
 export type TransferVerificationWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  transferId_target?: Prisma.TransferVerificationTransferIdTargetCompoundUniqueInput
   AND?: Prisma.TransferVerificationWhereInput | Prisma.TransferVerificationWhereInput[]
   OR?: Prisma.TransferVerificationWhereInput[]
   NOT?: Prisma.TransferVerificationWhereInput | Prisma.TransferVerificationWhereInput[]
@@ -234,7 +235,7 @@ export type TransferVerificationWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"TransferVerification"> | Date | string
   expiresAt?: Prisma.DateTimeFilter<"TransferVerification"> | Date | string
   transfer?: Prisma.XOR<Prisma.OwnershipTransferScalarRelationFilter, Prisma.OwnershipTransferWhereInput>
-}, "id">
+}, "id" | "transferId_target">
 
 export type TransferVerificationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -348,6 +349,11 @@ export type TransferVerificationListRelationFilter = {
 
 export type TransferVerificationOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type TransferVerificationTransferIdTargetCompoundUniqueInput = {
+  transferId: string
+  target: string
 }
 
 export type TransferVerificationCountOrderByAggregateInput = {

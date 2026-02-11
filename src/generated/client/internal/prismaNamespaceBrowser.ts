@@ -61,6 +61,8 @@ export const ModelName = {
   LandAuditLog: 'LandAuditLog',
   OwnershipTransfer: 'OwnershipTransfer',
   TransferVerification: 'TransferVerification',
+  OwnershipTransferDocument: 'OwnershipTransferDocument',
+  OwnershipTransferAuditLog: 'OwnershipTransferAuditLog',
   OwnershipHistory: 'OwnershipHistory',
   CofOApplication: 'CofOApplication',
   CofODocument: 'CofODocument',
@@ -214,8 +216,14 @@ export const OwnershipTransferScalarFieldEnum = {
   id: 'id',
   landId: 'landId',
   currentOwnerId: 'currentOwnerId',
+  newOwnerId: 'newOwnerId',
+  governorId: 'governorId',
   newOwnerEmail: 'newOwnerEmail',
+  newOwnerPhone: 'newOwnerPhone',
   status: 'status',
+  governorComment: 'governorComment',
+  reviewedAt: 'reviewedAt',
+  rejectionReason: 'rejectionReason',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -236,6 +244,34 @@ export const TransferVerificationScalarFieldEnum = {
 } as const
 
 export type TransferVerificationScalarFieldEnum = (typeof TransferVerificationScalarFieldEnum)[keyof typeof TransferVerificationScalarFieldEnum]
+
+
+export const OwnershipTransferDocumentScalarFieldEnum = {
+  id: 'id',
+  transferId: 'transferId',
+  type: 'type',
+  title: 'title',
+  url: 'url',
+  status: 'status',
+  rejectionMessage: 'rejectionMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OwnershipTransferDocumentScalarFieldEnum = (typeof OwnershipTransferDocumentScalarFieldEnum)[keyof typeof OwnershipTransferDocumentScalarFieldEnum]
+
+
+export const OwnershipTransferAuditLogScalarFieldEnum = {
+  id: 'id',
+  transferId: 'transferId',
+  action: 'action',
+  performedById: 'performedById',
+  performedByRole: 'performedByRole',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type OwnershipTransferAuditLogScalarFieldEnum = (typeof OwnershipTransferAuditLogScalarFieldEnum)[keyof typeof OwnershipTransferAuditLogScalarFieldEnum]
 
 
 export const OwnershipHistoryScalarFieldEnum = {

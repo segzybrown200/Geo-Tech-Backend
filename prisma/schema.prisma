@@ -14,19 +14,20 @@ datasource db {
 }
 
 model User {
-  id                 String               @id @default(uuid()) @db.Uuid
-  fullName           String?
-  email              String               @unique
-  password           String
-  phone              String?
-  role               Role                 @default(USER)
-  createdAt          DateTime             @default(now())
-  CofOApplication    CofOApplication[]
-  LandRegistration   LandRegistration[]   @relation("UserLands")
-  isEmailVerified    Boolean              @default(false)
-  PasswordResetToken PasswordResetToken[]
-  OwnershipTransfer  OwnershipTransfer[]
-  payments           Payment[]
+  id                    String               @id @default(uuid()) @db.Uuid
+  fullName              String?
+  email                 String               @unique
+  password              String
+  phone                 String?
+  role                  Role                 @default(USER)
+  createdAt             DateTime             @default(now())
+  CofOApplication       CofOApplication[]
+  LandRegistration      LandRegistration[]   @relation("UserLands")
+  isEmailVerified       Boolean              @default(false)
+  PasswordResetToken    PasswordResetToken[]
+  currentOwnerTransfers OwnershipTransfer[]  @relation("CurrentOwner")
+  newOwnerTransfers     OwnershipTransfer[]  @relation("NewOwner")
+  payments              Payment[]
 }
 
 enum CofOStatus {
@@ -83,6 +84,7 @@ model InternalUser {
   rejectedApplications  CofOApplication[] @relation("rejectedBy")
   approvedApplications  CofOApplication[] @relation("approvedBy")
   reviewingApplications CofOApplication[] @relation("currentReviewer")
+  ownershipTransfersReviewed OwnershipTransfer[] @relation("GovernorReviewer")
 }
 
 model Session {
@@ -177,42 +179,119 @@ model LandAuditLog {
 
 model OwnershipTransfer {
   id             String   @id @default(uuid()) @db.Uuid
+
   landId         String   @db.Uuid
   currentOwnerId String   @db.Uuid
-  newOwnerEmail  String
-  status         String   @default("PENDING_AUTHORIZATION")
+  newOwnerId     String?  @db.Uuid
+  governorId     String?  @db.Uuid
+
+  newOwnerEmail  String?
+  newOwnerPhone  String?
+
+  status         TransferStatus @default(INITIATED)
+
+  // Governor review fields
+  governorComment String?
+  reviewedAt      DateTime?
+  rejectionReason String?
+
   expiresAt      DateTime
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  verifications TransferVerification[]
-  land          LandRegistration       @relation(fields: [landId], references: [id])
-  currentOwner  User                   @relation(fields: [currentOwnerId], references: [id])
+  verifications        TransferVerification[]
+  documents            OwnershipTransferDocument[]
+  transferAuditLogs    OwnershipTransferAuditLog[]
+
+  land           LandRegistration @relation(fields: [landId], references: [id])
+  currentOwner   User             @relation("CurrentOwner", fields: [currentOwnerId], references: [id])
+  newOwner       User?            @relation("NewOwner", fields: [newOwnerId], references: [id])
+  governor       InternalUser?    @relation("GovernorReviewer", fields: [governorId], references: [id])
+
+  @@index([status])
+  @@index([governorId])
+  @@index([createdAt])
+}
+
+enum TransferStatus {
+  INITIATED
+  VERIFIED_BY_PARTIES
+  PENDING_GOVERNOR
+  APPROVED
+  REJECTED
+  EXPIRED
 }
 
 model TransferVerification {
   id          String   @id @default(uuid()) @db.Uuid
   transferId  String   @db.Uuid
-  channelType String // 'email' or 'phone'
-  target      String // the actual email or phone number
+
+  channelType String   // email | phone
+  target      String
   code        String
+
   isVerified  Boolean  @default(false)
+
   createdAt   DateTime @default(now())
   expiresAt   DateTime
 
   transfer OwnershipTransfer @relation(fields: [transferId], references: [id])
+
+  @@unique([transferId, target])
+}
+
+model OwnershipTransferDocument {
+  id         String   @id @default(uuid()) @db.Uuid
+  transferId String   @db.Uuid
+  
+  type       String   // e.g., "POWER_OF_ATTORNEY", "DEED", "PAYMENT_PROOF", etc.
+  title      String
+  url        String   // Cloudinary URL
+  
+  status     DocumentStatus @default(PENDING) // PENDING, APPROVED, REJECTED
+  rejectionMessage String?
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  transfer OwnershipTransfer @relation(fields: [transferId], references: [id])
+
+  @@index([transferId])
+  @@index([status])
+}
+
+model OwnershipTransferAuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  transferId String   @db.Uuid
+
+  action     String   // INITIATED, VERIFIED, SUBMITTED, APPROVED, REJECTED, etc.
+  performedById String? @db.Uuid
+  performedByRole String? // USER, GOVERNOR
+  comment    String?
+
+  createdAt  DateTime @default(now())
+
+  transfer OwnershipTransfer @relation(fields: [transferId], references: [id])
+
+  @@index([transferId])
+  @@index([createdAt])
 }
 
 model OwnershipHistory {
   id           String   @id @default(uuid()) @db.Uuid
+
   landId       String   @db.Uuid
-  fromUserId   String
-  toUserId     String
-  authorizedBy String
+  fromUserId   String   @db.Uuid
+  toUserId     String   @db.Uuid
+  authorizedBy String   @db.Uuid
+
   transferDate DateTime @default(now())
 
   land LandRegistration @relation(fields: [landId], references: [id])
+
+  @@index([landId])
 }
+
 
 model CofOApplication {
   id     String     @id @default(uuid()) @db.Uuid

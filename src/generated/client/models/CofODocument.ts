@@ -449,10 +449,6 @@ export type CofODocumentUncheckedUpdateManyWithoutCofONestedInput = {
   deleteMany?: Prisma.CofODocumentScalarWhereInput | Prisma.CofODocumentScalarWhereInput[]
 }
 
-export type EnumDocumentStatusFieldUpdateOperationsInput = {
-  set?: $Enums.DocumentStatus
-}
-
 export type CofODocumentCreateNestedManyWithoutInboxMessageInput = {
   create?: Prisma.XOR<Prisma.CofODocumentCreateWithoutInboxMessageInput, Prisma.CofODocumentUncheckedCreateWithoutInboxMessageInput> | Prisma.CofODocumentCreateWithoutInboxMessageInput[] | Prisma.CofODocumentUncheckedCreateWithoutInboxMessageInput[]
   connectOrCreate?: Prisma.CofODocumentCreateOrConnectWithoutInboxMessageInput | Prisma.CofODocumentCreateOrConnectWithoutInboxMessageInput[]
