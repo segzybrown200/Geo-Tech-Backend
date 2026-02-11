@@ -60,10 +60,10 @@ export const initiateOwnershipTransfer = async (
     // Create verification records for each channel
     // Include new owner's primary email/phone PLUS any additional emails/phones provided
     const channels = [
-      ...(newOwnerEmail ? [{ type: "email", value: newOwnerEmail }] : []),
-      ...(newOwnerPhone ? [{ type: "phone", value: newOwnerPhone }] : []),
       ...emails.map((e: string) => ({ type: "email", value: e })),
       ...phones.map((p: string) => ({ type: "phone", value: p })),
+      ...(newOwnerEmail ? [{ type: "email", value: newOwnerEmail }] : []),
+      ...(newOwnerPhone ? [{ type: "phone", value: newOwnerPhone }] : []),
     ];
 
     // Remove duplicates
@@ -485,7 +485,7 @@ export const getTransferForReview = async (
     }
 
     const transfer = await prisma.ownershipTransfer.findUnique({
-      where: { id: transferId },
+      where: { id: transferId, land: { state: { governorId } } },
       include: {
         land: { include: { state: true } },
         documents: true,
@@ -811,7 +811,66 @@ export const rejectOwnershipTransfer = async (
     res.status(500).json({ message: "Rejection failed", error: String(err) });
   }
 };
+/* ===============================
+   8. LIST TRANSFERS FOR GOVERNOR
+================================ */
 
+export const listTransfersForGovernor = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  const governorId = req.user.id;
+
+  try {
+    const governor = await prisma.internalUser.findUnique({
+      where: { id: governorId },
+    });
+
+    if (!governor || governor.role !== "GOVERNOR") {
+      return res.status(403).json({ message: "Governor access required" });
+    }
+
+    // Get all transfers pending governor review in this state
+    const transfers = await prisma.ownershipTransfer.findMany({
+      where: {
+        land: {
+          state: {
+            governorId,
+          },
+        },
+      },
+      include: {
+        land: {
+          include: { state: true, owner: true },
+        },
+        documents: true,
+        currentOwner: true,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    // Group by status
+    const groupedByStatus = {
+      pending: transfers.filter((t) => t.status === "PENDING_GOVERNOR"),
+      approved: transfers.filter((t) => t.status === "APPROVED"),
+      rejected: transfers.filter((t) => t.status === "REJECTED"),
+      all: transfers,
+    };
+
+    res.json({
+      summary: {
+        total: transfers.length,
+        pending: groupedByStatus.pending.length,
+        approved: groupedByStatus.approved.length,
+        rejected: groupedByStatus.rejected.length,
+      },
+      transfers: groupedByStatus,
+    });
+  } catch (err) {
+    console.error("List transfers error:", err);
+    res.status(500).json({ message: "Failed to retrieve transfers", error: String(err) });
+  }
+};
 /* ===============================
    7. GET TRANSFER PROGRESS
 ================================ */
@@ -947,66 +1006,7 @@ export const getTransferProgress = async (
   }
 };
 
-/* ===============================
-   8. LIST TRANSFERS FOR GOVERNOR
-================================ */
 
-export const listTransfersForGovernor = async (
-  req: AuthRequest,
-  res: Response
-) => {
-  const governorId = req.user.id;
-
-  try {
-    const governor = await prisma.internalUser.findUnique({
-      where: { id: governorId },
-    });
-
-    if (!governor || governor.role !== "GOVERNOR") {
-      return res.status(403).json({ message: "Governor access required" });
-    }
-
-    // Get all transfers pending governor review in this state
-    const transfers = await prisma.ownershipTransfer.findMany({
-      where: {
-        land: {
-          state: {
-            governorId,
-          },
-        },
-      },
-      include: {
-        land: {
-          include: { state: true, owner: true },
-        },
-        documents: true,
-        currentOwner: true,
-      },
-      orderBy: { createdAt: "desc" },
-    });
-
-    // Group by status
-    const groupedByStatus = {
-      pending: transfers.filter((t) => t.status === "PENDING_GOVERNOR"),
-      approved: transfers.filter((t) => t.status === "APPROVED"),
-      rejected: transfers.filter((t) => t.status === "REJECTED"),
-      all: transfers,
-    };
-
-    res.json({
-      summary: {
-        total: transfers.length,
-        pending: groupedByStatus.pending.length,
-        approved: groupedByStatus.approved.length,
-        rejected: groupedByStatus.rejected.length,
-      },
-      transfers: groupedByStatus,
-    });
-  } catch (err) {
-    console.error("List transfers error:", err);
-    res.status(500).json({ message: "Failed to retrieve transfers", error: String(err) });
-  }
-};
 
 /* ===============================
    HELPER FUNCTION

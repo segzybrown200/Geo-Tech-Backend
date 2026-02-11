@@ -16,10 +16,27 @@ dotenv.config();
 const app = express();
 app.use(cookieParser());
 
+const allowedOrigins = [
+  "http://localhost:5173", // local dev
+  "https://geo-tech-six.vercel.app/", // production
+  "https://geo-tech-six.vercel.app/", // production
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    credentials: true, // if you use cookies or auth headers
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.warn("❌ CORS blocked for origin:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"],
   })
 );
 app.use(express.json());
