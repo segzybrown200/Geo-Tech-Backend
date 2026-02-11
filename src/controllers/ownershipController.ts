@@ -58,15 +58,23 @@ export const initiateOwnershipTransfer = async (
     });
 
     // Create verification records for each channel
+    // Include new owner's primary email/phone PLUS any additional emails/phones provided
     const channels = [
+      ...(newOwnerEmail ? [{ type: "email", value: newOwnerEmail }] : []),
+      ...(newOwnerPhone ? [{ type: "phone", value: newOwnerPhone }] : []),
       ...emails.map((e: string) => ({ type: "email", value: e })),
       ...phones.map((p: string) => ({ type: "phone", value: p })),
     ];
 
+    // Remove duplicates
+    const uniqueChannels = Array.from(
+      new Map(channels.map(c => [c.value, c])).values()
+    );
+
     const verificationRecords = [];
     const verificationCodes: Record<string, string> = {};
 
-    for (const channel of channels) {
+    for (const channel of uniqueChannels) {
       const code = crypto.randomInt(100000, 999999).toString();
       verificationCodes[channel.value] = code;
 
@@ -184,14 +192,25 @@ export const verifyTransferOTP = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({ message: "Transfer not found" });
     }
 
-    // Verify the user is either the current owner or the new owner
+    // Verify the user is authorized to verify this target.
+    // Allowed: current owner, the transfer's new-owner contact, or a registered user whose email/phone matches the target.
     const isCurrentOwner = transfer.currentOwnerId === userId;
-    const isNewOwner = transfer.newOwnerEmail === target || transfer.newOwnerPhone === target;
+    const isNewOwnerContact = transfer.newOwnerEmail === target || transfer.newOwnerPhone === target;
 
-    if (!isCurrentOwner && !isNewOwner) {
-      return res.status(403).json({
-        message: "You are not authorized to verify this transfer",
-      });
+    // Attempt to load the requesting user's contact info (may be undefined for some auth flows)
+    let requestingUser: any = null;
+    try {
+      requestingUser = await prisma.user.findUnique({ where: { id: userId } });
+    } catch (e) {
+      requestingUser = null;
+    }
+
+    const isRequestingUserTarget = Boolean(
+      requestingUser && (requestingUser.email === target || requestingUser.phone === target)
+    );
+
+    if (!isCurrentOwner && !isNewOwnerContact && !isRequestingUserTarget) {
+      return res.status(403).json({ message: "You are not authorized to verify this transfer" });
     }
 
     // Find the verification record
