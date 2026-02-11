@@ -11,6 +11,7 @@ import {
   getTransferProgress,
   listTransfersForGovernor,
   getUserOwnershipTransfers,
+  resendTransferOTP,
 } from "../controllers/ownershipController";
 import { authorizeRoles } from "../middlewares/roleMiddleware";
 import multer from "multer";
@@ -27,6 +28,7 @@ router.post("/initiate", requireAuth, initiateOwnershipTransfer);
 
 // Verify OTP from all parties
 router.post("/verify-otp", requireAuth, verifyTransferOTP);
+router.post("/resend-otp", requireAuth, resendTransferOTP);
 
 // Submit documents for governor review
 router.post(

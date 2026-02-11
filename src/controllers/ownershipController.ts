@@ -1116,3 +1116,84 @@ export const getUserOwnershipTransfers = async (
     });
   }
 };
+export const resendTransferOTP = async (req: AuthRequest, res: Response) => {
+  const ownerId = req.user.sub;
+  const { transferId, target } = req.body;
+
+  try {
+    const transfer = await prisma.ownershipTransfer.findUnique({
+      where: { id: transferId },
+      include: { verifications: true },
+    });
+
+    if (!transfer || transfer.currentOwnerId !== ownerId)
+      return res.status(403).json({ message: "Unauthorized" });
+
+    if (transfer.status !== "INITIATED")
+      return res.status(400).json({ message: "OTP phase completed already" });
+
+    const record = transfer.verifications.find(v => v.target === target);
+
+    if (!record)
+      return res.status(404).json({ message: "Channel not found" });
+
+    // ⛔ Cooldown protection (60 seconds)
+    const cooldown = 60 * 1000;
+    if (Date.now() - record.createdAt.getTime() < cooldown) {
+      return res.status(429).json({
+        message: "Please wait before requesting another code",
+      });
+    }
+
+    const newCode = crypto.randomInt(100000, 999999).toString();
+    const newExpiry = new Date(Date.now() + 15 * 60 * 1000);
+
+    await prisma.transferVerification.update({
+      where: { id: record.id },
+      data: {
+        code: newCode,
+        expiresAt: newExpiry,
+        isVerified: false,
+      },
+    });
+
+    if (record.channelType === "email") {
+      await sendEmail(
+        record.target,
+        "Land Ownership Transfer — Verification Code",
+        `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px;">
+          <div style="background: #004CFF; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
+            <h2>Land Ownership Transfer — Verification Code</h2>
+          </div>
+          <div style="padding: 20px;">
+            <p>Dear Recipient,</p>
+            <p>
+              This message concerns a pending request to transfer ownership of a parcel of land recorded in our system. To validate and proceed with the transfer associated with <strong>Transfer ID: ${transfer.id}</strong>, please use the One‑Time Passcode (OTP) shown below.
+            </p>
+            <div style="background: #f5f5f5; padding: 15px; text-align: center; border-radius: 5px; margin: 20px 0;">
+              <p style="font-size: 24px; font-weight: bold; color: #004CFF; margin: 0;">${newCode}</p>
+            </div>
+            <p><strong>Expiry:</strong> This code will expire in 15 minutes from issuance.</p>
+            <p><strong>Important Instructions</strong></p>
+            <ol>
+              <li>Enter the OTP in the GeoTech portal where requested to confirm your identity and continue the transfer process.</li>
+              <li>Do not share this code with anyone. GeoTech will never request your OTP by phone or in a follow-up email.</li>
+              <li>If you did not authorize or expect this transfer, please disregard this message and contact our support team immediately.</li>
+            </ol>
+            <p style="color: #666; font-size: 12px; margin-top: 20px;">
+              For assistance, contact our support team at <strong>support@geotech.example</strong> or reply to this message. This is an automated notification from the GeoTech system.
+            </p>
+          </div>
+        </div>
+        `
+      );
+    } else {
+      console.log(`SMS ${record.target}: ${newCode}`);
+    }
+
+    res.json({ message: "New OTP sent successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to resend OTP", err });
+  }
+};
