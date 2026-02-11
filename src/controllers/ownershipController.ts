@@ -801,7 +801,7 @@ export const getTransferProgress = async (
   req: AuthRequest,
   res: Response
 ) => {
-  const userId = req.user.id;
+  const userId = req.user.sub;
   const { transferId } = req.params;
 
   try {
