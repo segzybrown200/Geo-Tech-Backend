@@ -12,6 +12,8 @@ import {
   listTransfersForGovernor,
   getUserOwnershipTransfers,
   resendTransferOTP,
+  approveDocument,
+  rejectDocument,
 } from "../controllers/ownershipController";
 import { authorizeRoles } from "../middlewares/roleMiddleware";
 import multer from "multer";
@@ -72,6 +74,26 @@ router.post(
   internalUserAuth,
   authorizeRoles(["GOVERNOR"]),
   rejectOwnershipTransfer
+);
+
+/* ========================
+   DOCUMENT-LEVEL ENDPOINTS
+   ======================== */
+
+// Approve individual document
+router.post(
+  "/document/:documentId/approve",
+  internalUserAuth,
+  authorizeRoles(["GOVERNOR"]),
+  approveDocument
+);
+
+// Reject individual document
+router.post(
+  "/document/:documentId/reject",
+  internalUserAuth,
+  authorizeRoles(["GOVERNOR"]),
+  rejectDocument
 );
 
 export default router;

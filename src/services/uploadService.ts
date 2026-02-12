@@ -83,6 +83,7 @@ export const uploadToCloudinary = (
         folder,
         resource_type: resourceType,
         public_id: filename ? filename.replace(/\.[^.]+$/, '') : undefined,
+        use_filename: true,
       },
       (error: any, result: any) => {
         if (error) return reject(error);

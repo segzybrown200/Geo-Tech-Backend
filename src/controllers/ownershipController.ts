@@ -1216,3 +1216,193 @@ export const resendTransferOTP = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "Failed to resend OTP", err });
   }
 };
+
+/* ===============================
+   10. APPROVE INDIVIDUAL DOCUMENT
+================================ */
+
+export const approveDocument = async (req: AuthRequest, res: Response) => {
+  const governorId = req.user.id;
+  const { documentId } = req.params;
+
+  try {
+    const governor = await prisma.internalUser.findUnique({
+      where: { id: governorId },
+    });
+
+    if (!governor || governor.role !== "GOVERNOR") {
+      return res.status(403).json({ message: "Governor access required" });
+    }
+
+    // Find document and verify governor can approve it
+    const document = await prisma.ownershipTransferDocument.findUnique({
+      where: { id: documentId },
+      include: {
+        transfer: {
+          include: { land: { include: { state: true } } },
+        },
+      },
+    });
+
+    if (!document) {
+      return res.status(404).json({ message: "Document not found" });
+    }
+
+    // Ensure governor is reviewing transfers in their state
+    if (document.transfer.land.state.governorId !== governorId) {
+      return res.status(403).json({
+        message: "You can only review documents in your state",
+      });
+    }
+
+    if (document.status !== "PENDING") {
+      return res.status(400).json({
+        message: `Document is already ${document.status.toLowerCase()}`,
+      });
+    }
+
+    // Approve document
+    await prisma.ownershipTransferDocument.update({
+      where: { id: documentId },
+      data: {
+        status: "APPROVED",
+        rejectionMessage: null, // Clear any previous rejection message
+      },
+    });
+
+    // Create audit log
+    await prisma.ownershipTransferAuditLog.create({
+      data: {
+        transferId: document.transferId,
+        action: "DOCUMENT_APPROVED",
+        performedById: governorId,
+        performedByRole: "GOVERNOR",
+        comment: `Document approved: ${document.title}`,
+      },
+    });
+
+    res.json({
+      message: "Document approved successfully",
+      documentId,
+      status: "APPROVED",
+    });
+  } catch (err) {
+    console.error("Document approval error:", err);
+    res.status(500).json({ message: "Failed to approve document", error: String(err) });
+  }
+};
+
+/* ===============================
+   11. REJECT INDIVIDUAL DOCUMENT
+================================ */
+
+export const rejectDocument = async (req: AuthRequest, res: Response) => {
+  const governorId = req.user.id;
+  const { documentId } = req.params;
+  const { rejectionMessage } = req.body;
+
+  try {
+    if (!rejectionMessage || rejectionMessage.trim().length === 0) {
+      return res.status(400).json({
+        message: "Rejection message is required",
+      });
+    }
+
+    const governor = await prisma.internalUser.findUnique({
+      where: { id: governorId },
+    });
+
+    if (!governor || governor.role !== "GOVERNOR") {
+      return res.status(403).json({ message: "Governor access required" });
+    }
+
+    // Find document and verify governor can reject it
+    const document = await prisma.ownershipTransferDocument.findUnique({
+      where: { id: documentId },
+      include: {
+        transfer: {
+          include: { 
+            land: { include: { state: true, owner: true } },
+            currentOwner: true,
+          },
+        },
+      },
+    });
+
+    if (!document) {
+      return res.status(404).json({ message: "Document not found" });
+    }
+
+    // Ensure governor is reviewing transfers in their state
+    if (document.transfer.land.state.governorId !== governorId) {
+      return res.status(403).json({
+        message: "You can only review documents in your state",
+      });
+    }
+
+    if (document.status !== "PENDING") {
+      return res.status(400).json({
+        message: `Document is already ${document.status.toLowerCase()}`,
+      });
+    }
+
+    // Reject document with message
+    await prisma.ownershipTransferDocument.update({
+      where: { id: documentId },
+      data: {
+        status: "REJECTED",
+        rejectionMessage,
+      },
+    });
+
+    // Create audit log
+    await prisma.ownershipTransferAuditLog.create({
+      data: {
+        transferId: document.transferId,
+        action: "DOCUMENT_REJECTED",
+        performedById: governorId,
+        performedByRole: "GOVERNOR",
+        comment: `Document rejected: ${document.title} - ${rejectionMessage}`,
+      },
+    });
+
+    // Notify current owner about rejected document
+    if (document.transfer.currentOwner?.email) {
+      await sendEmail(
+        document.transfer.currentOwner.email,
+        "Document Rejected - Resubmission Required",
+        `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px;">
+          <div style="background: #dc3545; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+            <h2>Document Requires Correction</h2>
+          </div>
+          <div style="padding: 20px;">
+            <p>Dear ${document.transfer.currentOwner.fullName},</p>
+            <p>One of your submitted documents has been rejected and requires resubmission.</p>
+            <p><strong>Document:</strong> ${document.title}</p>
+            <p><strong>Reason for Rejection:</strong></p>
+            <p style="background: #f8d7da; padding: 10px; border-left: 4px solid #dc3545; margin: 15px 0;">
+              ${rejectionMessage}
+            </p>
+            <p><strong>Transfer ID:</strong> ${document.transferId}</p>
+            <p>Please correct the document according to the rejection reason and resubmit it through your GeoTech dashboard.</p>
+            <p style="color: #666; font-size: 12px; margin-top: 20px;">
+              For assistance, contact our support team.
+            </p>
+          </div>
+        </div>
+        `
+      );
+    }
+
+    res.json({
+      message: "Document rejected successfully",
+      documentId,
+      status: "REJECTED",
+      rejectionMessage,
+    });
+  } catch (err) {
+    console.error("Document rejection error:", err);
+    res.status(500).json({ message: "Failed to reject document", error: String(err) });
+  }
+};
