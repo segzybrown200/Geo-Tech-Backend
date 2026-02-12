@@ -20,6 +20,8 @@ const allowedOrigins = [
   "http://localhost:5173", // local dev
   "https://geo-tech-six.vercel.app", // production (exact origin used by Vercel)
   "https://www.geo-tech-six.vercel.app", // production www
+  "https://geo-tech-reviewer.vercel.app",
+  "https://www.geo-tech-reviewer.vercel.app"
 ];
 
 app.use(
