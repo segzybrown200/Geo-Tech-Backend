@@ -1402,7 +1402,6 @@ export const rejectDocument = async (req: AuthRequest, res: Response) => {
       rejectionMessage,
     });
   } catch (err) {
-    console.error("Document rejection error:", err);
     res.status(500).json({ message: "Failed to reject document", error: String(err) });
   }
 };
