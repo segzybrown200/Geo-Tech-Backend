@@ -131,7 +131,7 @@ export const createInternalUser = async (req: Request, res: Response) => {
           governorId: user.id,
         },
       });
-    const verifyLink = `http://localhost:5173/verify?token=${token}`;
+    const verifyLink = `https://geo-tech-reviewer.vercel.app//verify?token=${token}`;
     await sendEmail(
       email,
       "Verify Your Internal GeoTech Account — Action Required",
@@ -354,7 +354,7 @@ export const resendInternalVerification = async (
       data: { emailToken: token, tokenExpiresAt: expires },
     });
 
-    const verifyLink = `https://localhost:5173/resend-verify?token=${token}`;
+    const verifyLink = `https://geo-tech-reviewer.vercel.app/resend-verify?token=${token}`;
     await sendEmail(
       email,
       "GeoTech Internal Account — Verification Link Resent",
