@@ -495,20 +495,6 @@ export type PaymentUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
 }
 
-export type PaymentCreateNestedManyWithoutLandInput = {
-  create?: Prisma.XOR<Prisma.PaymentCreateWithoutLandInput, Prisma.PaymentUncheckedCreateWithoutLandInput> | Prisma.PaymentCreateWithoutLandInput[] | Prisma.PaymentUncheckedCreateWithoutLandInput[]
-  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutLandInput | Prisma.PaymentCreateOrConnectWithoutLandInput[]
-  createMany?: Prisma.PaymentCreateManyLandInputEnvelope
-  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
-}
-
-export type PaymentUncheckedCreateNestedManyWithoutLandInput = {
-  create?: Prisma.XOR<Prisma.PaymentCreateWithoutLandInput, Prisma.PaymentUncheckedCreateWithoutLandInput> | Prisma.PaymentCreateWithoutLandInput[] | Prisma.PaymentUncheckedCreateWithoutLandInput[]
-  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutLandInput | Prisma.PaymentCreateOrConnectWithoutLandInput[]
-  createMany?: Prisma.PaymentCreateManyLandInputEnvelope
-  connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
-}
-
 export type PaymentUpdateManyWithoutLandNestedInput = {
   create?: Prisma.XOR<Prisma.PaymentCreateWithoutLandInput, Prisma.PaymentUncheckedCreateWithoutLandInput> | Prisma.PaymentCreateWithoutLandInput[] | Prisma.PaymentUncheckedCreateWithoutLandInput[]
   connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutLandInput | Prisma.PaymentCreateOrConnectWithoutLandInput[]
@@ -577,6 +563,14 @@ export type PaymentUncheckedUpdateManyWithoutCofONestedInput = {
   update?: Prisma.PaymentUpdateWithWhereUniqueWithoutCofOInput | Prisma.PaymentUpdateWithWhereUniqueWithoutCofOInput[]
   updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutCofOInput | Prisma.PaymentUpdateManyWithWhereWithoutCofOInput[]
   deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
+}
+
+export type FloatFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type EnumPaymentStatusFieldUpdateOperationsInput = {
@@ -673,15 +667,15 @@ export type PaymentCreateOrConnectWithoutLandInput = {
   create: Prisma.XOR<Prisma.PaymentCreateWithoutLandInput, Prisma.PaymentUncheckedCreateWithoutLandInput>
 }
 
-export type PaymentCreateManyLandInputEnvelope = {
-  data: Prisma.PaymentCreateManyLandInput | Prisma.PaymentCreateManyLandInput[]
-  skipDuplicates?: boolean
-}
-
 export type PaymentUpsertWithWhereUniqueWithoutLandInput = {
   where: Prisma.PaymentWhereUniqueInput
   update: Prisma.XOR<Prisma.PaymentUpdateWithoutLandInput, Prisma.PaymentUncheckedUpdateWithoutLandInput>
   create: Prisma.XOR<Prisma.PaymentCreateWithoutLandInput, Prisma.PaymentUncheckedCreateWithoutLandInput>
+}
+
+export type PaymentCreateManyLandInputEnvelope = {
+  data: Prisma.PaymentCreateManyLandInput | Prisma.PaymentCreateManyLandInput[]
+  skipDuplicates?: boolean
 }
 
 export type PaymentUpdateWithWhereUniqueWithoutLandInput = {
@@ -786,17 +780,6 @@ export type PaymentUncheckedUpdateManyWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PaymentCreateManyLandInput = {
-  id?: string
-  userId: string
-  cofOId?: string | null
-  amount: number
-  reference: string
-  status: $Enums.PaymentStatus
-  provider: string
-  createdAt?: Date | string
-}
-
 export type PaymentUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -817,6 +800,17 @@ export type PaymentUncheckedUpdateWithoutLandInput = {
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PaymentCreateManyLandInput = {
+  id?: string
+  userId: string
+  cofOId?: string | null
+  amount: number
+  reference: string
+  status: $Enums.PaymentStatus
+  provider: string
+  createdAt?: Date | string
 }
 
 export type PaymentUncheckedUpdateManyWithoutLandInput = {

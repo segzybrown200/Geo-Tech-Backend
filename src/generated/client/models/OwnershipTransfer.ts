@@ -673,20 +673,6 @@ export type OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput = {
   deleteMany?: Prisma.OwnershipTransferScalarWhereInput | Prisma.OwnershipTransferScalarWhereInput[]
 }
 
-export type OwnershipTransferCreateNestedManyWithoutLandInput = {
-  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutLandInput, Prisma.OwnershipTransferUncheckedCreateWithoutLandInput> | Prisma.OwnershipTransferCreateWithoutLandInput[] | Prisma.OwnershipTransferUncheckedCreateWithoutLandInput[]
-  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutLandInput | Prisma.OwnershipTransferCreateOrConnectWithoutLandInput[]
-  createMany?: Prisma.OwnershipTransferCreateManyLandInputEnvelope
-  connect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
-}
-
-export type OwnershipTransferUncheckedCreateNestedManyWithoutLandInput = {
-  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutLandInput, Prisma.OwnershipTransferUncheckedCreateWithoutLandInput> | Prisma.OwnershipTransferCreateWithoutLandInput[] | Prisma.OwnershipTransferUncheckedCreateWithoutLandInput[]
-  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutLandInput | Prisma.OwnershipTransferCreateOrConnectWithoutLandInput[]
-  createMany?: Prisma.OwnershipTransferCreateManyLandInputEnvelope
-  connect?: Prisma.OwnershipTransferWhereUniqueInput | Prisma.OwnershipTransferWhereUniqueInput[]
-}
-
 export type OwnershipTransferUpdateManyWithoutLandNestedInput = {
   create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutLandInput, Prisma.OwnershipTransferUncheckedCreateWithoutLandInput> | Prisma.OwnershipTransferCreateWithoutLandInput[] | Prisma.OwnershipTransferUncheckedCreateWithoutLandInput[]
   connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutLandInput | Prisma.OwnershipTransferCreateOrConnectWithoutLandInput[]
@@ -1016,15 +1002,15 @@ export type OwnershipTransferCreateOrConnectWithoutLandInput = {
   create: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutLandInput, Prisma.OwnershipTransferUncheckedCreateWithoutLandInput>
 }
 
-export type OwnershipTransferCreateManyLandInputEnvelope = {
-  data: Prisma.OwnershipTransferCreateManyLandInput | Prisma.OwnershipTransferCreateManyLandInput[]
-  skipDuplicates?: boolean
-}
-
 export type OwnershipTransferUpsertWithWhereUniqueWithoutLandInput = {
   where: Prisma.OwnershipTransferWhereUniqueInput
   update: Prisma.XOR<Prisma.OwnershipTransferUpdateWithoutLandInput, Prisma.OwnershipTransferUncheckedUpdateWithoutLandInput>
   create: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutLandInput, Prisma.OwnershipTransferUncheckedCreateWithoutLandInput>
+}
+
+export type OwnershipTransferCreateManyLandInputEnvelope = {
+  data: Prisma.OwnershipTransferCreateManyLandInput | Prisma.OwnershipTransferCreateManyLandInput[]
+  skipDuplicates?: boolean
 }
 
 export type OwnershipTransferUpdateWithWhereUniqueWithoutLandInput = {
@@ -1523,22 +1509,6 @@ export type OwnershipTransferUncheckedUpdateManyWithoutGovernorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type OwnershipTransferCreateManyLandInput = {
-  id?: string
-  currentOwnerId: string
-  newOwnerId?: string | null
-  governorId?: string | null
-  newOwnerEmail?: string | null
-  newOwnerPhone?: string | null
-  status?: $Enums.TransferStatus
-  governorComment?: string | null
-  reviewedAt?: Date | string | null
-  rejectionReason?: string | null
-  expiresAt: Date | string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
 export type OwnershipTransferUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1575,6 +1545,22 @@ export type OwnershipTransferUncheckedUpdateWithoutLandInput = {
   verifications?: Prisma.TransferVerificationUncheckedUpdateManyWithoutTransferNestedInput
   documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
+}
+
+export type OwnershipTransferCreateManyLandInput = {
+  id?: string
+  currentOwnerId: string
+  newOwnerId?: string | null
+  governorId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  status?: $Enums.TransferStatus
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  expiresAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type OwnershipTransferUncheckedUpdateManyWithoutLandInput = {

@@ -357,12 +357,6 @@ export type StateUncheckedUpdateOneWithoutGovernorNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StateUpdateToOneWithWhereWithoutGovernorInput, Prisma.StateUpdateWithoutGovernorInput>, Prisma.StateUncheckedUpdateWithoutGovernorInput>
 }
 
-export type StateCreateNestedOneWithoutLandsInput = {
-  create?: Prisma.XOR<Prisma.StateCreateWithoutLandsInput, Prisma.StateUncheckedCreateWithoutLandsInput>
-  connectOrCreate?: Prisma.StateCreateOrConnectWithoutLandsInput
-  connect?: Prisma.StateWhereUniqueInput
-}
-
 export type StateUpdateOneRequiredWithoutLandsNestedInput = {
   create?: Prisma.XOR<Prisma.StateCreateWithoutLandsInput, Prisma.StateUncheckedCreateWithoutLandsInput>
   connectOrCreate?: Prisma.StateCreateOrConnectWithoutLandsInput

@@ -443,12 +443,6 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
-export type UserCreateNestedOneWithoutLandRegistrationInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutLandRegistrationInput, Prisma.UserUncheckedCreateWithoutLandRegistrationInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLandRegistrationInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
 export type UserUpdateOneRequiredWithoutLandRegistrationNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutLandRegistrationInput, Prisma.UserUncheckedCreateWithoutLandRegistrationInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutLandRegistrationInput

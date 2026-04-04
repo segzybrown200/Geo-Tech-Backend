@@ -17,11 +17,11 @@ interface CofOData {
     state: {
       name: string;
     };
-    squareMeters: number;
+    squareMeters: number | null | undefined;
+    centerLat?: number | null;
+    centerLng?: number | null;
     ownershipType: string;
     purpose: string;
-    latitude?: number;
-    longitude?: number;
   };
   signedAt?: Date;
   governorSignatureUrl?: string;
@@ -120,12 +120,13 @@ export async function generateCofOCertificate(cofO: CofOData): Promise<string> {
 
       info(doc, "Address", cofO.land.address);
       info(doc, "Plot Number", cofO.land.plotNumber ?? "N/A");
-      info(doc, "Area", `${cofO.land.squareMeters} sqm`);
-      info(doc, "Purpose", cofO.land.purpose);
-
-      if (cofO.land.latitude && cofO.land.longitude) {
-        info(doc, "Coordinates", `${cofO.land.latitude}, ${cofO.land.longitude}`);
+      if (cofO.land.squareMeters) {
+        info(doc, "Area", `${cofO.land.squareMeters} sqm`);
       }
+      if (cofO.land.centerLat && cofO.land.centerLng) {
+        info(doc, "Coordinates", `${cofO.land.centerLat.toFixed(6)}, ${cofO.land.centerLng.toFixed(6)}`);
+      }
+      info(doc, "Purpose", cofO.land.purpose);
 
       doc.moveDown();
 

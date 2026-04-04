@@ -339,20 +339,6 @@ export type OwnershipHistoryMinOrderByAggregateInput = {
   transferDate?: Prisma.SortOrder
 }
 
-export type OwnershipHistoryCreateNestedManyWithoutLandInput = {
-  create?: Prisma.XOR<Prisma.OwnershipHistoryCreateWithoutLandInput, Prisma.OwnershipHistoryUncheckedCreateWithoutLandInput> | Prisma.OwnershipHistoryCreateWithoutLandInput[] | Prisma.OwnershipHistoryUncheckedCreateWithoutLandInput[]
-  connectOrCreate?: Prisma.OwnershipHistoryCreateOrConnectWithoutLandInput | Prisma.OwnershipHistoryCreateOrConnectWithoutLandInput[]
-  createMany?: Prisma.OwnershipHistoryCreateManyLandInputEnvelope
-  connect?: Prisma.OwnershipHistoryWhereUniqueInput | Prisma.OwnershipHistoryWhereUniqueInput[]
-}
-
-export type OwnershipHistoryUncheckedCreateNestedManyWithoutLandInput = {
-  create?: Prisma.XOR<Prisma.OwnershipHistoryCreateWithoutLandInput, Prisma.OwnershipHistoryUncheckedCreateWithoutLandInput> | Prisma.OwnershipHistoryCreateWithoutLandInput[] | Prisma.OwnershipHistoryUncheckedCreateWithoutLandInput[]
-  connectOrCreate?: Prisma.OwnershipHistoryCreateOrConnectWithoutLandInput | Prisma.OwnershipHistoryCreateOrConnectWithoutLandInput[]
-  createMany?: Prisma.OwnershipHistoryCreateManyLandInputEnvelope
-  connect?: Prisma.OwnershipHistoryWhereUniqueInput | Prisma.OwnershipHistoryWhereUniqueInput[]
-}
-
 export type OwnershipHistoryUpdateManyWithoutLandNestedInput = {
   create?: Prisma.XOR<Prisma.OwnershipHistoryCreateWithoutLandInput, Prisma.OwnershipHistoryUncheckedCreateWithoutLandInput> | Prisma.OwnershipHistoryCreateWithoutLandInput[] | Prisma.OwnershipHistoryUncheckedCreateWithoutLandInput[]
   connectOrCreate?: Prisma.OwnershipHistoryCreateOrConnectWithoutLandInput | Prisma.OwnershipHistoryCreateOrConnectWithoutLandInput[]
@@ -402,15 +388,15 @@ export type OwnershipHistoryCreateOrConnectWithoutLandInput = {
   create: Prisma.XOR<Prisma.OwnershipHistoryCreateWithoutLandInput, Prisma.OwnershipHistoryUncheckedCreateWithoutLandInput>
 }
 
-export type OwnershipHistoryCreateManyLandInputEnvelope = {
-  data: Prisma.OwnershipHistoryCreateManyLandInput | Prisma.OwnershipHistoryCreateManyLandInput[]
-  skipDuplicates?: boolean
-}
-
 export type OwnershipHistoryUpsertWithWhereUniqueWithoutLandInput = {
   where: Prisma.OwnershipHistoryWhereUniqueInput
   update: Prisma.XOR<Prisma.OwnershipHistoryUpdateWithoutLandInput, Prisma.OwnershipHistoryUncheckedUpdateWithoutLandInput>
   create: Prisma.XOR<Prisma.OwnershipHistoryCreateWithoutLandInput, Prisma.OwnershipHistoryUncheckedCreateWithoutLandInput>
+}
+
+export type OwnershipHistoryCreateManyLandInputEnvelope = {
+  data: Prisma.OwnershipHistoryCreateManyLandInput | Prisma.OwnershipHistoryCreateManyLandInput[]
+  skipDuplicates?: boolean
 }
 
 export type OwnershipHistoryUpdateWithWhereUniqueWithoutLandInput = {
@@ -435,14 +421,6 @@ export type OwnershipHistoryScalarWhereInput = {
   transferDate?: Prisma.DateTimeFilter<"OwnershipHistory"> | Date | string
 }
 
-export type OwnershipHistoryCreateManyLandInput = {
-  id?: string
-  fromUserId: string
-  toUserId: string
-  authorizedBy: string
-  transferDate?: Date | string
-}
-
 export type OwnershipHistoryUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fromUserId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -457,6 +435,14 @@ export type OwnershipHistoryUncheckedUpdateWithoutLandInput = {
   toUserId?: Prisma.StringFieldUpdateOperationsInput | string
   authorizedBy?: Prisma.StringFieldUpdateOperationsInput | string
   transferDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type OwnershipHistoryCreateManyLandInput = {
+  id?: string
+  fromUserId: string
+  toUserId: string
+  authorizedBy: string
+  transferDate?: Date | string
 }
 
 export type OwnershipHistoryUncheckedUpdateManyWithoutLandInput = {

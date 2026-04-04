@@ -105,8 +105,8 @@ export const initiateOwnershipTransfer = async (
               <p><strong>This code expires in 15 minutes.</strong></p>
               <p>Land Details:<br/>
               Owner: ${land.ownerName}<br/>
-              Location: ${land.address || `${land.latitude}, ${land.longitude}`}<br/>
-              Size: ${land.squareMeters}m²
+              Location: ${land.address || "Not specified"}<br/>
+              Size: ${land.areaSqm ? `${land.areaSqm}m²` : "Not specified"}
               </p>
               <p style="color: #666; font-size: 12px; margin-top: 30px;">
                 If you did not request this transfer, please ignore this email or contact support immediately.
@@ -439,8 +439,8 @@ export const submitTransferDocuments = async (
             <p><strong>Transfer Details:</strong></p>
             <ul>
               <li>Transfer ID: ${transferId}</li>
-              <li>Land: ${transfer.land.address || `${transfer.land.latitude}, ${transfer.land.longitude}`}</li>
-              <li>Land Size: ${transfer.land.squareMeters}m²</li>
+              <li>Land: ${transfer.land.address || "Not specified"}</li>
+              <li>Land Size: ${transfer.land.areaSqm ? `${transfer.land.areaSqm}m²` : "Not specified"}</li>
               <li>Documents Submitted: ${files.length}</li>
             </ul>
             <p>Please review the submitted documents and either approve or reject the transfer.</p>
@@ -640,7 +640,7 @@ export const approveOwnershipTransfer = async (
             <p><strong>Transfer Details:</strong></p>
             <ul>
               <li>Transfer ID: ${transferId}</li>
-              <li>Land: ${transfer.land.address || `${transfer.land.latitude}, ${transfer.land.longitude}`}</li>
+              <li>Land: ${transfer.land.address || "Not specified"}</li>
               <li>New Owner: ${newOwner?.fullName || transfer.newOwnerEmail}</li>
               <li>Approved Date: ${new Date().toLocaleDateString()}</li>
             </ul>
@@ -666,8 +666,8 @@ export const approveOwnershipTransfer = async (
             <p>Congratulations! The land ownership transfer has been <strong>APPROVED</strong>.</p>
             <p><strong>Your New Land:</strong></p>
             <ul>
-              <li>Location: ${transfer.land.address || `${transfer.land.latitude}, ${transfer.land.longitude}`}</li>
-              <li>Size: ${transfer.land.squareMeters}m²</li>
+              <li>Location: ${transfer.land.address || "Not specified"}</li>
+              <li>Size: ${transfer.land.areaSqm ? `${transfer.land.areaSqm}m²` : "Not specified"}</li>
               <li>Transfer ID: ${transferId}</li>
             </ul>
             <p>You are now the official owner of this land. You can now apply for Certificate of Occupancy (CofO).</p>
@@ -986,7 +986,7 @@ export const getTransferProgress = async (
       landDetails: {
         id: transfer.land.id,
         address: transfer.land.address,
-        size: transfer.land.squareMeters,
+        size: transfer.land.areaSqm,
         state: transfer.land.state.name,
       },
       timestamps: {
@@ -1088,7 +1088,7 @@ export const getUserOwnershipTransfers = async (
         land: {
           id: transfer.land.id,
           address: transfer.land.address,
-          size: transfer.land.squareMeters,
+          size: transfer.land.areaSqm,
           state: transfer.land.state.name,
           currentOwner: transfer.land.owner.fullName,
         },

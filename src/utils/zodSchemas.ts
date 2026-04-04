@@ -12,17 +12,56 @@ export const transferOwnershipSchema = z.object({
   landId: z.string().uuid(),
   newOwnerEmail: z.string().email(),
 });
+export const landVerificationSchema = z.object({
+  coordinates: z.array(
+    z.tuple([z.number(), z.number()])
+  ).min(4),
+
+  stateId: z.string().uuid().optional(),
+}).refine((data) => {
+  const first = data.coordinates[0];
+  const last = data.coordinates[data.coordinates.length - 1];
+  return first[0] === last[0] && first[1] === last[1];
+}, {
+  message: "Polygon must be closed",
+});
 
 export const landRegistrationSchema = z.object({
   ownerName: z.string().min(3),
-  latitude: z.string().transform(Number),
-  longitude: z.string().transform(Number),
-  squareMeters: z.string().transform(Number),
-  address: z.string().min(5).optional(),
+
   ownershipType: z.string(),
   purpose: z.string(),
   titleType: z.string(),
+
   stateId: z.string().uuid(),
+  address: z.string().min(5).optional(),
+
+  // 🔥 NEW: polygon coordinates
+  coordinates: z.preprocess((val) => {
+    if (typeof val === "string") {
+      try {
+        return JSON.parse(val);
+      } catch {
+        return val;
+      }
+    }
+    return val;
+  },
+  z.array(
+    z.tuple([
+      z.number(),
+      z.number(),
+    ])
+  ).min(4, "A valid land polygon must have at least 4 points")
+  ),
+
+  surveyPlanNumber: z.string().min(3),
+  surveyDate: z.string().optional(),
+  surveyorName: z.string().min(3),
+  surveyorLicense: z.string().optional(),
+  accuracyLevel: z.enum(["SURVEYED", "SATELLITE", "USER_DRAWN"]),
+
+  parentLandId: z.string().uuid().optional(),
 });
 
 export const internalUserSchema = z.object({

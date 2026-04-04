@@ -745,18 +745,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
           args: Prisma.LandRegistrationFindManyArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$LandRegistrationPayload>[]
         }
-        create: {
-          args: Prisma.LandRegistrationCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandRegistrationPayload>
-        }
-        createMany: {
-          args: Prisma.LandRegistrationCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.LandRegistrationCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandRegistrationPayload>[]
-        }
         delete: {
           args: Prisma.LandRegistrationDeleteArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$LandRegistrationPayload>
@@ -776,10 +764,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         updateManyAndReturn: {
           args: Prisma.LandRegistrationUpdateManyAndReturnArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$LandRegistrationPayload>[]
-        }
-        upsert: {
-          args: Prisma.LandRegistrationUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandRegistrationPayload>
         }
         aggregate: {
           args: Prisma.LandRegistrationAggregateArgs<ExtArgs>
@@ -2162,9 +2146,9 @@ export const LandRegistrationScalarFieldEnum = {
   id: 'id',
   ownerId: 'ownerId',
   ownerName: 'ownerName',
-  latitude: 'latitude',
-  longitude: 'longitude',
-  squareMeters: 'squareMeters',
+  areaSqm: 'areaSqm',
+  centerLat: 'centerLat',
+  centerLng: 'centerLng',
   landStatus: 'landStatus',
   ownershipType: 'ownershipType',
   stateId: 'stateId',
@@ -2172,7 +2156,16 @@ export const LandRegistrationScalarFieldEnum = {
   titleType: 'titleType',
   address: 'address',
   plotNumber: 'plotNumber',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  parentLandId: 'parentLandId',
+  landCode: 'landCode',
+  isVerified: 'isVerified',
+  surveyPlanNumber: 'surveyPlanNumber',
+  surveyDate: 'surveyDate',
+  surveyorName: 'surveyorName',
+  surveyorLicense: 'surveyorLicense',
+  accuracyLevel: 'accuracyLevel',
+  coordinates: 'coordinates'
 } as const
 
 export type LandRegistrationScalarFieldEnum = (typeof LandRegistrationScalarFieldEnum)[keyof typeof LandRegistrationScalarFieldEnum]
@@ -2418,6 +2411,14 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const JsonNullValueInput = {

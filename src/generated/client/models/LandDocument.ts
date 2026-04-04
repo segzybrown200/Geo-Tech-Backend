@@ -361,20 +361,6 @@ export type LandDocumentMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
-export type LandDocumentCreateNestedManyWithoutLandInput = {
-  create?: Prisma.XOR<Prisma.LandDocumentCreateWithoutLandInput, Prisma.LandDocumentUncheckedCreateWithoutLandInput> | Prisma.LandDocumentCreateWithoutLandInput[] | Prisma.LandDocumentUncheckedCreateWithoutLandInput[]
-  connectOrCreate?: Prisma.LandDocumentCreateOrConnectWithoutLandInput | Prisma.LandDocumentCreateOrConnectWithoutLandInput[]
-  createMany?: Prisma.LandDocumentCreateManyLandInputEnvelope
-  connect?: Prisma.LandDocumentWhereUniqueInput | Prisma.LandDocumentWhereUniqueInput[]
-}
-
-export type LandDocumentUncheckedCreateNestedManyWithoutLandInput = {
-  create?: Prisma.XOR<Prisma.LandDocumentCreateWithoutLandInput, Prisma.LandDocumentUncheckedCreateWithoutLandInput> | Prisma.LandDocumentCreateWithoutLandInput[] | Prisma.LandDocumentUncheckedCreateWithoutLandInput[]
-  connectOrCreate?: Prisma.LandDocumentCreateOrConnectWithoutLandInput | Prisma.LandDocumentCreateOrConnectWithoutLandInput[]
-  createMany?: Prisma.LandDocumentCreateManyLandInputEnvelope
-  connect?: Prisma.LandDocumentWhereUniqueInput | Prisma.LandDocumentWhereUniqueInput[]
-}
-
 export type LandDocumentUpdateManyWithoutLandNestedInput = {
   create?: Prisma.XOR<Prisma.LandDocumentCreateWithoutLandInput, Prisma.LandDocumentUncheckedCreateWithoutLandInput> | Prisma.LandDocumentCreateWithoutLandInput[] | Prisma.LandDocumentUncheckedCreateWithoutLandInput[]
   connectOrCreate?: Prisma.LandDocumentCreateOrConnectWithoutLandInput | Prisma.LandDocumentCreateOrConnectWithoutLandInput[]
@@ -426,15 +412,15 @@ export type LandDocumentCreateOrConnectWithoutLandInput = {
   create: Prisma.XOR<Prisma.LandDocumentCreateWithoutLandInput, Prisma.LandDocumentUncheckedCreateWithoutLandInput>
 }
 
-export type LandDocumentCreateManyLandInputEnvelope = {
-  data: Prisma.LandDocumentCreateManyLandInput | Prisma.LandDocumentCreateManyLandInput[]
-  skipDuplicates?: boolean
-}
-
 export type LandDocumentUpsertWithWhereUniqueWithoutLandInput = {
   where: Prisma.LandDocumentWhereUniqueInput
   update: Prisma.XOR<Prisma.LandDocumentUpdateWithoutLandInput, Prisma.LandDocumentUncheckedUpdateWithoutLandInput>
   create: Prisma.XOR<Prisma.LandDocumentCreateWithoutLandInput, Prisma.LandDocumentUncheckedCreateWithoutLandInput>
+}
+
+export type LandDocumentCreateManyLandInputEnvelope = {
+  data: Prisma.LandDocumentCreateManyLandInput | Prisma.LandDocumentCreateManyLandInput[]
+  skipDuplicates?: boolean
 }
 
 export type LandDocumentUpdateWithWhereUniqueWithoutLandInput = {
@@ -460,15 +446,6 @@ export type LandDocumentScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"LandDocument"> | Date | string
 }
 
-export type LandDocumentCreateManyLandInput = {
-  id?: string
-  documentUrl: string
-  fileName: string
-  isActive?: boolean
-  replacedById?: string | null
-  createdAt?: Date | string
-}
-
 export type LandDocumentUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   documentUrl?: Prisma.StringFieldUpdateOperationsInput | string
@@ -485,6 +462,15 @@ export type LandDocumentUncheckedUpdateWithoutLandInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   replacedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type LandDocumentCreateManyLandInput = {
+  id?: string
+  documentUrl: string
+  fileName: string
+  isActive?: boolean
+  replacedById?: string | null
+  createdAt?: Date | string
 }
 
 export type LandDocumentUncheckedUpdateManyWithoutLandInput = {

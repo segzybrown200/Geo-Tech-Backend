@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { deleteLand, getAllUserLands, getLandById, getLandCount, getLandsByState, registerLand, searchLandExistence, updateLand } from '../controllers/landController';
+import { deleteLand, getAllUserLands, getLandById, getLandCount, getLandsByState, registerLand, searchLandExistence, updateLand, verifyLand } from '../controllers/landController';
 import { requireAuth,verifyToken } from '../middlewares/authMiddleware';
 
 const router = express.Router();
@@ -14,5 +14,6 @@ router.delete("/delete-land/:id", requireAuth, deleteLand);
 router.put("/update-land/:id", requireAuth, updateLand); // Placeholder for updateLand
 router.get("/get-lands-count", verifyToken, getLandCount)
 router.get("/search-lands", verifyToken, searchLandExistence);
+router.post("/verify-land", verifyLand);
 
 export default router;

@@ -48,6 +48,7 @@ enum Role {
   ADMIN
   GOVERNOR
 }
+
 enum landStatus {
   PENDING
   APPROVED
@@ -55,35 +56,35 @@ enum landStatus {
 }
 
 model InternalUser {
-  id                    String            @id @default(uuid()) @db.Uuid
-  name                  String
-  email                 String            @unique
-  password              String?
-  phone                 String?
-  ministry              String?
-  department            String?
-  position              Int?              @default(0)
-  function              String?
-  state                 State?            @relation(fields: [stateId], references: [id])
-  stateId               String?           @db.Uuid
-  role                  Role              @default(APPROVER)
-  requiresSignature     Boolean           @default(false)
-  approvingPosition     Int?              @default(0)
-  signatureUrl          String?
-  createdAt             DateTime          @default(now())
-  StageLog              StageLog[]
-  InboxMessage          InboxMessage[]
-  StateGovernor         State?            @relation("Governor")
+  id                         String              @id @default(uuid()) @db.Uuid
+  name                       String
+  email                      String              @unique
+  password                   String?
+  phone                      String?
+  ministry                   String?
+  department                 String?
+  position                   Int?                @default(0)
+  function                   String?
+  state                      State?              @relation(fields: [stateId], references: [id])
+  stateId                    String?             @db.Uuid
+  role                       Role                @default(APPROVER)
+  requiresSignature          Boolean             @default(false)
+  approvingPosition          Int?                @default(0)
+  signatureUrl               String?
+  createdAt                  DateTime            @default(now())
+  StageLog                   StageLog[]
+  InboxMessage               InboxMessage[]
+  StateGovernor              State?              @relation("Governor")
   // Sessions & OTP relations
-  emailToken            String? // used for verifying email
-  passwordToken         String? // used for setting password after verification
-  isVerified            Boolean           @default(false)
-  tokenExpiresAt        DateTime? // expiration for tokens
-  otps                  InternalOtp[]
-  cofOApplications      CofOApplication[]
-  rejectedApplications  CofOApplication[] @relation("rejectedBy")
-  approvedApplications  CofOApplication[] @relation("approvedBy")
-  reviewingApplications CofOApplication[] @relation("currentReviewer")
+  emailToken                 String? // used for verifying email
+  passwordToken              String? // used for setting password after verification
+  isVerified                 Boolean             @default(false)
+  tokenExpiresAt             DateTime? // expiration for tokens
+  otps                       InternalOtp[]
+  cofOApplications           CofOApplication[]
+  rejectedApplications       CofOApplication[]   @relation("rejectedBy")
+  approvedApplications       CofOApplication[]   @relation("approvedBy")
+  reviewingApplications      CofOApplication[]   @relation("currentReviewer")
   ownershipTransfersReviewed OwnershipTransfer[] @relation("GovernorReviewer")
 }
 
@@ -118,32 +119,46 @@ model InternalOtp {
   createdAt      DateTime     @default(now())
 }
 
-
-
 model LandRegistration {
-  id                String                   @id @default(uuid()) @db.Uuid
-  ownerId           String                   @db.Uuid
-  owner             User                     @relation(fields: [ownerId], references: [id], name: "UserLands")
+  id                String                                      @id @default(uuid()) @db.Uuid
+  ownerId           String                                      @db.Uuid
+  owner             User                                        @relation(fields: [ownerId], references: [id], name: "UserLands")
   ownerName         String
-  latitude          Float
-  longitude         Float
-  squareMeters      Float
-  landStatus        landStatus               @default(PENDING)
+  areaSqm           Float?
+  centerLat         Float? // Centroid latitude for map display
+  centerLng         Float? // Centroid longitude for map display
+  landStatus        landStatus                                  @default(PENDING)
   ownershipType     String
-  stateId           String                   @db.Uuid
-  state             State                    @relation(fields: [stateId], references: [id])
+  stateId           String                                      @db.Uuid
+  state             State                                       @relation(fields: [stateId], references: [id])
   purpose           String
   titleType         String
   address           String?
   plotNumber        String?
   documents         LandDocument[]
   ownershipLogs     OwnershipHistory[]
-  createdAt         DateTime                 @default(now())
+  createdAt         DateTime                                    @default(now())
   CofOApplication   CofOApplication[]
-  boundary          Unsupported("geometry")?
+  boundary          Unsupported("geometry(MultiPolygon, 4326)")
   OwnershipTransfer OwnershipTransfer[]
+  // 🔥 Subdivision support
+  parentLandId      String?                                     @db.Uuid
+  parentLand        LandRegistration?                           @relation("Subdivision", fields: [parentLandId], references: [id])
+  children          LandRegistration[]                          @relation("Subdivision")
+  landCode          String?                                     @unique // 🔥 ADD THIS
+  payments          Payment[]
+  auditLogs         LandAuditLog[]
+  isVerified        Boolean                                     @default(false)
+  surveyPlanNumber  String?                                     @unique
+  surveyDate        DateTime?
+  surveyorName      String?
+  surveyorLicense   String?
+  accuracyLevel     String? // SURVEYED | SATELLITE | USER_DRAWN
+  coordinates       Json?
 
-  payments Payment[]
+  @@index([ownerId])
+  @@index([stateId])
+  @@index([landStatus])
 }
 
 model LandDocument {
@@ -158,55 +173,56 @@ model LandDocument {
 }
 
 model State {
-  id         String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name       String                   @unique
+  id         String                                       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String                                       @unique
   lands      LandRegistration[]
   approvers  InternalUser[]
-  boundary   Unsupported("geometry")?
-  governorId String?                  @unique @db.Uuid
-  governor   InternalUser?            @relation("Governor", fields: [governorId], references: [id])
-  createdAt  DateTime                 @default(now())
+  boundary   Unsupported("geometry(MultiPolygon, 4326)")?
+  governorId String?                                      @unique @db.Uuid
+  governor   InternalUser?                                @relation("Governor", fields: [governorId], references: [id])
+  createdAt  DateTime                                     @default(now())
 }
 
 model LandAuditLog {
-  id        String   @id @default(uuid()) @db.Uuid
-  landId    String   @db.Uuid
+  id        String           @id @default(uuid()) @db.Uuid
+  landId    String           @db.Uuid
   action    String
-  userId    String   @db.Uuid
+  userId    String           @db.Uuid
   metadata  Json
-  createdAt DateTime @default(now())
+  createdAt DateTime         @default(now())
+  land      LandRegistration @relation(fields: [landId], references: [id])
 }
 
 model OwnershipTransfer {
-  id             String   @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
-  landId         String   @db.Uuid
-  currentOwnerId String   @db.Uuid
-  newOwnerId     String?  @db.Uuid
-  governorId     String?  @db.Uuid
+  landId         String  @db.Uuid
+  currentOwnerId String  @db.Uuid
+  newOwnerId     String? @db.Uuid
+  governorId     String? @db.Uuid
 
-  newOwnerEmail  String?
-  newOwnerPhone  String?
+  newOwnerEmail String?
+  newOwnerPhone String?
 
-  status         TransferStatus @default(INITIATED)
+  status TransferStatus @default(INITIATED)
 
   // Governor review fields
   governorComment String?
   reviewedAt      DateTime?
   rejectionReason String?
 
-  expiresAt      DateTime
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  verifications        TransferVerification[]
-  documents            OwnershipTransferDocument[]
-  transferAuditLogs    OwnershipTransferAuditLog[]
+  verifications     TransferVerification[]
+  documents         OwnershipTransferDocument[]
+  transferAuditLogs OwnershipTransferAuditLog[]
 
-  land           LandRegistration @relation(fields: [landId], references: [id])
-  currentOwner   User             @relation("CurrentOwner", fields: [currentOwnerId], references: [id])
-  newOwner       User?            @relation("NewOwner", fields: [newOwnerId], references: [id])
-  governor       InternalUser?    @relation("GovernorReviewer", fields: [governorId], references: [id])
+  land         LandRegistration @relation(fields: [landId], references: [id])
+  currentOwner User             @relation("CurrentOwner", fields: [currentOwnerId], references: [id])
+  newOwner     User?            @relation("NewOwner", fields: [newOwnerId], references: [id])
+  governor     InternalUser?    @relation("GovernorReviewer", fields: [governorId], references: [id])
 
   @@index([status])
   @@index([governorId])
@@ -223,17 +239,17 @@ enum TransferStatus {
 }
 
 model TransferVerification {
-  id          String   @id @default(uuid()) @db.Uuid
-  transferId  String   @db.Uuid
+  id         String @id @default(uuid()) @db.Uuid
+  transferId String @db.Uuid
 
-  channelType String   // email | phone
+  channelType String // email | phone
   target      String
   code        String
 
-  isVerified  Boolean  @default(false)
+  isVerified Boolean @default(false)
 
-  createdAt   DateTime @default(now())
-  expiresAt   DateTime
+  createdAt DateTime @default(now())
+  expiresAt DateTime
 
   transfer OwnershipTransfer @relation(fields: [transferId], references: [id])
 
@@ -241,18 +257,18 @@ model TransferVerification {
 }
 
 model OwnershipTransferDocument {
-  id         String   @id @default(uuid()) @db.Uuid
-  transferId String   @db.Uuid
-  
-  type       String   // e.g., "POWER_OF_ATTORNEY", "DEED", "PAYMENT_PROOF", etc.
-  title      String
-  url        String   // Cloudinary URL
-  
-  status     DocumentStatus @default(PENDING) // PENDING, APPROVED, REJECTED
+  id         String @id @default(uuid()) @db.Uuid
+  transferId String @db.Uuid
+
+  type  String // e.g., "POWER_OF_ATTORNEY", "DEED", "PAYMENT_PROOF", etc.
+  title String
+  url   String // Cloudinary URL
+
+  status           DocumentStatus @default(PENDING) // PENDING, APPROVED, REJECTED
   rejectionMessage String?
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   transfer OwnershipTransfer @relation(fields: [transferId], references: [id])
 
@@ -261,15 +277,15 @@ model OwnershipTransferDocument {
 }
 
 model OwnershipTransferAuditLog {
-  id         String   @id @default(uuid()) @db.Uuid
-  transferId String   @db.Uuid
+  id         String @id @default(uuid()) @db.Uuid
+  transferId String @db.Uuid
 
-  action     String   // INITIATED, VERIFIED, SUBMITTED, APPROVED, REJECTED, etc.
-  performedById String? @db.Uuid
+  action          String // INITIATED, VERIFIED, SUBMITTED, APPROVED, REJECTED, etc.
+  performedById   String? @db.Uuid
   performedByRole String? // USER, GOVERNOR
-  comment    String?
+  comment         String?
 
-  createdAt  DateTime @default(now())
+  createdAt DateTime @default(now())
 
   transfer OwnershipTransfer @relation(fields: [transferId], references: [id])
 
@@ -278,12 +294,12 @@ model OwnershipTransferAuditLog {
 }
 
 model OwnershipHistory {
-  id           String   @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
-  landId       String   @db.Uuid
-  fromUserId   String   @db.Uuid
-  toUserId     String   @db.Uuid
-  authorizedBy String   @db.Uuid
+  landId       String @db.Uuid
+  fromUserId   String @db.Uuid
+  toUserId     String @db.Uuid
+  authorizedBy String @db.Uuid
 
   transferDate DateTime @default(now())
 
@@ -292,13 +308,12 @@ model OwnershipHistory {
   @@index([landId])
 }
 
-
 model CofOApplication {
-  id     String     @id @default(uuid()) @db.Uuid
-  userId String     @db.Uuid
-  landId String     @db.Uuid
-  status CofOStatus @default(DRAFT)
-  plotNumber           String? // new
+  id         String     @id @default(uuid()) @db.Uuid
+  userId     String     @db.Uuid
+  landId     String     @db.Uuid
+  status     CofOStatus @default(DRAFT)
+  plotNumber String? // new
 
   cofONumber           String? // new
   signedAt             DateTime? // new
@@ -324,25 +339,27 @@ model CofOApplication {
   internalUserId       String?          @db.Uuid
   cofODocuments        CofODocument[]
 }
+
 enum DocumentStatus {
   PENDING
   APPROVED
   REJECTED
 }
+
 model CofODocument {
-  id        String   @id @default(uuid()) @db.Uuid
-  cofOId    String   @db.Uuid
-  type      String
-  title     String
-  url       String
+  id               String         @id @default(uuid()) @db.Uuid
+  cofOId           String         @db.Uuid
+  type             String
+  title            String
+  url              String
   rejectionMessage String?
-  createdAt DateTime @default(now())
-  status    DocumentStatus @default(PENDING)
+  createdAt        DateTime       @default(now())
+  status           DocumentStatus @default(PENDING)
 
   cofO CofOApplication @relation(fields: [cofOId], references: [id])
 
   inboxMessage   InboxMessage? @relation(fields: [inboxMessageId], references: [id])
-  inboxMessageId String?   @db.Uuid
+  inboxMessageId String?       @db.Uuid
 }
 
 enum PaymentStatus {

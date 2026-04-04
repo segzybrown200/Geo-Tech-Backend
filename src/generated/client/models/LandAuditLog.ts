@@ -186,6 +186,7 @@ export type LandAuditLogWhereInput = {
   userId?: Prisma.UuidFilter<"LandAuditLog"> | string
   metadata?: Prisma.JsonFilter<"LandAuditLog">
   createdAt?: Prisma.DateTimeFilter<"LandAuditLog"> | Date | string
+  land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
 }
 
 export type LandAuditLogOrderByWithRelationInput = {
@@ -195,6 +196,7 @@ export type LandAuditLogOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  land?: Prisma.LandRegistrationOrderByWithRelationInput
 }
 
 export type LandAuditLogWhereUniqueInput = Prisma.AtLeast<{
@@ -207,6 +209,7 @@ export type LandAuditLogWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.UuidFilter<"LandAuditLog"> | string
   metadata?: Prisma.JsonFilter<"LandAuditLog">
   createdAt?: Prisma.DateTimeFilter<"LandAuditLog"> | Date | string
+  land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
 }, "id">
 
 export type LandAuditLogOrderByWithAggregationInput = {
@@ -235,11 +238,11 @@ export type LandAuditLogScalarWhereWithAggregatesInput = {
 
 export type LandAuditLogCreateInput = {
   id?: string
-  landId: string
   action: string
   userId: string
   metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  land: Prisma.LandRegistrationCreateNestedOneWithoutAuditLogsInput
 }
 
 export type LandAuditLogUncheckedCreateInput = {
@@ -253,11 +256,11 @@ export type LandAuditLogUncheckedCreateInput = {
 
 export type LandAuditLogUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  landId?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutAuditLogsNestedInput
 }
 
 export type LandAuditLogUncheckedUpdateInput = {
@@ -280,7 +283,6 @@ export type LandAuditLogCreateManyInput = {
 
 export type LandAuditLogUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  landId?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -294,6 +296,16 @@ export type LandAuditLogUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type LandAuditLogListRelationFilter = {
+  every?: Prisma.LandAuditLogWhereInput
+  some?: Prisma.LandAuditLogWhereInput
+  none?: Prisma.LandAuditLogWhereInput
+}
+
+export type LandAuditLogOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type LandAuditLogCountOrderByAggregateInput = {
@@ -321,6 +333,120 @@ export type LandAuditLogMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
+export type LandAuditLogUpdateManyWithoutLandNestedInput = {
+  create?: Prisma.XOR<Prisma.LandAuditLogCreateWithoutLandInput, Prisma.LandAuditLogUncheckedCreateWithoutLandInput> | Prisma.LandAuditLogCreateWithoutLandInput[] | Prisma.LandAuditLogUncheckedCreateWithoutLandInput[]
+  connectOrCreate?: Prisma.LandAuditLogCreateOrConnectWithoutLandInput | Prisma.LandAuditLogCreateOrConnectWithoutLandInput[]
+  upsert?: Prisma.LandAuditLogUpsertWithWhereUniqueWithoutLandInput | Prisma.LandAuditLogUpsertWithWhereUniqueWithoutLandInput[]
+  createMany?: Prisma.LandAuditLogCreateManyLandInputEnvelope
+  set?: Prisma.LandAuditLogWhereUniqueInput | Prisma.LandAuditLogWhereUniqueInput[]
+  disconnect?: Prisma.LandAuditLogWhereUniqueInput | Prisma.LandAuditLogWhereUniqueInput[]
+  delete?: Prisma.LandAuditLogWhereUniqueInput | Prisma.LandAuditLogWhereUniqueInput[]
+  connect?: Prisma.LandAuditLogWhereUniqueInput | Prisma.LandAuditLogWhereUniqueInput[]
+  update?: Prisma.LandAuditLogUpdateWithWhereUniqueWithoutLandInput | Prisma.LandAuditLogUpdateWithWhereUniqueWithoutLandInput[]
+  updateMany?: Prisma.LandAuditLogUpdateManyWithWhereWithoutLandInput | Prisma.LandAuditLogUpdateManyWithWhereWithoutLandInput[]
+  deleteMany?: Prisma.LandAuditLogScalarWhereInput | Prisma.LandAuditLogScalarWhereInput[]
+}
+
+export type LandAuditLogUncheckedUpdateManyWithoutLandNestedInput = {
+  create?: Prisma.XOR<Prisma.LandAuditLogCreateWithoutLandInput, Prisma.LandAuditLogUncheckedCreateWithoutLandInput> | Prisma.LandAuditLogCreateWithoutLandInput[] | Prisma.LandAuditLogUncheckedCreateWithoutLandInput[]
+  connectOrCreate?: Prisma.LandAuditLogCreateOrConnectWithoutLandInput | Prisma.LandAuditLogCreateOrConnectWithoutLandInput[]
+  upsert?: Prisma.LandAuditLogUpsertWithWhereUniqueWithoutLandInput | Prisma.LandAuditLogUpsertWithWhereUniqueWithoutLandInput[]
+  createMany?: Prisma.LandAuditLogCreateManyLandInputEnvelope
+  set?: Prisma.LandAuditLogWhereUniqueInput | Prisma.LandAuditLogWhereUniqueInput[]
+  disconnect?: Prisma.LandAuditLogWhereUniqueInput | Prisma.LandAuditLogWhereUniqueInput[]
+  delete?: Prisma.LandAuditLogWhereUniqueInput | Prisma.LandAuditLogWhereUniqueInput[]
+  connect?: Prisma.LandAuditLogWhereUniqueInput | Prisma.LandAuditLogWhereUniqueInput[]
+  update?: Prisma.LandAuditLogUpdateWithWhereUniqueWithoutLandInput | Prisma.LandAuditLogUpdateWithWhereUniqueWithoutLandInput[]
+  updateMany?: Prisma.LandAuditLogUpdateManyWithWhereWithoutLandInput | Prisma.LandAuditLogUpdateManyWithWhereWithoutLandInput[]
+  deleteMany?: Prisma.LandAuditLogScalarWhereInput | Prisma.LandAuditLogScalarWhereInput[]
+}
+
+export type LandAuditLogCreateWithoutLandInput = {
+  id?: string
+  action: string
+  userId: string
+  metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+}
+
+export type LandAuditLogUncheckedCreateWithoutLandInput = {
+  id?: string
+  action: string
+  userId: string
+  metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+}
+
+export type LandAuditLogCreateOrConnectWithoutLandInput = {
+  where: Prisma.LandAuditLogWhereUniqueInput
+  create: Prisma.XOR<Prisma.LandAuditLogCreateWithoutLandInput, Prisma.LandAuditLogUncheckedCreateWithoutLandInput>
+}
+
+export type LandAuditLogUpsertWithWhereUniqueWithoutLandInput = {
+  where: Prisma.LandAuditLogWhereUniqueInput
+  update: Prisma.XOR<Prisma.LandAuditLogUpdateWithoutLandInput, Prisma.LandAuditLogUncheckedUpdateWithoutLandInput>
+  create: Prisma.XOR<Prisma.LandAuditLogCreateWithoutLandInput, Prisma.LandAuditLogUncheckedCreateWithoutLandInput>
+}
+
+export type LandAuditLogCreateManyLandInputEnvelope = {
+  data: Prisma.LandAuditLogCreateManyLandInput | Prisma.LandAuditLogCreateManyLandInput[]
+  skipDuplicates?: boolean
+}
+
+export type LandAuditLogUpdateWithWhereUniqueWithoutLandInput = {
+  where: Prisma.LandAuditLogWhereUniqueInput
+  data: Prisma.XOR<Prisma.LandAuditLogUpdateWithoutLandInput, Prisma.LandAuditLogUncheckedUpdateWithoutLandInput>
+}
+
+export type LandAuditLogUpdateManyWithWhereWithoutLandInput = {
+  where: Prisma.LandAuditLogScalarWhereInput
+  data: Prisma.XOR<Prisma.LandAuditLogUpdateManyMutationInput, Prisma.LandAuditLogUncheckedUpdateManyWithoutLandInput>
+}
+
+export type LandAuditLogScalarWhereInput = {
+  AND?: Prisma.LandAuditLogScalarWhereInput | Prisma.LandAuditLogScalarWhereInput[]
+  OR?: Prisma.LandAuditLogScalarWhereInput[]
+  NOT?: Prisma.LandAuditLogScalarWhereInput | Prisma.LandAuditLogScalarWhereInput[]
+  id?: Prisma.UuidFilter<"LandAuditLog"> | string
+  landId?: Prisma.UuidFilter<"LandAuditLog"> | string
+  action?: Prisma.StringFilter<"LandAuditLog"> | string
+  userId?: Prisma.UuidFilter<"LandAuditLog"> | string
+  metadata?: Prisma.JsonFilter<"LandAuditLog">
+  createdAt?: Prisma.DateTimeFilter<"LandAuditLog"> | Date | string
+}
+
+export type LandAuditLogUpdateWithoutLandInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type LandAuditLogUncheckedUpdateWithoutLandInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type LandAuditLogCreateManyLandInput = {
+  id?: string
+  action: string
+  userId: string
+  metadata: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+}
+
+export type LandAuditLogUncheckedUpdateManyWithoutLandInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 
 
 export type LandAuditLogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -330,6 +456,7 @@ export type LandAuditLogSelect<ExtArgs extends runtime.Types.Extensions.Internal
   userId?: boolean
   metadata?: boolean
   createdAt?: boolean
+  land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["landAuditLog"]>
 
 export type LandAuditLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -339,6 +466,7 @@ export type LandAuditLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   userId?: boolean
   metadata?: boolean
   createdAt?: boolean
+  land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["landAuditLog"]>
 
 export type LandAuditLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -348,6 +476,7 @@ export type LandAuditLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   userId?: boolean
   metadata?: boolean
   createdAt?: boolean
+  land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["landAuditLog"]>
 
 export type LandAuditLogSelectScalar = {
@@ -360,10 +489,21 @@ export type LandAuditLogSelectScalar = {
 }
 
 export type LandAuditLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "landId" | "action" | "userId" | "metadata" | "createdAt", ExtArgs["result"]["landAuditLog"]>
+export type LandAuditLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
+}
+export type LandAuditLogIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
+}
+export type LandAuditLogIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
+}
 
 export type $LandAuditLogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "LandAuditLog"
-  objects: {}
+  objects: {
+    land: Prisma.$LandRegistrationPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     landId: string
@@ -765,6 +905,7 @@ readonly fields: LandAuditLogFieldRefs;
  */
 export interface Prisma__LandAuditLogClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  land<T extends Prisma.LandRegistrationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistrationDefaultArgs<ExtArgs>>): Prisma.Prisma__LandRegistrationClient<runtime.Types.Result.GetResult<Prisma.$LandRegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -817,6 +958,10 @@ export type LandAuditLogFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.LandAuditLogOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandAuditLogInclude<ExtArgs> | null
+  /**
    * Filter, which LandAuditLog to fetch.
    */
   where: Prisma.LandAuditLogWhereUniqueInput
@@ -835,6 +980,10 @@ export type LandAuditLogFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.LandAuditLogOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandAuditLogInclude<ExtArgs> | null
+  /**
    * Filter, which LandAuditLog to fetch.
    */
   where: Prisma.LandAuditLogWhereUniqueInput
@@ -852,6 +1001,10 @@ export type LandAuditLogFindFirstArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the LandAuditLog
    */
   omit?: Prisma.LandAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandAuditLogInclude<ExtArgs> | null
   /**
    * Filter, which LandAuditLog to fetch.
    */
@@ -901,6 +1054,10 @@ export type LandAuditLogFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exten
    */
   omit?: Prisma.LandAuditLogOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandAuditLogInclude<ExtArgs> | null
+  /**
    * Filter, which LandAuditLog to fetch.
    */
   where?: Prisma.LandAuditLogWhereInput
@@ -949,6 +1106,10 @@ export type LandAuditLogFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.LandAuditLogOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandAuditLogInclude<ExtArgs> | null
+  /**
    * Filter, which LandAuditLogs to fetch.
    */
   where?: Prisma.LandAuditLogWhereInput
@@ -992,6 +1153,10 @@ export type LandAuditLogCreateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   omit?: Prisma.LandAuditLogOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandAuditLogInclude<ExtArgs> | null
+  /**
    * The data needed to create a LandAuditLog.
    */
   data: Prisma.XOR<Prisma.LandAuditLogCreateInput, Prisma.LandAuditLogUncheckedCreateInput>
@@ -1025,6 +1190,10 @@ export type LandAuditLogCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
    */
   data: Prisma.LandAuditLogCreateManyInput | Prisma.LandAuditLogCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandAuditLogIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1039,6 +1208,10 @@ export type LandAuditLogUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the LandAuditLog
    */
   omit?: Prisma.LandAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandAuditLogInclude<ExtArgs> | null
   /**
    * The data needed to update a LandAuditLog.
    */
@@ -1091,6 +1264,10 @@ export type LandAuditLogUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
    * Limit how many LandAuditLogs to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandAuditLogIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1105,6 +1282,10 @@ export type LandAuditLogUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the LandAuditLog
    */
   omit?: Prisma.LandAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandAuditLogInclude<ExtArgs> | null
   /**
    * The filter to search for the LandAuditLog to update in case it exists.
    */
@@ -1131,6 +1312,10 @@ export type LandAuditLogDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the LandAuditLog
    */
   omit?: Prisma.LandAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandAuditLogInclude<ExtArgs> | null
   /**
    * Filter which LandAuditLog to delete.
    */
@@ -1163,4 +1348,8 @@ export type LandAuditLogDefaultArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the LandAuditLog
    */
   omit?: Prisma.LandAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandAuditLogInclude<ExtArgs> | null
 }

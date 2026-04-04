@@ -875,20 +875,6 @@ export type CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput 
   deleteMany?: Prisma.CofOApplicationScalarWhereInput | Prisma.CofOApplicationScalarWhereInput[]
 }
 
-export type CofOApplicationCreateNestedManyWithoutLandInput = {
-  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutLandInput, Prisma.CofOApplicationUncheckedCreateWithoutLandInput> | Prisma.CofOApplicationCreateWithoutLandInput[] | Prisma.CofOApplicationUncheckedCreateWithoutLandInput[]
-  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutLandInput | Prisma.CofOApplicationCreateOrConnectWithoutLandInput[]
-  createMany?: Prisma.CofOApplicationCreateManyLandInputEnvelope
-  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
-}
-
-export type CofOApplicationUncheckedCreateNestedManyWithoutLandInput = {
-  create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutLandInput, Prisma.CofOApplicationUncheckedCreateWithoutLandInput> | Prisma.CofOApplicationCreateWithoutLandInput[] | Prisma.CofOApplicationUncheckedCreateWithoutLandInput[]
-  connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutLandInput | Prisma.CofOApplicationCreateOrConnectWithoutLandInput[]
-  createMany?: Prisma.CofOApplicationCreateManyLandInputEnvelope
-  connect?: Prisma.CofOApplicationWhereUniqueInput | Prisma.CofOApplicationWhereUniqueInput[]
-}
-
 export type CofOApplicationUpdateManyWithoutLandNestedInput = {
   create?: Prisma.XOR<Prisma.CofOApplicationCreateWithoutLandInput, Prisma.CofOApplicationUncheckedCreateWithoutLandInput> | Prisma.CofOApplicationCreateWithoutLandInput[] | Prisma.CofOApplicationUncheckedCreateWithoutLandInput[]
   connectOrCreate?: Prisma.CofOApplicationCreateOrConnectWithoutLandInput | Prisma.CofOApplicationCreateOrConnectWithoutLandInput[]
@@ -1460,15 +1446,15 @@ export type CofOApplicationCreateOrConnectWithoutLandInput = {
   create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutLandInput, Prisma.CofOApplicationUncheckedCreateWithoutLandInput>
 }
 
-export type CofOApplicationCreateManyLandInputEnvelope = {
-  data: Prisma.CofOApplicationCreateManyLandInput | Prisma.CofOApplicationCreateManyLandInput[]
-  skipDuplicates?: boolean
-}
-
 export type CofOApplicationUpsertWithWhereUniqueWithoutLandInput = {
   where: Prisma.CofOApplicationWhereUniqueInput
   update: Prisma.XOR<Prisma.CofOApplicationUpdateWithoutLandInput, Prisma.CofOApplicationUncheckedUpdateWithoutLandInput>
   create: Prisma.XOR<Prisma.CofOApplicationCreateWithoutLandInput, Prisma.CofOApplicationUncheckedCreateWithoutLandInput>
+}
+
+export type CofOApplicationCreateManyLandInputEnvelope = {
+  data: Prisma.CofOApplicationCreateManyLandInput | Prisma.CofOApplicationCreateManyLandInput[]
+  skipDuplicates?: boolean
 }
 
 export type CofOApplicationUpdateWithWhereUniqueWithoutLandInput = {
@@ -2573,24 +2559,6 @@ export type CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerInput = {
   internalUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type CofOApplicationCreateManyLandInput = {
-  id?: string
-  userId: string
-  status?: $Enums.CofOStatus
-  plotNumber?: string | null
-  cofONumber?: string | null
-  signedAt?: Date | string | null
-  certificateUrl?: string | null
-  createdAt?: Date | string
-  rejectedById?: string | null
-  approvedById?: string | null
-  revisionCount?: number
-  currentReviewerId?: string | null
-  governorSignatureUrl?: string | null
-  applicationNumber?: string | null
-  internalUserId?: string | null
-}
-
 export type CofOApplicationUpdateWithoutLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumCofOStatusFieldUpdateOperationsInput | $Enums.CofOStatus
@@ -2637,6 +2605,24 @@ export type CofOApplicationUncheckedUpdateWithoutLandInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCofONestedInput
   cofOAuditLogs?: Prisma.CofOAuditLogUncheckedUpdateManyWithoutCofONestedInput
   cofODocuments?: Prisma.CofODocumentUncheckedUpdateManyWithoutCofONestedInput
+}
+
+export type CofOApplicationCreateManyLandInput = {
+  id?: string
+  userId: string
+  status?: $Enums.CofOStatus
+  plotNumber?: string | null
+  cofONumber?: string | null
+  signedAt?: Date | string | null
+  certificateUrl?: string | null
+  createdAt?: Date | string
+  rejectedById?: string | null
+  approvedById?: string | null
+  revisionCount?: number
+  currentReviewerId?: string | null
+  governorSignatureUrl?: string | null
+  applicationNumber?: string | null
+  internalUserId?: string | null
 }
 
 export type CofOApplicationUncheckedUpdateManyWithoutLandInput = {
