@@ -42,76 +42,84 @@ export type LandRegistrationMinAggregateOutputType = {
   id: string | null
   ownerId: string | null
   ownerName: string | null
+  stateId: string | null
+  address: string | null
+  plotNumber: string | null
+  landCode: string | null
   areaSqm: number | null
   centerLat: number | null
   centerLng: number | null
-  landStatus: $Enums.landStatus | null
-  ownershipType: string | null
-  stateId: string | null
-  purpose: string | null
-  titleType: string | null
-  address: string | null
-  plotNumber: string | null
-  createdAt: Date | null
-  parentLandId: string | null
-  landCode: string | null
-  isVerified: boolean | null
+  utmZone: string | null
+  surveyType: string | null
   surveyPlanNumber: string | null
   surveyDate: Date | null
   surveyorName: string | null
   surveyorLicense: string | null
+  landStatus: $Enums.landStatus | null
+  isVerified: boolean | null
   accuracyLevel: string | null
+  ownershipType: string | null
+  purpose: string | null
+  titleType: string | null
+  parentLandId: string | null
+  createdAt: Date | null
 }
 
 export type LandRegistrationMaxAggregateOutputType = {
   id: string | null
   ownerId: string | null
   ownerName: string | null
+  stateId: string | null
+  address: string | null
+  plotNumber: string | null
+  landCode: string | null
   areaSqm: number | null
   centerLat: number | null
   centerLng: number | null
-  landStatus: $Enums.landStatus | null
-  ownershipType: string | null
-  stateId: string | null
-  purpose: string | null
-  titleType: string | null
-  address: string | null
-  plotNumber: string | null
-  createdAt: Date | null
-  parentLandId: string | null
-  landCode: string | null
-  isVerified: boolean | null
+  utmZone: string | null
+  surveyType: string | null
   surveyPlanNumber: string | null
   surveyDate: Date | null
   surveyorName: string | null
   surveyorLicense: string | null
+  landStatus: $Enums.landStatus | null
+  isVerified: boolean | null
   accuracyLevel: string | null
+  ownershipType: string | null
+  purpose: string | null
+  titleType: string | null
+  parentLandId: string | null
+  createdAt: Date | null
 }
 
 export type LandRegistrationCountAggregateOutputType = {
   id: number
   ownerId: number
   ownerName: number
+  stateId: number
+  address: number
+  plotNumber: number
+  landCode: number
   areaSqm: number
   centerLat: number
   centerLng: number
-  landStatus: number
-  ownershipType: number
-  stateId: number
-  purpose: number
-  titleType: number
-  address: number
-  plotNumber: number
-  createdAt: number
-  parentLandId: number
-  landCode: number
-  isVerified: number
+  utmZone: number
+  surveyType: number
+  utmCoordinates: number
+  latlngCoordinates: number
+  bearings: number
   surveyPlanNumber: number
   surveyDate: number
   surveyorName: number
   surveyorLicense: number
+  landStatus: number
+  isVerified: number
   accuracyLevel: number
-  coordinates: number
+  ownershipType: number
+  purpose: number
+  titleType: number
+  parentLandId: number
+  createdAt: number
   _all: number
 }
 
@@ -132,76 +140,84 @@ export type LandRegistrationMinAggregateInputType = {
   id?: true
   ownerId?: true
   ownerName?: true
+  stateId?: true
+  address?: true
+  plotNumber?: true
+  landCode?: true
   areaSqm?: true
   centerLat?: true
   centerLng?: true
-  landStatus?: true
-  ownershipType?: true
-  stateId?: true
-  purpose?: true
-  titleType?: true
-  address?: true
-  plotNumber?: true
-  createdAt?: true
-  parentLandId?: true
-  landCode?: true
-  isVerified?: true
+  utmZone?: true
+  surveyType?: true
   surveyPlanNumber?: true
   surveyDate?: true
   surveyorName?: true
   surveyorLicense?: true
+  landStatus?: true
+  isVerified?: true
   accuracyLevel?: true
+  ownershipType?: true
+  purpose?: true
+  titleType?: true
+  parentLandId?: true
+  createdAt?: true
 }
 
 export type LandRegistrationMaxAggregateInputType = {
   id?: true
   ownerId?: true
   ownerName?: true
+  stateId?: true
+  address?: true
+  plotNumber?: true
+  landCode?: true
   areaSqm?: true
   centerLat?: true
   centerLng?: true
-  landStatus?: true
-  ownershipType?: true
-  stateId?: true
-  purpose?: true
-  titleType?: true
-  address?: true
-  plotNumber?: true
-  createdAt?: true
-  parentLandId?: true
-  landCode?: true
-  isVerified?: true
+  utmZone?: true
+  surveyType?: true
   surveyPlanNumber?: true
   surveyDate?: true
   surveyorName?: true
   surveyorLicense?: true
+  landStatus?: true
+  isVerified?: true
   accuracyLevel?: true
+  ownershipType?: true
+  purpose?: true
+  titleType?: true
+  parentLandId?: true
+  createdAt?: true
 }
 
 export type LandRegistrationCountAggregateInputType = {
   id?: true
   ownerId?: true
   ownerName?: true
+  stateId?: true
+  address?: true
+  plotNumber?: true
+  landCode?: true
   areaSqm?: true
   centerLat?: true
   centerLng?: true
-  landStatus?: true
-  ownershipType?: true
-  stateId?: true
-  purpose?: true
-  titleType?: true
-  address?: true
-  plotNumber?: true
-  createdAt?: true
-  parentLandId?: true
-  landCode?: true
-  isVerified?: true
+  utmZone?: true
+  surveyType?: true
+  utmCoordinates?: true
+  latlngCoordinates?: true
+  bearings?: true
   surveyPlanNumber?: true
   surveyDate?: true
   surveyorName?: true
   surveyorLicense?: true
+  landStatus?: true
+  isVerified?: true
   accuracyLevel?: true
-  coordinates?: true
+  ownershipType?: true
+  purpose?: true
+  titleType?: true
+  parentLandId?: true
+  createdAt?: true
   _all?: true
 }
 
@@ -295,26 +311,30 @@ export type LandRegistrationGroupByOutputType = {
   id: string
   ownerId: string
   ownerName: string
+  stateId: string
+  address: string | null
+  plotNumber: string | null
+  landCode: string | null
   areaSqm: number | null
   centerLat: number | null
   centerLng: number | null
-  landStatus: $Enums.landStatus
-  ownershipType: string
-  stateId: string
-  purpose: string
-  titleType: string
-  address: string | null
-  plotNumber: string | null
-  createdAt: Date
-  parentLandId: string | null
-  landCode: string | null
-  isVerified: boolean
+  utmZone: string | null
+  surveyType: string | null
+  utmCoordinates: runtime.JsonValue | null
+  latlngCoordinates: runtime.JsonValue | null
+  bearings: runtime.JsonValue | null
   surveyPlanNumber: string | null
   surveyDate: Date | null
   surveyorName: string | null
   surveyorLicense: string | null
+  landStatus: $Enums.landStatus
+  isVerified: boolean
   accuracyLevel: string | null
-  coordinates: runtime.JsonValue | null
+  ownershipType: string
+  purpose: string
+  titleType: string
+  parentLandId: string | null
+  createdAt: Date
   _count: LandRegistrationCountAggregateOutputType | null
   _avg: LandRegistrationAvgAggregateOutputType | null
   _sum: LandRegistrationSumAggregateOutputType | null
@@ -344,72 +364,80 @@ export type LandRegistrationWhereInput = {
   id?: Prisma.UuidFilter<"LandRegistration"> | string
   ownerId?: Prisma.UuidFilter<"LandRegistration"> | string
   ownerName?: Prisma.StringFilter<"LandRegistration"> | string
+  stateId?: Prisma.UuidFilter<"LandRegistration"> | string
+  address?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  plotNumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  landCode?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   areaSqm?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
   centerLat?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
   centerLng?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
-  landStatus?: Prisma.EnumlandStatusFilter<"LandRegistration"> | $Enums.landStatus
-  ownershipType?: Prisma.StringFilter<"LandRegistration"> | string
-  stateId?: Prisma.UuidFilter<"LandRegistration"> | string
-  purpose?: Prisma.StringFilter<"LandRegistration"> | string
-  titleType?: Prisma.StringFilter<"LandRegistration"> | string
-  address?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  plotNumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
-  parentLandId?: Prisma.UuidNullableFilter<"LandRegistration"> | string | null
-  landCode?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  isVerified?: Prisma.BoolFilter<"LandRegistration"> | boolean
+  utmZone?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  surveyType?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  utmCoordinates?: Prisma.JsonNullableFilter<"LandRegistration">
+  latlngCoordinates?: Prisma.JsonNullableFilter<"LandRegistration">
+  bearings?: Prisma.JsonNullableFilter<"LandRegistration">
   surveyPlanNumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   surveyDate?: Prisma.DateTimeNullableFilter<"LandRegistration"> | Date | string | null
   surveyorName?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   surveyorLicense?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  landStatus?: Prisma.EnumlandStatusFilter<"LandRegistration"> | $Enums.landStatus
+  isVerified?: Prisma.BoolFilter<"LandRegistration"> | boolean
   accuracyLevel?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  coordinates?: Prisma.JsonNullableFilter<"LandRegistration">
+  ownershipType?: Prisma.StringFilter<"LandRegistration"> | string
+  purpose?: Prisma.StringFilter<"LandRegistration"> | string
+  titleType?: Prisma.StringFilter<"LandRegistration"> | string
+  parentLandId?: Prisma.UuidNullableFilter<"LandRegistration"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   state?: Prisma.XOR<Prisma.StateScalarRelationFilter, Prisma.StateWhereInput>
   documents?: Prisma.LandDocumentListRelationFilter
   ownershipLogs?: Prisma.OwnershipHistoryListRelationFilter
-  CofOApplication?: Prisma.CofOApplicationListRelationFilter
+  auditLogs?: Prisma.LandAuditLogListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
   OwnershipTransfer?: Prisma.OwnershipTransferListRelationFilter
+  CofOApplication?: Prisma.CofOApplicationListRelationFilter
   parentLand?: Prisma.XOR<Prisma.LandRegistrationNullableScalarRelationFilter, Prisma.LandRegistrationWhereInput> | null
   children?: Prisma.LandRegistrationListRelationFilter
-  payments?: Prisma.PaymentListRelationFilter
-  auditLogs?: Prisma.LandAuditLogListRelationFilter
 }
 
 export type LandRegistrationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   ownerName?: Prisma.SortOrder
+  stateId?: Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
+  plotNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  landCode?: Prisma.SortOrderInput | Prisma.SortOrder
   areaSqm?: Prisma.SortOrderInput | Prisma.SortOrder
   centerLat?: Prisma.SortOrderInput | Prisma.SortOrder
   centerLng?: Prisma.SortOrderInput | Prisma.SortOrder
-  landStatus?: Prisma.SortOrder
-  ownershipType?: Prisma.SortOrder
-  stateId?: Prisma.SortOrder
-  purpose?: Prisma.SortOrder
-  titleType?: Prisma.SortOrder
-  address?: Prisma.SortOrderInput | Prisma.SortOrder
-  plotNumber?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  parentLandId?: Prisma.SortOrderInput | Prisma.SortOrder
-  landCode?: Prisma.SortOrderInput | Prisma.SortOrder
-  isVerified?: Prisma.SortOrder
+  utmZone?: Prisma.SortOrderInput | Prisma.SortOrder
+  surveyType?: Prisma.SortOrderInput | Prisma.SortOrder
+  utmCoordinates?: Prisma.SortOrderInput | Prisma.SortOrder
+  latlngCoordinates?: Prisma.SortOrderInput | Prisma.SortOrder
+  bearings?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyPlanNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyDate?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyorName?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyorLicense?: Prisma.SortOrderInput | Prisma.SortOrder
+  landStatus?: Prisma.SortOrder
+  isVerified?: Prisma.SortOrder
   accuracyLevel?: Prisma.SortOrderInput | Prisma.SortOrder
-  coordinates?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownershipType?: Prisma.SortOrder
+  purpose?: Prisma.SortOrder
+  titleType?: Prisma.SortOrder
+  parentLandId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
   state?: Prisma.StateOrderByWithRelationInput
   documents?: Prisma.LandDocumentOrderByRelationAggregateInput
   ownershipLogs?: Prisma.OwnershipHistoryOrderByRelationAggregateInput
-  CofOApplication?: Prisma.CofOApplicationOrderByRelationAggregateInput
+  auditLogs?: Prisma.LandAuditLogOrderByRelationAggregateInput
+  payments?: Prisma.PaymentOrderByRelationAggregateInput
   OwnershipTransfer?: Prisma.OwnershipTransferOrderByRelationAggregateInput
+  CofOApplication?: Prisma.CofOApplicationOrderByRelationAggregateInput
   parentLand?: Prisma.LandRegistrationOrderByWithRelationInput
   children?: Prisma.LandRegistrationOrderByRelationAggregateInput
-  payments?: Prisma.PaymentOrderByRelationAggregateInput
-  auditLogs?: Prisma.LandAuditLogOrderByRelationAggregateInput
 }
 
 export type LandRegistrationWhereUniqueInput = Prisma.AtLeast<{
@@ -421,60 +449,68 @@ export type LandRegistrationWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.LandRegistrationWhereInput | Prisma.LandRegistrationWhereInput[]
   ownerId?: Prisma.UuidFilter<"LandRegistration"> | string
   ownerName?: Prisma.StringFilter<"LandRegistration"> | string
+  stateId?: Prisma.UuidFilter<"LandRegistration"> | string
+  address?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  plotNumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   areaSqm?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
   centerLat?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
   centerLng?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
-  landStatus?: Prisma.EnumlandStatusFilter<"LandRegistration"> | $Enums.landStatus
-  ownershipType?: Prisma.StringFilter<"LandRegistration"> | string
-  stateId?: Prisma.UuidFilter<"LandRegistration"> | string
-  purpose?: Prisma.StringFilter<"LandRegistration"> | string
-  titleType?: Prisma.StringFilter<"LandRegistration"> | string
-  address?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  plotNumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
-  parentLandId?: Prisma.UuidNullableFilter<"LandRegistration"> | string | null
-  isVerified?: Prisma.BoolFilter<"LandRegistration"> | boolean
+  utmZone?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  surveyType?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  utmCoordinates?: Prisma.JsonNullableFilter<"LandRegistration">
+  latlngCoordinates?: Prisma.JsonNullableFilter<"LandRegistration">
+  bearings?: Prisma.JsonNullableFilter<"LandRegistration">
   surveyDate?: Prisma.DateTimeNullableFilter<"LandRegistration"> | Date | string | null
   surveyorName?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   surveyorLicense?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  landStatus?: Prisma.EnumlandStatusFilter<"LandRegistration"> | $Enums.landStatus
+  isVerified?: Prisma.BoolFilter<"LandRegistration"> | boolean
   accuracyLevel?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  coordinates?: Prisma.JsonNullableFilter<"LandRegistration">
+  ownershipType?: Prisma.StringFilter<"LandRegistration"> | string
+  purpose?: Prisma.StringFilter<"LandRegistration"> | string
+  titleType?: Prisma.StringFilter<"LandRegistration"> | string
+  parentLandId?: Prisma.UuidNullableFilter<"LandRegistration"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   state?: Prisma.XOR<Prisma.StateScalarRelationFilter, Prisma.StateWhereInput>
   documents?: Prisma.LandDocumentListRelationFilter
   ownershipLogs?: Prisma.OwnershipHistoryListRelationFilter
-  CofOApplication?: Prisma.CofOApplicationListRelationFilter
+  auditLogs?: Prisma.LandAuditLogListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
   OwnershipTransfer?: Prisma.OwnershipTransferListRelationFilter
+  CofOApplication?: Prisma.CofOApplicationListRelationFilter
   parentLand?: Prisma.XOR<Prisma.LandRegistrationNullableScalarRelationFilter, Prisma.LandRegistrationWhereInput> | null
   children?: Prisma.LandRegistrationListRelationFilter
-  payments?: Prisma.PaymentListRelationFilter
-  auditLogs?: Prisma.LandAuditLogListRelationFilter
 }, "id" | "landCode" | "surveyPlanNumber">
 
 export type LandRegistrationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   ownerName?: Prisma.SortOrder
+  stateId?: Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
+  plotNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  landCode?: Prisma.SortOrderInput | Prisma.SortOrder
   areaSqm?: Prisma.SortOrderInput | Prisma.SortOrder
   centerLat?: Prisma.SortOrderInput | Prisma.SortOrder
   centerLng?: Prisma.SortOrderInput | Prisma.SortOrder
-  landStatus?: Prisma.SortOrder
-  ownershipType?: Prisma.SortOrder
-  stateId?: Prisma.SortOrder
-  purpose?: Prisma.SortOrder
-  titleType?: Prisma.SortOrder
-  address?: Prisma.SortOrderInput | Prisma.SortOrder
-  plotNumber?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  parentLandId?: Prisma.SortOrderInput | Prisma.SortOrder
-  landCode?: Prisma.SortOrderInput | Prisma.SortOrder
-  isVerified?: Prisma.SortOrder
+  utmZone?: Prisma.SortOrderInput | Prisma.SortOrder
+  surveyType?: Prisma.SortOrderInput | Prisma.SortOrder
+  utmCoordinates?: Prisma.SortOrderInput | Prisma.SortOrder
+  latlngCoordinates?: Prisma.SortOrderInput | Prisma.SortOrder
+  bearings?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyPlanNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyDate?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyorName?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyorLicense?: Prisma.SortOrderInput | Prisma.SortOrder
+  landStatus?: Prisma.SortOrder
+  isVerified?: Prisma.SortOrder
   accuracyLevel?: Prisma.SortOrderInput | Prisma.SortOrder
-  coordinates?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownershipType?: Prisma.SortOrder
+  purpose?: Prisma.SortOrder
+  titleType?: Prisma.SortOrder
+  parentLandId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   _count?: Prisma.LandRegistrationCountOrderByAggregateInput
   _avg?: Prisma.LandRegistrationAvgOrderByAggregateInput
   _max?: Prisma.LandRegistrationMaxOrderByAggregateInput
@@ -489,141 +525,161 @@ export type LandRegistrationScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"LandRegistration"> | string
   ownerId?: Prisma.UuidWithAggregatesFilter<"LandRegistration"> | string
   ownerName?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
+  stateId?: Prisma.UuidWithAggregatesFilter<"LandRegistration"> | string
+  address?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
+  plotNumber?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
+  landCode?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
   areaSqm?: Prisma.FloatNullableWithAggregatesFilter<"LandRegistration"> | number | null
   centerLat?: Prisma.FloatNullableWithAggregatesFilter<"LandRegistration"> | number | null
   centerLng?: Prisma.FloatNullableWithAggregatesFilter<"LandRegistration"> | number | null
-  landStatus?: Prisma.EnumlandStatusWithAggregatesFilter<"LandRegistration"> | $Enums.landStatus
-  ownershipType?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
-  stateId?: Prisma.UuidWithAggregatesFilter<"LandRegistration"> | string
-  purpose?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
-  titleType?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
-  address?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
-  plotNumber?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"LandRegistration"> | Date | string
-  parentLandId?: Prisma.UuidNullableWithAggregatesFilter<"LandRegistration"> | string | null
-  landCode?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
-  isVerified?: Prisma.BoolWithAggregatesFilter<"LandRegistration"> | boolean
+  utmZone?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
+  surveyType?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
+  utmCoordinates?: Prisma.JsonNullableWithAggregatesFilter<"LandRegistration">
+  latlngCoordinates?: Prisma.JsonNullableWithAggregatesFilter<"LandRegistration">
+  bearings?: Prisma.JsonNullableWithAggregatesFilter<"LandRegistration">
   surveyPlanNumber?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
   surveyDate?: Prisma.DateTimeNullableWithAggregatesFilter<"LandRegistration"> | Date | string | null
   surveyorName?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
   surveyorLicense?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
+  landStatus?: Prisma.EnumlandStatusWithAggregatesFilter<"LandRegistration"> | $Enums.landStatus
+  isVerified?: Prisma.BoolWithAggregatesFilter<"LandRegistration"> | boolean
   accuracyLevel?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
-  coordinates?: Prisma.JsonNullableWithAggregatesFilter<"LandRegistration">
+  ownershipType?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
+  purpose?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
+  titleType?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
+  parentLandId?: Prisma.UuidNullableWithAggregatesFilter<"LandRegistration"> | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"LandRegistration"> | Date | string
 }
 
 export type LandRegistrationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
-  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  stateId?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
-  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
+  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
 }
 
 export type LandRegistrationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type LandRegistrationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  stateId?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type LandRegistrationListRelationFilter = {
@@ -645,26 +701,30 @@ export type LandRegistrationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   ownerName?: Prisma.SortOrder
+  stateId?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  plotNumber?: Prisma.SortOrder
+  landCode?: Prisma.SortOrder
   areaSqm?: Prisma.SortOrder
   centerLat?: Prisma.SortOrder
   centerLng?: Prisma.SortOrder
-  landStatus?: Prisma.SortOrder
-  ownershipType?: Prisma.SortOrder
-  stateId?: Prisma.SortOrder
-  purpose?: Prisma.SortOrder
-  titleType?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-  plotNumber?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  parentLandId?: Prisma.SortOrder
-  landCode?: Prisma.SortOrder
-  isVerified?: Prisma.SortOrder
+  utmZone?: Prisma.SortOrder
+  surveyType?: Prisma.SortOrder
+  utmCoordinates?: Prisma.SortOrder
+  latlngCoordinates?: Prisma.SortOrder
+  bearings?: Prisma.SortOrder
   surveyPlanNumber?: Prisma.SortOrder
   surveyDate?: Prisma.SortOrder
   surveyorName?: Prisma.SortOrder
   surveyorLicense?: Prisma.SortOrder
+  landStatus?: Prisma.SortOrder
+  isVerified?: Prisma.SortOrder
   accuracyLevel?: Prisma.SortOrder
-  coordinates?: Prisma.SortOrder
+  ownershipType?: Prisma.SortOrder
+  purpose?: Prisma.SortOrder
+  titleType?: Prisma.SortOrder
+  parentLandId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type LandRegistrationAvgOrderByAggregateInput = {
@@ -677,50 +737,54 @@ export type LandRegistrationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   ownerName?: Prisma.SortOrder
+  stateId?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  plotNumber?: Prisma.SortOrder
+  landCode?: Prisma.SortOrder
   areaSqm?: Prisma.SortOrder
   centerLat?: Prisma.SortOrder
   centerLng?: Prisma.SortOrder
-  landStatus?: Prisma.SortOrder
-  ownershipType?: Prisma.SortOrder
-  stateId?: Prisma.SortOrder
-  purpose?: Prisma.SortOrder
-  titleType?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-  plotNumber?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  parentLandId?: Prisma.SortOrder
-  landCode?: Prisma.SortOrder
-  isVerified?: Prisma.SortOrder
+  utmZone?: Prisma.SortOrder
+  surveyType?: Prisma.SortOrder
   surveyPlanNumber?: Prisma.SortOrder
   surveyDate?: Prisma.SortOrder
   surveyorName?: Prisma.SortOrder
   surveyorLicense?: Prisma.SortOrder
+  landStatus?: Prisma.SortOrder
+  isVerified?: Prisma.SortOrder
   accuracyLevel?: Prisma.SortOrder
+  ownershipType?: Prisma.SortOrder
+  purpose?: Prisma.SortOrder
+  titleType?: Prisma.SortOrder
+  parentLandId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type LandRegistrationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   ownerName?: Prisma.SortOrder
+  stateId?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  plotNumber?: Prisma.SortOrder
+  landCode?: Prisma.SortOrder
   areaSqm?: Prisma.SortOrder
   centerLat?: Prisma.SortOrder
   centerLng?: Prisma.SortOrder
-  landStatus?: Prisma.SortOrder
-  ownershipType?: Prisma.SortOrder
-  stateId?: Prisma.SortOrder
-  purpose?: Prisma.SortOrder
-  titleType?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-  plotNumber?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  parentLandId?: Prisma.SortOrder
-  landCode?: Prisma.SortOrder
-  isVerified?: Prisma.SortOrder
+  utmZone?: Prisma.SortOrder
+  surveyType?: Prisma.SortOrder
   surveyPlanNumber?: Prisma.SortOrder
   surveyDate?: Prisma.SortOrder
   surveyorName?: Prisma.SortOrder
   surveyorLicense?: Prisma.SortOrder
+  landStatus?: Prisma.SortOrder
+  isVerified?: Prisma.SortOrder
   accuracyLevel?: Prisma.SortOrder
+  ownershipType?: Prisma.SortOrder
+  purpose?: Prisma.SortOrder
+  titleType?: Prisma.SortOrder
+  parentLandId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type LandRegistrationSumOrderByAggregateInput = {
@@ -900,26 +964,30 @@ export type LandRegistrationScalarWhereInput = {
   id?: Prisma.UuidFilter<"LandRegistration"> | string
   ownerId?: Prisma.UuidFilter<"LandRegistration"> | string
   ownerName?: Prisma.StringFilter<"LandRegistration"> | string
+  stateId?: Prisma.UuidFilter<"LandRegistration"> | string
+  address?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  plotNumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  landCode?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   areaSqm?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
   centerLat?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
   centerLng?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
-  landStatus?: Prisma.EnumlandStatusFilter<"LandRegistration"> | $Enums.landStatus
-  ownershipType?: Prisma.StringFilter<"LandRegistration"> | string
-  stateId?: Prisma.UuidFilter<"LandRegistration"> | string
-  purpose?: Prisma.StringFilter<"LandRegistration"> | string
-  titleType?: Prisma.StringFilter<"LandRegistration"> | string
-  address?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  plotNumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
-  parentLandId?: Prisma.UuidNullableFilter<"LandRegistration"> | string | null
-  landCode?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  isVerified?: Prisma.BoolFilter<"LandRegistration"> | boolean
+  utmZone?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  surveyType?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  utmCoordinates?: Prisma.JsonNullableFilter<"LandRegistration">
+  latlngCoordinates?: Prisma.JsonNullableFilter<"LandRegistration">
+  bearings?: Prisma.JsonNullableFilter<"LandRegistration">
   surveyPlanNumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   surveyDate?: Prisma.DateTimeNullableFilter<"LandRegistration"> | Date | string | null
   surveyorName?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   surveyorLicense?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  landStatus?: Prisma.EnumlandStatusFilter<"LandRegistration"> | $Enums.landStatus
+  isVerified?: Prisma.BoolFilter<"LandRegistration"> | boolean
   accuracyLevel?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  coordinates?: Prisma.JsonNullableFilter<"LandRegistration">
+  ownershipType?: Prisma.StringFilter<"LandRegistration"> | string
+  purpose?: Prisma.StringFilter<"LandRegistration"> | string
+  titleType?: Prisma.StringFilter<"LandRegistration"> | string
+  parentLandId?: Prisma.UuidNullableFilter<"LandRegistration"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
 }
 
 export type LandRegistrationUpdateToOneWithWhereWithoutChildrenInput = {
@@ -930,65 +998,73 @@ export type LandRegistrationUpdateToOneWithWhereWithoutChildrenInput = {
 export type LandRegistrationUpdateWithoutChildrenInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
-  parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
+  parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutChildrenInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  stateId?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
 }
 
 export type LandRegistrationUpdateWithWhereUniqueWithoutParentLandInput = {
@@ -1009,65 +1085,73 @@ export type LandRegistrationUpdateToOneWithWhereWithoutDocumentsInput = {
 export type LandRegistrationUpdateWithoutDocumentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
-  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutDocumentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  stateId?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
-  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
+  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
 }
 
 export type LandRegistrationUpdateWithWhereUniqueWithoutStateInput = {
@@ -1088,65 +1172,73 @@ export type LandRegistrationUpdateToOneWithWhereWithoutAuditLogsInput = {
 export type LandRegistrationUpdateWithoutAuditLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutAuditLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  stateId?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
-  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
+  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
 }
 
 export type LandRegistrationUpdateToOneWithWhereWithoutOwnershipTransferInput = {
@@ -1157,65 +1249,73 @@ export type LandRegistrationUpdateToOneWithWhereWithoutOwnershipTransferInput = 
 export type LandRegistrationUpdateWithoutOwnershipTransferInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
-  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutOwnershipTransferInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  stateId?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
-  auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
 }
 
 export type LandRegistrationUpdateToOneWithWhereWithoutOwnershipLogsInput = {
@@ -1226,65 +1326,73 @@ export type LandRegistrationUpdateToOneWithWhereWithoutOwnershipLogsInput = {
 export type LandRegistrationUpdateWithoutOwnershipLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
-  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutOwnershipLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  stateId?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
-  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
+  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
 }
 
 export type LandRegistrationUpdateToOneWithWhereWithoutCofOApplicationInput = {
@@ -1295,65 +1403,73 @@ export type LandRegistrationUpdateToOneWithWhereWithoutCofOApplicationInput = {
 export type LandRegistrationUpdateWithoutCofOApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
-  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutCofOApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  stateId?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
-  auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
 }
 
 export type LandRegistrationUpdateToOneWithWhereWithoutPaymentsInput = {
@@ -1364,332 +1480,376 @@ export type LandRegistrationUpdateToOneWithWhereWithoutPaymentsInput = {
 export type LandRegistrationUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
-  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  stateId?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
-  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
   auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
+  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
 }
 
 export type LandRegistrationUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
-  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  stateId?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
-  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
+  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateManyWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  stateId?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type LandRegistrationUpdateWithoutParentLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
-  children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
+  children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutParentLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  stateId?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
-  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
+  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateManyWithoutParentLandInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  stateId?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type LandRegistrationUpdateWithoutStateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
-  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutStateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
-  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
-  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
-  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
+  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateManyWithoutStateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
-  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
-  purpose?: Prisma.StringFieldUpdateOperationsInput | string
-  titleType?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -1700,21 +1860,21 @@ export type LandRegistrationUncheckedUpdateManyWithoutStateInput = {
 export type LandRegistrationCountOutputType = {
   documents: number
   ownershipLogs: number
-  CofOApplication: number
-  OwnershipTransfer: number
-  children: number
-  payments: number
   auditLogs: number
+  payments: number
+  OwnershipTransfer: number
+  CofOApplication: number
+  children: number
 }
 
 export type LandRegistrationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   documents?: boolean | LandRegistrationCountOutputTypeCountDocumentsArgs
   ownershipLogs?: boolean | LandRegistrationCountOutputTypeCountOwnershipLogsArgs
-  CofOApplication?: boolean | LandRegistrationCountOutputTypeCountCofOApplicationArgs
-  OwnershipTransfer?: boolean | LandRegistrationCountOutputTypeCountOwnershipTransferArgs
-  children?: boolean | LandRegistrationCountOutputTypeCountChildrenArgs
-  payments?: boolean | LandRegistrationCountOutputTypeCountPaymentsArgs
   auditLogs?: boolean | LandRegistrationCountOutputTypeCountAuditLogsArgs
+  payments?: boolean | LandRegistrationCountOutputTypeCountPaymentsArgs
+  OwnershipTransfer?: boolean | LandRegistrationCountOutputTypeCountOwnershipTransferArgs
+  CofOApplication?: boolean | LandRegistrationCountOutputTypeCountCofOApplicationArgs
+  children?: boolean | LandRegistrationCountOutputTypeCountChildrenArgs
 }
 
 /**
@@ -1744,22 +1904,8 @@ export type LandRegistrationCountOutputTypeCountOwnershipLogsArgs<ExtArgs extend
 /**
  * LandRegistrationCountOutputType without action
  */
-export type LandRegistrationCountOutputTypeCountCofOApplicationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CofOApplicationWhereInput
-}
-
-/**
- * LandRegistrationCountOutputType without action
- */
-export type LandRegistrationCountOutputTypeCountOwnershipTransferArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OwnershipTransferWhereInput
-}
-
-/**
- * LandRegistrationCountOutputType without action
- */
-export type LandRegistrationCountOutputTypeCountChildrenArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.LandRegistrationWhereInput
+export type LandRegistrationCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LandAuditLogWhereInput
 }
 
 /**
@@ -1772,8 +1918,22 @@ export type LandRegistrationCountOutputTypeCountPaymentsArgs<ExtArgs extends run
 /**
  * LandRegistrationCountOutputType without action
  */
-export type LandRegistrationCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.LandAuditLogWhereInput
+export type LandRegistrationCountOutputTypeCountOwnershipTransferArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OwnershipTransferWhereInput
+}
+
+/**
+ * LandRegistrationCountOutputType without action
+ */
+export type LandRegistrationCountOutputTypeCountCofOApplicationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CofOApplicationWhereInput
+}
+
+/**
+ * LandRegistrationCountOutputType without action
+ */
+export type LandRegistrationCountOutputTypeCountChildrenArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LandRegistrationWhereInput
 }
 
 
@@ -1781,36 +1941,40 @@ export type LandRegistrationSelect<ExtArgs extends runtime.Types.Extensions.Inte
   id?: boolean
   ownerId?: boolean
   ownerName?: boolean
+  stateId?: boolean
+  address?: boolean
+  plotNumber?: boolean
+  landCode?: boolean
   areaSqm?: boolean
   centerLat?: boolean
   centerLng?: boolean
-  landStatus?: boolean
-  ownershipType?: boolean
-  stateId?: boolean
-  purpose?: boolean
-  titleType?: boolean
-  address?: boolean
-  plotNumber?: boolean
-  createdAt?: boolean
-  parentLandId?: boolean
-  landCode?: boolean
-  isVerified?: boolean
+  utmZone?: boolean
+  surveyType?: boolean
+  utmCoordinates?: boolean
+  latlngCoordinates?: boolean
+  bearings?: boolean
   surveyPlanNumber?: boolean
   surveyDate?: boolean
   surveyorName?: boolean
   surveyorLicense?: boolean
+  landStatus?: boolean
+  isVerified?: boolean
   accuracyLevel?: boolean
-  coordinates?: boolean
+  ownershipType?: boolean
+  purpose?: boolean
+  titleType?: boolean
+  parentLandId?: boolean
+  createdAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
   documents?: boolean | Prisma.LandRegistration$documentsArgs<ExtArgs>
   ownershipLogs?: boolean | Prisma.LandRegistration$ownershipLogsArgs<ExtArgs>
-  CofOApplication?: boolean | Prisma.LandRegistration$CofOApplicationArgs<ExtArgs>
+  auditLogs?: boolean | Prisma.LandRegistration$auditLogsArgs<ExtArgs>
+  payments?: boolean | Prisma.LandRegistration$paymentsArgs<ExtArgs>
   OwnershipTransfer?: boolean | Prisma.LandRegistration$OwnershipTransferArgs<ExtArgs>
+  CofOApplication?: boolean | Prisma.LandRegistration$CofOApplicationArgs<ExtArgs>
   parentLand?: boolean | Prisma.LandRegistration$parentLandArgs<ExtArgs>
   children?: boolean | Prisma.LandRegistration$childrenArgs<ExtArgs>
-  payments?: boolean | Prisma.LandRegistration$paymentsArgs<ExtArgs>
-  auditLogs?: boolean | Prisma.LandRegistration$auditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.LandRegistrationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["landRegistration"]>
 
@@ -1819,26 +1983,30 @@ export type LandRegistrationSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   id?: boolean
   ownerId?: boolean
   ownerName?: boolean
+  stateId?: boolean
+  address?: boolean
+  plotNumber?: boolean
+  landCode?: boolean
   areaSqm?: boolean
   centerLat?: boolean
   centerLng?: boolean
-  landStatus?: boolean
-  ownershipType?: boolean
-  stateId?: boolean
-  purpose?: boolean
-  titleType?: boolean
-  address?: boolean
-  plotNumber?: boolean
-  createdAt?: boolean
-  parentLandId?: boolean
-  landCode?: boolean
-  isVerified?: boolean
+  utmZone?: boolean
+  surveyType?: boolean
+  utmCoordinates?: boolean
+  latlngCoordinates?: boolean
+  bearings?: boolean
   surveyPlanNumber?: boolean
   surveyDate?: boolean
   surveyorName?: boolean
   surveyorLicense?: boolean
+  landStatus?: boolean
+  isVerified?: boolean
   accuracyLevel?: boolean
-  coordinates?: boolean
+  ownershipType?: boolean
+  purpose?: boolean
+  titleType?: boolean
+  parentLandId?: boolean
+  createdAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
   parentLand?: boolean | Prisma.LandRegistration$parentLandArgs<ExtArgs>
@@ -1848,40 +2016,44 @@ export type LandRegistrationSelectScalar = {
   id?: boolean
   ownerId?: boolean
   ownerName?: boolean
+  stateId?: boolean
+  address?: boolean
+  plotNumber?: boolean
+  landCode?: boolean
   areaSqm?: boolean
   centerLat?: boolean
   centerLng?: boolean
-  landStatus?: boolean
-  ownershipType?: boolean
-  stateId?: boolean
-  purpose?: boolean
-  titleType?: boolean
-  address?: boolean
-  plotNumber?: boolean
-  createdAt?: boolean
-  parentLandId?: boolean
-  landCode?: boolean
-  isVerified?: boolean
+  utmZone?: boolean
+  surveyType?: boolean
+  utmCoordinates?: boolean
+  latlngCoordinates?: boolean
+  bearings?: boolean
   surveyPlanNumber?: boolean
   surveyDate?: boolean
   surveyorName?: boolean
   surveyorLicense?: boolean
+  landStatus?: boolean
+  isVerified?: boolean
   accuracyLevel?: boolean
-  coordinates?: boolean
+  ownershipType?: boolean
+  purpose?: boolean
+  titleType?: boolean
+  parentLandId?: boolean
+  createdAt?: boolean
 }
 
-export type LandRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "ownerName" | "areaSqm" | "centerLat" | "centerLng" | "landStatus" | "ownershipType" | "stateId" | "purpose" | "titleType" | "address" | "plotNumber" | "createdAt" | "parentLandId" | "landCode" | "isVerified" | "surveyPlanNumber" | "surveyDate" | "surveyorName" | "surveyorLicense" | "accuracyLevel" | "coordinates", ExtArgs["result"]["landRegistration"]>
+export type LandRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "ownerName" | "stateId" | "address" | "plotNumber" | "landCode" | "areaSqm" | "centerLat" | "centerLng" | "utmZone" | "surveyType" | "utmCoordinates" | "latlngCoordinates" | "bearings" | "surveyPlanNumber" | "surveyDate" | "surveyorName" | "surveyorLicense" | "landStatus" | "isVerified" | "accuracyLevel" | "ownershipType" | "purpose" | "titleType" | "parentLandId" | "createdAt", ExtArgs["result"]["landRegistration"]>
 export type LandRegistrationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
   documents?: boolean | Prisma.LandRegistration$documentsArgs<ExtArgs>
   ownershipLogs?: boolean | Prisma.LandRegistration$ownershipLogsArgs<ExtArgs>
-  CofOApplication?: boolean | Prisma.LandRegistration$CofOApplicationArgs<ExtArgs>
+  auditLogs?: boolean | Prisma.LandRegistration$auditLogsArgs<ExtArgs>
+  payments?: boolean | Prisma.LandRegistration$paymentsArgs<ExtArgs>
   OwnershipTransfer?: boolean | Prisma.LandRegistration$OwnershipTransferArgs<ExtArgs>
+  CofOApplication?: boolean | Prisma.LandRegistration$CofOApplicationArgs<ExtArgs>
   parentLand?: boolean | Prisma.LandRegistration$parentLandArgs<ExtArgs>
   children?: boolean | Prisma.LandRegistration$childrenArgs<ExtArgs>
-  payments?: boolean | Prisma.LandRegistration$paymentsArgs<ExtArgs>
-  auditLogs?: boolean | Prisma.LandRegistration$auditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.LandRegistrationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LandRegistrationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1897,37 +2069,41 @@ export type $LandRegistrationPayload<ExtArgs extends runtime.Types.Extensions.In
     state: Prisma.$StatePayload<ExtArgs>
     documents: Prisma.$LandDocumentPayload<ExtArgs>[]
     ownershipLogs: Prisma.$OwnershipHistoryPayload<ExtArgs>[]
-    CofOApplication: Prisma.$CofOApplicationPayload<ExtArgs>[]
+    auditLogs: Prisma.$LandAuditLogPayload<ExtArgs>[]
+    payments: Prisma.$PaymentPayload<ExtArgs>[]
     OwnershipTransfer: Prisma.$OwnershipTransferPayload<ExtArgs>[]
+    CofOApplication: Prisma.$CofOApplicationPayload<ExtArgs>[]
     parentLand: Prisma.$LandRegistrationPayload<ExtArgs> | null
     children: Prisma.$LandRegistrationPayload<ExtArgs>[]
-    payments: Prisma.$PaymentPayload<ExtArgs>[]
-    auditLogs: Prisma.$LandAuditLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     ownerId: string
     ownerName: string
+    stateId: string
+    address: string | null
+    plotNumber: string | null
+    landCode: string | null
     areaSqm: number | null
     centerLat: number | null
     centerLng: number | null
-    landStatus: $Enums.landStatus
-    ownershipType: string
-    stateId: string
-    purpose: string
-    titleType: string
-    address: string | null
-    plotNumber: string | null
-    createdAt: Date
-    parentLandId: string | null
-    landCode: string | null
-    isVerified: boolean
+    utmZone: string | null
+    surveyType: string | null
+    utmCoordinates: runtime.JsonValue | null
+    latlngCoordinates: runtime.JsonValue | null
+    bearings: runtime.JsonValue | null
     surveyPlanNumber: string | null
     surveyDate: Date | null
     surveyorName: string | null
     surveyorLicense: string | null
+    landStatus: $Enums.landStatus
+    isVerified: boolean
     accuracyLevel: string | null
-    coordinates: runtime.JsonValue | null
+    ownershipType: string
+    purpose: string
+    titleType: string
+    parentLandId: string | null
+    createdAt: Date
   }, ExtArgs["result"]["landRegistration"]>
   composites: {}
 }
@@ -2255,12 +2431,12 @@ export interface Prisma__LandRegistrationClient<T, Null = never, ExtArgs extends
   state<T extends Prisma.StateDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StateDefaultArgs<ExtArgs>>): Prisma.Prisma__StateClient<runtime.Types.Result.GetResult<Prisma.$StatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   documents<T extends Prisma.LandRegistration$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownershipLogs<T extends Prisma.LandRegistration$ownershipLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$ownershipLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  CofOApplication<T extends Prisma.LandRegistration$CofOApplicationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$CofOApplicationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  auditLogs<T extends Prisma.LandRegistration$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.LandRegistration$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   OwnershipTransfer<T extends Prisma.LandRegistration$OwnershipTransferArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$OwnershipTransferArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  CofOApplication<T extends Prisma.LandRegistration$CofOApplicationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$CofOApplicationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   parentLand<T extends Prisma.LandRegistration$parentLandArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$parentLandArgs<ExtArgs>>): Prisma.Prisma__LandRegistrationClient<runtime.Types.Result.GetResult<Prisma.$LandRegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   children<T extends Prisma.LandRegistration$childrenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  payments<T extends Prisma.LandRegistration$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  auditLogs<T extends Prisma.LandRegistration$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2293,26 +2469,30 @@ export interface LandRegistrationFieldRefs {
   readonly id: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly ownerId: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly ownerName: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly stateId: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly address: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly plotNumber: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly landCode: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly areaSqm: Prisma.FieldRef<"LandRegistration", 'Float'>
   readonly centerLat: Prisma.FieldRef<"LandRegistration", 'Float'>
   readonly centerLng: Prisma.FieldRef<"LandRegistration", 'Float'>
-  readonly landStatus: Prisma.FieldRef<"LandRegistration", 'landStatus'>
-  readonly ownershipType: Prisma.FieldRef<"LandRegistration", 'String'>
-  readonly stateId: Prisma.FieldRef<"LandRegistration", 'String'>
-  readonly purpose: Prisma.FieldRef<"LandRegistration", 'String'>
-  readonly titleType: Prisma.FieldRef<"LandRegistration", 'String'>
-  readonly address: Prisma.FieldRef<"LandRegistration", 'String'>
-  readonly plotNumber: Prisma.FieldRef<"LandRegistration", 'String'>
-  readonly createdAt: Prisma.FieldRef<"LandRegistration", 'DateTime'>
-  readonly parentLandId: Prisma.FieldRef<"LandRegistration", 'String'>
-  readonly landCode: Prisma.FieldRef<"LandRegistration", 'String'>
-  readonly isVerified: Prisma.FieldRef<"LandRegistration", 'Boolean'>
+  readonly utmZone: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly surveyType: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly utmCoordinates: Prisma.FieldRef<"LandRegistration", 'Json'>
+  readonly latlngCoordinates: Prisma.FieldRef<"LandRegistration", 'Json'>
+  readonly bearings: Prisma.FieldRef<"LandRegistration", 'Json'>
   readonly surveyPlanNumber: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly surveyDate: Prisma.FieldRef<"LandRegistration", 'DateTime'>
   readonly surveyorName: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly surveyorLicense: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly landStatus: Prisma.FieldRef<"LandRegistration", 'landStatus'>
+  readonly isVerified: Prisma.FieldRef<"LandRegistration", 'Boolean'>
   readonly accuracyLevel: Prisma.FieldRef<"LandRegistration", 'String'>
-  readonly coordinates: Prisma.FieldRef<"LandRegistration", 'Json'>
+  readonly ownershipType: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly purpose: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly titleType: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly parentLandId: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly createdAt: Prisma.FieldRef<"LandRegistration", 'DateTime'>
 }
     
 
@@ -2671,27 +2851,51 @@ export type LandRegistration$ownershipLogsArgs<ExtArgs extends runtime.Types.Ext
 }
 
 /**
- * LandRegistration.CofOApplication
+ * LandRegistration.auditLogs
  */
-export type LandRegistration$CofOApplicationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type LandRegistration$auditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the CofOApplication
+   * Select specific fields to fetch from the LandAuditLog
    */
-  select?: Prisma.CofOApplicationSelect<ExtArgs> | null
+  select?: Prisma.LandAuditLogSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the CofOApplication
+   * Omit specific fields from the LandAuditLog
    */
-  omit?: Prisma.CofOApplicationOmit<ExtArgs> | null
+  omit?: Prisma.LandAuditLogOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.CofOApplicationInclude<ExtArgs> | null
-  where?: Prisma.CofOApplicationWhereInput
-  orderBy?: Prisma.CofOApplicationOrderByWithRelationInput | Prisma.CofOApplicationOrderByWithRelationInput[]
-  cursor?: Prisma.CofOApplicationWhereUniqueInput
+  include?: Prisma.LandAuditLogInclude<ExtArgs> | null
+  where?: Prisma.LandAuditLogWhereInput
+  orderBy?: Prisma.LandAuditLogOrderByWithRelationInput | Prisma.LandAuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.LandAuditLogWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.CofOApplicationScalarFieldEnum | Prisma.CofOApplicationScalarFieldEnum[]
+  distinct?: Prisma.LandAuditLogScalarFieldEnum | Prisma.LandAuditLogScalarFieldEnum[]
+}
+
+/**
+ * LandRegistration.payments
+ */
+export type LandRegistration$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
+  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
 }
 
 /**
@@ -2716,6 +2920,30 @@ export type LandRegistration$OwnershipTransferArgs<ExtArgs extends runtime.Types
   take?: number
   skip?: number
   distinct?: Prisma.OwnershipTransferScalarFieldEnum | Prisma.OwnershipTransferScalarFieldEnum[]
+}
+
+/**
+ * LandRegistration.CofOApplication
+ */
+export type LandRegistration$CofOApplicationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CofOApplication
+   */
+  select?: Prisma.CofOApplicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CofOApplication
+   */
+  omit?: Prisma.CofOApplicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CofOApplicationInclude<ExtArgs> | null
+  where?: Prisma.CofOApplicationWhereInput
+  orderBy?: Prisma.CofOApplicationOrderByWithRelationInput | Prisma.CofOApplicationOrderByWithRelationInput[]
+  cursor?: Prisma.CofOApplicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CofOApplicationScalarFieldEnum | Prisma.CofOApplicationScalarFieldEnum[]
 }
 
 /**
@@ -2759,54 +2987,6 @@ export type LandRegistration$childrenArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.LandRegistrationScalarFieldEnum | Prisma.LandRegistrationScalarFieldEnum[]
-}
-
-/**
- * LandRegistration.payments
- */
-export type LandRegistration$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Payment
-   */
-  select?: Prisma.PaymentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Payment
-   */
-  omit?: Prisma.PaymentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PaymentInclude<ExtArgs> | null
-  where?: Prisma.PaymentWhereInput
-  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
-  cursor?: Prisma.PaymentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
-}
-
-/**
- * LandRegistration.auditLogs
- */
-export type LandRegistration$auditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the LandAuditLog
-   */
-  select?: Prisma.LandAuditLogSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the LandAuditLog
-   */
-  omit?: Prisma.LandAuditLogOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.LandAuditLogInclude<ExtArgs> | null
-  where?: Prisma.LandAuditLogWhereInput
-  orderBy?: Prisma.LandAuditLogOrderByWithRelationInput | Prisma.LandAuditLogOrderByWithRelationInput[]
-  cursor?: Prisma.LandAuditLogWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.LandAuditLogScalarFieldEnum | Prisma.LandAuditLogScalarFieldEnum[]
 }
 
 /**

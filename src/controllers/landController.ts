@@ -10,43 +10,41 @@ import {
 } from "../services/uploadService";
 import { Request, Response } from "express";
 import { AuthRequest } from "../middlewares/authMiddleware";
-
-
+import {
+  convertUTMToLatLng,
+  bearingsToCoordinates,
+  calculateAreaFromUTM,
+  isClosed,
+} from "../utils/germetry";
 
 function toWKTPolygon(coords: number[][]) {
-  // Input format: [lat, lng]
-  const formatted = coords.map(([lat, lng]) => `${lng} ${lat}`).join(",");
+  const formatted = coords
+    .map(([lat, lng]) => `${lng} ${lat}`) // MUST be lng lat
+    .join(",");
+
   return `POLYGON((${formatted}))`;
 }
 
-// 🔥 Ensure polygon is closed
 function closePolygon(coords: number[][]) {
   const first = coords[0];
-  const last = coords[coords.length - 1]; 
-
+  const last = coords[coords.length - 1];
   if (first[0] !== last[0] || first[1] !== last[1]) {
     return [...coords, first];
   }
-
   return coords;
 }
 
 function normalizeLatLngOrder(coords: number[][]): number[][] {
-  // If first value in tuple is outside valid latitude range, assume they're [lng, lat]
   const looksLikeLngLat = coords.some(
     ([lat, lng]) => Math.abs(lat) > 90 && Math.abs(lng) <= 90,
   );
-
-  if (looksLikeLngLat) {
-    return coords.map(([lat, lng]) => [lng, lat]);
-  }
-
+  if (looksLikeLngLat) return coords.map(([lat, lng]) => [lng, lat]);
   return coords;
 }
 
 export const registerLand = async (req: AuthRequest, res: Response) => {
+  // 1️⃣ Validate request body
   const body = landRegistrationSchema.safeParse(req.body);
-
   if (!body.success) {
     return res.status(400).json({
       message: "Invalid land input",
@@ -60,15 +58,23 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
     purpose,
     titleType,
     stateId,
-    address, 
-    coordinates,
+    address,
     parentLandId,
     surveyPlanNumber,
     surveyDate,
     surveyorName,
     surveyorLicense,
+    surveyorAddress,
+    surveyTelephone,
+    surveyNotes,
     accuracyLevel,
-  } = body.data; 
+    surveyType,
+    coordinates,
+    utmZone,
+    bearings,
+    startPoint,
+    measuredAreaSqm,
+  } = body.data;
 
   const userId = req.user.sub;
 
@@ -76,88 +82,153 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
   if (surveyDate) {
     parsedSurveyDate = new Date(surveyDate);
     if (Number.isNaN(parsedSurveyDate.getTime())) {
-      return res.status(400).json({
-        message: "Invalid surveyDate format",
-      });
+      return res.status(400).json({ message: "Invalid surveyDate format" });
     }
   }
 
-  // 🔥 Parse coordinates safely
-  const parsedCoordinates =
-    typeof req.body.coordinates === "string"
-      ? JSON.parse(req.body.coordinates)
-      : coordinates;
-
-  if (!Array.isArray(parsedCoordinates)) {
-    return res.status(400).json({ message: "Invalid coordinates format" });
+  // 2️⃣ Validate surveyType and accuracyLevel
+  if (!["COORDINATE", "BEARING"].includes(surveyType)) {
+    return res.status(400).json({ message: "Invalid surveyType" });
+  }
+  if (!["SURVEYED", "SATELLITE", "USER_DRAWN"].includes(accuracyLevel)) {
+    return res.status(400).json({ message: "Invalid accuracyLevel" });
   }
 
-  if (parsedCoordinates.length < 4) {
-    return res.status(400).json({
-      message: "Polygon must have at least 4 points",
-    });
-  }
+  let finalLatLng: number[][] = [];
+  let finalUTM: number[][] = [];
 
-  const normalizedCoordinates = normalizeLatLngOrder(parsedCoordinates);
+  // 3️⃣ Process coordinates or bearings
+  if (surveyType === "COORDINATE") {
+    // Parse coordinates
+    const parsedCoordinates =
+      typeof coordinates === "string" ? JSON.parse(coordinates) : coordinates;
 
-  // 🔥 Validate coordinate values (lat, lng)
-  for (const [lat, lng] of normalizedCoordinates) {
-    if (
-      typeof lat !== "number" ||
-      typeof lng !== "number" ||
-      lat < -90 || lat > 90 ||
-      lng < -180 || lng > 180
-    ) {
+    if (!Array.isArray(parsedCoordinates) || parsedCoordinates.length < 4) {
+      return res
+        .status(400)
+        .json({ message: "Polygon must have at least 4 points" });
+    }
+
+    // Normalize and validate
+    const normalized = normalizeLatLngOrder(parsedCoordinates);
+    for (const [lat, lng] of normalized) {
+      if (
+        typeof lat !== "number" ||
+        typeof lng !== "number" ||
+        lat < -90 ||
+        lat > 90 ||
+        lng < -180 ||
+        lng > 180
+      ) {
+        return res.status(400).json({ message: "Invalid coordinate values" });
+      }
+    }
+
+    finalLatLng = closePolygon(normalized);
+
+    // Convert to UTM if utmZone provided
+    if (!utmZone) {
+      return res
+        .status(400)
+        .json({ message: "UTM zone is required for coordinate surveys" });
+    }
+    finalUTM = finalLatLng.map(([lat, lng]) =>
+      convertUTMToLatLng(lat, lng, utmZone, true),
+    ); // true = latlng -> utm
+  } else if (surveyType === "BEARING") {
+    if (!Array.isArray(bearings) || bearings.length < 3) {
+      return res.status(400).json({ message: "At least 3 bearings required" });
+    }
+    if (!utmZone) {
+      return res
+        .status(400)
+        .json({ message: "UTM zone is required for bearing surveys" });
+    }
+    // Convert bearings to coordinates (returns lat/lng & UTM)
+    const result = bearingsToCoordinates(
+      bearings,
+      utmZone as string,
+      startPoint as [number, number],
+      true,
+    );
+    finalLatLng = closePolygon(result.latlngCoordinates);
+    finalUTM = closePolygon(result.utmCoordinates);
+
+    console.log("Final LatLng:", finalLatLng);
+    console.log("Final UTM:", finalUTM);
+
+    if (!isClosed(finalUTM)) {
       return res.status(400).json({
-        message: "Invalid coordinate values",
-      }); 
+        message: "Polygon is not properly closed",
+      });
     }
   }
 
   try {
-    const closedCoords = closePolygon(normalizedCoordinates);
-    const polygon = toWKTPolygon(closedCoords);
+    const polygon = toWKTPolygon(finalLatLng);
+    console.log("WKT:", polygon);
+    console.log("First point:", finalLatLng[0]);
 
-    // 🔥 Validate geometry
+    // 4️⃣ Validate geometry
     const validityCheck = await prisma.$queryRaw<any[]>`
-      SELECT ST_IsValid(ST_GeomFromText(${polygon}, 4326)) as valid
+      SELECT ST_IsValid(
+  ST_MakeValid(ST_GeomFromText(${polygon}, 4326))
+) as valid
     `;
 
     if (!validityCheck[0]?.valid) {
-      return res.status(400).json({
-        message: "Invalid polygon shape (self-intersection or bad geometry)",
-      });
+      return res.status(400).json({ message: "Invalid polygon shape" });
     }
 
-    // 🔥 Overlap check (strong)
+    // 4️⃣.5️⃣ Validate area if user provided measured value
+    const calculatedArea = calculateAreaFromUTM(finalUTM);
+    let finalAreaSqm = calculatedArea; // Default to calculated
+    const AREA_TOLERANCE = 4; // ±4 m² tolerance
+
+    if (measuredAreaSqm) {
+      const areaDifference = Math.abs(calculatedArea - measuredAreaSqm);
+      
+      if (areaDifference > AREA_TOLERANCE) {
+        return res.status(400).json({
+          message: `Area mismatch detected. Calculated: ${calculatedArea.toFixed(2)} m², Measured: ${measuredAreaSqm.toFixed(2)} m². Difference: ${areaDifference.toFixed(2)} m² (tolerance: ±${AREA_TOLERANCE} m²). Please verify your measured area from the survey document.`,
+          calculatedArea: parseFloat(calculatedArea.toFixed(2)),
+          measuredArea: measuredAreaSqm,
+          difference: parseFloat(areaDifference.toFixed(2)),
+        });
+      }
+      
+      // Area is within tolerance, use the measured value
+      finalAreaSqm = measuredAreaSqm;
+      console.log(`✅ Area validated: Calculated ${calculatedArea.toFixed(2)} m², Using measured ${measuredAreaSqm.toFixed(2)} m²`);
+    }
+
+    // 5️⃣ Overlap check
     const overlap = await prisma.$queryRaw<any[]>`
       SELECT id FROM "LandRegistration"
       WHERE ST_Intersects(boundary, ST_GeomFromText(${polygon}, 4326))
       AND NOT ST_Touches(boundary, ST_GeomFromText(${polygon}, 4326))
     `;
-
     if (overlap.length > 0) {
-      return res.status(400).json({
-        message: "Land overlaps with an existing land",
-      });
+      return res
+        .status(400)
+        .json({ message: "Land overlaps with existing land" });
     }
 
-    // 🔥 Subdivision check
+    // 6️⃣ Subdivision check
     if (parentLandId) {
       const insideParent = await prisma.$queryRaw<any[]>`
         SELECT id FROM "LandRegistration"
         WHERE id = ${parentLandId}
         AND ST_Covers(boundary, ST_GeomFromText(${polygon}, 4326))
       `;
-
       if (insideParent.length === 0) {
-        return res.status(400).json({
-          message: "Subdivision must be inside parent land",
-        });
+        return res
+          .status(400)
+          .json({ message: "Subdivision must be inside parent land" });
       }
     }
 
-    // 🔥 Insert with computed geometry values (BEST PRACTICE)
+    // 7️⃣ Insert land
     const [land] = await prisma.$queryRaw<any[]>`
       WITH geom AS (
         SELECT ST_ForceRHR(ST_GeomFromText(${polygon}, 4326)) AS g
@@ -180,16 +251,23 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
         "surveyDate",
         "surveyorName",
         "surveyorLicense",
+        "surveyorAddress",
+        "surveyTelephone",
+        "surveyNotes",
         "accuracyLevel",
-        "coordinates",
+        "surveyType",
+        "utmCoordinates",
+        "latlngCoordinates",
+        "bearings",
         "landStatus",
         "boundary",
         "createdAt",
-        "isVerified"
+        "isVerified",
+        "utmZone"
       )
       SELECT
         gen_random_uuid(),
-        ${`LAND-${Date.now()}`},
+        ${`LAND-${Date.now()}-${Math.floor(Math.random() * 1000)}`},
         ${userId},
         ${ownerName},
         ${ownershipType},
@@ -198,34 +276,35 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
         ${stateId},
         ${address},
         ${parentLandId ?? null},
-        -- Preferred area calculation with metric projection + fallback to geography
-        COALESCE(
-          NULLIF(ST_Area(ST_Transform(g, 3857)), 0),
-          ST_Area(g::geography)
-        ),
+        ${finalAreaSqm},
         ST_Y(ST_PointOnSurface(g)),
         ST_X(ST_PointOnSurface(g)),
         ${surveyPlanNumber},
         ${parsedSurveyDate},
         ${surveyorName},
         ${surveyorLicense ?? null},
+        ${surveyorAddress ?? null},
+        ${surveyTelephone ?? null},
+        ${surveyNotes ?? null},
         ${accuracyLevel},
-        CAST(${JSON.stringify(normalizedCoordinates)} AS jsonb),
+        ${surveyType},
+        CAST(${JSON.stringify(finalUTM)} AS jsonb),
+        CAST(${JSON.stringify(finalLatLng)} AS jsonb),
+        CAST(${JSON.stringify(bearings ?? [])} AS jsonb),
         'PENDING',
         g,
         now(),
-        false
+        false,
+        ${utmZone}
       FROM geom
       RETURNING *;
     `;
 
     if (!land) {
-      return res.status(500).json({
-        message: "Land registration failed",
-      });
+      return res.status(500).json({ message: "Land registration failed" });
     }
 
-    // 🔥 Validate uploaded documents
+    // 8️⃣ Validate and upload documents
     const files = req.files as Express.Multer.File[];
     const validationErrors: string[] = [];
 
@@ -235,20 +314,15 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
         file.originalname,
         file.mimetype,
       );
-
-      if (!result.valid) {
+      if (!result.valid)
         validationErrors.push(`File ${i + 1}: ${result.error}`);
-      }
     });
-
     if (validationErrors.length) {
-      return res.status(400).json({
-        message: "Invalid documents",
-        errors: validationErrors,
-      });
+      return res
+        .status(400)
+        .json({ message: "Invalid documents", errors: validationErrors });
     }
 
-    // 🔥 Upload documents
     const uploadedDocs = await Promise.all(
       files.map(async (file) => {
         const uploaded = await uploadToCloudinary(
@@ -256,7 +330,6 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
           file.originalname,
           file.mimetype,
         );
-
         return prisma.landDocument.create({
           data: {
             landId: land.id,
@@ -267,7 +340,7 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
       }),
     );
 
-    // 🔥 Audit log
+    // 9️⃣ Audit log
     await prisma.landAuditLog.create({
       data: {
         landId: land.id,
@@ -276,7 +349,7 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
         metadata: {
           ownerName,
           areaSqm: land.areaSqm,
-          coordinates: normalizedCoordinates,
+          coordinates: finalLatLng,
         },
       },
     });
@@ -286,12 +359,9 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
       land,
       documents: uploadedDocs,
     });
-
   } catch (err) {
     console.error(err);
-    return res.status(500).json({
-      message: "Registration failed",
-    });
+    return res.status(500).json({ message: "Registration failed" });
   }
 };
 
@@ -444,12 +514,9 @@ export const deleteLand = async (req: AuthRequest, res: Response) => {
       where: { landId: landId, status: "APPROVED" },
     });
     if (associatedCofO) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Cannot delete land with an approved Certificate of Occupancy",
-        });
+      return res.status(400).json({
+        message: "Cannot delete land with an approved Certificate of Occupancy",
+      });
     }
     await prisma.landRegistration.delete({
       where: { id: landId },

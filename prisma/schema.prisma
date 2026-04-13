@@ -119,43 +119,116 @@ model InternalOtp {
   createdAt      DateTime     @default(now())
 }
 
-model LandRegistration {
-  id                String                                      @id @default(uuid()) @db.Uuid
-  ownerId           String                                      @db.Uuid
-  owner             User                                        @relation(fields: [ownerId], references: [id], name: "UserLands")
-  ownerName         String
-  areaSqm           Float?
-  centerLat         Float? // Centroid latitude for map display
-  centerLng         Float? // Centroid longitude for map display
-  landStatus        landStatus                                  @default(PENDING)
-  ownershipType     String
-  stateId           String                                      @db.Uuid
-  state             State                                       @relation(fields: [stateId], references: [id])
-  purpose           String
-  titleType         String
-  address           String?
-  plotNumber        String?
-  documents         LandDocument[]
-  ownershipLogs     OwnershipHistory[]
-  createdAt         DateTime                                    @default(now())
-  CofOApplication   CofOApplication[]
-  boundary          Unsupported("geometry(MultiPolygon, 4326)")
-  OwnershipTransfer OwnershipTransfer[]
-  // 🔥 Subdivision support
-  parentLandId      String?                                     @db.Uuid
-  parentLand        LandRegistration?                           @relation("Subdivision", fields: [parentLandId], references: [id])
-  children          LandRegistration[]                          @relation("Subdivision")
-  landCode          String?                                     @unique // 🔥 ADD THIS
-  payments          Payment[]
-  auditLogs         LandAuditLog[]
-  isVerified        Boolean                                     @default(false)
-  surveyPlanNumber  String?                                     @unique
-  surveyDate        DateTime?
-  surveyorName      String?
-  surveyorLicense   String?
-  accuracyLevel     String? // SURVEYED | SATELLITE | USER_DRAWN
-  coordinates       Json?
+// model LandRegistration {
+//   id                String                                      @id @default(uuid()) @db.Uuid
+//   ownerId           String                                      @db.Uuid
+//   owner             User                                        @relation(fields: [ownerId], references: [id], name: "UserLands")
+//   ownerName         String
+//   areaSqm           Float?
+//   centerLat         Float? // Centroid latitude for map display
+//   centerLng         Float? // Centroid longitude for map display
+//   landStatus        landStatus                                  @default(PENDING)
+//   ownershipType     String
+//   stateId           String                                      @db.Uuid
+//   state             State                                       @relation(fields: [stateId], references: [id])
+//   purpose           String
+//   titleType         String
+//   address           String?
+//   plotNumber        String?
+//   documents         LandDocument[]
+//   ownershipLogs     OwnershipHistory[]
+//   createdAt         DateTime                                    @default(now())
+//   CofOApplication   CofOApplication[]
+//   boundary          Unsupported("geometry(MultiPolygon, 4326)")
+//   OwnershipTransfer OwnershipTransfer[]
+//   // 🔥 Subdivision support
+//   parentLandId      String?                                     @db.Uuid
+//   parentLand        LandRegistration?                           @relation("Subdivision", fields: [parentLandId], references: [id])
+//   children          LandRegistration[]                          @relation("Subdivision")
+//   landCode          String?                                     @unique // 🔥 ADD THIS
+//   payments          Payment[]
+//   auditLogs         LandAuditLog[]
+//   isVerified        Boolean                                     @default(false)
+//   surveyPlanNumber  String?                                     @unique
+//   surveyDate        DateTime?
+//   surveyorName      String?
+//   surveyorLicense   String?
+//   accuracyLevel     String? // SURVEYED | SATELLITE | USER_DRAWN
+//   coordinates       Json?
 
+//   @@index([ownerId])
+//   @@index([stateId])
+//   @@index([landStatus])
+// }
+
+model LandRegistration {
+  id String @id @default(uuid()) @db.Uuid
+
+  // 👤 Ownership
+  ownerId   String @db.Uuid
+  owner     User   @relation(fields: [ownerId], references: [id], name: "UserLands")
+  ownerName String
+
+  // 📍 Location & Identity
+  stateId    String  @db.Uuid
+  state      State   @relation(fields: [stateId], references: [id])
+  address    String?
+  plotNumber String?
+  landCode   String? @unique
+
+  // 📐 Land Geometry
+  areaSqm   Float?
+  centerLat Float? // centroid latitude
+  centerLng Float? // centroid longitude
+  boundary  Unsupported("geometry(MultiPolygon, 4326)") // stores final polygon (lat/lng)
+
+  // 📊 Coordinates (STRUCTURED 🔥)
+  utmZone    String? // e.g. "31N", "32N"
+  surveyType String? // "COORDINATE" | "BEARING"
+
+  utmCoordinates    Json? // [{ beacon, easting, northing }]
+  latlngCoordinates Json? // [{ lat, lng }]
+  bearings          Json? // [{ from, to, bearing, distance }]
+
+  // 📄 Survey Details
+  surveyPlanNumber String?   @unique
+  surveyDate       DateTime?
+  surveyorName     String?
+  surveyorAddress  String?
+  surveyTelephone  String?
+  surveyNotes      String?
+
+  // 🛡️ Verification & Status
+  landStatus    landStatus @default(PENDING)
+  isVerified    Boolean    @default(false)
+  accuracyLevel String? // "SURVEYED" | "SATELLITE" | "USER_DRAWN"
+
+  // 🏷️ Land Info
+  ownershipType String
+  purpose       String
+  titleType     String
+
+  // 📂 Documents & Logs
+  documents     LandDocument[]
+  ownershipLogs OwnershipHistory[]
+  auditLogs     LandAuditLog[]
+  payments      Payment[]
+
+  // 🔁 Ownership Transfer
+  OwnershipTransfer OwnershipTransfer[]
+
+  // 📑 CofO
+  CofOApplication CofOApplication[]
+
+  // 🌱 Subdivision Support
+  parentLandId String?            @db.Uuid
+  parentLand   LandRegistration?  @relation("Subdivision", fields: [parentLandId], references: [id])
+  children     LandRegistration[] @relation("Subdivision")
+
+  // 🕒 Timestamps
+  createdAt DateTime @default(now())
+
+  // 📌 Indexes
   @@index([ownerId])
   @@index([stateId])
   @@index([landStatus])

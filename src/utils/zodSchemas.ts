@@ -26,40 +26,90 @@ export const landVerificationSchema = z.object({
   message: "Polygon must be closed",
 });
 
+
 export const landRegistrationSchema = z.object({
   ownerName: z.string().min(3),
-
   ownershipType: z.string(),
   purpose: z.string(),
   titleType: z.string(),
 
   stateId: z.string().uuid(),
   address: z.string().min(5).optional(),
+  plotNumber: z.string().min(1).optional(),
 
-  // 🔥 NEW: polygon coordinates
-  coordinates: z.preprocess((val) => {
-    if (typeof val === "string") {
-      try {
-        return JSON.parse(val);
-      } catch {
-        return val;
+  // 🔥 Survey type: how the land is being recorded
+  surveyType: z.enum(["COORDINATE", "BEARING"]),
+
+  // 🔥 Polygon coordinates for COORDINATE survey
+  coordinates: z
+    .preprocess((val) => {
+      if (typeof val === "string") {
+        try {
+          return JSON.parse(val);
+        } catch {
+          return val;
+        }
       }
+      return val;
+    },
+    z.array(
+      z.tuple([z.number(), z.number()]) // [lat, lng]
+    ).min(4, "A valid land polygon must have at least 4 points")
+  ).optional(),
+
+  // 🔥 Bearings for BEARING survey
+  bearings: z.preprocess((val) => {
+  if (typeof val === "string") {
+    try {
+      return JSON.parse(val);
+    } catch {
+      return val;
     }
-    return val;
-  },
-  z.array(
-    z.tuple([
-      z.number(),
-      z.number(),
-    ])
-  ).min(4, "A valid land polygon must have at least 4 points")
-  ),
+  }
+  return val;
+},
+z.array(
+  z.object({
+    distance: z.number(),
+    bearing: z.number(),
+  })
+)
+  .min(3, "At least 3 bearings required for a bearing survey")
+.optional()),
+startPoint: z.preprocess((val) => {
+  if (typeof val === "string") {
+    try {
+      return JSON.parse(val);
+    } catch {
+      return val;
+    }
+  }
+  return val;
+}
+,
+z.tuple([z.number(), z.number()]) // [lat, lng]
+.optional()),
+  // bearings: z
+  //   .array(
+  //     z.object({
+  //       distance: z.number().positive(),
+  //       bearing: z.number().min(0).max(360),
+  //     })
+  //   )
+  //   .min(3, "At least 3 bearings required for a bearing survey")
+  //   .optional(),
+
+  utmZone: z.string().min(2, "UTM zone is required for conversion").optional(),
 
   surveyPlanNumber: z.string().min(3),
   surveyDate: z.string().optional(),
   surveyorName: z.string().min(3),
   surveyorLicense: z.string().optional(),
+  surveyorAddress: z.string().optional(),
+  surveyTelephone: z.string().optional(),
+  surveyNotes: z.string().optional(),
   accuracyLevel: z.enum(["SURVEYED", "SATELLITE", "USER_DRAWN"]),
+  measuredAreaSqm: z.number().positive("Area must be greater than 0").optional(),
 
   parentLandId: z.string().uuid().optional(),
 });

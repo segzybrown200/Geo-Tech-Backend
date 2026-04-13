@@ -2146,26 +2146,30 @@ export const LandRegistrationScalarFieldEnum = {
   id: 'id',
   ownerId: 'ownerId',
   ownerName: 'ownerName',
+  stateId: 'stateId',
+  address: 'address',
+  plotNumber: 'plotNumber',
+  landCode: 'landCode',
   areaSqm: 'areaSqm',
   centerLat: 'centerLat',
   centerLng: 'centerLng',
-  landStatus: 'landStatus',
-  ownershipType: 'ownershipType',
-  stateId: 'stateId',
-  purpose: 'purpose',
-  titleType: 'titleType',
-  address: 'address',
-  plotNumber: 'plotNumber',
-  createdAt: 'createdAt',
-  parentLandId: 'parentLandId',
-  landCode: 'landCode',
-  isVerified: 'isVerified',
+  utmZone: 'utmZone',
+  surveyType: 'surveyType',
+  utmCoordinates: 'utmCoordinates',
+  latlngCoordinates: 'latlngCoordinates',
+  bearings: 'bearings',
   surveyPlanNumber: 'surveyPlanNumber',
   surveyDate: 'surveyDate',
   surveyorName: 'surveyorName',
   surveyorLicense: 'surveyorLicense',
+  landStatus: 'landStatus',
+  isVerified: 'isVerified',
   accuracyLevel: 'accuracyLevel',
-  coordinates: 'coordinates'
+  ownershipType: 'ownershipType',
+  purpose: 'purpose',
+  titleType: 'titleType',
+  parentLandId: 'parentLandId',
+  createdAt: 'createdAt'
 } as const
 
 export type LandRegistrationScalarFieldEnum = (typeof LandRegistrationScalarFieldEnum)[keyof typeof LandRegistrationScalarFieldEnum]
@@ -2551,20 +2555,6 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
 
 
 /**
- * Reference to a field of type 'landStatus'
- */
-export type EnumlandStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'landStatus'>
-    
-
-
-/**
- * Reference to a field of type 'landStatus[]'
- */
-export type ListEnumlandStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'landStatus[]'>
-    
-
-
-/**
  * Reference to a field of type 'Json'
  */
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -2575,6 +2565,20 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'landStatus'
+ */
+export type EnumlandStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'landStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'landStatus[]'
+ */
+export type ListEnumlandStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'landStatus[]'>
     
 
 
