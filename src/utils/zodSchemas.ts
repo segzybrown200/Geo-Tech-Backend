@@ -179,7 +179,13 @@ z.tuple([z.number(), z.number()]) // [lat, lng]
   surveyTelephone: z.string().optional(),
   surveyNotes: z.string().optional(),
   accuracyLevel: z.enum(["SURVEYED", "SATELLITE", "USER_DRAWN"]),
-  measuredAreaSqm: z.number().positive("Area must be greater than 0").optional(),
+  measuredAreaSqm: z.preprocess((val) => {
+    if (typeof val === "string") {
+      const parsed = Number(val.trim());
+      return Number.isNaN(parsed) ? val : parsed;
+    }
+    return val;
+  }, z.number().positive("Area must be greater than 0").optional()),
 
   parentLandId: z.string().uuid().optional(),
 });
