@@ -277,8 +277,8 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
         ${address},
         ${parentLandId ?? null},
         ${finalAreaSqm},
-        ST_Y(ST_PointOnSurface(g)),
-        ST_X(ST_PointOnSurface(g)),
+        ST_Y(ST_Centroid(g)),
+        ST_X(ST_Centroid(g)),
         ${surveyPlanNumber},
         ${parsedSurveyDate},
         ${surveyorName},
@@ -380,53 +380,87 @@ export const verifyLand = async (req: Request, res: Response) => {
     });
   }
 
-  const { coordinates, stateId } = parsed.data;
+  const { surveyType, coordinates, bearings, startPoint, utmZone, stateId } = parsed.data;
 
   try {
-    const polygon = convertToWKT(coordinates);
+    let finalLatLng: number[][];
+
+    if (surveyType === "COORDINATE") {
+      const normalized = normalizeLatLngOrder(coordinates! as number[][]);
+      finalLatLng = closePolygon(normalized);
+    } else {
+      const result = bearingsToCoordinates(
+        bearings! as { distance: number; bearing: number }[],
+        utmZone!,
+        startPoint as [number, number],
+        false,
+      );
+      finalLatLng = closePolygon(result.latlngCoordinates);
+    }
+
+    const polygon = convertToWKT(finalLatLng);
 
     // 🔥 MAIN GIS QUERY
     const lands = await prisma.$queryRawUnsafe<
       {
         id: string;
+        ownerId: string;
         ownerName: string;
+        ownershipType: string;
         landStatus: string;
         purpose: string;
         titleType: string;
+        stateId: string;
+        ownerEmail: string | null;
+        ownerPhone: string | null;
+        ownerFullName: string | null;
       }[]
     >(
       `
-      SELECT 
-        id,
-        "ownerName",
-        "landStatus",
-        purpose,
-        "titleType"
-      FROM "LandRegistration"
+      SELECT
+        lr.id,
+        lr."ownerId",
+        lr."ownerName",
+        lr."ownershipType",
+        lr."landStatus",
+        lr.purpose,
+        lr."titleType",
+        lr."stateId",
+        u.email AS "ownerEmail",
+        u.phone AS "ownerPhone",
+        u.fullName AS "ownerFullName"
+      FROM "LandRegistration" lr
+      LEFT JOIN "User" u ON u.id = lr."ownerId"
       WHERE ST_Intersects(
-        boundary,
+        lr.boundary,
         ST_GeomFromText($1, 4326)
       )
-      ${stateId ? `AND "stateId" = '${stateId}'` : ""}
+      ${stateId ? `AND lr."stateId" = '${stateId}'` : ""}
       `,
       polygon,
     );
 
-    // 🔥 DETERMINE RISK LEVEL
+    const existingOwners = lands.map((land) => ({
+      id: land.id,
+      ownerId: land.ownerId,
+      ownerName: land.ownerName,
+      ownerFullName: land.ownerFullName,
+      ownerEmail: land.ownerEmail,
+      ownerPhone: land.ownerPhone,
+      ownershipType: land.ownershipType,
+      landStatus: land.landStatus,
+      purpose: land.purpose,
+      titleType: land.titleType,
+      stateId: land.stateId,
+      isGovernment:
+        /gov/i.test(land.ownershipType || "") || /gov/i.test(land.ownerName || ""),
+    }));
+
     let riskLevel: "SAFE" | "RISKY" | "GOVERNMENT" = "SAFE";
-
     if (lands.length > 0) {
-      riskLevel = "RISKY";
-
-      const hasGovernment = lands.some((l) => l.landStatus === "REJECTED");
-
-      const hasApproved = lands.some((l) => l.landStatus === "APPROVED");
-
-      if (hasGovernment) {
-        riskLevel = "GOVERNMENT";
-      } else if (hasApproved) {
-        riskLevel = "RISKY";
-      }
+      riskLevel = existingOwners.some((o) => o.isGovernment)
+        ? "GOVERNMENT"
+        : "RISKY";
     }
 
     return res.status(200).json({
@@ -434,7 +468,8 @@ export const verifyLand = async (req: Request, res: Response) => {
       overlap: lands.length > 0,
       riskLevel,
       totalMatches: lands.length,
-      lands,
+      existingOwners,
+      coordinates: finalLatLng,
     });
   } catch (err) {
     console.error(err);
@@ -536,6 +571,15 @@ export const updateLand = async (req: AuthRequest, res: Response) => {
     purpose: true,
     titleType: true,
     address: true,
+    plotNumber: true,
+    surveyPlanNumber: true,
+    surveyDate: true,
+    surveyorName: true,
+    surveyorAddress: true,
+    surveyTelephone: true,
+    surveyNotes: true,
+    accuracyLevel: true,
+    surveyType: true,
   });
   const body = allowedSchema.safeParse(req.body);
   if (!body.success) {
@@ -639,7 +683,7 @@ export const searchLandExistence = async (req: Request, res: Response) => {
         id: string;
         latitude: number;
         longitude: number;
-        squareMeters: number;
+        areaSqm: number;
         purpose: string;
         titleType: string;
         stateId: string;
@@ -650,13 +694,13 @@ export const searchLandExistence = async (req: Request, res: Response) => {
       `
       SELECT
         id,
-        latitude,
-        longitude,
-        "squareMeters",
+        "centerLat" as latitude,
+        "centerLng" as longitude,
+        "areaSqm" as "squareMeters",
         purpose,
         "ownershipType",
         "titleType",
-        "stateId"
+        "stateId",
         "ownerName"
       FROM "LandRegistration"
       WHERE ST_DWithin(
@@ -677,7 +721,7 @@ export const searchLandExistence = async (req: Request, res: Response) => {
         id: l.id,
         latitude: l.latitude,
         longitude: l.longitude,
-        squareMeters: l.squareMeters,
+        squareMeters: l.areaSqm,
         purpose: l.purpose,
         titleType: l.titleType,
         stateId: l.stateId,

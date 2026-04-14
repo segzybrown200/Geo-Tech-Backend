@@ -17,7 +17,7 @@ interface CofOData {
     state: {
       name: string;
     };
-    squareMeters: number | null | undefined;
+    areaSqm: number | null | undefined;
     centerLat?: number | null;
     centerLng?: number | null;
     ownershipType: string;
@@ -120,8 +120,8 @@ export async function generateCofOCertificate(cofO: CofOData): Promise<string> {
 
       info(doc, "Address", cofO.land.address);
       info(doc, "Plot Number", cofO.land.plotNumber ?? "N/A");
-      if (cofO.land.squareMeters) {
-        info(doc, "Area", `${cofO.land.squareMeters} sqm`);
+      if (cofO.land.areaSqm) {
+        info(doc, "Area", `${cofO.land.areaSqm} sqm`);
       }
       if (cofO.land.centerLat && cofO.land.centerLng) {
         info(doc, "Coordinates", `${cofO.land.centerLat.toFixed(6)}, ${cofO.land.centerLng.toFixed(6)}`);

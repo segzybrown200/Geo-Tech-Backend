@@ -54,7 +54,9 @@ export type LandRegistrationMinAggregateOutputType = {
   surveyPlanNumber: string | null
   surveyDate: Date | null
   surveyorName: string | null
-  surveyorLicense: string | null
+  surveyorAddress: string | null
+  surveyTelephone: string | null
+  surveyNotes: string | null
   landStatus: $Enums.landStatus | null
   isVerified: boolean | null
   accuracyLevel: string | null
@@ -81,7 +83,9 @@ export type LandRegistrationMaxAggregateOutputType = {
   surveyPlanNumber: string | null
   surveyDate: Date | null
   surveyorName: string | null
-  surveyorLicense: string | null
+  surveyorAddress: string | null
+  surveyTelephone: string | null
+  surveyNotes: string | null
   landStatus: $Enums.landStatus | null
   isVerified: boolean | null
   accuracyLevel: string | null
@@ -111,7 +115,9 @@ export type LandRegistrationCountAggregateOutputType = {
   surveyPlanNumber: number
   surveyDate: number
   surveyorName: number
-  surveyorLicense: number
+  surveyorAddress: number
+  surveyTelephone: number
+  surveyNotes: number
   landStatus: number
   isVerified: number
   accuracyLevel: number
@@ -152,7 +158,9 @@ export type LandRegistrationMinAggregateInputType = {
   surveyPlanNumber?: true
   surveyDate?: true
   surveyorName?: true
-  surveyorLicense?: true
+  surveyorAddress?: true
+  surveyTelephone?: true
+  surveyNotes?: true
   landStatus?: true
   isVerified?: true
   accuracyLevel?: true
@@ -179,7 +187,9 @@ export type LandRegistrationMaxAggregateInputType = {
   surveyPlanNumber?: true
   surveyDate?: true
   surveyorName?: true
-  surveyorLicense?: true
+  surveyorAddress?: true
+  surveyTelephone?: true
+  surveyNotes?: true
   landStatus?: true
   isVerified?: true
   accuracyLevel?: true
@@ -209,7 +219,9 @@ export type LandRegistrationCountAggregateInputType = {
   surveyPlanNumber?: true
   surveyDate?: true
   surveyorName?: true
-  surveyorLicense?: true
+  surveyorAddress?: true
+  surveyTelephone?: true
+  surveyNotes?: true
   landStatus?: true
   isVerified?: true
   accuracyLevel?: true
@@ -326,7 +338,9 @@ export type LandRegistrationGroupByOutputType = {
   surveyPlanNumber: string | null
   surveyDate: Date | null
   surveyorName: string | null
-  surveyorLicense: string | null
+  surveyorAddress: string | null
+  surveyTelephone: string | null
+  surveyNotes: string | null
   landStatus: $Enums.landStatus
   isVerified: boolean
   accuracyLevel: string | null
@@ -379,7 +393,9 @@ export type LandRegistrationWhereInput = {
   surveyPlanNumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   surveyDate?: Prisma.DateTimeNullableFilter<"LandRegistration"> | Date | string | null
   surveyorName?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  surveyorLicense?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  surveyorAddress?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  surveyTelephone?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  surveyNotes?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   landStatus?: Prisma.EnumlandStatusFilter<"LandRegistration"> | $Enums.landStatus
   isVerified?: Prisma.BoolFilter<"LandRegistration"> | boolean
   accuracyLevel?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
@@ -419,7 +435,9 @@ export type LandRegistrationOrderByWithRelationInput = {
   surveyPlanNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyDate?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyorName?: Prisma.SortOrderInput | Prisma.SortOrder
-  surveyorLicense?: Prisma.SortOrderInput | Prisma.SortOrder
+  surveyorAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  surveyTelephone?: Prisma.SortOrderInput | Prisma.SortOrder
+  surveyNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   landStatus?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   accuracyLevel?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -462,7 +480,9 @@ export type LandRegistrationWhereUniqueInput = Prisma.AtLeast<{
   bearings?: Prisma.JsonNullableFilter<"LandRegistration">
   surveyDate?: Prisma.DateTimeNullableFilter<"LandRegistration"> | Date | string | null
   surveyorName?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  surveyorLicense?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  surveyorAddress?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  surveyTelephone?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  surveyNotes?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   landStatus?: Prisma.EnumlandStatusFilter<"LandRegistration"> | $Enums.landStatus
   isVerified?: Prisma.BoolFilter<"LandRegistration"> | boolean
   accuracyLevel?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
@@ -502,7 +522,9 @@ export type LandRegistrationOrderByWithAggregationInput = {
   surveyPlanNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyDate?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyorName?: Prisma.SortOrderInput | Prisma.SortOrder
-  surveyorLicense?: Prisma.SortOrderInput | Prisma.SortOrder
+  surveyorAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  surveyTelephone?: Prisma.SortOrderInput | Prisma.SortOrder
+  surveyNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   landStatus?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   accuracyLevel?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -540,7 +562,9 @@ export type LandRegistrationScalarWhereWithAggregatesInput = {
   surveyPlanNumber?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
   surveyDate?: Prisma.DateTimeNullableWithAggregatesFilter<"LandRegistration"> | Date | string | null
   surveyorName?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
-  surveyorLicense?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
+  surveyorAddress?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
+  surveyTelephone?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
+  surveyNotes?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
   landStatus?: Prisma.EnumlandStatusWithAggregatesFilter<"LandRegistration"> | $Enums.landStatus
   isVerified?: Prisma.BoolWithAggregatesFilter<"LandRegistration"> | boolean
   accuracyLevel?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
@@ -568,7 +592,9 @@ export type LandRegistrationUpdateInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -607,7 +633,9 @@ export type LandRegistrationUncheckedUpdateInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -642,7 +670,9 @@ export type LandRegistrationUpdateManyMutationInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -671,7 +701,9 @@ export type LandRegistrationUncheckedUpdateManyInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -716,7 +748,9 @@ export type LandRegistrationCountOrderByAggregateInput = {
   surveyPlanNumber?: Prisma.SortOrder
   surveyDate?: Prisma.SortOrder
   surveyorName?: Prisma.SortOrder
-  surveyorLicense?: Prisma.SortOrder
+  surveyorAddress?: Prisma.SortOrder
+  surveyTelephone?: Prisma.SortOrder
+  surveyNotes?: Prisma.SortOrder
   landStatus?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   accuracyLevel?: Prisma.SortOrder
@@ -749,7 +783,9 @@ export type LandRegistrationMaxOrderByAggregateInput = {
   surveyPlanNumber?: Prisma.SortOrder
   surveyDate?: Prisma.SortOrder
   surveyorName?: Prisma.SortOrder
-  surveyorLicense?: Prisma.SortOrder
+  surveyorAddress?: Prisma.SortOrder
+  surveyTelephone?: Prisma.SortOrder
+  surveyNotes?: Prisma.SortOrder
   landStatus?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   accuracyLevel?: Prisma.SortOrder
@@ -776,7 +812,9 @@ export type LandRegistrationMinOrderByAggregateInput = {
   surveyPlanNumber?: Prisma.SortOrder
   surveyDate?: Prisma.SortOrder
   surveyorName?: Prisma.SortOrder
-  surveyorLicense?: Prisma.SortOrder
+  surveyorAddress?: Prisma.SortOrder
+  surveyTelephone?: Prisma.SortOrder
+  surveyNotes?: Prisma.SortOrder
   landStatus?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   accuracyLevel?: Prisma.SortOrder
@@ -979,7 +1017,9 @@ export type LandRegistrationScalarWhereInput = {
   surveyPlanNumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   surveyDate?: Prisma.DateTimeNullableFilter<"LandRegistration"> | Date | string | null
   surveyorName?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
-  surveyorLicense?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  surveyorAddress?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  surveyTelephone?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  surveyNotes?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   landStatus?: Prisma.EnumlandStatusFilter<"LandRegistration"> | $Enums.landStatus
   isVerified?: Prisma.BoolFilter<"LandRegistration"> | boolean
   accuracyLevel?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
@@ -1012,7 +1052,9 @@ export type LandRegistrationUpdateWithoutChildrenInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1050,7 +1092,9 @@ export type LandRegistrationUncheckedUpdateWithoutChildrenInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1099,7 +1143,9 @@ export type LandRegistrationUpdateWithoutDocumentsInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1137,7 +1183,9 @@ export type LandRegistrationUncheckedUpdateWithoutDocumentsInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1186,7 +1234,9 @@ export type LandRegistrationUpdateWithoutAuditLogsInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1224,7 +1274,9 @@ export type LandRegistrationUncheckedUpdateWithoutAuditLogsInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1263,7 +1315,9 @@ export type LandRegistrationUpdateWithoutOwnershipTransferInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1301,7 +1355,9 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipTransferInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1340,7 +1396,9 @@ export type LandRegistrationUpdateWithoutOwnershipLogsInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1378,7 +1436,9 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipLogsInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1417,7 +1477,9 @@ export type LandRegistrationUpdateWithoutCofOApplicationInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1455,7 +1517,9 @@ export type LandRegistrationUncheckedUpdateWithoutCofOApplicationInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1494,7 +1558,9 @@ export type LandRegistrationUpdateWithoutPaymentsInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1532,7 +1598,9 @@ export type LandRegistrationUncheckedUpdateWithoutPaymentsInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1566,7 +1634,9 @@ export type LandRegistrationUpdateWithoutOwnerInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1603,7 +1673,9 @@ export type LandRegistrationUncheckedUpdateWithoutOwnerInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1639,7 +1711,9 @@ export type LandRegistrationUncheckedUpdateManyWithoutOwnerInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1667,7 +1741,9 @@ export type LandRegistrationUpdateWithoutParentLandInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1705,7 +1781,9 @@ export type LandRegistrationUncheckedUpdateWithoutParentLandInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1741,7 +1819,9 @@ export type LandRegistrationUncheckedUpdateManyWithoutParentLandInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1768,7 +1848,9 @@ export type LandRegistrationUpdateWithoutStateInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1805,7 +1887,9 @@ export type LandRegistrationUncheckedUpdateWithoutStateInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1841,7 +1925,9 @@ export type LandRegistrationUncheckedUpdateManyWithoutStateInput = {
   surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  surveyorLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1956,7 +2042,9 @@ export type LandRegistrationSelect<ExtArgs extends runtime.Types.Extensions.Inte
   surveyPlanNumber?: boolean
   surveyDate?: boolean
   surveyorName?: boolean
-  surveyorLicense?: boolean
+  surveyorAddress?: boolean
+  surveyTelephone?: boolean
+  surveyNotes?: boolean
   landStatus?: boolean
   isVerified?: boolean
   accuracyLevel?: boolean
@@ -1998,7 +2086,9 @@ export type LandRegistrationSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   surveyPlanNumber?: boolean
   surveyDate?: boolean
   surveyorName?: boolean
-  surveyorLicense?: boolean
+  surveyorAddress?: boolean
+  surveyTelephone?: boolean
+  surveyNotes?: boolean
   landStatus?: boolean
   isVerified?: boolean
   accuracyLevel?: boolean
@@ -2031,7 +2121,9 @@ export type LandRegistrationSelectScalar = {
   surveyPlanNumber?: boolean
   surveyDate?: boolean
   surveyorName?: boolean
-  surveyorLicense?: boolean
+  surveyorAddress?: boolean
+  surveyTelephone?: boolean
+  surveyNotes?: boolean
   landStatus?: boolean
   isVerified?: boolean
   accuracyLevel?: boolean
@@ -2042,7 +2134,7 @@ export type LandRegistrationSelectScalar = {
   createdAt?: boolean
 }
 
-export type LandRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "ownerName" | "stateId" | "address" | "plotNumber" | "landCode" | "areaSqm" | "centerLat" | "centerLng" | "utmZone" | "surveyType" | "utmCoordinates" | "latlngCoordinates" | "bearings" | "surveyPlanNumber" | "surveyDate" | "surveyorName" | "surveyorLicense" | "landStatus" | "isVerified" | "accuracyLevel" | "ownershipType" | "purpose" | "titleType" | "parentLandId" | "createdAt", ExtArgs["result"]["landRegistration"]>
+export type LandRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "ownerName" | "stateId" | "address" | "plotNumber" | "landCode" | "areaSqm" | "centerLat" | "centerLng" | "utmZone" | "surveyType" | "utmCoordinates" | "latlngCoordinates" | "bearings" | "surveyPlanNumber" | "surveyDate" | "surveyorName" | "surveyorAddress" | "surveyTelephone" | "surveyNotes" | "landStatus" | "isVerified" | "accuracyLevel" | "ownershipType" | "purpose" | "titleType" | "parentLandId" | "createdAt", ExtArgs["result"]["landRegistration"]>
 export type LandRegistrationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
@@ -2095,7 +2187,9 @@ export type $LandRegistrationPayload<ExtArgs extends runtime.Types.Extensions.In
     surveyPlanNumber: string | null
     surveyDate: Date | null
     surveyorName: string | null
-    surveyorLicense: string | null
+    surveyorAddress: string | null
+    surveyTelephone: string | null
+    surveyNotes: string | null
     landStatus: $Enums.landStatus
     isVerified: boolean
     accuracyLevel: string | null
@@ -2484,7 +2578,9 @@ export interface LandRegistrationFieldRefs {
   readonly surveyPlanNumber: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly surveyDate: Prisma.FieldRef<"LandRegistration", 'DateTime'>
   readonly surveyorName: Prisma.FieldRef<"LandRegistration", 'String'>
-  readonly surveyorLicense: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly surveyorAddress: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly surveyTelephone: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly surveyNotes: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly landStatus: Prisma.FieldRef<"LandRegistration", 'landStatus'>
   readonly isVerified: Prisma.FieldRef<"LandRegistration", 'Boolean'>
   readonly accuracyLevel: Prisma.FieldRef<"LandRegistration", 'String'>

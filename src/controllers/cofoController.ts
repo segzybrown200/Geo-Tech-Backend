@@ -611,7 +611,7 @@ export const reviewCofO = async (req: AuthRequest, res: Response) => {
             state: {
               name: updatedCofO.land.state.name,
             },
-            squareMeters: updatedCofO.land.areaSqm,
+            areaSqm: updatedCofO.land.areaSqm,
             centerLat: updatedCofO.land.centerLat,
             centerLng: updatedCofO.land.centerLng,
             ownershipType: updatedCofO.land.ownershipType,
@@ -850,7 +850,7 @@ export const batchSignCofOs = async (req: AuthRequest, res: Response) => {
             state: {
               name: cofO.land.state.name,
             },
-            squareMeters: cofO.land.areaSqm,
+            areaSqm: cofO.land.areaSqm,
             centerLat: cofO.land.centerLat,
             centerLng: cofO.land.centerLng,
             ownershipType: cofO.land.ownershipType,

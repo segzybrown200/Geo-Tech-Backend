@@ -13,17 +13,87 @@ export const transferOwnershipSchema = z.object({
   newOwnerEmail: z.string().email(),
 });
 export const landVerificationSchema = z.object({
-  coordinates: z.array(
-    z.tuple([z.number(), z.number()])
-  ).min(4),
-
+  surveyType: z.enum(["COORDINATE", "BEARING"]),
+  coordinates: z.preprocess((val) => {
+    if (typeof val === "string") {
+      try {
+        return JSON.parse(val);
+      } catch {
+        return val;
+      }
+    }
+    return val;
+  }, z.array(z.tuple([z.number(), z.number()])).optional()),
+  bearings: z.preprocess((val) => {
+    if (typeof val === "string") {
+      try {
+        return JSON.parse(val);
+      } catch {
+        return val;
+      }
+    }
+    return val;
+  }, z.array(
+    z.object({
+      distance: z.number().positive(),
+      bearing: z.number().min(0).max(360),
+    })
+  ).optional()),
+  startPoint: z.preprocess((val) => {
+    if (typeof val === "string") {
+      try {
+        return JSON.parse(val);
+      } catch {
+        return val;
+      }
+    }
+    return val;
+  }, z.tuple([z.number(), z.number()]).optional()),
+  utmZone: z.string().min(2).optional(),
   stateId: z.string().uuid().optional(),
-}).refine((data) => {
-  const first = data.coordinates[0];
-  const last = data.coordinates[data.coordinates.length - 1];
-  return first[0] === last[0] && first[1] === last[1];
-}, {
-  message: "Polygon must be closed",
+}).superRefine((data, ctx) => {
+  if (data.surveyType === "COORDINATE") {
+    if (!data.coordinates || data.coordinates.length < 4) {
+      ctx.addIssue({
+        path: ["coordinates"],
+        code: z.ZodIssueCode.custom,
+        message: "A valid coordinate polygon must have at least 4 points",
+      });
+      return;
+    }
+
+    const first = data.coordinates[0];
+    const last = data.coordinates[data.coordinates.length - 1];
+    if (first[0] !== last[0] || first[1] !== last[1]) {
+      ctx.addIssue({
+        path: ["coordinates"],
+        code: z.ZodIssueCode.custom,
+        message: "Polygon must be closed",
+      });
+    }
+  } else {
+    if (!data.bearings || data.bearings.length < 3) {
+      ctx.addIssue({
+        path: ["bearings"],
+        code: z.ZodIssueCode.custom,
+        message: "At least 3 bearings are required for a bearing survey",
+      });
+    }
+    if (!data.startPoint) {
+      ctx.addIssue({
+        path: ["startPoint"],
+        code: z.ZodIssueCode.custom,
+        message: "Start point is required for bearing verification",
+      });
+    }
+    if (!data.utmZone) {
+      ctx.addIssue({
+        path: ["utmZone"],
+        code: z.ZodIssueCode.custom,
+        message: "UTM zone is required for bearing verification",
+      });
+    }
+  }
 });
 
 
