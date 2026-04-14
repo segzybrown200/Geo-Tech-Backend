@@ -183,7 +183,7 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
     // 4️⃣.5️⃣ Validate area if user provided measured value
     const calculatedArea = calculateAreaFromUTM(finalUTM);
     let finalAreaSqm = calculatedArea; // Default to calculated
-    const AREA_TOLERANCE = 4; // ±4 m² tolerance
+    const AREA_TOLERANCE = 10; // ±10 m² tolerance
 
     if (measuredAreaSqm) {
       const areaDifference = Math.abs(calculatedArea - measuredAreaSqm);
