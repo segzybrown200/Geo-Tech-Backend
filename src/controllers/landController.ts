@@ -249,7 +249,6 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
         "surveyPlanNumber",
         "surveyDate",
         "surveyorName",
-        "surveyorLicense",
         "surveyorAddress",
         "surveyTelephone",
         "surveyNotes",
