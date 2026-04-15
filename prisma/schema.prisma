@@ -75,6 +75,7 @@ model InternalUser {
   StageLog                   StageLog[]
   InboxMessage               InboxMessage[]
   StateGovernor              State?              @relation("Governor")
+  TransferStageLog           TransferStageLog[]
   // Sessions & OTP relations
   emailToken                 String? // used for verifying email
   passwordToken              String? // used for setting password after verification
@@ -86,6 +87,7 @@ model InternalUser {
   approvedApplications       CofOApplication[]   @relation("approvedBy")
   reviewingApplications      CofOApplication[]   @relation("currentReviewer")
   ownershipTransfersReviewed OwnershipTransfer[] @relation("GovernorReviewer")
+  transferCurrentReviewers   OwnershipTransfer[] @relation("TransferCurrentReviewer")
 }
 
 model Session {
@@ -216,6 +218,7 @@ model LandRegistration {
 
   // 🔁 Ownership Transfer
   OwnershipTransfer OwnershipTransfer[]
+  transferredFrom   OwnershipTransfer[] @relation("TransferredLand")
 
   // 📑 CofO
   CofOApplication CofOApplication[]
@@ -277,7 +280,27 @@ model OwnershipTransfer {
   newOwnerEmail String?
   newOwnerPhone String?
 
+  // Transfer type: FULL or PARTIAL
+  transferType String @default("FULL") // "FULL" | "PARTIAL"
+
+  // For partial transfers: boundary of the portion being transferred
+  transferSurveyType String? // "COORDINATE" | "BEARING"
+  transferCoordinates Json? // [{ lat, lng }]
+  transferBearings    Json? // [{ distance, bearing }]
+  transferUtmZone     String?
+  transferAreaSqm     Float?
+  transferCenterLat   Float?
+  transferCenterLng   Float?
+
+  // New land created for partial transfer
+  transferredLandId String? @db.Uuid
+
   status TransferStatus @default(INITIATED)
+
+  // Approval workflow like CofO
+  currentReviewerId String? @db.Uuid
+  revisionCount     Int     @default(0)
+  applicationNumber String? @unique
 
   // Governor review fields
   governorComment String?
@@ -291,11 +314,14 @@ model OwnershipTransfer {
   verifications     TransferVerification[]
   documents         OwnershipTransferDocument[]
   transferAuditLogs OwnershipTransferAuditLog[]
+  stages            TransferStageLog[]
 
   land         LandRegistration @relation(fields: [landId], references: [id])
   currentOwner User             @relation("CurrentOwner", fields: [currentOwnerId], references: [id])
   newOwner     User?            @relation("NewOwner", fields: [newOwnerId], references: [id])
   governor     InternalUser?    @relation("GovernorReviewer", fields: [governorId], references: [id])
+  currentReviewer InternalUser? @relation("TransferCurrentReviewer", fields: [currentReviewerId], references: [id])
+  transferredLand LandRegistration? @relation("TransferredLand", fields: [transferredLandId], references: [id])
 
   @@index([status])
   @@index([governorId])
@@ -364,6 +390,19 @@ model OwnershipTransferAuditLog {
 
   @@index([transferId])
   @@index([createdAt])
+}
+
+model TransferStageLog {
+  id             String @id @default(uuid()) @db.Uuid
+  transferId     String @db.Uuid
+  stageNumber    Int
+  internalUserId String @db.Uuid
+  status         String
+  message        String?
+  arrivedAt      DateTime @default(now())
+  approvedAt     DateTime?
+  transfer       OwnershipTransfer @relation(fields: [transferId], references: [id])
+  approver       InternalUser      @relation(fields: [internalUserId], references: [id])
 }
 
 model OwnershipHistory {

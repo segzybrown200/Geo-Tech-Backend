@@ -3,17 +3,19 @@ import express, { Request, Response } from "express";
 import { internalUserAuth, requireAuth, verifyToken } from "../middlewares/authMiddleware";
 import {
   initiateOwnershipTransfer,
-  verifyTransferOTP,
-  submitTransferDocuments,
-  approveOwnershipTransfer,
-  rejectOwnershipTransfer,
-  getTransferForReview,
-  getTransferProgress,
+  verifyTransfer,
+  reviewTransfer,
+  getTransfersForReview,
   listTransfersForGovernor,
+  getTransferProgress,
   getUserOwnershipTransfers,
-  resendTransferOTP,
+  rejectOwnershipTransfer,
+  approveOwnershipTransfer,
+  getUserTransfers,
   approveDocument,
   rejectDocument,
+  getTransferForReview,
+  resendTransferOTP,
 } from "../controllers/ownershipController";
 import { authorizeRoles } from "../middlewares/roleMiddleware";
 import multer from "multer";
@@ -28,31 +30,33 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Initiate ownership transfer
 router.post("/initiate", requireAuth, initiateOwnershipTransfer);
 
-// Verify OTP from all parties
-router.post("/verify-otp", requireAuth, verifyTransferOTP);
-router.post("/resend-otp", requireAuth, resendTransferOTP);
+// Verify transfer
+router.post("/verify", requireAuth, verifyTransfer);
 
-// Submit documents for governor review
-router.post(
-  "/:transferId/submit-documents",
-  requireAuth,
-  upload.array("documents"),
-  submitTransferDocuments
-);
+// Get user's transfers
+router.get("/my-transfers", requireAuth, getUserTransfers);
 
-router.get("/user-transfer-list", requireAuth, getUserOwnershipTransfers);
+// Get user's ownership transfers (alternative endpoint)
+router.get("/user-transfers", requireAuth, getUserOwnershipTransfers);
 
-// Get transfer progress and status
+// Get transfer progress/status
 router.get("/:transferId/progress", requireAuth, getTransferProgress);
 
+// Resend transfer OTP
+router.post("/:transferId/resend-otp", requireAuth, resendTransferOTP);
+
 /* ========================
-   GOVERNOR ENDPOINTS
+   APPROVER/GOVERNOR ENDPOINTS
    ======================== */
 
-// List all transfers pending review
+// Get transfers for review
+router.get("/for-review", internalUserAuth, authorizeRoles(["APPROVER", "GOVERNOR"]), getTransfersForReview);
+
+// List all transfers for governor
 router.get("/governor/list", internalUserAuth, authorizeRoles(["GOVERNOR"]), listTransfersForGovernor);
 
-// Get transfer details for review
+// Review transfer (approve/reject/forward)
+router.post("/:transferId/review", internalUserAuth, authorizeRoles(["APPROVER", "GOVERNOR"]), reviewTransfer);
 router.get(
   "/governor/review/:transferId",
   internalUserAuth,

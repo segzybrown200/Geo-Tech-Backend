@@ -78,6 +78,11 @@ export type OwnershipTransferDocument = Prisma.OwnershipTransferDocumentModel
  */
 export type OwnershipTransferAuditLog = Prisma.OwnershipTransferAuditLogModel
 /**
+ * Model TransferStageLog
+ * 
+ */
+export type TransferStageLog = Prisma.TransferStageLogModel
+/**
  * Model OwnershipHistory
  * 
  */

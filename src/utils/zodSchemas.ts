@@ -239,3 +239,32 @@ export const cofoBatchSignSchema = z.object({
   ids: z.array(z.string().uuid()).min(1),
   signatureUrl: z.string().url()
 });
+
+// Ownership Transfer Schemas
+export const ownershipTransferInitiateSchema = z.object({
+  landId: z.string().uuid(),
+  newOwnerEmail: z.string().email(),
+  newOwnerPhone: z.string().optional(),
+  transferType: z.enum(["FULL", "PARTIAL"]),
+  transferSurveyType: z.enum(["COORDINATE", "BEARING"]).optional(),
+  coordinates: z.array(z.tuple([z.number(), z.number()])).optional(), // [lat, lng][]
+  bearings: z.array(z.object({
+    distance: z.number().positive(),
+    bearing: z.number().min(0).max(360)
+  })).optional(),
+  startPoint: z.tuple([z.number(), z.number()]).optional(), // [lat, lng]
+  utmZone: z.string().optional(),
+  measuredAreaSqm: z.preprocess((val) => typeof val === 'string' ? parseFloat(val) : val, z.number().positive().optional()),
+});
+
+export const ownershipTransferVerifySchema = z.object({
+  transferId: z.string().uuid(),
+  code: z.string(),
+});
+
+export const ownershipTransferReviewSchema = z.object({
+  transferId: z.string().uuid(),
+  action: z.enum(["APPROVE", "REJECT", "FORWARD"]),
+  message: z.string().optional(),
+  signatureUrl: z.string().url().optional(),
+});

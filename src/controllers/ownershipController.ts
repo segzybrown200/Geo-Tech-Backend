@@ -4,6 +4,41 @@ import { Response } from "express";
 import { AuthRequest } from "../middlewares/authMiddleware";
 import { sendEmail } from "../services/emailSevices";
 import { uploadToCloudinary, validateDocumentFile } from "../services/uploadService";
+import {
+  ownershipTransferInitiateSchema,
+  ownershipTransferVerifySchema,
+  ownershipTransferReviewSchema,
+} from "../utils/zodSchemas";
+import {
+  convertUTMToLatLng,
+  bearingsToCoordinates,
+  calculateAreaFromUTM,
+  isClosed,
+} from "../utils/germetry";
+
+function toWKTPolygon(coords: number[][]) {
+  const formatted = coords
+    .map(([lat, lng]) => `${lng} ${lat}`)
+    .join(",");
+  return `POLYGON((${formatted}))`;
+}
+
+function closePolygon(coords: number[][]) {
+  const first = coords[0];
+  const last = coords[coords.length - 1];
+  if (first[0] !== last[0] || first[1] !== last[1]) {
+    return [...coords, first];
+  }
+  return coords;
+}
+
+function normalizeLatLngOrder(coords: number[][]): number[][] {
+  const looksLikeLngLat = coords.some(
+    ([lat, lng]) => Math.abs(lat) > 90 && Math.abs(lng) <= 90,
+  );
+  if (looksLikeLngLat) return coords.map(([lat, lng]) => [lng, lat]);
+  return coords;
+}
 
 /* ===============================
    1. INITIATE OWNERSHIP TRANSFER
@@ -13,38 +48,111 @@ export const initiateOwnershipTransfer = async (
   req: AuthRequest,
   res: Response
 ) => {
+  const body = ownershipTransferInitiateSchema.safeParse(req.body);
+  if (!body.success) {
+    return res.status(400).json({
+      message: "Invalid transfer input",
+      errors: body.error.flatten(),
+    });
+  }
+
+  const {
+    landId,
+    newOwnerEmail,
+    newOwnerPhone,
+    transferType,
+    transferSurveyType,
+    coordinates,
+    bearings,
+    startPoint,
+    utmZone,
+    measuredAreaSqm,
+  } = body.data;
+
   const ownerId = req.user.sub;
-  const { landId, newOwnerEmail, newOwnerPhone, emails = [], phones = [] } = req.body;
 
   try {
     // Validate land ownership
     const land = await prisma.landRegistration.findUnique({
       where: { id: landId },
-      include: { owner: true },
+      include: { owner: true, state: true },
     });
 
     if (!land || land.ownerId !== ownerId) {
       return res.status(403).json({ message: "You don't own this land" });
     }
 
-    // Verify at least one email or phone is provided
-    if (!newOwnerEmail && !newOwnerPhone) {
-      return res.status(400).json({
-        message: "Either email or phone is required for new owner",
-      });
+    if (land.landStatus !== "APPROVED") {
+      return res.status(400).json({ message: "Land must be approved to transfer" });
     }
 
-    // Check if new owner exists or will be identified by email/phone
-    const existingOwner = await prisma.user.findFirst({
-      where: {
-        OR: [
-          { email: newOwnerEmail ?? undefined },
-          { phone: newOwnerPhone ?? undefined },
-        ],
-      },
-    });
+    // For partial transfers, validate boundary
+    let transferBoundary: any = null;
+    let transferUTM: number[][] = [];
+    let transferLatLng: number[][] = [];
+    let finalTransferArea = 0;
 
-    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+    if (transferType === "PARTIAL") {
+      if (!transferSurveyType) {
+        return res.status(400).json({ message: "Survey type required for partial transfer" });
+      }
+
+      if (transferSurveyType === "COORDINATE") {
+        if (!coordinates || coordinates.length < 4) {
+          return res.status(400).json({ message: "At least 4 coordinates required" });
+        }
+        const normalized = normalizeLatLngOrder(coordinates);
+        transferLatLng = closePolygon(normalized);
+        if (!utmZone) {
+          return res.status(400).json({ message: "UTM zone required" });
+        }
+        transferUTM = transferLatLng.map(([lat, lng]) =>
+          convertUTMToLatLng(lat, lng, utmZone, true)
+        );
+      } else if (transferSurveyType === "BEARING") {
+        if (!bearings || bearings.length < 3 || !startPoint || !utmZone) {
+          return res.status(400).json({ message: "Bearings, start point, and UTM zone required" });
+        }
+        const result = bearingsToCoordinates(bearings, utmZone, startPoint, true);
+        transferLatLng = closePolygon(result.latlngCoordinates);
+        transferUTM = closePolygon(result.utmCoordinates);
+        if (!isClosed(transferUTM)) {
+          return res.status(400).json({ message: "Transfer polygon not closed" });
+        }
+      }
+
+      // Validate transfer boundary is within original land
+      const transferWKT = toWKTPolygon(transferLatLng);
+      const withinCheck = await prisma.$queryRaw<{ within: boolean }[]>`
+        SELECT ST_Within(ST_GeomFromText(${transferWKT}, 4326), boundary) as within
+        FROM "LandRegistration" WHERE id = ${landId}
+      `;
+      if (!withinCheck[0]?.within) {
+        return res.status(400).json({ message: "Transfer boundary must be within original land" });
+      }
+
+      finalTransferArea = calculateAreaFromUTM(transferUTM);
+      if (measuredAreaSqm) {
+        const diff = Math.abs(finalTransferArea - measuredAreaSqm);
+        if (diff > 10) {
+          return res.status(400).json({
+            message: `Area mismatch: calculated ${finalTransferArea.toFixed(2)}m², measured ${measuredAreaSqm.toFixed(2)}m²`,
+          });
+        }
+      }
+
+      transferBoundary = {
+        transferSurveyType,
+        transferCoordinates: transferLatLng,
+        transferBearings: bearings,
+        transferUtmZone: utmZone,
+        transferAreaSqm: finalTransferArea,
+        transferCenterLat: transferLatLng.reduce((sum, [lat]) => sum + lat, 0) / transferLatLng.length,
+        transferCenterLng: transferLatLng.reduce((sum, [, lng]) => sum + lng, 0) / transferLatLng.length,
+      };
+    }
+
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
     // Create transfer record
     const transfer = await prisma.ownershipTransfer.create({
@@ -53,31 +161,24 @@ export const initiateOwnershipTransfer = async (
         currentOwnerId: ownerId,
         newOwnerEmail,
         newOwnerPhone,
+        transferType,
+        ...transferBoundary,
         expiresAt,
+        applicationNumber: `OT-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
       },
     });
 
-    // Create verification records for each channel
-    // Include new owner's primary email/phone PLUS any additional emails/phones provided
-    const channels = [
-      ...emails.map((e: string) => ({ type: "email", value: e })),
-      ...phones.map((p: string) => ({ type: "phone", value: p })),
-      ...(newOwnerEmail ? [{ type: "email", value: newOwnerEmail }] : []),
-      ...(newOwnerPhone ? [{ type: "phone", value: newOwnerPhone }] : []),
-    ];
-
-    // Remove duplicates
-    const uniqueChannels = Array.from(
-      new Map(channels.map(c => [c.value, c])).values()
-    );
+    // Create verification channels
+    const channels = [];
+    if (newOwnerEmail) channels.push({ type: "email", value: newOwnerEmail });
+    if (newOwnerPhone) channels.push({ type: "phone", value: newOwnerPhone });
 
     const verificationRecords = [];
     const verificationCodes: Record<string, string> = {};
 
-    for (const channel of uniqueChannels) {
+    for (const channel of channels) {
       const code = crypto.randomInt(100000, 999999).toString();
       verificationCodes[channel.value] = code;
-
       verificationRecords.push({
         transferId: transfer.id,
         channelType: channel.type,
@@ -86,103 +187,58 @@ export const initiateOwnershipTransfer = async (
         expiresAt,
       });
 
-      // Send verification code
+      // Send verification
       if (channel.type === "email") {
         await sendEmail(
           channel.value,
-          "Land Ownership Transfer - Verification Code",
-          `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px;">
-            <div style="background: #004CFF; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-              <h2>Land Ownership Transfer Request</h2>
-            </div>
-            <div style="padding: 20px;">
-              <p>Dear Recipient,</p>
-              <p>A land ownership transfer has been initiated. To verify your identity and proceed with the transfer, please use the code below:</p>
-              <div style="background: #f5f5f5; padding: 15px; text-align: center; border-radius: 5px; margin: 20px 0;">
-                <p style="font-size: 24px; font-weight: bold; color: #004CFF; margin: 0;">${code}</p>
-              </div>
-              <p><strong>This code expires in 15 minutes.</strong></p>
-              <p>Land Details:<br/>
-              Owner: ${land.ownerName}<br/>
-              Location: ${land.address || "Not specified"}<br/>
-              Size: ${land.areaSqm ? `${land.areaSqm}m²` : "Not specified"}
-              </p>
-              <p style="color: #666; font-size: 12px; margin-top: 30px;">
-                If you did not request this transfer, please ignore this email or contact support immediately.
-              </p>
-            </div>
-          </div>
-          `
+          "Land Ownership Transfer - Verification",
+          `<p>Your verification code: <strong>${code}</strong></p>`
         );
-      } else {
-        // For SMS, log it (integrate SMS service as needed)
-        console.log(`SMS to ${channel.value}: Your verification code is ${code}. Valid for 15 minutes.`);
       }
     }
 
-    // Batch create verification records
-    await prisma.transferVerification.createMany({
-      data: verificationRecords,
-    });
+    await prisma.transferVerification.createMany({ data: verificationRecords });
 
-    // Create audit log for transfer initiation
+    // Audit log
     await prisma.ownershipTransferAuditLog.create({
       data: {
         transferId: transfer.id,
         action: "INITIATED",
         performedById: ownerId,
         performedByRole: "USER",
-        comment: `Transfer initiated for land ${landId}`,
+        comment: `${transferType} transfer initiated`,
       },
     });
 
-    // Notify current owner
-    const currentOwner = land.owner;
-    if (currentOwner?.email) {
-      await sendEmail(
-        currentOwner.email,
-        "Land Ownership Transfer Initiated",
-        `
-        <div style="font-family: Arial, sans-serif;">
-          <p>Hello ${currentOwner.fullName},</p>
-          <p>You have initiated a land ownership transfer.</p>
-          <p><strong>Transfer ID:</strong> ${transfer.id}</p>
-          <p><strong>New Owner:</strong> ${newOwnerEmail || newOwnerPhone}</p>
-          <p>Verification codes have been sent to the provided contacts.</p>
-          <p>Once all parties verify, the transfer will be submitted to the governor for approval.</p>
-        </div>
-        `
-      );
-    }
-
     res.status(201).json({
-      message: "Ownership transfer initiated successfully",
+      message: "Transfer initiated",
       transferId: transfer.id,
+      transferType,
       expiresAt,
-      verificationChannels: channels.length,
     });
   } catch (err) {
-    console.error("Transfer initiation error:", err);
-    res.status(500).json({ message: "Transfer initiation failed", error: String(err) });
+    console.error(err);
+    res.status(500).json({ message: "Transfer initiation failed" });
   }
 };
 
 /* ===============================
-   2. VERIFY OTP CODE
+   2. VERIFY TRANSFER
 ================================ */
 
-export const verifyTransferOTP = async (req: AuthRequest, res: Response) => {
+export const verifyTransfer = async (req: AuthRequest, res: Response) => {
+  const body = ownershipTransferVerifySchema.safeParse(req.body);
+  if (!body.success) {
+    return res.status(400).json({
+      message: "Invalid input",
+      errors: body.error.flatten(),
+    });
+  }
+
+  const { transferId, code } = body.data;
   const userId = req.user.sub;
-  const { transferId, target, code } = req.body;
 
   try {
-    if (!transferId || !target || !code) {
-      return res.status(400).json({
-        message: "transferId, target, and code are required",
-      });
-    }
-
     const transfer = await prisma.ownershipTransfer.findUnique({
       where: { id: transferId },
       include: { verifications: true },
@@ -192,327 +248,452 @@ export const verifyTransferOTP = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({ message: "Transfer not found" });
     }
 
-    // Verify the user is authorized to verify this target.
-    // Allowed: current owner, the transfer's new-owner contact, or a registered user whose email/phone matches the target.
-    const isCurrentOwner = transfer.currentOwnerId === userId;
-    const isNewOwnerContact = transfer.newOwnerEmail === target || transfer.newOwnerPhone === target;
-
-    // Attempt to load the requesting user's contact info (may be undefined for some auth flows)
-    let requestingUser: any = null;
-    try {
-      requestingUser = await prisma.user.findUnique({ where: { id: userId } });
-    } catch (e) {
-      requestingUser = null;
+    // Find verification record
+    const verification = transfer.verifications.find(v => v.code === code);
+    if (!verification || verification.isVerified) {
+      return res.status(400).json({ message: "Invalid or used code" });
     }
 
-    const isRequestingUserTarget = Boolean(
-      requestingUser && (requestingUser.email === target || requestingUser.phone === target)
-    );
-
-    if (!isCurrentOwner && !isNewOwnerContact && !isRequestingUserTarget) {
-      return res.status(403).json({ message: "You are not authorized to verify this transfer" });
+    if (new Date() > verification.expiresAt) {
+      return res.status(400).json({ message: "Code expired" });
     }
 
-    // Find the verification record
-    const verificationRecord = await prisma.transferVerification.findFirst({
-      where: { transferId, target },
-    });
-
-    if (!verificationRecord) {
-      return res.status(404).json({
-        message: "Verification record not found for this target",
-      });
-    }
-
-    if (verificationRecord.isVerified) {
-      return res.status(400).json({ message: "This channel is already verified" });
-    }
-
-    if (verificationRecord.code !== code) {
-      return res.status(400).json({ message: "Invalid verification code" });
-    }
-
-    if (new Date() > verificationRecord.expiresAt) {
-      return res.status(400).json({ message: "Verification code has expired" });
-    }
-
-    // Mark as verified
     await prisma.transferVerification.update({
-      where: { id: verificationRecord.id },
+      where: { id: verification.id },
       data: { isVerified: true },
     });
 
-    // Check if all verifications are complete
-    const unverifiedCount = await prisma.transferVerification.count({
-      where: { transferId, isVerified: false },
+    // Check if all verified
+    const unverified = transfer.verifications.filter(v => !v.isVerified);
+    if (unverified.length === 0) {
+      // Start approval workflow
+      await startApprovalWorkflow(transferId);
+    }
+
+    res.json({ message: "Verified successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Verification failed" });
+  }
+};
+
+/* ===============================
+   3. START APPROVAL WORKFLOW
+================================ */
+
+async function startApprovalWorkflow(transferId: string) {
+  const transfer = await prisma.ownershipTransfer.findUnique({
+    where: { id: transferId },
+    include: { land: { include: { state: true } } },
+  });
+
+  if (!transfer) return;
+
+  // Find first approver (lowest position in state)
+  const firstApprover = await prisma.internalUser.findFirst({
+    where: {
+      stateId: transfer.land.stateId,
+      role: "APPROVER",
+    },
+    orderBy: { position: "asc" },
+  });
+
+  if (firstApprover) {
+    await prisma.ownershipTransfer.update({
+      where: { id: transferId },
+      data: {
+        status: "PENDING_GOVERNOR", // Will be updated as it progresses
+        currentReviewerId: firstApprover.id,
+      },
     });
 
-    const transferUpdated = unverifiedCount === 0
-      ? await prisma.ownershipTransfer.update({
-          where: { id: transferId },
-          data: { status: "VERIFIED_BY_PARTIES" },
-        })
-      : transfer;
-
-    // Create audit log
-    await prisma.ownershipTransferAuditLog.create({
+    await prisma.transferStageLog.create({
       data: {
         transferId,
-        action: "OTP_VERIFIED",
-        performedById: userId,
-        performedByRole: "USER",
-        comment: `Verified by ${target}`,
+        stageNumber: 1,
+        internalUserId: firstApprover.id,
+        status: "PENDING",
+        arrivedAt: new Date(),
       },
     });
 
-    // Notify current owner if all parties verified
-    if (unverifiedCount === 0) {
-      const currentOwner = await prisma.user.findUnique({
-        where: { id: transfer.currentOwnerId },
-      });
-
-      if (currentOwner?.email) {
-        await sendEmail(
-          currentOwner.email,
-          "Land Ownership Transfer - All Parties Verified",
-          `
-          <div style="font-family: Arial, sans-serif;">
-            <p>Hello ${currentOwner.fullName},</p>
-            <p>All parties have verified the land ownership transfer request.</p>
-            <p>You may now proceed to submit the required documents for governor approval.</p>
-            <p><strong>Transfer ID:</strong> ${transferId}</p>
-          </div>
-          `
-        );
-      }
+    // Notify approver
+    if (firstApprover.email) {
+      await sendEmail(
+        firstApprover.email,
+        "New Ownership Transfer for Review",
+        `<p>Please review transfer ${transferId}</p>`
+      );
     }
-
-    res.json({
-      message: "Verification successful",
-      verified: true,
-      allPartiesVerified: unverifiedCount === 0,
-      remainingVerifications: unverifiedCount,
-    });
-  } catch (err) {
-    console.error("OTP verification error:", err);
-    res.status(500).json({ message: "Verification failed", error: String(err) });
   }
-};
+}
 
 /* ===============================
-   3. SUBMIT DOCUMENTS FOR REVIEW (with Cloudinary upload)
+   4. REVIEW TRANSFER
 ================================ */
 
-export const submitTransferDocuments = async (
-  req: AuthRequest,
-  res: Response
-) => {
-  const ownerId = req.user.sub;
-  const { transferId } = req.body;
-  const files = req.files as Express.Multer.File[];
+export const reviewTransfer = async (req: AuthRequest, res: Response) => {
+  const body = ownershipTransferReviewSchema.safeParse(req.body);
+  if (!body.success) {
+    return res.status(400).json({
+      message: "Invalid input",
+      errors: body.error.flatten(),
+    });
+  }
+
+  const { transferId, action, message, signatureUrl } = body.data;
+  const reviewerId = req.user.id;
 
   try {
-    if (!transferId) {
-      return res.status(400).json({ message: "Transfer ID is required" });
-    }
-
-    if (!files || files.length === 0) {
-      return res.status(400).json({ message: "No documents provided" });
-    }
-
-    // Get transfer details
     const transfer = await prisma.ownershipTransfer.findUnique({
       where: { id: transferId },
-      include: { land: { include: { state: true } } },
-    });
-
-    if (!transfer) {
-      return res.status(404).json({ message: "Transfer not found" });
-    }
-
-    if (transfer.currentOwnerId !== ownerId) {
-      return res.status(403).json({
-        message: "Only the current owner can submit documents",
-      });
-    }
-
-    if (transfer.status !== "VERIFIED_BY_PARTIES") {
-      return res.status(400).json({
-        message: "All parties must verify before submitting documents",
-      });
-    }
-
-    // Validate all files
-    const validationErrors: string[] = [];
-    files.forEach((file, index) => {
-      const validation = validateDocumentFile(
-        file.buffer,
-        file.originalname,
-        file.mimetype
-      );
-      if (!validation.valid) {
-        validationErrors.push(`File ${index + 1}: ${validation.error}`);
-      }
-    });
-
-    if (validationErrors.length > 0) {
-      return res.status(400).json({
-        message: "Document validation failed",
-        errors: validationErrors,
-      });
-    }
-
-    // Parse document metadata
-    const documentsMeta: Array<{
-      type: string;
-      title: string;
-    }> = JSON.parse(req.body.documentsMeta || "[]");
-
-    if (documentsMeta.length !== files.length) {
-      return res.status(400).json({
-        message: "Documents metadata must match uploaded files count",
-      });
-    }
-
-    // Upload all documents to Cloudinary and create records
-    const uploadResults = await Promise.all(
-      files.map((file) =>
-        uploadToCloudinary(file.buffer, file.originalname, file.mimetype, {
-          folder: `geotech_ownership_transfers/${transferId}`,
-          resourceType: file.mimetype.startsWith("image/") ? "image" : "raw",
-        })
-      )
-    );
-
-    // Create document records in transaction
-    await prisma.$transaction(async (tx) => {
-      for (let i = 0; i < uploadResults.length; i++) {
-        await tx.ownershipTransferDocument.create({
-          data: {
-            transferId,
-            type: documentsMeta[i].type,
-            title: documentsMeta[i].title,
-            url: uploadResults[i].secure_url,
-            status: "PENDING",
-          },
-        });
-      }
-
-      // Update transfer status
-      await tx.ownershipTransfer.update({
-        where: { id: transferId },
-        data: { status: "PENDING_GOVERNOR" },
-      });
-
-      // Create audit log
-      await tx.ownershipTransferAuditLog.create({
-        data: {
-          transferId,
-          action: "DOCUMENTS_SUBMITTED",
-          performedById: ownerId,
-          performedByRole: "USER",
-          comment: `Submitted ${files.length} document(s) for governor review`,
-        },
-      });
-    });
-
-    // Find governor and notify
-    const governor = await prisma.internalUser.findFirst({
-      where: {
-        role: "GOVERNOR",
-        stateId: transfer.land.stateId,
+      include: {
+        land: true,
+        currentReviewer: true,
+        stages: { orderBy: { stageNumber: "desc" } },
       },
     });
 
-    if (governor?.email) {
-      await sendEmail(
-        governor.email,
-        "Land Ownership Transfer - Documents Submitted for Review",
-        `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
-          <div style="background: #004CFF; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
-            <h2>Ownership Transfer Submitted for Review</h2>
-          </div>
-          <div style="border: 1px solid #ddd; border-top: none; padding: 20px; border-radius: 0 0 8px 8px;">
-            <p>Hello Governor ${governor.name},</p>
-            <p>A land ownership transfer has been submitted for your review and approval.</p>
-            <p><strong>Transfer Details:</strong></p>
-            <ul>
-              <li>Transfer ID: ${transferId}</li>
-              <li>Land: ${transfer.land.address || "Not specified"}</li>
-              <li>Land Size: ${transfer.land.areaSqm ? `${transfer.land.areaSqm}m²` : "Not specified"}</li>
-              <li>Documents Submitted: ${files.length}</li>
-            </ul>
-            <p>Please review the submitted documents and either approve or reject the transfer.</p>
-            <p style="color: #666; font-size: 12px; margin-top: 30px;">
-              This is an automated message from the GeoTech system.
-            </p>
-          </div>
-        </div>
-        `
-      );
+    if (!transfer || transfer.currentReviewerId !== reviewerId) {
+      return res.status(403).json({ message: "Not authorized to review this transfer" });
     }
 
-    res.status(201).json({
-      message: "Documents submitted successfully to governor for review",
-      transferId,
-      documentsCount: files.length,
-    });
+    const currentStage = transfer.stages[0];
+    if (!currentStage) {
+      return res.status(400).json({ message: "No active stage" });
+    }
+
+    if (action === "APPROVE") {
+      // Check if governor
+      if (transfer.currentReviewer?.role === "GOVERNOR") {
+        // Final approval
+        await finalizeTransfer(transferId, reviewerId, message, signatureUrl);
+      } else {
+        // Forward to next approver or governor
+        await forwardToNextReviewer(transferId, reviewerId, message);
+      }
+    } else if (action === "REJECT") {
+      await rejectTransfer(transferId, reviewerId, message);
+    }
+
+    res.json({ message: "Review submitted" });
   } catch (err) {
-    console.error("Document submission error:", err);
-    res.status(500).json({ message: "Document submission failed", error: String(err) });
+    console.error(err);
+    res.status(500).json({ message: "Review failed" });
   }
 };
 
 /* ===============================
-   4. GOVERNOR REVIEWS TRANSFER
+   5. FINALIZE TRANSFER
 ================================ */
 
-export const getTransferForReview = async (
-  req: AuthRequest,
-  res: Response
-) => {
-  const governorId = req.user.id;
-  const { transferId } = req.params;
+async function finalizeTransfer(
+  transferId: string,
+  governorId: string,
+  comment?: string,
+  signatureUrl?: string
+) {
+  const transfer = await prisma.ownershipTransfer.findUnique({
+    where: { id: transferId },
+    include: { land: true },
+  });
 
-  try {
-    const governor = await prisma.internalUser.findUnique({
-      where: { id: governorId },
-    });
+  if (!transfer) return;
 
-    if (!governor || governor.role !== "GOVERNOR") {
-      return res.status(403).json({ message: "Governor access required" });
+  await prisma.$transaction(async (tx) => {
+    if (transfer.transferType === "FULL") {
+      // Update land owner
+      await tx.landRegistration.update({
+        where: { id: transfer.landId },
+        data: { ownerId: transfer.newOwnerId! },
+      });
+    } else {
+      // Get original boundary as WKT
+      const originalBoundary = await tx.$queryRaw<{ boundary: string }[]>`
+        SELECT ST_AsText(boundary) as boundary FROM "LandRegistration" WHERE id = ${transfer.landId}
+      `;
+      const originalWKT = originalBoundary[0]?.boundary;
+
+      // Create new land for transferred portion
+      const transferWKT = toWKTPolygon(transfer.transferCoordinates as number[][]);
+      const newLandId = crypto.randomUUID();
+      await tx.$queryRaw`
+        INSERT INTO "LandRegistration" (
+          id, landCode, ownerId, ownerName, ownershipType, purpose, titleType,
+          stateId, address, areaSqm, centerLat, centerLng, surveyType, utmZone,
+          utmCoordinates, latlngCoordinates, boundary, landStatus, isVerified, createdAt
+        ) VALUES (
+          ${newLandId},
+          ${`SUB-${transfer.land.landCode}-${Date.now()}`},
+          ${transfer.newOwnerId},
+          ${transfer.newOwnerEmail},
+          ${transfer.land.ownershipType},
+          ${transfer.land.purpose},
+          ${transfer.land.titleType},
+          ${transfer.land.stateId},
+          ${transfer.land.address},
+          ${transfer.transferAreaSqm},
+          ${transfer.transferCenterLat},
+          ${transfer.transferCenterLng},
+          ${transfer.transferSurveyType},
+          ${transfer.transferUtmZone},
+          ${transfer.transferCoordinates ? JSON.stringify(transfer.transferCoordinates) : null},
+          ${transfer.transferCoordinates ? JSON.stringify(transfer.transferCoordinates) : null},
+          ST_GeomFromText(${transferWKT}, 4326),
+          'APPROVED',
+          true,
+          now()
+        )
+      `;
+
+      // Update original land boundary (subtract transferred area)
+      await tx.$queryRaw`
+        UPDATE "LandRegistration"
+        SET boundary = ST_Difference(boundary, ST_GeomFromText(${transferWKT}, 4326)),
+            areaSqm = areaSqm - ${transfer.transferAreaSqm}
+        WHERE id = ${transfer.landId}
+      `;
+
+      // Link transferred land
+      await tx.ownershipTransfer.update({
+        where: { id: transferId },
+        data: { transferredLandId: newLandId },
+      });
     }
 
-    const transfer = await prisma.ownershipTransfer.findUnique({
-      where: { id: transferId, land: { state: { governorId } } },
+    // Update transfer status
+    await tx.ownershipTransfer.update({
+      where: { id: transferId },
+      data: {
+        status: "APPROVED",
+        governorId,
+        reviewedAt: new Date(),
+        governorComment: comment,
+      },
+    });
+
+    // Audit log
+    await tx.ownershipTransferAuditLog.create({
+      data: {
+        transferId,
+        action: "APPROVED",
+        performedById: governorId,
+        performedByRole: "GOVERNOR",
+        comment,
+      },
+    });
+  });
+}
+
+/* ===============================
+   6. FORWARD TO NEXT REVIEWER
+================================ */
+
+async function forwardToNextReviewer(
+  transferId: string,
+  currentReviewerId: string,
+  comment?: string
+) {
+  const transfer = await prisma.ownershipTransfer.findUnique({
+    where: { id: transferId },
+    include: { land: { include: { state: true } }, stages: true },
+  });
+
+  if (!transfer) return;
+
+  const currentStage = transfer.stages[transfer.stages.length - 1];
+  const nextPosition = (currentStage?.stageNumber || 0) + 1;
+
+  // Find next approver
+  const nextApprover = await prisma.internalUser.findFirst({
+    where: {
+      stateId: transfer.land.stateId,
+      role: "APPROVER",
+      position: { gt: nextPosition - 1 }, // Next position
+    },
+    orderBy: { position: "asc" },
+  });
+
+  if (nextApprover) {
+    // Forward to next approver
+    await prisma.ownershipTransfer.update({
+      where: { id: transferId },
+      data: { currentReviewerId: nextApprover.id },
+    });
+
+    await prisma.transferStageLog.create({
+      data: {
+        transferId,
+        stageNumber: nextPosition,
+        internalUserId: nextApprover.id,
+        status: "PENDING",
+        arrivedAt: new Date(),
+      },
+    });
+
+    // Update previous stage
+    await prisma.transferStageLog.update({
+      where: { id: currentStage.id },
+      data: {
+        status: "APPROVED",
+        approvedAt: new Date(),
+        message: comment,
+      },
+    });
+  } else {
+    // No more approvers, forward to governor
+    const governor = await prisma.internalUser.findFirst({
+      where: {
+        stateId: transfer.land.stateId,
+        role: "GOVERNOR",
+      },
+    });
+
+    if (governor) {
+      await prisma.ownershipTransfer.update({
+        where: { id: transferId },
+        data: { currentReviewerId: governor.id },
+      });
+
+      await prisma.transferStageLog.create({
+        data: {
+          transferId,
+          stageNumber: nextPosition,
+          internalUserId: governor.id,
+          status: "PENDING",
+          arrivedAt: new Date(),
+        },
+      });
+    }
+  }
+}
+
+/* ===============================
+   7. REJECT TRANSFER
+================================ */
+
+async function rejectTransfer(
+  transferId: string,
+  reviewerId: string,
+  reason?: string
+) {
+  await prisma.ownershipTransfer.update({
+    where: { id: transferId },
+    data: {
+      status: "REJECTED",
+      rejectionReason: reason,
+    },
+  });
+
+  await prisma.ownershipTransferAuditLog.create({
+    data: {
+      transferId,
+      action: "REJECTED",
+      performedById: reviewerId,
+      performedByRole: "APPROVER",
+      comment: reason,
+    },
+  });
+}
+
+/* ===============================
+   8. GET TRANSFERS FOR REVIEW
+================================ */
+
+export const getTransfersForReview = async (req: AuthRequest, res: Response) => {
+  const reviewerId = req.user.id;
+
+  try {
+    const transfers = await prisma.ownershipTransfer.findMany({
+      where: { currentReviewerId: reviewerId },
       include: {
         land: { include: { state: true } },
-        documents: true,
         currentOwner: true,
-        verifications: {
-          select: { target: true, channelType: true, isVerified: true },
-        },
+        documents: true,
+      },
+    });
+
+    res.json({ transfers });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch transfers" });
+  }
+};
+
+/* ===============================
+   9. GET USER TRANSFERS
+================================ */
+
+export const getUserTransfers = async (req: AuthRequest, res: Response) => {
+  const userId = req.user.sub;
+
+  try {
+    const transfers = await prisma.ownershipTransfer.findMany({
+      where: {
+        OR: [
+          { currentOwnerId: userId },
+          { newOwnerId: userId },
+        ],
+      },
+      include: {
+        land: true,
+        documents: true,
+        stages: { include: { approver: true } },
+      },
+    });
+
+    res.json({ transfers });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch transfers" });
+  }
+};
+
+/* ===============================
+   10. GET SINGLE TRANSFER FOR REVIEW
+================================ */
+
+export const getTransferForReview = async (req: AuthRequest, res: Response) => {
+  const { transferId } = req.params;
+  const reviewerId = req.user.id;
+
+  try {
+    const transfer = await prisma.ownershipTransfer.findUnique({
+      where: { id: transferId, currentReviewerId: reviewerId },
+      include: {
+        land: { include: { state: true } },
+        currentOwner: true,
+        newOwner: true,
+        documents: true,
+        stages: { include: { approver: true }, orderBy: { stageNumber: "desc" } },
+        verifications: true,
       },
     });
 
     if (!transfer) {
-      return res.status(404).json({ message: "Transfer not found" });
-    }
-
-    // Ensure governor can only review transfers in their state
-    if (transfer.land.state.governorId !== governorId) {
-      return res.status(403).json({
-        message: "You can only review transfers in your state",
-      });
+      return res.status(404).json({ message: "Transfer not found or not assigned to you" });
     }
 
     res.json({ transfer });
   } catch (err) {
-    console.error("Review fetch error:", err);
-    res.status(500).json({ message: "Failed to retrieve transfer", error: String(err) });
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch transfer" });
   }
 };
+
+    // Ensure governor can only review transfers in their state
+//     if (transfer.land.state.governorId !== governorId) {
+//       return res.status(403).json({
+//         message: "You can only review transfers in your state",
+//       });
+//     }
+
+//     res.json({ transfer });
+//   } catch (err) {
+//     console.error("Review fetch error:", err);
+//     res.status(500).json({ message: "Failed to retrieve transfer", error: String(err) });
+//   }
+// };
 
 /* ===============================
    5. GOVERNOR APPROVES TRANSFER
