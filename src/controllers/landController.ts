@@ -432,6 +432,10 @@ export const verifyLand = async (req: Request, res: Response) => {
         lr.boundary,
         ST_GeomFromText($1, 4326)
       )
+      AND NOT ST_Touches(
+        lr.boundary,
+        ST_GeomFromText($1, 4326)
+      )
       ${stateId ? `AND lr."stateId" = '${stateId}'` : ""}
       `,
       polygon,
