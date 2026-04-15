@@ -268,3 +268,28 @@ export const ownershipTransferReviewSchema = z.object({
   message: z.string().optional(),
   signatureUrl: z.string().url().optional(),
 });
+
+export const ownershipTransferDocumentUploadSchema = z.object({
+  documentsMeta: z.preprocess((val) => {
+    if (typeof val === "string") {
+      try {
+        return JSON.parse(val);
+      } catch {
+        return val;
+      }
+    }
+    return val;
+  }, z.array(z.object({
+    type: z.enum([
+      "TRANSFER_AGREEMENT",
+      "ID_DOCUMENT_CURRENT_OWNER",
+      "ID_DOCUMENT_NEW_OWNER",
+      "PAYMENT_RECEIPT",
+      "SURVEY_DOCUMENT",
+      "SUBDIVISION_AGREEMENT",
+      "UPDATED_TITLE_DOCUMENT",
+      "OTHER"
+    ]),
+    title: z.string().min(1),
+  }))),
+});

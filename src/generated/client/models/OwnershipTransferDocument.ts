@@ -32,6 +32,8 @@ export type OwnershipTransferDocumentMinAggregateOutputType = {
   url: string | null
   status: $Enums.DocumentStatus | null
   rejectionMessage: string | null
+  reviewedById: string | null
+  reviewedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,6 +46,8 @@ export type OwnershipTransferDocumentMaxAggregateOutputType = {
   url: string | null
   status: $Enums.DocumentStatus | null
   rejectionMessage: string | null
+  reviewedById: string | null
+  reviewedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +60,8 @@ export type OwnershipTransferDocumentCountAggregateOutputType = {
   url: number
   status: number
   rejectionMessage: number
+  reviewedById: number
+  reviewedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -70,6 +76,8 @@ export type OwnershipTransferDocumentMinAggregateInputType = {
   url?: true
   status?: true
   rejectionMessage?: true
+  reviewedById?: true
+  reviewedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +90,8 @@ export type OwnershipTransferDocumentMaxAggregateInputType = {
   url?: true
   status?: true
   rejectionMessage?: true
+  reviewedById?: true
+  reviewedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,6 +104,8 @@ export type OwnershipTransferDocumentCountAggregateInputType = {
   url?: true
   status?: true
   rejectionMessage?: true
+  reviewedById?: true
+  reviewedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -179,6 +191,8 @@ export type OwnershipTransferDocumentGroupByOutputType = {
   url: string
   status: $Enums.DocumentStatus
   rejectionMessage: string | null
+  reviewedById: string | null
+  reviewedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: OwnershipTransferDocumentCountAggregateOutputType | null
@@ -212,9 +226,12 @@ export type OwnershipTransferDocumentWhereInput = {
   url?: Prisma.StringFilter<"OwnershipTransferDocument"> | string
   status?: Prisma.EnumDocumentStatusFilter<"OwnershipTransferDocument"> | $Enums.DocumentStatus
   rejectionMessage?: Prisma.StringNullableFilter<"OwnershipTransferDocument"> | string | null
+  reviewedById?: Prisma.UuidNullableFilter<"OwnershipTransferDocument"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"OwnershipTransferDocument"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"OwnershipTransferDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OwnershipTransferDocument"> | Date | string
   transfer?: Prisma.XOR<Prisma.OwnershipTransferScalarRelationFilter, Prisma.OwnershipTransferWhereInput>
+  reviewedBy?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
 }
 
 export type OwnershipTransferDocumentOrderByWithRelationInput = {
@@ -225,9 +242,12 @@ export type OwnershipTransferDocumentOrderByWithRelationInput = {
   url?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rejectionMessage?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   transfer?: Prisma.OwnershipTransferOrderByWithRelationInput
+  reviewedBy?: Prisma.InternalUserOrderByWithRelationInput
 }
 
 export type OwnershipTransferDocumentWhereUniqueInput = Prisma.AtLeast<{
@@ -241,9 +261,12 @@ export type OwnershipTransferDocumentWhereUniqueInput = Prisma.AtLeast<{
   url?: Prisma.StringFilter<"OwnershipTransferDocument"> | string
   status?: Prisma.EnumDocumentStatusFilter<"OwnershipTransferDocument"> | $Enums.DocumentStatus
   rejectionMessage?: Prisma.StringNullableFilter<"OwnershipTransferDocument"> | string | null
+  reviewedById?: Prisma.UuidNullableFilter<"OwnershipTransferDocument"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"OwnershipTransferDocument"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"OwnershipTransferDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OwnershipTransferDocument"> | Date | string
   transfer?: Prisma.XOR<Prisma.OwnershipTransferScalarRelationFilter, Prisma.OwnershipTransferWhereInput>
+  reviewedBy?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
 }, "id">
 
 export type OwnershipTransferDocumentOrderByWithAggregationInput = {
@@ -254,6 +277,8 @@ export type OwnershipTransferDocumentOrderByWithAggregationInput = {
   url?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rejectionMessage?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.OwnershipTransferDocumentCountOrderByAggregateInput
@@ -272,6 +297,8 @@ export type OwnershipTransferDocumentScalarWhereWithAggregatesInput = {
   url?: Prisma.StringWithAggregatesFilter<"OwnershipTransferDocument"> | string
   status?: Prisma.EnumDocumentStatusWithAggregatesFilter<"OwnershipTransferDocument"> | $Enums.DocumentStatus
   rejectionMessage?: Prisma.StringNullableWithAggregatesFilter<"OwnershipTransferDocument"> | string | null
+  reviewedById?: Prisma.UuidNullableWithAggregatesFilter<"OwnershipTransferDocument"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"OwnershipTransferDocument"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"OwnershipTransferDocument"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"OwnershipTransferDocument"> | Date | string
 }
@@ -283,9 +310,11 @@ export type OwnershipTransferDocumentCreateInput = {
   url: string
   status?: $Enums.DocumentStatus
   rejectionMessage?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   transfer: Prisma.OwnershipTransferCreateNestedOneWithoutDocumentsInput
+  reviewedBy?: Prisma.InternalUserCreateNestedOneWithoutReviewedTransferDocumentsInput
 }
 
 export type OwnershipTransferDocumentUncheckedCreateInput = {
@@ -296,6 +325,8 @@ export type OwnershipTransferDocumentUncheckedCreateInput = {
   url: string
   status?: $Enums.DocumentStatus
   rejectionMessage?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -307,9 +338,11 @@ export type OwnershipTransferDocumentUpdateInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transfer?: Prisma.OwnershipTransferUpdateOneRequiredWithoutDocumentsNestedInput
+  reviewedBy?: Prisma.InternalUserUpdateOneWithoutReviewedTransferDocumentsNestedInput
 }
 
 export type OwnershipTransferDocumentUncheckedUpdateInput = {
@@ -320,6 +353,8 @@ export type OwnershipTransferDocumentUncheckedUpdateInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -332,6 +367,8 @@ export type OwnershipTransferDocumentCreateManyInput = {
   url: string
   status?: $Enums.DocumentStatus
   rejectionMessage?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -343,6 +380,7 @@ export type OwnershipTransferDocumentUpdateManyMutationInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -355,6 +393,8 @@ export type OwnershipTransferDocumentUncheckedUpdateManyInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -377,6 +417,8 @@ export type OwnershipTransferDocumentCountOrderByAggregateInput = {
   url?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rejectionMessage?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -389,6 +431,8 @@ export type OwnershipTransferDocumentMaxOrderByAggregateInput = {
   url?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rejectionMessage?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -401,8 +445,52 @@ export type OwnershipTransferDocumentMinOrderByAggregateInput = {
   url?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rejectionMessage?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferDocumentCreateWithoutReviewedByInput, Prisma.OwnershipTransferDocumentUncheckedCreateWithoutReviewedByInput> | Prisma.OwnershipTransferDocumentCreateWithoutReviewedByInput[] | Prisma.OwnershipTransferDocumentUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.OwnershipTransferDocumentCreateOrConnectWithoutReviewedByInput | Prisma.OwnershipTransferDocumentCreateOrConnectWithoutReviewedByInput[]
+  createMany?: Prisma.OwnershipTransferDocumentCreateManyReviewedByInputEnvelope
+  connect?: Prisma.OwnershipTransferDocumentWhereUniqueInput | Prisma.OwnershipTransferDocumentWhereUniqueInput[]
+}
+
+export type OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferDocumentCreateWithoutReviewedByInput, Prisma.OwnershipTransferDocumentUncheckedCreateWithoutReviewedByInput> | Prisma.OwnershipTransferDocumentCreateWithoutReviewedByInput[] | Prisma.OwnershipTransferDocumentUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.OwnershipTransferDocumentCreateOrConnectWithoutReviewedByInput | Prisma.OwnershipTransferDocumentCreateOrConnectWithoutReviewedByInput[]
+  createMany?: Prisma.OwnershipTransferDocumentCreateManyReviewedByInputEnvelope
+  connect?: Prisma.OwnershipTransferDocumentWhereUniqueInput | Prisma.OwnershipTransferDocumentWhereUniqueInput[]
+}
+
+export type OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferDocumentCreateWithoutReviewedByInput, Prisma.OwnershipTransferDocumentUncheckedCreateWithoutReviewedByInput> | Prisma.OwnershipTransferDocumentCreateWithoutReviewedByInput[] | Prisma.OwnershipTransferDocumentUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.OwnershipTransferDocumentCreateOrConnectWithoutReviewedByInput | Prisma.OwnershipTransferDocumentCreateOrConnectWithoutReviewedByInput[]
+  upsert?: Prisma.OwnershipTransferDocumentUpsertWithWhereUniqueWithoutReviewedByInput | Prisma.OwnershipTransferDocumentUpsertWithWhereUniqueWithoutReviewedByInput[]
+  createMany?: Prisma.OwnershipTransferDocumentCreateManyReviewedByInputEnvelope
+  set?: Prisma.OwnershipTransferDocumentWhereUniqueInput | Prisma.OwnershipTransferDocumentWhereUniqueInput[]
+  disconnect?: Prisma.OwnershipTransferDocumentWhereUniqueInput | Prisma.OwnershipTransferDocumentWhereUniqueInput[]
+  delete?: Prisma.OwnershipTransferDocumentWhereUniqueInput | Prisma.OwnershipTransferDocumentWhereUniqueInput[]
+  connect?: Prisma.OwnershipTransferDocumentWhereUniqueInput | Prisma.OwnershipTransferDocumentWhereUniqueInput[]
+  update?: Prisma.OwnershipTransferDocumentUpdateWithWhereUniqueWithoutReviewedByInput | Prisma.OwnershipTransferDocumentUpdateWithWhereUniqueWithoutReviewedByInput[]
+  updateMany?: Prisma.OwnershipTransferDocumentUpdateManyWithWhereWithoutReviewedByInput | Prisma.OwnershipTransferDocumentUpdateManyWithWhereWithoutReviewedByInput[]
+  deleteMany?: Prisma.OwnershipTransferDocumentScalarWhereInput | Prisma.OwnershipTransferDocumentScalarWhereInput[]
+}
+
+export type OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferDocumentCreateWithoutReviewedByInput, Prisma.OwnershipTransferDocumentUncheckedCreateWithoutReviewedByInput> | Prisma.OwnershipTransferDocumentCreateWithoutReviewedByInput[] | Prisma.OwnershipTransferDocumentUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.OwnershipTransferDocumentCreateOrConnectWithoutReviewedByInput | Prisma.OwnershipTransferDocumentCreateOrConnectWithoutReviewedByInput[]
+  upsert?: Prisma.OwnershipTransferDocumentUpsertWithWhereUniqueWithoutReviewedByInput | Prisma.OwnershipTransferDocumentUpsertWithWhereUniqueWithoutReviewedByInput[]
+  createMany?: Prisma.OwnershipTransferDocumentCreateManyReviewedByInputEnvelope
+  set?: Prisma.OwnershipTransferDocumentWhereUniqueInput | Prisma.OwnershipTransferDocumentWhereUniqueInput[]
+  disconnect?: Prisma.OwnershipTransferDocumentWhereUniqueInput | Prisma.OwnershipTransferDocumentWhereUniqueInput[]
+  delete?: Prisma.OwnershipTransferDocumentWhereUniqueInput | Prisma.OwnershipTransferDocumentWhereUniqueInput[]
+  connect?: Prisma.OwnershipTransferDocumentWhereUniqueInput | Prisma.OwnershipTransferDocumentWhereUniqueInput[]
+  update?: Prisma.OwnershipTransferDocumentUpdateWithWhereUniqueWithoutReviewedByInput | Prisma.OwnershipTransferDocumentUpdateWithWhereUniqueWithoutReviewedByInput[]
+  updateMany?: Prisma.OwnershipTransferDocumentUpdateManyWithWhereWithoutReviewedByInput | Prisma.OwnershipTransferDocumentUpdateManyWithWhereWithoutReviewedByInput[]
+  deleteMany?: Prisma.OwnershipTransferDocumentScalarWhereInput | Prisma.OwnershipTransferDocumentScalarWhereInput[]
 }
 
 export type OwnershipTransferDocumentCreateNestedManyWithoutTransferInput = {
@@ -451,6 +539,75 @@ export type EnumDocumentStatusFieldUpdateOperationsInput = {
   set?: $Enums.DocumentStatus
 }
 
+export type OwnershipTransferDocumentCreateWithoutReviewedByInput = {
+  id?: string
+  type: string
+  title: string
+  url: string
+  status?: $Enums.DocumentStatus
+  rejectionMessage?: string | null
+  reviewedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  transfer: Prisma.OwnershipTransferCreateNestedOneWithoutDocumentsInput
+}
+
+export type OwnershipTransferDocumentUncheckedCreateWithoutReviewedByInput = {
+  id?: string
+  transferId: string
+  type: string
+  title: string
+  url: string
+  status?: $Enums.DocumentStatus
+  rejectionMessage?: string | null
+  reviewedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type OwnershipTransferDocumentCreateOrConnectWithoutReviewedByInput = {
+  where: Prisma.OwnershipTransferDocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnershipTransferDocumentCreateWithoutReviewedByInput, Prisma.OwnershipTransferDocumentUncheckedCreateWithoutReviewedByInput>
+}
+
+export type OwnershipTransferDocumentCreateManyReviewedByInputEnvelope = {
+  data: Prisma.OwnershipTransferDocumentCreateManyReviewedByInput | Prisma.OwnershipTransferDocumentCreateManyReviewedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type OwnershipTransferDocumentUpsertWithWhereUniqueWithoutReviewedByInput = {
+  where: Prisma.OwnershipTransferDocumentWhereUniqueInput
+  update: Prisma.XOR<Prisma.OwnershipTransferDocumentUpdateWithoutReviewedByInput, Prisma.OwnershipTransferDocumentUncheckedUpdateWithoutReviewedByInput>
+  create: Prisma.XOR<Prisma.OwnershipTransferDocumentCreateWithoutReviewedByInput, Prisma.OwnershipTransferDocumentUncheckedCreateWithoutReviewedByInput>
+}
+
+export type OwnershipTransferDocumentUpdateWithWhereUniqueWithoutReviewedByInput = {
+  where: Prisma.OwnershipTransferDocumentWhereUniqueInput
+  data: Prisma.XOR<Prisma.OwnershipTransferDocumentUpdateWithoutReviewedByInput, Prisma.OwnershipTransferDocumentUncheckedUpdateWithoutReviewedByInput>
+}
+
+export type OwnershipTransferDocumentUpdateManyWithWhereWithoutReviewedByInput = {
+  where: Prisma.OwnershipTransferDocumentScalarWhereInput
+  data: Prisma.XOR<Prisma.OwnershipTransferDocumentUpdateManyMutationInput, Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByInput>
+}
+
+export type OwnershipTransferDocumentScalarWhereInput = {
+  AND?: Prisma.OwnershipTransferDocumentScalarWhereInput | Prisma.OwnershipTransferDocumentScalarWhereInput[]
+  OR?: Prisma.OwnershipTransferDocumentScalarWhereInput[]
+  NOT?: Prisma.OwnershipTransferDocumentScalarWhereInput | Prisma.OwnershipTransferDocumentScalarWhereInput[]
+  id?: Prisma.UuidFilter<"OwnershipTransferDocument"> | string
+  transferId?: Prisma.UuidFilter<"OwnershipTransferDocument"> | string
+  type?: Prisma.StringFilter<"OwnershipTransferDocument"> | string
+  title?: Prisma.StringFilter<"OwnershipTransferDocument"> | string
+  url?: Prisma.StringFilter<"OwnershipTransferDocument"> | string
+  status?: Prisma.EnumDocumentStatusFilter<"OwnershipTransferDocument"> | $Enums.DocumentStatus
+  rejectionMessage?: Prisma.StringNullableFilter<"OwnershipTransferDocument"> | string | null
+  reviewedById?: Prisma.UuidNullableFilter<"OwnershipTransferDocument"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"OwnershipTransferDocument"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"OwnershipTransferDocument"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"OwnershipTransferDocument"> | Date | string
+}
+
 export type OwnershipTransferDocumentCreateWithoutTransferInput = {
   id?: string
   type: string
@@ -458,8 +615,10 @@ export type OwnershipTransferDocumentCreateWithoutTransferInput = {
   url: string
   status?: $Enums.DocumentStatus
   rejectionMessage?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  reviewedBy?: Prisma.InternalUserCreateNestedOneWithoutReviewedTransferDocumentsInput
 }
 
 export type OwnershipTransferDocumentUncheckedCreateWithoutTransferInput = {
@@ -469,6 +628,8 @@ export type OwnershipTransferDocumentUncheckedCreateWithoutTransferInput = {
   url: string
   status?: $Enums.DocumentStatus
   rejectionMessage?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -499,19 +660,56 @@ export type OwnershipTransferDocumentUpdateManyWithWhereWithoutTransferInput = {
   data: Prisma.XOR<Prisma.OwnershipTransferDocumentUpdateManyMutationInput, Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferInput>
 }
 
-export type OwnershipTransferDocumentScalarWhereInput = {
-  AND?: Prisma.OwnershipTransferDocumentScalarWhereInput | Prisma.OwnershipTransferDocumentScalarWhereInput[]
-  OR?: Prisma.OwnershipTransferDocumentScalarWhereInput[]
-  NOT?: Prisma.OwnershipTransferDocumentScalarWhereInput | Prisma.OwnershipTransferDocumentScalarWhereInput[]
-  id?: Prisma.UuidFilter<"OwnershipTransferDocument"> | string
-  transferId?: Prisma.UuidFilter<"OwnershipTransferDocument"> | string
-  type?: Prisma.StringFilter<"OwnershipTransferDocument"> | string
-  title?: Prisma.StringFilter<"OwnershipTransferDocument"> | string
-  url?: Prisma.StringFilter<"OwnershipTransferDocument"> | string
-  status?: Prisma.EnumDocumentStatusFilter<"OwnershipTransferDocument"> | $Enums.DocumentStatus
-  rejectionMessage?: Prisma.StringNullableFilter<"OwnershipTransferDocument"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"OwnershipTransferDocument"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"OwnershipTransferDocument"> | Date | string
+export type OwnershipTransferDocumentCreateManyReviewedByInput = {
+  id?: string
+  transferId: string
+  type: string
+  title: string
+  url: string
+  status?: $Enums.DocumentStatus
+  rejectionMessage?: string | null
+  reviewedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type OwnershipTransferDocumentUpdateWithoutReviewedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  transfer?: Prisma.OwnershipTransferUpdateOneRequiredWithoutDocumentsNestedInput
+}
+
+export type OwnershipTransferDocumentUncheckedUpdateWithoutReviewedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  transferId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  transferId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type OwnershipTransferDocumentCreateManyTransferInput = {
@@ -521,6 +719,8 @@ export type OwnershipTransferDocumentCreateManyTransferInput = {
   url: string
   status?: $Enums.DocumentStatus
   rejectionMessage?: string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -532,8 +732,10 @@ export type OwnershipTransferDocumentUpdateWithoutTransferInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviewedBy?: Prisma.InternalUserUpdateOneWithoutReviewedTransferDocumentsNestedInput
 }
 
 export type OwnershipTransferDocumentUncheckedUpdateWithoutTransferInput = {
@@ -543,6 +745,8 @@ export type OwnershipTransferDocumentUncheckedUpdateWithoutTransferInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -554,6 +758,8 @@ export type OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   rejectionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -568,9 +774,12 @@ export type OwnershipTransferDocumentSelect<ExtArgs extends runtime.Types.Extens
   url?: boolean
   status?: boolean
   rejectionMessage?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   transfer?: boolean | Prisma.OwnershipTransferDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.OwnershipTransferDocument$reviewedByArgs<ExtArgs>
 }, ExtArgs["result"]["ownershipTransferDocument"]>
 
 export type OwnershipTransferDocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -581,9 +790,12 @@ export type OwnershipTransferDocumentSelectCreateManyAndReturn<ExtArgs extends r
   url?: boolean
   status?: boolean
   rejectionMessage?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   transfer?: boolean | Prisma.OwnershipTransferDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.OwnershipTransferDocument$reviewedByArgs<ExtArgs>
 }, ExtArgs["result"]["ownershipTransferDocument"]>
 
 export type OwnershipTransferDocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -594,9 +806,12 @@ export type OwnershipTransferDocumentSelectUpdateManyAndReturn<ExtArgs extends r
   url?: boolean
   status?: boolean
   rejectionMessage?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   transfer?: boolean | Prisma.OwnershipTransferDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.OwnershipTransferDocument$reviewedByArgs<ExtArgs>
 }, ExtArgs["result"]["ownershipTransferDocument"]>
 
 export type OwnershipTransferDocumentSelectScalar = {
@@ -607,25 +822,31 @@ export type OwnershipTransferDocumentSelectScalar = {
   url?: boolean
   status?: boolean
   rejectionMessage?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type OwnershipTransferDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "transferId" | "type" | "title" | "url" | "status" | "rejectionMessage" | "createdAt" | "updatedAt", ExtArgs["result"]["ownershipTransferDocument"]>
+export type OwnershipTransferDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "transferId" | "type" | "title" | "url" | "status" | "rejectionMessage" | "reviewedById" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["ownershipTransferDocument"]>
 export type OwnershipTransferDocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transfer?: boolean | Prisma.OwnershipTransferDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.OwnershipTransferDocument$reviewedByArgs<ExtArgs>
 }
 export type OwnershipTransferDocumentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transfer?: boolean | Prisma.OwnershipTransferDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.OwnershipTransferDocument$reviewedByArgs<ExtArgs>
 }
 export type OwnershipTransferDocumentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transfer?: boolean | Prisma.OwnershipTransferDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.OwnershipTransferDocument$reviewedByArgs<ExtArgs>
 }
 
 export type $OwnershipTransferDocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "OwnershipTransferDocument"
   objects: {
     transfer: Prisma.$OwnershipTransferPayload<ExtArgs>
+    reviewedBy: Prisma.$InternalUserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -635,6 +856,8 @@ export type $OwnershipTransferDocumentPayload<ExtArgs extends runtime.Types.Exte
     url: string
     status: $Enums.DocumentStatus
     rejectionMessage: string | null
+    reviewedById: string | null
+    reviewedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["ownershipTransferDocument"]>
@@ -1032,6 +1255,7 @@ readonly fields: OwnershipTransferDocumentFieldRefs;
 export interface Prisma__OwnershipTransferDocumentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   transfer<T extends Prisma.OwnershipTransferDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnershipTransferDefaultArgs<ExtArgs>>): Prisma.Prisma__OwnershipTransferClient<runtime.Types.Result.GetResult<Prisma.$OwnershipTransferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  reviewedBy<T extends Prisma.OwnershipTransferDocument$reviewedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnershipTransferDocument$reviewedByArgs<ExtArgs>>): Prisma.Prisma__InternalUserClient<runtime.Types.Result.GetResult<Prisma.$InternalUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1068,6 +1292,8 @@ export interface OwnershipTransferDocumentFieldRefs {
   readonly url: Prisma.FieldRef<"OwnershipTransferDocument", 'String'>
   readonly status: Prisma.FieldRef<"OwnershipTransferDocument", 'DocumentStatus'>
   readonly rejectionMessage: Prisma.FieldRef<"OwnershipTransferDocument", 'String'>
+  readonly reviewedById: Prisma.FieldRef<"OwnershipTransferDocument", 'String'>
+  readonly reviewedAt: Prisma.FieldRef<"OwnershipTransferDocument", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"OwnershipTransferDocument", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"OwnershipTransferDocument", 'DateTime'>
 }
@@ -1463,6 +1689,25 @@ export type OwnershipTransferDocumentDeleteManyArgs<ExtArgs extends runtime.Type
    * Limit how many OwnershipTransferDocuments to delete.
    */
   limit?: number
+}
+
+/**
+ * OwnershipTransferDocument.reviewedBy
+ */
+export type OwnershipTransferDocument$reviewedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InternalUser
+   */
+  select?: Prisma.InternalUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InternalUser
+   */
+  omit?: Prisma.InternalUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InternalUserInclude<ExtArgs> | null
+  where?: Prisma.InternalUserWhereInput
 }
 
 /**

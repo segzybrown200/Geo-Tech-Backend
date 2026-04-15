@@ -54,6 +54,7 @@ export type UserType = (typeof UserType)[keyof typeof UserType]
 export const TransferStatus = {
   INITIATED: 'INITIATED',
   VERIFIED_BY_PARTIES: 'VERIFIED_BY_PARTIES',
+  DOCUMENTS_UPLOADED: 'DOCUMENTS_UPLOADED',
   PENDING_GOVERNOR: 'PENDING_GOVERNOR',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',

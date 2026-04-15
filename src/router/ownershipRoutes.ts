@@ -6,8 +6,6 @@ import {
   verifyTransfer,
   reviewTransfer,
   getTransfersForReview,
-  listTransfersForGovernor,
-  getTransferProgress,
   getUserOwnershipTransfers,
   rejectOwnershipTransfer,
   approveOwnershipTransfer,
@@ -16,6 +14,7 @@ import {
   rejectDocument,
   getTransferForReview,
   resendTransferOTP,
+  uploadTransferDocuments,
 } from "../controllers/ownershipController";
 import { authorizeRoles } from "../middlewares/roleMiddleware";
 import multer from "multer";
@@ -40,10 +39,13 @@ router.get("/my-transfers", requireAuth, getUserTransfers);
 router.get("/user-transfers", requireAuth, getUserOwnershipTransfers);
 
 // Get transfer progress/status
-router.get("/:transferId/progress", requireAuth, getTransferProgress);
+router.get("/:transferId/progress", requireAuth, getUserTransfers);
 
 // Resend transfer OTP
 router.post("/:transferId/resend-otp", requireAuth, resendTransferOTP);
+
+// Upload transfer documents
+router.post("/:transferId/upload-documents", requireAuth, upload.array("documents"), uploadTransferDocuments);
 
 /* ========================
    APPROVER/GOVERNOR ENDPOINTS
@@ -51,9 +53,6 @@ router.post("/:transferId/resend-otp", requireAuth, resendTransferOTP);
 
 // Get transfers for review
 router.get("/for-review", internalUserAuth, authorizeRoles(["APPROVER", "GOVERNOR"]), getTransfersForReview);
-
-// List all transfers for governor
-router.get("/governor/list", internalUserAuth, authorizeRoles(["GOVERNOR"]), listTransfersForGovernor);
 
 // Review transfer (approve/reject/forward)
 router.post("/:transferId/review", internalUserAuth, authorizeRoles(["APPROVER", "GOVERNOR"]), reviewTransfer);
@@ -88,7 +87,7 @@ router.post(
 router.post(
   "/document/:documentId/approve",
   internalUserAuth,
-  authorizeRoles(["GOVERNOR"]),
+  authorizeRoles(["APPROVER", "GOVERNOR"]),
   approveDocument
 );
 
@@ -96,7 +95,7 @@ router.post(
 router.post(
   "/document/:documentId/reject",
   internalUserAuth,
-  authorizeRoles(["GOVERNOR"]),
+  authorizeRoles(["APPROVER", "GOVERNOR"]),
   rejectDocument
 );
 

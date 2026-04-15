@@ -2341,6 +2341,8 @@ export const OwnershipTransferDocumentScalarFieldEnum = {
   url: 'url',
   status: 'status',
   rejectionMessage: 'rejectionMessage',
+  reviewedById: 'reviewedById',
+  reviewedAt: 'reviewedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
