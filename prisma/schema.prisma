@@ -183,6 +183,7 @@ model LandRegistration {
   areaSqm   Float?
   centerLat Float? // centroid latitude
   centerLng Float? // centroid longitude
+  startPoint Json? // starting point [lat, lng] for boundary traversal
   boundary  Unsupported("geometry(MultiPolygon, 4326)") // stores final polygon (lat/lng)
 
   // 📊 Coordinates (STRUCTURED 🔥)
@@ -292,6 +293,7 @@ model OwnershipTransfer {
   transferAreaSqm     Float?
   transferCenterLat   Float?
   transferCenterLng   Float?
+  transferStartPoint  Json? // starting point [lat, lng] for transfer boundary traversal
 
   // New land created for partial transfer
   transferredLandId String? @db.Uuid

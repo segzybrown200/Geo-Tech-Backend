@@ -150,6 +150,7 @@ export const initiateOwnershipTransfer = async (
         transferAreaSqm: finalTransferArea,
         transferCenterLat: transferLatLng.reduce((sum, [lat]) => sum + lat, 0) / transferLatLng.length,
         transferCenterLng: transferLatLng.reduce((sum, [, lng]) => sum + lng, 0) / transferLatLng.length,
+        transferStartPoint: startPoint,
       };
     }
 
