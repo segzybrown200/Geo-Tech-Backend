@@ -425,7 +425,7 @@ export const verifyLand = async (req: Request, res: Response) => {
         lr."stateId",
         u.email AS "ownerEmail",
         u.phone AS "ownerPhone",
-        u.fullname AS "ownerFullName"
+        u."fullName" AS "ownerFullName"
       FROM "LandRegistration" lr
       LEFT JOIN "User" u ON u.id = lr."ownerId"
       WHERE ST_Intersects(
