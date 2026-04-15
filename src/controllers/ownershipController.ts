@@ -729,6 +729,27 @@ export const getTransfersForReview = async (req: AuthRequest, res: Response) => 
    9. GET USER TRANSFERS
 ================================ */
 
+function calculateTransferProgress(status: string): number {
+  switch (status) {
+    case "INITIATED":
+      return 10;
+    case "VERIFIED_BY_PARTIES":
+      return 30;
+    case "DOCUMENTS_UPLOADED":
+      return 50;
+    case "PENDING_GOVERNOR":
+      return 75;
+    case "APPROVED":
+      return 100;
+    case "REJECTED":
+      return 0;
+    case "EXPIRED":
+      return 0;
+    default:
+      return 0;
+  }
+}
+
 export const getUserTransfers = async (req: AuthRequest, res: Response) => {
   const userId = req.user.sub;
 
@@ -741,13 +762,70 @@ export const getUserTransfers = async (req: AuthRequest, res: Response) => {
         ],
       },
       include: {
-        land: true,
+        land: { include: { state: true } },
         documents: true,
-        stages: { include: { approver: true } },
+        stages: { include: { approver: true }, orderBy: { stageNumber: "asc" } },
+        transferAuditLogs: { orderBy: { createdAt: "desc" }, take: 5 },
+        currentReviewer: true,
+        governor: true,
       },
+      orderBy: { createdAt: "desc" },
     });
 
-    res.json({ transfers });
+    const formattedTransfers = transfers.map(transfer => {
+      // Calculate progress percentage based on status
+      const progressPercentage = calculateTransferProgress(transfer.status);
+
+      // Get document statistics
+      const totalDocuments = transfer.documents.length;
+      const approvedDocuments = transfer.documents.filter(d => d.status === "APPROVED").length;
+      const rejectedDocuments = transfer.documents.filter(d => d.status === "REJECTED").length;
+      const pendingDocuments = transfer.documents.filter(d => d.status === "PENDING").length;
+
+      // Format stages
+      const stages = transfer.stages.map(stage => ({
+        stage: `Stage ${stage.stageNumber}`,
+        completed: stage.approvedAt !== null,
+        completedAt: stage.approvedAt?.toISOString(),
+        progress: stage.approvedAt ? 100 : 0,
+        details: {
+          verified: approvedDocuments,
+          total: totalDocuments,
+          approved: approvedDocuments,
+          rejected: rejectedDocuments,
+          pending: pendingDocuments,
+        },
+        submittedDocuments: totalDocuments,
+      }));
+
+      // Format recent activity
+      const recentActivity = transfer.transferAuditLogs.map(log => ({
+        action: log.action,
+        date: log.createdAt.toISOString(),
+        comment: log.comment || "",
+      }));
+
+      return {
+        transferId: transfer.id,
+        currentStatus: transfer.status,
+        progressPercentage,
+        stages,
+        landDetails: {
+          id: transfer.land.id,
+          address: transfer.land.address,
+          size: transfer.land.areaSqm,
+          state: transfer.land.state.name,
+        },
+        timestamps: {
+          createdAt: transfer.createdAt.toISOString(),
+          reviewedAt: transfer.reviewedAt?.toISOString() || null,
+          expiresAt: transfer.expiresAt.toISOString(),
+        },
+        recentActivity,
+      };
+    });
+
+    res.json({ transfers: formattedTransfers });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to fetch transfers" });
@@ -951,12 +1029,12 @@ function getMandatoryDocuments(transferType: string): string[] {
     "ID_DOCUMENT_CURRENT_OWNER",
     "ID_DOCUMENT_NEW_OWNER",
     "PAYMENT_RECEIPT",
+    "SURVEY_DOCUMENT", // Required for both, but auto-generated for partial
   ];
 
   if (transferType === "PARTIAL") {
     return [
       ...baseDocs,
-      "SURVEY_DOCUMENT",
       "SUBDIVISION_AGREEMENT",
       "UPDATED_TITLE_DOCUMENT",
     ];
