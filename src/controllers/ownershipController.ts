@@ -865,6 +865,139 @@ export const getTransferForReview = async (req: AuthRequest, res: Response) => {
 };
 
 /* ===============================
+   10.5. GET TRANSFER DETAILS
+================================ */
+
+export const getTransferDetails = async (req: AuthRequest, res: Response) => {
+  const { transferId } = req.params;
+  const userId = req.user.sub;
+
+  try {
+    const transfer = await prisma.ownershipTransfer.findUnique({
+      where: { id: transferId },
+      include: {
+        land: { include: { state: true } },
+        currentOwner: true,
+        newOwner: true,
+        documents: { include: { reviewedBy: true } },
+        stages: { include: { approver: true }, orderBy: { stageNumber: "asc" } },
+        verifications: true,
+        transferAuditLogs: { orderBy: { createdAt: "desc" }, take: 10 },
+        currentReviewer: true,
+        governor: true,
+      },
+    });
+
+    if (!transfer) {
+      return res.status(404).json({ message: "Transfer not found" });
+    }
+
+    // Check if user is authorized to view this transfer
+    if (transfer.currentOwnerId !== userId && transfer.newOwnerId !== userId) {
+      return res.status(403).json({ message: "Not authorized to view this transfer" });
+    }
+
+    // Format the response according to TransferDetailsResponse interface
+    const response = {
+      transferId: transfer.id,
+      landId: transfer.landId,
+      transferType: transfer.transferType as "FULL" | "PARTIAL",
+      status: transfer.status,
+      currentOwnerId: transfer.currentOwnerId,
+      newOwnerEmail: transfer.newOwnerEmail,
+      newOwnerPhone: transfer.newOwnerPhone,
+      createdAt: transfer.createdAt.toISOString(),
+      expiresAt: transfer.expiresAt.toISOString(),
+      // Additional details
+      landDetails: {
+        id: transfer.land.id,
+        address: transfer.land.address,
+        sizeSqm: transfer.land.areaSqm,
+        state: transfer.land.state.name,
+        titleType: transfer.land.titleType,
+      },
+      newOwner: transfer.newOwner ? {
+        id: transfer.newOwner.id,
+        fullName: transfer.newOwner.fullName,
+        email: transfer.newOwner.email,
+        phone: transfer.newOwner.phone,
+      } : null,
+      currentOwner: {
+        id: transfer.currentOwner.id,
+        fullName: transfer.currentOwner.fullName,
+        email: transfer.currentOwner.email,
+        phone: transfer.currentOwner.phone,
+      },
+      transferDetails: transfer.transferType === "PARTIAL" ? {
+        surveyType: transfer.transferSurveyType,
+        coordinates: transfer.transferCoordinates,
+        bearings: transfer.transferBearings,
+        utmZone: transfer.transferUtmZone,
+        areaSqm: transfer.transferAreaSqm,
+        centerLat: transfer.transferCenterLat,
+        centerLng: transfer.transferCenterLng,
+      } : null,
+      documents: transfer.documents.map(doc => ({
+        id: doc.id,
+        type: doc.type,
+        title: doc.title,
+        url: doc.url,
+        status: doc.status,
+        reviewedAt: doc.reviewedAt?.toISOString(),
+        reviewedBy: doc.reviewedBy ? {
+          id: doc.reviewedBy.id,
+          name: doc.reviewedBy.name,
+        } : null,
+        rejectionMessage: doc.rejectionMessage,
+      })),
+      stages: transfer.stages.map(stage => ({
+        stageNumber: stage.stageNumber,
+        status: stage.status,
+        message: stage.message,
+        arrivedAt: stage.arrivedAt.toISOString(),
+        approvedAt: stage.approvedAt?.toISOString(),
+        approver: {
+          id: stage.approver.id,
+          name: stage.approver.name,
+          role: stage.approver.role,
+        },
+      })),
+      verifications: transfer.verifications.map(v => ({
+        channelType: v.channelType,
+        target: v.target,
+        isVerified: v.isVerified,
+        createdAt: v.createdAt.toISOString(),
+        expiresAt: v.expiresAt.toISOString(),
+      })),
+      currentReviewer: transfer.currentReviewer ? {
+        id: transfer.currentReviewer.id,
+        name: transfer.currentReviewer.name,
+        role: transfer.currentReviewer.role,
+      } : null,
+      governor: transfer.governor ? {
+        id: transfer.governor.id,
+        name: transfer.governor.name,
+      } : null,
+      governorComment: transfer.governorComment,
+      reviewedAt: transfer.reviewedAt?.toISOString(),
+      rejectionReason: transfer.rejectionReason,
+      applicationNumber: transfer.applicationNumber,
+      recentActivity: transfer.transferAuditLogs.map(log => ({
+        action: log.action,
+        performedByRole: log.performedByRole,
+        comment: log.comment,
+        createdAt: log.createdAt.toISOString(),
+      })),
+    };
+
+    res.json(response);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch transfer details" });
+  }
+};
+
+/* ===============================
    11. UPLOAD TRANSFER DOCUMENTS
 ================================ */
 

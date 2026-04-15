@@ -13,6 +13,7 @@ import {
   approveDocument,
   rejectDocument,
   getTransferForReview,
+  getTransferDetails,
   resendTransferOTP,
   uploadTransferDocuments,
 } from "../controllers/ownershipController";
@@ -37,6 +38,9 @@ router.get("/my-transfers", requireAuth, getUserTransfers);
 
 // Get user's ownership transfers (alternative endpoint)
 router.get("/user-transfers", requireAuth, getUserOwnershipTransfers);
+
+// Get transfer details by ID
+router.get("/:transferId/details", requireAuth, getTransferDetails);
 
 // Get transfer progress/status
 router.get("/:transferId/progress", requireAuth, getUserTransfers);
