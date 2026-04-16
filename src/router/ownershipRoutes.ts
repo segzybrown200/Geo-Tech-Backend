@@ -59,6 +59,9 @@ router.post("/:transferId/upload-documents", requireAuth, upload.array("document
 // Get transfers for review
 router.get("/for-review", internalUserAuth, authorizeRoles(["APPROVER", "GOVERNOR"]), getTransfersForReview);
 
+// Get single transfer for review (for approvers and governors)
+router.get("/:transferId/review", internalUserAuth, authorizeRoles(["APPROVER", "GOVERNOR"]), getTransferForReview);
+
 // Review transfer (approve/reject/forward)
 router.post("/:transferId/review", internalUserAuth, authorizeRoles(["APPROVER", "GOVERNOR"]), reviewTransfer);
 router.get(
