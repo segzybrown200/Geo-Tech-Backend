@@ -417,7 +417,7 @@ export const reviewTransfer = async (req: AuthRequest, res: Response) => {
     });
   }
 
-  const { transferId, action, message, signatureUrl } = body.data;
+  const { transferId, action, message } = body.data;
   const reviewerId = req.user.id;
 
   try {
@@ -443,7 +443,7 @@ export const reviewTransfer = async (req: AuthRequest, res: Response) => {
       // Check if governor
       if (transfer.currentReviewer?.role === "GOVERNOR") {
         // Final approval
-        await finalizeTransfer(transferId, reviewerId, message, signatureUrl);
+        await finalizeTransfer(transferId, reviewerId, message);
       } else {
         // Forward to next approver or governor
         await forwardToNextReviewer(transferId, reviewerId, message);
@@ -467,7 +467,6 @@ async function finalizeTransfer(
   transferId: string,
   governorId: string,
   comment?: string,
-  signatureUrl?: string
 ) {
   const transfer = await prisma.ownershipTransfer.findUnique({
     where: { id: transferId },

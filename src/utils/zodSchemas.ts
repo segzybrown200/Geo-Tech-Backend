@@ -266,7 +266,6 @@ export const ownershipTransferReviewSchema = z.object({
   transferId: z.string().uuid(),
   action: z.enum(["APPROVE", "REJECT", "FORWARD"]),
   message: z.string().optional(),
-  signatureUrl: z.string().url().optional(),
 });
 
 export const ownershipTransferDocumentUploadSchema = z.object({
