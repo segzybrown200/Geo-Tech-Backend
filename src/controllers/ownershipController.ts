@@ -972,6 +972,7 @@ export const getTransferForReview = async (req: AuthRequest, res: Response) => {
             reviews: {
               include: {
                 reviewer: true,
+                document: true,
               },
             },
           },
@@ -1504,7 +1505,9 @@ export const approveDocument = async (req: AuthRequest, res: Response) => {
   try {
     const document = await prisma.ownershipTransferDocument.findUnique({
       where: { id: documentId },
-      include: { transfer: true },
+      include: {
+        transfer: { include: { currentReviewer: true } },
+      },
     });
 
     if (!document) {
@@ -1538,9 +1541,8 @@ export const approveDocument = async (req: AuthRequest, res: Response) => {
       },
     });
 
-    // Update document status to APPROVED if this is the first approval
-    // (Keep the old logic for backward compatibility, but now track individual reviews)
-    if (document.status === "PENDING") {
+    // Only update the actual document status when the governor approves it.
+    if (document.transfer.currentReviewer?.role === "GOVERNOR") {
       await prisma.ownershipTransferDocument.update({
         where: { id: documentId },
         data: {
@@ -1581,7 +1583,9 @@ export const rejectDocument = async (req: AuthRequest, res: Response) => {
   try {
     const document = await prisma.ownershipTransferDocument.findUnique({
       where: { id: documentId },
-      include: { transfer: true },
+      include: {
+        transfer: { include: { currentReviewer: true } },
+      },
     });
 
     if (!document) {
@@ -1616,7 +1620,7 @@ export const rejectDocument = async (req: AuthRequest, res: Response) => {
       },
     });
 
-    // Update document status to REJECTED
+    // Update document status to REJECTED immediately on any rejection.
     await prisma.ownershipTransferDocument.update({
       where: { id: documentId },
       data: {
