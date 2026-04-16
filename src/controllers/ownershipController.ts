@@ -265,17 +265,24 @@ export const verifyTransfer = async (req: AuthRequest, res: Response) => {
       data: { isVerified: true },
     });
 
-    // Check if all verified
-    const unverified = transfer.verifications.filter(v => !v.isVerified);
-    if (unverified.length === 0) {
-      // Mark as verified by parties - documents needed next
-      await prisma.ownershipTransfer.update({
-        where: { id: transferId },
-        data: { status: "VERIFIED_BY_PARTIES" },
-      });
+    // Fetch updated verifications to check if all are now verified
+    const updatedTransfer = await prisma.ownershipTransfer.findUnique({
+      where: { id: transferId },
+      include: { verifications: true },
+    });
+
+    if (updatedTransfer) {
+      const unverified = updatedTransfer.verifications.filter(v => !v.isVerified);
+      if (unverified.length === 0) {
+        // Mark as verified by parties - documents needed next
+        await prisma.ownershipTransfer.update({
+          where: { id: transferId },
+          data: { status: "VERIFIED_BY_PARTIES" },
+        });
+      }
     }
 
-    res.json({ message: "Verified successfully" });
+    res.json({ message: "Verified successfully", allVerified: updatedTransfer?.verifications.every(v => v.isVerified) });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Verification failed" });
