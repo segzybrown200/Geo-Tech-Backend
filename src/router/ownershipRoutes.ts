@@ -10,6 +10,7 @@ import {
   rejectOwnershipTransfer,
   approveOwnershipTransfer,
   getUserTransfers,
+  getTransferProgress,
   approveDocument,
   rejectDocument,
   getTransferForReview,
@@ -43,7 +44,7 @@ router.get("/user-transfers", requireAuth, getUserOwnershipTransfers);
 router.get("/:transferId/details", requireAuth, getTransferDetails);
 
 // Get transfer progress/status
-router.get("/:transferId/progress", requireAuth, getUserTransfers);
+router.get("/:transferId/progress", requireAuth, getTransferProgress);
 
 // Resend transfer OTP
 router.post("/:transferId/resend-otp", requireAuth, resendTransferOTP);

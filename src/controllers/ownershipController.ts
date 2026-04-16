@@ -833,6 +833,100 @@ export const getUserTransfers = async (req: AuthRequest, res: Response) => {
   }
 };
 
+export const getTransferProgress = async (req: AuthRequest, res: Response) => {
+  const { transferId } = req.params;
+  const userId = req.user.sub;
+
+  try {
+    const transfer = await prisma.ownershipTransfer.findUnique({
+      where: { id: transferId },
+      include: {
+        land: { include: { state: true } },
+        documents: true,
+        stages: { orderBy: { stageNumber: "asc" } },
+        verifications: true,
+        transferAuditLogs: { orderBy: { createdAt: "desc" }, take: 5 },
+      },
+    });
+
+    if (!transfer) {
+      return res.status(404).json({ message: "Transfer not found" });
+    }
+
+    if (transfer.currentOwnerId !== userId && transfer.newOwnerId !== userId) {
+      return res.status(403).json({ message: "Not authorized to view this transfer" });
+    }
+
+    const totalDocuments = transfer.documents.length;
+    const approvedDocuments = transfer.documents.filter(d => d.status === "APPROVED").length;
+    const rejectedDocuments = transfer.documents.filter(d => d.status === "REJECTED").length;
+    const pendingDocuments = transfer.documents.filter(d => d.status === "PENDING").length;
+
+    const verificationTargets = transfer.verifications.map(v => ({
+      target: v.target,
+      channelType: v.channelType === "phone" ? "phone" : "email",
+      isVerified: v.isVerified,
+    }));
+
+    const progressPercentage = calculateTransferProgress(transfer.status);
+
+    const response = {
+      transferId: transfer.id,
+      currentStatus: transfer.status,
+      progressPercentage,
+      landDetails: {
+        id: transfer.land.id,
+        address: transfer.land.address,
+        size: transfer.land.areaSqm,
+        state: transfer.land.state.name,
+      },
+      timestamps: {
+        createdAt: transfer.createdAt.toISOString(),
+        reviewedAt: transfer.reviewedAt?.toISOString() || null,
+        expiresAt: transfer.expiresAt.toISOString(),
+      },
+      stages: [
+        {
+          stage: "VERIFICATION",
+          completed: verificationTargets.every(t => t.isVerified) && verificationTargets.length > 0,
+          completedAt: transfer.reviewedAt?.toISOString() || null,
+          progress: verificationTargets.every(t => t.isVerified) ? 100 : 0,
+          details: {
+            targets: verificationTargets,
+            total: verificationTargets.length,
+            verified: verificationTargets.filter(t => t.isVerified).length,
+            pending: verificationTargets.filter(t => !t.isVerified).length,
+          },
+          submittedDocuments: totalDocuments,
+        },
+        {
+          stage: "DOCUMENTS",
+          completed: transfer.status === "DOCUMENTS_UPLOADED" || transfer.status === "PENDING_GOVERNOR" || transfer.status === "APPROVED",
+          completedAt: transfer.updatedAt.toISOString(),
+          progress: transfer.status === "DOCUMENTS_UPLOADED" || transfer.status === "PENDING_GOVERNOR" || transfer.status === "APPROVED" ? 100 : 0,
+          details: {
+            total: totalDocuments,
+            approved: approvedDocuments,
+            rejected: rejectedDocuments,
+            pending: pendingDocuments,
+          },
+          submittedDocuments: totalDocuments,
+        },
+      ],
+      recentActivity: transfer.transferAuditLogs.map(log => ({
+        action: log.action,
+        date: log.createdAt.toISOString(),
+        comment: log.comment || "",
+      })),
+    };
+
+    res.json(response);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch transfer progress" });
+  }
+};
+
 /* ===============================
    10. GET SINGLE TRANSFER FOR REVIEW
 ================================ */
