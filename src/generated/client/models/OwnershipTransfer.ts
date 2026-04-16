@@ -30,8 +30,6 @@ export type OwnershipTransferAvgAggregateOutputType = {
   transferAreaSqm: number | null
   transferCenterLat: number | null
   transferCenterLng: number | null
-  transferStartPointLat: number | null
-  transferStartPointLng: number | null
   revisionCount: number | null
 }
 
@@ -39,8 +37,6 @@ export type OwnershipTransferSumAggregateOutputType = {
   transferAreaSqm: number | null
   transferCenterLat: number | null
   transferCenterLng: number | null
-  transferStartPointLat: number | null
-  transferStartPointLng: number | null
   revisionCount: number | null
 }
 
@@ -58,8 +54,6 @@ export type OwnershipTransferMinAggregateOutputType = {
   transferAreaSqm: number | null
   transferCenterLat: number | null
   transferCenterLng: number | null
-  transferStartPointLat: number | null
-  transferStartPointLng: number | null
   transferredLandId: string | null
   status: $Enums.TransferStatus | null
   currentReviewerId: string | null
@@ -87,8 +81,6 @@ export type OwnershipTransferMaxAggregateOutputType = {
   transferAreaSqm: number | null
   transferCenterLat: number | null
   transferCenterLng: number | null
-  transferStartPointLat: number | null
-  transferStartPointLng: number | null
   transferredLandId: string | null
   status: $Enums.TransferStatus | null
   currentReviewerId: string | null
@@ -118,8 +110,7 @@ export type OwnershipTransferCountAggregateOutputType = {
   transferAreaSqm: number
   transferCenterLat: number
   transferCenterLng: number
-  transferStartPointLat: number
-  transferStartPointLng: number
+  transferStartPoint: number
   transferredLandId: number
   status: number
   currentReviewerId: number
@@ -139,8 +130,6 @@ export type OwnershipTransferAvgAggregateInputType = {
   transferAreaSqm?: true
   transferCenterLat?: true
   transferCenterLng?: true
-  transferStartPointLat?: true
-  transferStartPointLng?: true
   revisionCount?: true
 }
 
@@ -148,8 +137,6 @@ export type OwnershipTransferSumAggregateInputType = {
   transferAreaSqm?: true
   transferCenterLat?: true
   transferCenterLng?: true
-  transferStartPointLat?: true
-  transferStartPointLng?: true
   revisionCount?: true
 }
 
@@ -167,8 +154,6 @@ export type OwnershipTransferMinAggregateInputType = {
   transferAreaSqm?: true
   transferCenterLat?: true
   transferCenterLng?: true
-  transferStartPointLat?: true
-  transferStartPointLng?: true
   transferredLandId?: true
   status?: true
   currentReviewerId?: true
@@ -196,8 +181,6 @@ export type OwnershipTransferMaxAggregateInputType = {
   transferAreaSqm?: true
   transferCenterLat?: true
   transferCenterLng?: true
-  transferStartPointLat?: true
-  transferStartPointLng?: true
   transferredLandId?: true
   status?: true
   currentReviewerId?: true
@@ -227,8 +210,7 @@ export type OwnershipTransferCountAggregateInputType = {
   transferAreaSqm?: true
   transferCenterLat?: true
   transferCenterLng?: true
-  transferStartPointLat?: true
-  transferStartPointLng?: true
+  transferStartPoint?: true
   transferredLandId?: true
   status?: true
   currentReviewerId?: true
@@ -345,8 +327,7 @@ export type OwnershipTransferGroupByOutputType = {
   transferAreaSqm: number | null
   transferCenterLat: number | null
   transferCenterLng: number | null
-  transferStartPointLat: number | null
-  transferStartPointLng: number | null
+  transferStartPoint: runtime.JsonValue | null
   transferredLandId: string | null
   status: $Enums.TransferStatus
   currentReviewerId: string | null
@@ -399,8 +380,7 @@ export type OwnershipTransferWhereInput = {
   transferAreaSqm?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
   transferCenterLat?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
   transferCenterLng?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
-  transferStartPointLat?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
-  transferStartPointLng?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
+  transferStartPoint?: Prisma.JsonNullableFilter<"OwnershipTransfer">
   transferredLandId?: Prisma.UuidNullableFilter<"OwnershipTransfer"> | string | null
   status?: Prisma.EnumTransferStatusFilter<"OwnershipTransfer"> | $Enums.TransferStatus
   currentReviewerId?: Prisma.UuidNullableFilter<"OwnershipTransfer"> | string | null
@@ -440,8 +420,7 @@ export type OwnershipTransferOrderByWithRelationInput = {
   transferAreaSqm?: Prisma.SortOrderInput | Prisma.SortOrder
   transferCenterLat?: Prisma.SortOrderInput | Prisma.SortOrder
   transferCenterLng?: Prisma.SortOrderInput | Prisma.SortOrder
-  transferStartPointLat?: Prisma.SortOrderInput | Prisma.SortOrder
-  transferStartPointLng?: Prisma.SortOrderInput | Prisma.SortOrder
+  transferStartPoint?: Prisma.SortOrderInput | Prisma.SortOrder
   transferredLandId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   currentReviewerId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -485,8 +464,7 @@ export type OwnershipTransferWhereUniqueInput = Prisma.AtLeast<{
   transferAreaSqm?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
   transferCenterLat?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
   transferCenterLng?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
-  transferStartPointLat?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
-  transferStartPointLng?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
+  transferStartPoint?: Prisma.JsonNullableFilter<"OwnershipTransfer">
   transferredLandId?: Prisma.UuidNullableFilter<"OwnershipTransfer"> | string | null
   status?: Prisma.EnumTransferStatusFilter<"OwnershipTransfer"> | $Enums.TransferStatus
   currentReviewerId?: Prisma.UuidNullableFilter<"OwnershipTransfer"> | string | null
@@ -525,8 +503,7 @@ export type OwnershipTransferOrderByWithAggregationInput = {
   transferAreaSqm?: Prisma.SortOrderInput | Prisma.SortOrder
   transferCenterLat?: Prisma.SortOrderInput | Prisma.SortOrder
   transferCenterLng?: Prisma.SortOrderInput | Prisma.SortOrder
-  transferStartPointLat?: Prisma.SortOrderInput | Prisma.SortOrder
-  transferStartPointLng?: Prisma.SortOrderInput | Prisma.SortOrder
+  transferStartPoint?: Prisma.SortOrderInput | Prisma.SortOrder
   transferredLandId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   currentReviewerId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -564,8 +541,7 @@ export type OwnershipTransferScalarWhereWithAggregatesInput = {
   transferAreaSqm?: Prisma.FloatNullableWithAggregatesFilter<"OwnershipTransfer"> | number | null
   transferCenterLat?: Prisma.FloatNullableWithAggregatesFilter<"OwnershipTransfer"> | number | null
   transferCenterLng?: Prisma.FloatNullableWithAggregatesFilter<"OwnershipTransfer"> | number | null
-  transferStartPointLat?: Prisma.FloatNullableWithAggregatesFilter<"OwnershipTransfer"> | number | null
-  transferStartPointLng?: Prisma.FloatNullableWithAggregatesFilter<"OwnershipTransfer"> | number | null
+  transferStartPoint?: Prisma.JsonNullableWithAggregatesFilter<"OwnershipTransfer">
   transferredLandId?: Prisma.UuidNullableWithAggregatesFilter<"OwnershipTransfer"> | string | null
   status?: Prisma.EnumTransferStatusWithAggregatesFilter<"OwnershipTransfer"> | $Enums.TransferStatus
   currentReviewerId?: Prisma.UuidNullableWithAggregatesFilter<"OwnershipTransfer"> | string | null
@@ -591,8 +567,7 @@ export type OwnershipTransferCreateInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.TransferStatus
   revisionCount?: number
   applicationNumber?: string | null
@@ -630,8 +605,7 @@ export type OwnershipTransferUncheckedCreateInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -661,8 +635,7 @@ export type OwnershipTransferUpdateInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -700,8 +673,7 @@ export type OwnershipTransferUncheckedUpdateInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -735,8 +707,7 @@ export type OwnershipTransferCreateManyInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -762,8 +733,7 @@ export type OwnershipTransferUpdateManyMutationInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -791,8 +761,7 @@ export type OwnershipTransferUncheckedUpdateManyInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -832,8 +801,7 @@ export type OwnershipTransferCountOrderByAggregateInput = {
   transferAreaSqm?: Prisma.SortOrder
   transferCenterLat?: Prisma.SortOrder
   transferCenterLng?: Prisma.SortOrder
-  transferStartPointLat?: Prisma.SortOrder
-  transferStartPointLng?: Prisma.SortOrder
+  transferStartPoint?: Prisma.SortOrder
   transferredLandId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   currentReviewerId?: Prisma.SortOrder
@@ -851,8 +819,6 @@ export type OwnershipTransferAvgOrderByAggregateInput = {
   transferAreaSqm?: Prisma.SortOrder
   transferCenterLat?: Prisma.SortOrder
   transferCenterLng?: Prisma.SortOrder
-  transferStartPointLat?: Prisma.SortOrder
-  transferStartPointLng?: Prisma.SortOrder
   revisionCount?: Prisma.SortOrder
 }
 
@@ -870,8 +836,6 @@ export type OwnershipTransferMaxOrderByAggregateInput = {
   transferAreaSqm?: Prisma.SortOrder
   transferCenterLat?: Prisma.SortOrder
   transferCenterLng?: Prisma.SortOrder
-  transferStartPointLat?: Prisma.SortOrder
-  transferStartPointLng?: Prisma.SortOrder
   transferredLandId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   currentReviewerId?: Prisma.SortOrder
@@ -899,8 +863,6 @@ export type OwnershipTransferMinOrderByAggregateInput = {
   transferAreaSqm?: Prisma.SortOrder
   transferCenterLat?: Prisma.SortOrder
   transferCenterLng?: Prisma.SortOrder
-  transferStartPointLat?: Prisma.SortOrder
-  transferStartPointLng?: Prisma.SortOrder
   transferredLandId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   currentReviewerId?: Prisma.SortOrder
@@ -918,8 +880,6 @@ export type OwnershipTransferSumOrderByAggregateInput = {
   transferAreaSqm?: Prisma.SortOrder
   transferCenterLat?: Prisma.SortOrder
   transferCenterLng?: Prisma.SortOrder
-  transferStartPointLat?: Prisma.SortOrder
-  transferStartPointLng?: Prisma.SortOrder
   revisionCount?: Prisma.SortOrder
 }
 
@@ -1232,8 +1192,7 @@ export type OwnershipTransferCreateWithoutCurrentOwnerInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.TransferStatus
   revisionCount?: number
   applicationNumber?: string | null
@@ -1269,8 +1228,7 @@ export type OwnershipTransferUncheckedCreateWithoutCurrentOwnerInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -1310,8 +1268,7 @@ export type OwnershipTransferCreateWithoutNewOwnerInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.TransferStatus
   revisionCount?: number
   applicationNumber?: string | null
@@ -1347,8 +1304,7 @@ export type OwnershipTransferUncheckedCreateWithoutNewOwnerInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -1411,8 +1367,7 @@ export type OwnershipTransferScalarWhereInput = {
   transferAreaSqm?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
   transferCenterLat?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
   transferCenterLng?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
-  transferStartPointLat?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
-  transferStartPointLng?: Prisma.FloatNullableFilter<"OwnershipTransfer"> | number | null
+  transferStartPoint?: Prisma.JsonNullableFilter<"OwnershipTransfer">
   transferredLandId?: Prisma.UuidNullableFilter<"OwnershipTransfer"> | string | null
   status?: Prisma.EnumTransferStatusFilter<"OwnershipTransfer"> | $Enums.TransferStatus
   currentReviewerId?: Prisma.UuidNullableFilter<"OwnershipTransfer"> | string | null
@@ -1454,8 +1409,7 @@ export type OwnershipTransferCreateWithoutGovernorInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.TransferStatus
   revisionCount?: number
   applicationNumber?: string | null
@@ -1491,8 +1445,7 @@ export type OwnershipTransferUncheckedCreateWithoutGovernorInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -1532,8 +1485,7 @@ export type OwnershipTransferCreateWithoutCurrentReviewerInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.TransferStatus
   revisionCount?: number
   applicationNumber?: string | null
@@ -1570,8 +1522,7 @@ export type OwnershipTransferUncheckedCreateWithoutCurrentReviewerInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   revisionCount?: number
@@ -1642,8 +1593,7 @@ export type OwnershipTransferCreateWithoutLandInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.TransferStatus
   revisionCount?: number
   applicationNumber?: string | null
@@ -1679,8 +1629,7 @@ export type OwnershipTransferUncheckedCreateWithoutLandInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -1736,8 +1685,7 @@ export type OwnershipTransferCreateWithoutTransferredLandInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.TransferStatus
   revisionCount?: number
   applicationNumber?: string | null
@@ -1774,8 +1722,7 @@ export type OwnershipTransferUncheckedCreateWithoutTransferredLandInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
   revisionCount?: number
@@ -1830,8 +1777,7 @@ export type OwnershipTransferCreateWithoutVerificationsInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.TransferStatus
   revisionCount?: number
   applicationNumber?: string | null
@@ -1868,8 +1814,7 @@ export type OwnershipTransferUncheckedCreateWithoutVerificationsInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -1914,8 +1859,7 @@ export type OwnershipTransferUpdateWithoutVerificationsInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1952,8 +1896,7 @@ export type OwnershipTransferUncheckedUpdateWithoutVerificationsInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1982,8 +1925,7 @@ export type OwnershipTransferCreateWithoutDocumentsInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.TransferStatus
   revisionCount?: number
   applicationNumber?: string | null
@@ -2020,8 +1962,7 @@ export type OwnershipTransferUncheckedCreateWithoutDocumentsInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -2066,8 +2007,7 @@ export type OwnershipTransferUpdateWithoutDocumentsInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2104,8 +2044,7 @@ export type OwnershipTransferUncheckedUpdateWithoutDocumentsInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2134,8 +2073,7 @@ export type OwnershipTransferCreateWithoutTransferAuditLogsInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.TransferStatus
   revisionCount?: number
   applicationNumber?: string | null
@@ -2172,8 +2110,7 @@ export type OwnershipTransferUncheckedCreateWithoutTransferAuditLogsInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -2218,8 +2155,7 @@ export type OwnershipTransferUpdateWithoutTransferAuditLogsInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2256,8 +2192,7 @@ export type OwnershipTransferUncheckedUpdateWithoutTransferAuditLogsInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2286,8 +2221,7 @@ export type OwnershipTransferCreateWithoutStagesInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.TransferStatus
   revisionCount?: number
   applicationNumber?: string | null
@@ -2324,8 +2258,7 @@ export type OwnershipTransferUncheckedCreateWithoutStagesInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -2370,8 +2303,7 @@ export type OwnershipTransferUpdateWithoutStagesInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2408,8 +2340,7 @@ export type OwnershipTransferUncheckedUpdateWithoutStagesInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2441,8 +2372,7 @@ export type OwnershipTransferCreateManyCurrentOwnerInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -2471,8 +2401,7 @@ export type OwnershipTransferCreateManyNewOwnerInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -2498,8 +2427,7 @@ export type OwnershipTransferUpdateWithoutCurrentOwnerInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2535,8 +2463,7 @@ export type OwnershipTransferUncheckedUpdateWithoutCurrentOwnerInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2569,8 +2496,7 @@ export type OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2596,8 +2522,7 @@ export type OwnershipTransferUpdateWithoutNewOwnerInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2633,8 +2558,7 @@ export type OwnershipTransferUncheckedUpdateWithoutNewOwnerInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2667,8 +2591,7 @@ export type OwnershipTransferUncheckedUpdateManyWithoutNewOwnerInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2697,8 +2620,7 @@ export type OwnershipTransferCreateManyGovernorInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -2728,8 +2650,7 @@ export type OwnershipTransferCreateManyCurrentReviewerInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   revisionCount?: number
@@ -2754,8 +2675,7 @@ export type OwnershipTransferUpdateWithoutGovernorInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2791,8 +2711,7 @@ export type OwnershipTransferUncheckedUpdateWithoutGovernorInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2825,8 +2744,7 @@ export type OwnershipTransferUncheckedUpdateManyWithoutGovernorInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2852,8 +2770,7 @@ export type OwnershipTransferUpdateWithoutCurrentReviewerInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2890,8 +2807,7 @@ export type OwnershipTransferUncheckedUpdateWithoutCurrentReviewerInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2924,8 +2840,7 @@ export type OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2950,8 +2865,7 @@ export type OwnershipTransferUpdateWithoutLandInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2987,8 +2901,7 @@ export type OwnershipTransferUncheckedUpdateWithoutLandInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3021,8 +2934,7 @@ export type OwnershipTransferCreateManyLandInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: string | null
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
@@ -3051,8 +2963,7 @@ export type OwnershipTransferUncheckedUpdateManyWithoutLandInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3078,8 +2989,7 @@ export type OwnershipTransferUpdateWithoutTransferredLandInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
   applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3116,8 +3026,7 @@ export type OwnershipTransferUncheckedUpdateWithoutTransferredLandInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3150,8 +3059,7 @@ export type OwnershipTransferCreateManyTransferredLandInput = {
   transferAreaSqm?: number | null
   transferCenterLat?: number | null
   transferCenterLng?: number | null
-  transferStartPointLat?: number | null
-  transferStartPointLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.TransferStatus
   currentReviewerId?: string | null
   revisionCount?: number
@@ -3180,8 +3088,7 @@ export type OwnershipTransferUncheckedUpdateManyWithoutTransferredLandInput = {
   transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  transferStartPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
   currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -3268,8 +3175,7 @@ export type OwnershipTransferSelect<ExtArgs extends runtime.Types.Extensions.Int
   transferAreaSqm?: boolean
   transferCenterLat?: boolean
   transferCenterLng?: boolean
-  transferStartPointLat?: boolean
-  transferStartPointLng?: boolean
+  transferStartPoint?: boolean
   transferredLandId?: boolean
   status?: boolean
   currentReviewerId?: boolean
@@ -3310,8 +3216,7 @@ export type OwnershipTransferSelectCreateManyAndReturn<ExtArgs extends runtime.T
   transferAreaSqm?: boolean
   transferCenterLat?: boolean
   transferCenterLng?: boolean
-  transferStartPointLat?: boolean
-  transferStartPointLng?: boolean
+  transferStartPoint?: boolean
   transferredLandId?: boolean
   status?: boolean
   currentReviewerId?: boolean
@@ -3347,8 +3252,7 @@ export type OwnershipTransferSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   transferAreaSqm?: boolean
   transferCenterLat?: boolean
   transferCenterLng?: boolean
-  transferStartPointLat?: boolean
-  transferStartPointLng?: boolean
+  transferStartPoint?: boolean
   transferredLandId?: boolean
   status?: boolean
   currentReviewerId?: boolean
@@ -3384,8 +3288,7 @@ export type OwnershipTransferSelectScalar = {
   transferAreaSqm?: boolean
   transferCenterLat?: boolean
   transferCenterLng?: boolean
-  transferStartPointLat?: boolean
-  transferStartPointLng?: boolean
+  transferStartPoint?: boolean
   transferredLandId?: boolean
   status?: boolean
   currentReviewerId?: boolean
@@ -3399,7 +3302,7 @@ export type OwnershipTransferSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OwnershipTransferOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "landId" | "currentOwnerId" | "newOwnerId" | "governorId" | "newOwnerEmail" | "newOwnerPhone" | "transferType" | "transferSurveyType" | "transferCoordinates" | "transferBearings" | "transferUtmZone" | "transferAreaSqm" | "transferCenterLat" | "transferCenterLng" | "transferStartPointLat" | "transferStartPointLng" | "transferredLandId" | "status" | "currentReviewerId" | "revisionCount" | "applicationNumber" | "governorComment" | "reviewedAt" | "rejectionReason" | "expiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["ownershipTransfer"]>
+export type OwnershipTransferOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "landId" | "currentOwnerId" | "newOwnerId" | "governorId" | "newOwnerEmail" | "newOwnerPhone" | "transferType" | "transferSurveyType" | "transferCoordinates" | "transferBearings" | "transferUtmZone" | "transferAreaSqm" | "transferCenterLat" | "transferCenterLng" | "transferStartPoint" | "transferredLandId" | "status" | "currentReviewerId" | "revisionCount" | "applicationNumber" | "governorComment" | "reviewedAt" | "rejectionReason" | "expiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["ownershipTransfer"]>
 export type OwnershipTransferInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   verifications?: boolean | Prisma.OwnershipTransfer$verificationsArgs<ExtArgs>
   documents?: boolean | Prisma.OwnershipTransfer$documentsArgs<ExtArgs>
@@ -3460,8 +3363,7 @@ export type $OwnershipTransferPayload<ExtArgs extends runtime.Types.Extensions.I
     transferAreaSqm: number | null
     transferCenterLat: number | null
     transferCenterLng: number | null
-    transferStartPointLat: number | null
-    transferStartPointLng: number | null
+    transferStartPoint: runtime.JsonValue | null
     transferredLandId: string | null
     status: $Enums.TransferStatus
     currentReviewerId: string | null
@@ -3921,8 +3823,7 @@ export interface OwnershipTransferFieldRefs {
   readonly transferAreaSqm: Prisma.FieldRef<"OwnershipTransfer", 'Float'>
   readonly transferCenterLat: Prisma.FieldRef<"OwnershipTransfer", 'Float'>
   readonly transferCenterLng: Prisma.FieldRef<"OwnershipTransfer", 'Float'>
-  readonly transferStartPointLat: Prisma.FieldRef<"OwnershipTransfer", 'Float'>
-  readonly transferStartPointLng: Prisma.FieldRef<"OwnershipTransfer", 'Float'>
+  readonly transferStartPoint: Prisma.FieldRef<"OwnershipTransfer", 'Json'>
   readonly transferredLandId: Prisma.FieldRef<"OwnershipTransfer", 'String'>
   readonly status: Prisma.FieldRef<"OwnershipTransfer", 'TransferStatus'>
   readonly currentReviewerId: Prisma.FieldRef<"OwnershipTransfer", 'String'>

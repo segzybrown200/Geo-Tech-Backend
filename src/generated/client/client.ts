@@ -93,6 +93,11 @@ export type TransferVerification = Prisma.TransferVerificationModel
  */
 export type OwnershipTransferDocument = Prisma.OwnershipTransferDocumentModel
 /**
+ * Model DocumentReview
+ * 
+ */
+export type DocumentReview = Prisma.DocumentReviewModel
+/**
  * Model OwnershipTransferAuditLog
  * 
  */

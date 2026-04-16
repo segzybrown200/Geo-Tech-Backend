@@ -62,6 +62,7 @@ export const ModelName = {
   OwnershipTransfer: 'OwnershipTransfer',
   TransferVerification: 'TransferVerification',
   OwnershipTransferDocument: 'OwnershipTransferDocument',
+  DocumentReview: 'DocumentReview',
   OwnershipTransferAuditLog: 'OwnershipTransferAuditLog',
   TransferStageLog: 'TransferStageLog',
   OwnershipHistory: 'OwnershipHistory',
@@ -169,8 +170,7 @@ export const LandRegistrationScalarFieldEnum = {
   areaSqm: 'areaSqm',
   centerLat: 'centerLat',
   centerLng: 'centerLng',
-  startPointLat: 'startPointLat',
-  startPointLng: 'startPointLng',
+  startPoint: 'startPoint',
   utmZone: 'utmZone',
   surveyType: 'surveyType',
   utmCoordinates: 'utmCoordinates',
@@ -246,8 +246,7 @@ export const OwnershipTransferScalarFieldEnum = {
   transferAreaSqm: 'transferAreaSqm',
   transferCenterLat: 'transferCenterLat',
   transferCenterLng: 'transferCenterLng',
-  transferStartPointLat: 'transferStartPointLat',
-  transferStartPointLng: 'transferStartPointLng',
+  transferStartPoint: 'transferStartPoint',
   transferredLandId: 'transferredLandId',
   status: 'status',
   currentReviewerId: 'currentReviewerId',
@@ -293,6 +292,18 @@ export const OwnershipTransferDocumentScalarFieldEnum = {
 } as const
 
 export type OwnershipTransferDocumentScalarFieldEnum = (typeof OwnershipTransferDocumentScalarFieldEnum)[keyof typeof OwnershipTransferDocumentScalarFieldEnum]
+
+
+export const DocumentReviewScalarFieldEnum = {
+  id: 'id',
+  documentId: 'documentId',
+  reviewerId: 'reviewerId',
+  status: 'status',
+  rejectionMessage: 'rejectionMessage',
+  reviewedAt: 'reviewedAt'
+} as const
+
+export type DocumentReviewScalarFieldEnum = (typeof DocumentReviewScalarFieldEnum)[keyof typeof DocumentReviewScalarFieldEnum]
 
 
 export const OwnershipTransferAuditLogScalarFieldEnum = {

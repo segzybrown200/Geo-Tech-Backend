@@ -440,6 +440,24 @@ export const reviewTransfer = async (req: AuthRequest, res: Response) => {
     }
 
     if (action === "APPROVE") {
+      // Check if all documents have been reviewed by current reviewer
+      const documents = await prisma.ownershipTransferDocument.findMany({
+        where: { transferId },
+        include: {
+          reviews: {
+            where: { reviewerId },
+          },
+        },
+      });
+
+      const unreviewedDocuments = documents.filter(doc => doc.reviews.length === 0);
+      if (unreviewedDocuments.length > 0) {
+        return res.status(400).json({
+          message: "All documents must be reviewed before approving the transfer",
+          unreviewedDocuments: unreviewedDocuments.map(doc => ({ id: doc.id, title: doc.title })),
+        });
+      }
+
       // Check if governor
       if (transfer.currentReviewer?.role === "GOVERNOR") {
         // Final approval
@@ -948,7 +966,16 @@ export const getTransferForReview = async (req: AuthRequest, res: Response) => {
         land: { include: { state: true } },
         currentOwner: true,
         newOwner: true,
-        documents: true,
+        documents: {
+          include: {
+            reviewedBy: true,
+            reviews: {
+              include: {
+                reviewer: true,
+              },
+            },
+          },
+        },
         stages: { include: { approver: true }, orderBy: { stageNumber: "desc" } },
         verifications: true,
       },
@@ -1488,14 +1515,41 @@ export const approveDocument = async (req: AuthRequest, res: Response) => {
       return res.status(403).json({ message: "Not authorized to review this document" });
     }
 
-    await prisma.ownershipTransferDocument.update({
-      where: { id: documentId },
-      data: {
-        status: "APPROVED",
-        reviewedAt: new Date(),
-        reviewedById: reviewerId,
+    // Check if reviewer has already reviewed this document
+    const existingReview = await prisma.documentReview.findUnique({
+      where: {
+        documentId_reviewerId: {
+          documentId,
+          reviewerId,
+        },
       },
     });
+
+    if (existingReview) {
+      return res.status(400).json({ message: "You have already reviewed this document" });
+    }
+
+    // Create document review
+    await prisma.documentReview.create({
+      data: {
+        documentId,
+        reviewerId,
+        status: "APPROVED",
+      },
+    });
+
+    // Update document status to APPROVED if this is the first approval
+    // (Keep the old logic for backward compatibility, but now track individual reviews)
+    if (document.status === "PENDING") {
+      await prisma.ownershipTransferDocument.update({
+        where: { id: documentId },
+        data: {
+          status: "APPROVED",
+          reviewedAt: new Date(),
+          reviewedById: reviewerId,
+        },
+      });
+    }
 
     // Audit log
     await prisma.ownershipTransferAuditLog.create({
@@ -1504,7 +1558,7 @@ export const approveDocument = async (req: AuthRequest, res: Response) => {
         action: "DOCUMENT_APPROVED",
         performedById: reviewerId,
         performedByRole: "APPROVER",
-        comment: `Document ${document.title} approved`,
+        comment: `Document ${document.title} approved by reviewer`,
       },
     });
 
@@ -1538,6 +1592,31 @@ export const rejectDocument = async (req: AuthRequest, res: Response) => {
       return res.status(403).json({ message: "Not authorized to review this document" });
     }
 
+    // Check if reviewer has already reviewed this document
+    const existingReview = await prisma.documentReview.findUnique({
+      where: {
+        documentId_reviewerId: {
+          documentId,
+          reviewerId,
+        },
+      },
+    });
+
+    if (existingReview) {
+      return res.status(400).json({ message: "You have already reviewed this document" });
+    }
+
+    // Create document review
+    await prisma.documentReview.create({
+      data: {
+        documentId,
+        reviewerId,
+        status: "REJECTED",
+        rejectionMessage: reason,
+      },
+    });
+
+    // Update document status to REJECTED
     await prisma.ownershipTransferDocument.update({
       where: { id: documentId },
       data: {

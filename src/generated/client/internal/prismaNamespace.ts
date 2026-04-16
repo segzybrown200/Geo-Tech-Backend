@@ -395,6 +395,7 @@ export const ModelName = {
   OwnershipTransfer: 'OwnershipTransfer',
   TransferVerification: 'TransferVerification',
   OwnershipTransferDocument: 'OwnershipTransferDocument',
+  DocumentReview: 'DocumentReview',
   OwnershipTransferAuditLog: 'OwnershipTransferAuditLog',
   TransferStageLog: 'TransferStageLog',
   OwnershipHistory: 'OwnershipHistory',
@@ -422,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "landAuditLog" | "ownershipTransfer" | "transferVerification" | "ownershipTransferDocument" | "ownershipTransferAuditLog" | "transferStageLog" | "ownershipHistory" | "cofOApplication" | "cofODocument" | "payment" | "stageLog" | "inboxMessage" | "emailVerificationToken" | "cofOAuditLog" | "approvalAudit" | "passwordResetToken"
+    modelProps: "user" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "landAuditLog" | "ownershipTransfer" | "transferVerification" | "ownershipTransferDocument" | "documentReview" | "ownershipTransferAuditLog" | "transferStageLog" | "ownershipHistory" | "cofOApplication" | "cofODocument" | "payment" | "stageLog" | "inboxMessage" | "emailVerificationToken" | "cofOAuditLog" | "approvalAudit" | "passwordResetToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1221,6 +1222,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.OwnershipTransferDocumentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.OwnershipTransferDocumentCountAggregateOutputType> | number
+        }
+      }
+    }
+    DocumentReview: {
+      payload: Prisma.$DocumentReviewPayload<ExtArgs>
+      fields: Prisma.DocumentReviewFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentReviewFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentReviewPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentReviewFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentReviewPayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentReviewFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentReviewPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentReviewFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentReviewPayload>
+        }
+        findMany: {
+          args: Prisma.DocumentReviewFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentReviewPayload>[]
+        }
+        create: {
+          args: Prisma.DocumentReviewCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentReviewPayload>
+        }
+        createMany: {
+          args: Prisma.DocumentReviewCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DocumentReviewCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentReviewPayload>[]
+        }
+        delete: {
+          args: Prisma.DocumentReviewDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentReviewPayload>
+        }
+        update: {
+          args: Prisma.DocumentReviewUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentReviewPayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentReviewDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentReviewUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DocumentReviewUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentReviewPayload>[]
+        }
+        upsert: {
+          args: Prisma.DocumentReviewUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentReviewPayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentReviewAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentReview>
+        }
+        groupBy: {
+          args: Prisma.DocumentReviewGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentReviewGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentReviewCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentReviewCountAggregateOutputType> | number
         }
       }
     }
@@ -2228,8 +2303,7 @@ export const LandRegistrationScalarFieldEnum = {
   areaSqm: 'areaSqm',
   centerLat: 'centerLat',
   centerLng: 'centerLng',
-  startPointLat: 'startPointLat',
-  startPointLng: 'startPointLng',
+  startPoint: 'startPoint',
   utmZone: 'utmZone',
   surveyType: 'surveyType',
   utmCoordinates: 'utmCoordinates',
@@ -2305,8 +2379,7 @@ export const OwnershipTransferScalarFieldEnum = {
   transferAreaSqm: 'transferAreaSqm',
   transferCenterLat: 'transferCenterLat',
   transferCenterLng: 'transferCenterLng',
-  transferStartPointLat: 'transferStartPointLat',
-  transferStartPointLng: 'transferStartPointLng',
+  transferStartPoint: 'transferStartPoint',
   transferredLandId: 'transferredLandId',
   status: 'status',
   currentReviewerId: 'currentReviewerId',
@@ -2352,6 +2425,18 @@ export const OwnershipTransferDocumentScalarFieldEnum = {
 } as const
 
 export type OwnershipTransferDocumentScalarFieldEnum = (typeof OwnershipTransferDocumentScalarFieldEnum)[keyof typeof OwnershipTransferDocumentScalarFieldEnum]
+
+
+export const DocumentReviewScalarFieldEnum = {
+  id: 'id',
+  documentId: 'documentId',
+  reviewerId: 'reviewerId',
+  status: 'status',
+  rejectionMessage: 'rejectionMessage',
+  reviewedAt: 'reviewedAt'
+} as const
+
+export type DocumentReviewScalarFieldEnum = (typeof DocumentReviewScalarFieldEnum)[keyof typeof DocumentReviewScalarFieldEnum]
 
 
 export const OwnershipTransferAuditLogScalarFieldEnum = {
@@ -2852,6 +2937,7 @@ export type GlobalOmitConfig = {
   ownershipTransfer?: Prisma.OwnershipTransferOmit
   transferVerification?: Prisma.TransferVerificationOmit
   ownershipTransferDocument?: Prisma.OwnershipTransferDocumentOmit
+  documentReview?: Prisma.DocumentReviewOmit
   ownershipTransferAuditLog?: Prisma.OwnershipTransferAuditLogOmit
   transferStageLog?: Prisma.TransferStageLogOmit
   ownershipHistory?: Prisma.OwnershipHistoryOmit

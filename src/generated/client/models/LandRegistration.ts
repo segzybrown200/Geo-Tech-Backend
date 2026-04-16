@@ -30,16 +30,12 @@ export type LandRegistrationAvgAggregateOutputType = {
   areaSqm: number | null
   centerLat: number | null
   centerLng: number | null
-  startPointLat: number | null
-  startPointLng: number | null
 }
 
 export type LandRegistrationSumAggregateOutputType = {
   areaSqm: number | null
   centerLat: number | null
   centerLng: number | null
-  startPointLat: number | null
-  startPointLng: number | null
 }
 
 export type LandRegistrationMinAggregateOutputType = {
@@ -53,8 +49,6 @@ export type LandRegistrationMinAggregateOutputType = {
   areaSqm: number | null
   centerLat: number | null
   centerLng: number | null
-  startPointLat: number | null
-  startPointLng: number | null
   utmZone: string | null
   surveyType: string | null
   surveyPlanNumber: string | null
@@ -84,8 +78,6 @@ export type LandRegistrationMaxAggregateOutputType = {
   areaSqm: number | null
   centerLat: number | null
   centerLng: number | null
-  startPointLat: number | null
-  startPointLng: number | null
   utmZone: string | null
   surveyType: string | null
   surveyPlanNumber: string | null
@@ -115,8 +107,7 @@ export type LandRegistrationCountAggregateOutputType = {
   areaSqm: number
   centerLat: number
   centerLng: number
-  startPointLat: number
-  startPointLng: number
+  startPoint: number
   utmZone: number
   surveyType: number
   utmCoordinates: number
@@ -144,16 +135,12 @@ export type LandRegistrationAvgAggregateInputType = {
   areaSqm?: true
   centerLat?: true
   centerLng?: true
-  startPointLat?: true
-  startPointLng?: true
 }
 
 export type LandRegistrationSumAggregateInputType = {
   areaSqm?: true
   centerLat?: true
   centerLng?: true
-  startPointLat?: true
-  startPointLng?: true
 }
 
 export type LandRegistrationMinAggregateInputType = {
@@ -167,8 +154,6 @@ export type LandRegistrationMinAggregateInputType = {
   areaSqm?: true
   centerLat?: true
   centerLng?: true
-  startPointLat?: true
-  startPointLng?: true
   utmZone?: true
   surveyType?: true
   surveyPlanNumber?: true
@@ -198,8 +183,6 @@ export type LandRegistrationMaxAggregateInputType = {
   areaSqm?: true
   centerLat?: true
   centerLng?: true
-  startPointLat?: true
-  startPointLng?: true
   utmZone?: true
   surveyType?: true
   surveyPlanNumber?: true
@@ -229,8 +212,7 @@ export type LandRegistrationCountAggregateInputType = {
   areaSqm?: true
   centerLat?: true
   centerLng?: true
-  startPointLat?: true
-  startPointLng?: true
+  startPoint?: true
   utmZone?: true
   surveyType?: true
   utmCoordinates?: true
@@ -350,8 +332,7 @@ export type LandRegistrationGroupByOutputType = {
   areaSqm: number | null
   centerLat: number | null
   centerLng: number | null
-  startPointLat: number | null
-  startPointLng: number | null
+  startPoint: runtime.JsonValue | null
   utmZone: string | null
   surveyType: string | null
   utmCoordinates: runtime.JsonValue | null
@@ -407,8 +388,7 @@ export type LandRegistrationWhereInput = {
   areaSqm?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
   centerLat?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
   centerLng?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
-  startPointLat?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
-  startPointLng?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
+  startPoint?: Prisma.JsonNullableFilter<"LandRegistration">
   utmZone?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   surveyType?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   utmCoordinates?: Prisma.JsonNullableFilter<"LandRegistration">
@@ -452,8 +432,7 @@ export type LandRegistrationOrderByWithRelationInput = {
   areaSqm?: Prisma.SortOrderInput | Prisma.SortOrder
   centerLat?: Prisma.SortOrderInput | Prisma.SortOrder
   centerLng?: Prisma.SortOrderInput | Prisma.SortOrder
-  startPointLat?: Prisma.SortOrderInput | Prisma.SortOrder
-  startPointLng?: Prisma.SortOrderInput | Prisma.SortOrder
+  startPoint?: Prisma.SortOrderInput | Prisma.SortOrder
   utmZone?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyType?: Prisma.SortOrderInput | Prisma.SortOrder
   utmCoordinates?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -501,8 +480,7 @@ export type LandRegistrationWhereUniqueInput = Prisma.AtLeast<{
   areaSqm?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
   centerLat?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
   centerLng?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
-  startPointLat?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
-  startPointLng?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
+  startPoint?: Prisma.JsonNullableFilter<"LandRegistration">
   utmZone?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   surveyType?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   utmCoordinates?: Prisma.JsonNullableFilter<"LandRegistration">
@@ -545,8 +523,7 @@ export type LandRegistrationOrderByWithAggregationInput = {
   areaSqm?: Prisma.SortOrderInput | Prisma.SortOrder
   centerLat?: Prisma.SortOrderInput | Prisma.SortOrder
   centerLng?: Prisma.SortOrderInput | Prisma.SortOrder
-  startPointLat?: Prisma.SortOrderInput | Prisma.SortOrder
-  startPointLng?: Prisma.SortOrderInput | Prisma.SortOrder
+  startPoint?: Prisma.SortOrderInput | Prisma.SortOrder
   utmZone?: Prisma.SortOrderInput | Prisma.SortOrder
   surveyType?: Prisma.SortOrderInput | Prisma.SortOrder
   utmCoordinates?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -587,8 +564,7 @@ export type LandRegistrationScalarWhereWithAggregatesInput = {
   areaSqm?: Prisma.FloatNullableWithAggregatesFilter<"LandRegistration"> | number | null
   centerLat?: Prisma.FloatNullableWithAggregatesFilter<"LandRegistration"> | number | null
   centerLng?: Prisma.FloatNullableWithAggregatesFilter<"LandRegistration"> | number | null
-  startPointLat?: Prisma.FloatNullableWithAggregatesFilter<"LandRegistration"> | number | null
-  startPointLng?: Prisma.FloatNullableWithAggregatesFilter<"LandRegistration"> | number | null
+  startPoint?: Prisma.JsonNullableWithAggregatesFilter<"LandRegistration">
   utmZone?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
   surveyType?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
   utmCoordinates?: Prisma.JsonNullableWithAggregatesFilter<"LandRegistration">
@@ -619,8 +595,7 @@ export type LandRegistrationUpdateInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -663,8 +638,7 @@ export type LandRegistrationUncheckedUpdateInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -703,8 +677,7 @@ export type LandRegistrationUpdateManyMutationInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -736,8 +709,7 @@ export type LandRegistrationUncheckedUpdateManyInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -785,8 +757,7 @@ export type LandRegistrationCountOrderByAggregateInput = {
   areaSqm?: Prisma.SortOrder
   centerLat?: Prisma.SortOrder
   centerLng?: Prisma.SortOrder
-  startPointLat?: Prisma.SortOrder
-  startPointLng?: Prisma.SortOrder
+  startPoint?: Prisma.SortOrder
   utmZone?: Prisma.SortOrder
   surveyType?: Prisma.SortOrder
   utmCoordinates?: Prisma.SortOrder
@@ -812,8 +783,6 @@ export type LandRegistrationAvgOrderByAggregateInput = {
   areaSqm?: Prisma.SortOrder
   centerLat?: Prisma.SortOrder
   centerLng?: Prisma.SortOrder
-  startPointLat?: Prisma.SortOrder
-  startPointLng?: Prisma.SortOrder
 }
 
 export type LandRegistrationMaxOrderByAggregateInput = {
@@ -827,8 +796,6 @@ export type LandRegistrationMaxOrderByAggregateInput = {
   areaSqm?: Prisma.SortOrder
   centerLat?: Prisma.SortOrder
   centerLng?: Prisma.SortOrder
-  startPointLat?: Prisma.SortOrder
-  startPointLng?: Prisma.SortOrder
   utmZone?: Prisma.SortOrder
   surveyType?: Prisma.SortOrder
   surveyPlanNumber?: Prisma.SortOrder
@@ -858,8 +825,6 @@ export type LandRegistrationMinOrderByAggregateInput = {
   areaSqm?: Prisma.SortOrder
   centerLat?: Prisma.SortOrder
   centerLng?: Prisma.SortOrder
-  startPointLat?: Prisma.SortOrder
-  startPointLng?: Prisma.SortOrder
   utmZone?: Prisma.SortOrder
   surveyType?: Prisma.SortOrder
   surveyPlanNumber?: Prisma.SortOrder
@@ -882,8 +847,6 @@ export type LandRegistrationSumOrderByAggregateInput = {
   areaSqm?: Prisma.SortOrder
   centerLat?: Prisma.SortOrder
   centerLng?: Prisma.SortOrder
-  startPointLat?: Prisma.SortOrder
-  startPointLng?: Prisma.SortOrder
 }
 
 export type LandRegistrationScalarRelationFilter = {
@@ -1075,8 +1038,7 @@ export type LandRegistrationScalarWhereInput = {
   areaSqm?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
   centerLat?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
   centerLng?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
-  startPointLat?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
-  startPointLng?: Prisma.FloatNullableFilter<"LandRegistration"> | number | null
+  startPoint?: Prisma.JsonNullableFilter<"LandRegistration">
   utmZone?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   surveyType?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
   utmCoordinates?: Prisma.JsonNullableFilter<"LandRegistration">
@@ -1112,8 +1074,7 @@ export type LandRegistrationUpdateWithoutChildrenInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1155,8 +1116,7 @@ export type LandRegistrationUncheckedUpdateWithoutChildrenInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1209,8 +1169,7 @@ export type LandRegistrationUpdateWithoutDocumentsInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1252,8 +1211,7 @@ export type LandRegistrationUncheckedUpdateWithoutDocumentsInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1306,8 +1264,7 @@ export type LandRegistrationUpdateWithoutAuditLogsInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1349,8 +1306,7 @@ export type LandRegistrationUncheckedUpdateWithoutAuditLogsInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1393,8 +1349,7 @@ export type LandRegistrationUpdateWithoutOwnershipTransferInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1436,8 +1391,7 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipTransferInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1480,8 +1434,7 @@ export type LandRegistrationUpdateWithoutTransferredFromInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1523,8 +1476,7 @@ export type LandRegistrationUncheckedUpdateWithoutTransferredFromInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1567,8 +1519,7 @@ export type LandRegistrationUpdateWithoutOwnershipLogsInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1610,8 +1561,7 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipLogsInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1654,8 +1604,7 @@ export type LandRegistrationUpdateWithoutCofOApplicationInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1697,8 +1646,7 @@ export type LandRegistrationUncheckedUpdateWithoutCofOApplicationInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1741,8 +1689,7 @@ export type LandRegistrationUpdateWithoutPaymentsInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1784,8 +1731,7 @@ export type LandRegistrationUncheckedUpdateWithoutPaymentsInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1823,8 +1769,7 @@ export type LandRegistrationUpdateWithoutOwnerInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1865,8 +1810,7 @@ export type LandRegistrationUncheckedUpdateWithoutOwnerInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1906,8 +1850,7 @@ export type LandRegistrationUncheckedUpdateManyWithoutOwnerInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1938,8 +1881,7 @@ export type LandRegistrationUpdateWithoutParentLandInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1981,8 +1923,7 @@ export type LandRegistrationUncheckedUpdateWithoutParentLandInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2022,8 +1963,7 @@ export type LandRegistrationUncheckedUpdateManyWithoutParentLandInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2053,8 +1993,7 @@ export type LandRegistrationUpdateWithoutStateInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2095,8 +2034,7 @@ export type LandRegistrationUncheckedUpdateWithoutStateInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2136,8 +2074,7 @@ export type LandRegistrationUncheckedUpdateManyWithoutStateInput = {
   areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  startPointLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2264,8 +2201,7 @@ export type LandRegistrationSelect<ExtArgs extends runtime.Types.Extensions.Inte
   areaSqm?: boolean
   centerLat?: boolean
   centerLng?: boolean
-  startPointLat?: boolean
-  startPointLng?: boolean
+  startPoint?: boolean
   utmZone?: boolean
   surveyType?: boolean
   utmCoordinates?: boolean
@@ -2311,8 +2247,7 @@ export type LandRegistrationSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   areaSqm?: boolean
   centerLat?: boolean
   centerLng?: boolean
-  startPointLat?: boolean
-  startPointLng?: boolean
+  startPoint?: boolean
   utmZone?: boolean
   surveyType?: boolean
   utmCoordinates?: boolean
@@ -2348,8 +2283,7 @@ export type LandRegistrationSelectScalar = {
   areaSqm?: boolean
   centerLat?: boolean
   centerLng?: boolean
-  startPointLat?: boolean
-  startPointLng?: boolean
+  startPoint?: boolean
   utmZone?: boolean
   surveyType?: boolean
   utmCoordinates?: boolean
@@ -2371,7 +2305,7 @@ export type LandRegistrationSelectScalar = {
   createdAt?: boolean
 }
 
-export type LandRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "ownerName" | "stateId" | "address" | "plotNumber" | "landCode" | "areaSqm" | "centerLat" | "centerLng" | "startPointLat" | "startPointLng" | "utmZone" | "surveyType" | "utmCoordinates" | "latlngCoordinates" | "bearings" | "surveyPlanNumber" | "surveyDate" | "surveyorName" | "surveyorAddress" | "surveyTelephone" | "surveyNotes" | "landStatus" | "isVerified" | "accuracyLevel" | "ownershipType" | "purpose" | "titleType" | "parentLandId" | "createdAt", ExtArgs["result"]["landRegistration"]>
+export type LandRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "ownerName" | "stateId" | "address" | "plotNumber" | "landCode" | "areaSqm" | "centerLat" | "centerLng" | "startPoint" | "utmZone" | "surveyType" | "utmCoordinates" | "latlngCoordinates" | "bearings" | "surveyPlanNumber" | "surveyDate" | "surveyorName" | "surveyorAddress" | "surveyTelephone" | "surveyNotes" | "landStatus" | "isVerified" | "accuracyLevel" | "ownershipType" | "purpose" | "titleType" | "parentLandId" | "createdAt", ExtArgs["result"]["landRegistration"]>
 export type LandRegistrationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
@@ -2418,8 +2352,7 @@ export type $LandRegistrationPayload<ExtArgs extends runtime.Types.Extensions.In
     areaSqm: number | null
     centerLat: number | null
     centerLng: number | null
-    startPointLat: number | null
-    startPointLng: number | null
+    startPoint: runtime.JsonValue | null
     utmZone: string | null
     surveyType: string | null
     utmCoordinates: runtime.JsonValue | null
@@ -2812,8 +2745,7 @@ export interface LandRegistrationFieldRefs {
   readonly areaSqm: Prisma.FieldRef<"LandRegistration", 'Float'>
   readonly centerLat: Prisma.FieldRef<"LandRegistration", 'Float'>
   readonly centerLng: Prisma.FieldRef<"LandRegistration", 'Float'>
-  readonly startPointLat: Prisma.FieldRef<"LandRegistration", 'Float'>
-  readonly startPointLng: Prisma.FieldRef<"LandRegistration", 'Float'>
+  readonly startPoint: Prisma.FieldRef<"LandRegistration", 'Json'>
   readonly utmZone: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly surveyType: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly utmCoordinates: Prisma.FieldRef<"LandRegistration", 'Json'>
