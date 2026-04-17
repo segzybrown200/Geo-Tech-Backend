@@ -4,6 +4,7 @@ import prisma from "../lib/prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { AuthRequest } from "../middlewares/authMiddleware";
+import { setAuthCookie, clearAuthCookie } from "../utils/cookies";
 
 
 export const getAllApplications = async (_req: Request, res: Response) => {
@@ -109,12 +110,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
       { expiresIn: "7d" }
     );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
+    setAuthCookie(res, token);
 
     res.json({
       message: "Admin login successful",
@@ -149,12 +145,7 @@ export const refreshAdminToken = async (req: AuthRequest, res: Response) => {
       { expiresIn: "7d" }
     );
 
-    res.cookie("token", newToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
+    setAuthCookie(res, newToken);
 
     res.json({
       message: "Token refreshed successfully",

@@ -7,6 +7,7 @@ import { sendEmail } from "../services/emailSevices";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { AuthRequest } from "../middlewares/authMiddleware";
+import { setAuthCookie, clearAuthCookie } from "../utils/cookies";
 
 import prisma from "../lib/prisma";
 const JWT_SECRET = process.env.JWT_SECRET!;
@@ -417,12 +418,7 @@ export const loginInternalUser = async (req: Request, res: Response) => {
       JWT_SECRET,
       { expiresIn: "7d" },
     );
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
+    setAuthCookie(res, token);
 
     res.json({
       message: "Login successful",
@@ -476,12 +472,7 @@ export const refreshInternalToken = async (req: AuthRequest, res: Response) => {
       { expiresIn: "7d" },
     );
 
-    res.cookie("token", newToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
+    setAuthCookie(res, newToken);
 
     res.json({
       message: "Token refreshed successfully",
@@ -499,11 +490,7 @@ export const refreshInternalToken = async (req: AuthRequest, res: Response) => {
 };
 
 export const logoutInternalUser = async (req: AuthRequest, res: Response) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-  });
+  clearAuthCookie(res);
   res.json({ message: "Logged out successfully" });
 };
 
