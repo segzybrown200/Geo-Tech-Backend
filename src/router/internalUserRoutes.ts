@@ -34,6 +34,7 @@ import {
 } from "../middlewares/authMiddleware";
 import { authorizeRoles } from "../middlewares/roleMiddleware";
 import multer from "multer";
+import { approveDocument, approveOwnershipTransfer, getTransferForReview, getTransfersForReview, rejectDocument, rejectOwnershipTransfer, reviewTransfer } from "../controllers/ownershipController";
 const upload = multer({ storage: multer.memoryStorage() });
 
 const router = express.Router();
@@ -107,6 +108,61 @@ router.get("/reports/location", internalUserAuth, authorizeRoles(["GOVERNOR"]), 
 router.get("/reports/trends", internalUserAuth, authorizeRoles(["GOVERNOR"]), governorTrendReport);
 router.get("/reports/reviewer-performance", internalUserAuth, authorizeRoles(["GOVERNOR"]), governorReviewerPerformance);
 
+
+/* ========================
+   APPROVER/GOVERNOR ENDPOINTS
+   ======================== */
+
+// Get transfers for review
+router.get("/for-review", internalUserAuth, authorizeRoles(["APPROVER", "GOVERNOR"]), getTransfersForReview);
+
+// Get single transfer for review (for approvers and governors)
+router.get("/:transferId/review", internalUserAuth, authorizeRoles(["APPROVER", "GOVERNOR"]), getTransferForReview);
+
+// Review transfer (approve/reject/forward)
+router.post("/:transferId/review", internalUserAuth, authorizeRoles(["APPROVER", "GOVERNOR"]), reviewTransfer);
+router.get(
+  "/governor/review/:transferId",
+  internalUserAuth,
+  authorizeRoles(["GOVERNOR"]),
+  getTransferForReview
+);
+
+// Approve transfer
+router.post(
+  "/:transferId/approve",
+  internalUserAuth,
+  authorizeRoles(["GOVERNOR"]),
+  approveOwnershipTransfer
+);
+
+// Reject transfer with reason
+router.post(
+  "/:transferId/reject",
+  internalUserAuth,
+  authorizeRoles(["GOVERNOR"]),
+  rejectOwnershipTransfer
+);
+
+/* ========================
+   DOCUMENT-LEVEL ENDPOINTS
+   ======================== */
+
+// Approve individual document
+router.post(
+  "/document/:documentId/approve",
+  internalUserAuth,
+  authorizeRoles(["APPROVER", "GOVERNOR"]),
+  approveDocument
+);
+
+// Reject individual document
+router.post(
+  "/document/:documentId/reject",
+  internalUserAuth,
+  authorizeRoles(["APPROVER", "GOVERNOR"]),
+  rejectDocument
+);
 
 
 export default router;
