@@ -597,9 +597,8 @@ async function finalizeTransfer(
       // Update original land boundary (subtract transferred area) AND recalculate coordinates
       // After partial transfer, the land shape changes, so we need to:
       // 1. Update the boundary geometry
-      // 2. Recalculate the area from the new boundary
+      // 2. Recalculate the area from the new boundary (using geography for proper square meter calculation)
       // 3. Recalculate the center coordinates
-      // 4. Clear coordinate data since the shape has changed (needs re-survey for accurate coords/bearings)
       await tx.$queryRaw`
         WITH updated_boundary AS (
           SELECT 
@@ -609,14 +608,9 @@ async function finalizeTransfer(
         )
         UPDATE "LandRegistration"
         SET "boundary" = updated_boundary.new_geom,
-            "areaSqm" = (ST_Area(updated_boundary.new_geom) / 10000)::numeric,
+            "areaSqm" = ROUND((ST_Area(ST_GeogFromText(ST_AsText(updated_boundary.new_geom), 4326)) / 10000)::numeric, 2),
             "centerLat" = ST_Y(ST_Centroid(updated_boundary.new_geom)),
-            "centerLng" = ST_X(ST_Centroid(updated_boundary.new_geom)),
-            "latlngCoordinates" = NULL,
-            "utmCoordinates" = NULL,
-            "bearings" = NULL,
-            "surveyType" = NULL,
-            "accuracyLevel" = 'USER_DRAWN'
+            "centerLng" = ST_X(ST_Centroid(updated_boundary.new_geom))
         FROM updated_boundary
         WHERE "id" = ${transfer.landId}
       `;
