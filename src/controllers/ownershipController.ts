@@ -330,7 +330,7 @@ async function startApprovalWorkflow(transferId: string) {
     await prisma.transferStageLog.create({
       data: {
         transferId,
-        stageNumber: 1,
+        stageNumber: firstApprover.position || 1,
         internalUserId: firstApprover.id,
         status: "PENDING",
         arrivedAt: new Date(),
@@ -384,7 +384,7 @@ async function sendApproverNotification(
         </div>
 
         <div style="text-align: center; margin: 20px 0;">
-          <a href="${process.env.FRONTEND_URL || 'https://your-app.com'}/dashboard/transfers"
+          <a href="${process.env.FRONTEND_URL || 'https://geo-tech-reviewer.vercel.app/'}/dashboard/transfers"
              style="background: #28a745; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
             Review Transfer
           </a>
@@ -626,20 +626,31 @@ async function forwardToNextReviewer(
 ) {
   const transfer = await prisma.ownershipTransfer.findUnique({
     where: { id: transferId },
-    include: { land: { include: { state: true } }, stages: true },
+    include: {
+      land: { include: { state: true } },
+      stages: { include: { approver: true }, orderBy: { stageNumber: "asc" } }
+    },
   });
 
   if (!transfer) return;
 
-  const currentStage = transfer.stages[transfer.stages.length - 1];
-  const nextPosition = (currentStage?.stageNumber || 0) + 1;
+  // Get the current reviewer's position
+  const currentReviewer = await prisma.internalUser.findUnique({
+    where: { id: currentReviewerId },
+    select: { position: true },
+  });
 
-  // Find next approver
+  if (!currentReviewer) return;
+
+  const currentPosition = currentReviewer.position || 0;
+  const nextPosition = currentPosition + 1;
+
+  // Find next approver with higher position
   const nextApprover = await prisma.internalUser.findFirst({
     where: {
       stateId: transfer.land.stateId,
       role: "APPROVER",
-      position: { gt: nextPosition - 1 }, // Next position
+      position: { gt: currentPosition },
     },
     orderBy: { position: "asc" },
   });
@@ -662,14 +673,17 @@ async function forwardToNextReviewer(
     });
 
     // Update previous stage
-    await prisma.transferStageLog.update({
-      where: { id: currentStage.id },
-      data: {
-        status: "APPROVED",
-        approvedAt: new Date(),
-        message: comment,
-      },
-    });
+    const previousStage = transfer.stages[transfer.stages.length - 1];
+    if (previousStage) {
+      await prisma.transferStageLog.update({
+        where: { id: previousStage.id },
+        data: {
+          status: "APPROVED",
+          approvedAt: new Date(),
+          message: comment,
+        },
+      });
+    }
 
     // Send notification to next approver
     const transferWithDetails = await prisma.ownershipTransfer.findUnique({
@@ -708,6 +722,19 @@ async function forwardToNextReviewer(
           arrivedAt: new Date(),
         },
       });
+
+      // Update previous stage
+      const previousStage = transfer.stages[transfer.stages.length - 1];
+      if (previousStage) {
+        await prisma.transferStageLog.update({
+          where: { id: previousStage.id },
+          data: {
+            status: "APPROVED",
+            approvedAt: new Date(),
+            message: comment,
+          },
+        });
+      }
 
       // Send notification to governor
       const transferWithDetails = await prisma.ownershipTransfer.findUnique({
