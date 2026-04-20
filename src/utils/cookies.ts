@@ -1,7 +1,11 @@
 import { Response } from "express";
 
 const getCookieOptions = () => {
-  const isProduction = process.env.NODE_ENV === "production";
+  // Check for production environment
+  // In production deployments (Vercel, etc.), VERCEL env var is set
+  // For local development, even with NODE_ENV=production, allow insecure cookies
+  const isProduction = process.env.VERCEL === "1" ||
+                      (process.env.NODE_ENV === "production" && !process.env.VERCEL);
 
   return {
     httpOnly: true,
