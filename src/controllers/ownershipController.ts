@@ -500,6 +500,9 @@ async function finalizeTransfer(
         where: { id: transfer.landId },
         data: { ownerId: transfer.newOwnerId! },
       });
+
+      // Create ownership history
+    
     } else {
       // Get original boundary as WKT
       const originalBoundary = await tx.$queryRaw<{ boundary: string }[]>`
@@ -512,12 +515,11 @@ async function finalizeTransfer(
       const newLandId = crypto.randomUUID();
       await tx.$queryRaw`
         INSERT INTO "LandRegistration" (
-          id, landCode, ownerId, ownerName, ownershipType, purpose, titleType,
-          stateId, address, areaSqm, centerLat, centerLng, surveyType, utmZone,
-          utmCoordinates, latlngCoordinates, boundary, landStatus, isVerified, createdAt
+          id, owner_id, owner_name, ownership_type, purpose, title_type,
+          state_id, address, area_sqm, center_lat, center_lng, survey_type, utm_zone,
+          utm_coordinates, latlng_coordinates, boundary, land_status, is_verified, created_at
         ) VALUES (
           ${newLandId},
-          ${`SUB-${transfer.land.landCode}-${Date.now()}`},
           ${transfer.newOwnerId},
           ${transfer.newOwnerEmail},
           ${transfer.land.ownershipType},
@@ -543,7 +545,7 @@ async function finalizeTransfer(
       await tx.$queryRaw`
         UPDATE "LandRegistration"
         SET boundary = ST_Difference(boundary, ST_GeomFromText(${transferWKT}, 4326)),
-            areaSqm = areaSqm - ${transfer.transferAreaSqm}
+            area_sqm = area_sqm - ${transfer.transferAreaSqm}
         WHERE id = ${transfer.landId}
       `;
 
@@ -551,6 +553,17 @@ async function finalizeTransfer(
       await tx.ownershipTransfer.update({
         where: { id: transferId },
         data: { transferredLandId: newLandId },
+      });
+
+      // Create ownership history for the new land
+      await tx.ownershipHistory.create({
+        data: {
+          landId: newLandId,
+          fromUserId: transfer.currentOwnerId,
+          toUserId: transfer.newOwnerId!,
+          authorizedBy: governorId,
+          transferDate: new Date(),
+        },
       });
     }
 
