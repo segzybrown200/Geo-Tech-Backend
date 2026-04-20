@@ -16,12 +16,25 @@ const getCookieOptions = () => {
   };
 };
 
+const getClearCookieOptions = () => {
+  // Check for production environment
+  const isProduction = process.env.VERCEL === "1" ||
+                      (process.env.NODE_ENV === "production" && !process.env.VERCEL);
+
+  return {
+    httpOnly: true,
+    sameSite: isProduction ? "none" as const : "lax" as const,
+    secure: isProduction,
+    path: "/",
+  };
+};
+
 export const setSessionCookie = (res: Response, token: string) => {
   res.cookie("geo_session", token, getCookieOptions());
 };
 
 export const clearSessionCookie = (res: Response) => {
-  res.clearCookie("geo_session", getCookieOptions());
+  res.clearCookie("geo_session", getClearCookieOptions());
 };
 
 export const setAuthCookie = (res: Response, token: string) => {
@@ -29,5 +42,5 @@ export const setAuthCookie = (res: Response, token: string) => {
 };
 
 export const clearAuthCookie = (res: Response) => {
-  res.clearCookie("token", getCookieOptions());
+  res.clearCookie("token", getClearCookieOptions());
 };
