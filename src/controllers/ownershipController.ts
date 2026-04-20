@@ -79,6 +79,24 @@ export const initiateOwnershipTransfer = async (
       include: { owner: true, state: true },
     });
 
+    // check if the newOwnerEmail is same as current owner's email
+    if (newOwnerEmail && land?.owner?.email === newOwnerEmail) {
+      return res.status(400).json({ message: "New owner's email cannot be the same as current owner's email" });
+    }
+    // check if the newOwnerPhone is same as current owner's phone
+    if (newOwnerPhone && land?.owner?.phone === newOwnerPhone) {
+      return res.status(400).json({ message: "New owner's phone cannot be the same as current owner's phone" });
+    }
+    // check if the newOwnerEmail is in the database as a user
+    const existingUser = await prisma.user.findUnique({
+      where: { email: newOwnerEmail },
+    });
+
+      if (!existingUser) {
+        return res.status(400).json({ message: "No user found with the provided new owner's email" });
+      }
+    
+
     if (!land || land.ownerId !== ownerId) {
       return res.status(403).json({ message: "You don't own this land" });
     }
@@ -163,6 +181,7 @@ export const initiateOwnershipTransfer = async (
         currentOwnerId: ownerId,
         newOwnerEmail,
         newOwnerPhone,
+        newOwnerId: existingUser?.id || null, // Will be set after verification
         transferType,
         ...transferBoundary,
         expiresAt,
