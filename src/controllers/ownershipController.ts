@@ -1676,3 +1676,129 @@ export const rejectDocument = async (req: AuthRequest, res: Response) => {
   }
 };
 
+/* ===============================
+   13. LIST TRANSFERS FOR GOVERNOR
+================================ */
+
+export const listTransfersForGovernor = async (req: AuthRequest, res: Response) => {
+  const governorId = req.user.id;
+
+  try {
+    // Verify the user is a governor
+    const governor = await prisma.internalUser.findUnique({
+      where: { id: governorId },
+      include: { state: true },
+    });
+
+    if (!governor || governor.role !== "GOVERNOR" || !governor.stateId) {
+      return res.status(403).json({ message: "Access denied. Governor role with assigned state required." });
+    }
+
+    // Get all transfers for this governor's state
+    const transfers = await prisma.ownershipTransfer.findMany({
+      where: {
+        land: {
+          stateId: governor.stateId,
+        },
+        status: {
+          in: ["PENDING_GOVERNOR", "APPROVED", "REJECTED"],
+        },
+      },
+      include: {
+        land: {
+          include: {
+            state: true,
+          },
+        },
+        currentOwner: {
+          select: {
+            id: true,
+            fullName: true,
+            email: true,
+          },
+        },
+        newOwner: {
+          select: {
+            id: true,
+            fullName: true,
+            email: true,
+          },
+        },
+        documents: {
+          select: {
+            id: true,
+            title: true,
+            type: true,
+            url: true,
+            status: true,
+            rejectionMessage: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    // Categorize transfers
+    const pending = transfers.filter(t => t.status === "PENDING_GOVERNOR");
+    const approved = transfers.filter(t => t.status === "APPROVED");
+    const rejected = transfers.filter(t => t.status === "REJECTED");
+
+    // Format transfers for response
+    const formatTransfer = (transfer: any) => ({
+      id: transfer.id,
+      status: transfer.status,
+      createdAt: transfer.createdAt.toISOString(),
+      land: {
+        id: transfer.land.id,
+        address: transfer.land.address,
+        latitude: transfer.land.centerLat,
+        longitude: transfer.land.centerLng,
+        squareMeters: transfer.land.areaSqm,
+        state: {
+          id: transfer.land.state.id,
+          name: transfer.land.state.name,
+          governorId: governor.id,
+        },
+      },
+      currentOwner: transfer.currentOwner,
+      newOwnerEmail: transfer.newOwnerEmail,
+      newOwnerPhone: transfer.newOwnerPhone,
+      documents: transfer.documents.map((doc: any) => ({
+        id: doc.id,
+        title: doc.title,
+        type: doc.type,
+        url: doc.url,
+        status: doc.status,
+        rejectionMessage: doc.rejectionMessage,
+        transferId: transfer.id,
+        createdAt: doc.createdAt.toISOString(),
+        updatedAt: doc.updatedAt.toISOString(),
+      })),
+    });
+
+    const response = {
+      summary: {
+        total: transfers.length,
+        pending: pending.length,
+        approved: approved.length,
+        rejected: rejected.length,
+      },
+      transfers: {
+        pending: pending.map(formatTransfer),
+        approved: approved.map(formatTransfer),
+        rejected: rejected.map(formatTransfer),
+        all: transfers.map(formatTransfer),
+      },
+    };
+
+    res.json(response);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch transfers" });
+  }
+};
+

@@ -10,6 +10,7 @@ import {
   getTransferDetails,
   resendTransferOTP,
   uploadTransferDocuments,
+  listTransfersForGovernor,
 } from "../controllers/ownershipController";
 
 import multer from "multer";
@@ -45,6 +46,11 @@ router.post("/:transferId/resend-otp", requireAuth, resendTransferOTP);
 // Upload transfer documents
 router.post("/:transferId/upload-documents", requireAuth, upload.array("documents"), uploadTransferDocuments);
 
+/* ========================
+   GOVERNOR ENDPOINTS
+   ======================== */
 
+// List transfers for governor
+router.get("/governor/list", internalUserAuth, listTransfersForGovernor);
 
 export default router;
