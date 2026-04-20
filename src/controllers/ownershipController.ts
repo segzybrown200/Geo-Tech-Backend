@@ -500,9 +500,6 @@ async function finalizeTransfer(
         where: { id: transfer.landId },
         data: { ownerId: transfer.newOwnerId! },
       });
-
-      // Create ownership history
-    
     } else {
       // Get original boundary as WKT
       const originalBoundary = await tx.$queryRaw<{ boundary: string }[]>`
@@ -513,40 +510,67 @@ async function finalizeTransfer(
       // Create new land for transferred portion
       const transferWKT = toWKTPolygon(transfer.transferCoordinates as number[][]);
       const newLandId = crypto.randomUUID();
-      await tx.$queryRaw`
+      
+      // Use same pattern as landController with proper column names and ST_ForceRHR
+      const [newLand] = await tx.$queryRaw<any[]>`
+        WITH geom AS (
+          SELECT ST_ForceRHR(ST_GeomFromText(${transferWKT}, 4326)) AS g
+        )
         INSERT INTO "LandRegistration" (
-          id, owner_id, owner_name, ownership_type, purpose, title_type,
-          state_id, address, area_sqm, center_lat, center_lng, survey_type, utm_zone,
-          utm_coordinates, latlng_coordinates, boundary, land_status, is_verified, created_at
-        ) VALUES (
+          "id",
+          "landCode",
+          "ownerId",
+          "ownerName",
+          "ownershipType",
+          "purpose",
+          "titleType",
+          "stateId",
+          "address",
+          "areaSqm",
+          "centerLat",
+          "centerLng",
+          "surveyType",
+          "utmZone",
+          "utmCoordinates",
+          "latlngCoordinates",
+          "startPoint",
+          "landStatus",
+          "boundary",
+          "isVerified",
+          "createdAt"
+        )
+        SELECT
           ${newLandId},
+          ${`SUB-${transfer.land.landCode || 'UNKNOWN'}-${Date.now()}`},
           ${transfer.newOwnerId},
-          ${transfer.newOwnerEmail},
+          ${transfer.newOwnerEmail || 'Unknown Owner'},
           ${transfer.land.ownershipType},
           ${transfer.land.purpose},
           ${transfer.land.titleType},
           ${transfer.land.stateId},
           ${transfer.land.address},
           ${transfer.transferAreaSqm},
-          ${transfer.transferCenterLat},
-          ${transfer.transferCenterLng},
-          ${transfer.transferSurveyType},
+          ST_Y(ST_Centroid(g)),
+          ST_X(ST_Centroid(g)),
+          ${transfer.transferSurveyType || 'COORDINATE'},
           ${transfer.transferUtmZone},
-          ${transfer.transferCoordinates ? JSON.stringify(transfer.transferCoordinates) : null},
-          ${transfer.transferCoordinates ? JSON.stringify(transfer.transferCoordinates) : null},
-          ST_GeomFromText(${transferWKT}, 4326),
+          CAST(${JSON.stringify(transfer.transferCoordinates ?? [])} AS jsonb),
+          CAST(${JSON.stringify(transfer.transferCoordinates ?? [])} AS jsonb),
+          CAST(${JSON.stringify(transfer.transferStartPoint ?? null)} AS jsonb),
           'APPROVED',
+          g,
           true,
           now()
-        )
+        FROM geom
+        RETURNING *;
       `;
 
       // Update original land boundary (subtract transferred area)
       await tx.$queryRaw`
         UPDATE "LandRegistration"
-        SET boundary = ST_Difference(boundary, ST_GeomFromText(${transferWKT}, 4326)),
-            area_sqm = area_sqm - ${transfer.transferAreaSqm}
-        WHERE id = ${transfer.landId}
+        SET "boundary" = ST_Difference("boundary", ST_GeomFromText(${transferWKT}, 4326)),
+            "areaSqm" = "areaSqm" - ${transfer.transferAreaSqm}
+        WHERE "id" = ${transfer.landId}
       `;
 
       // Link transferred land
@@ -554,19 +578,19 @@ async function finalizeTransfer(
         where: { id: transferId },
         data: { transferredLandId: newLandId },
       });
+    }
 
-      // Create ownership history for the new land
+          // Create ownership history for the new land
       await tx.ownershipHistory.create({
         data: {
-          landId: newLandId,
+          landId: transfer.landId,
           fromUserId: transfer.currentOwnerId,
           toUserId: transfer.newOwnerId!,
           authorizedBy: governorId,
           transferDate: new Date(),
         },
       });
-    }
-
+    
     // Update transfer status
     await tx.ownershipTransfer.update({
       where: { id: transferId },
