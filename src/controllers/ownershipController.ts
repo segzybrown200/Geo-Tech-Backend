@@ -529,6 +529,16 @@ async function finalizeTransfer(
       // Create new land for transferred portion
       const transferWKT = toWKTPolygon(transfer.transferCoordinates as number[][]);
       const newLandId = crypto.randomUUID();
+
+      const existingUser = await prisma.user.findUnique({
+        where:{
+          id: transfer.newOwnerId!
+        }
+      })
+      if(!existingUser){
+        throw new Error("New owner user not found");
+      }
+      
       
       // Use same pattern as landController with proper column names and ST_ForceRHR
       const [newLand] = await tx.$queryRaw<any[]>`
@@ -562,7 +572,7 @@ async function finalizeTransfer(
           ${newLandId},
           ${`SUB-${transfer.land.landCode || 'UNKNOWN'}-${Date.now()}`},
           ${transfer.newOwnerId},
-          ${transfer.newOwnerEmail || 'Unknown Owner'},
+          ${existingUser?.fullName || 'Unknown Owner'},
           ${transfer.land.ownershipType},
           ${transfer.land.purpose},
           ${transfer.land.titleType},
