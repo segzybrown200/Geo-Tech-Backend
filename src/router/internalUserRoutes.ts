@@ -34,7 +34,7 @@ import {
 } from "../middlewares/authMiddleware";
 import { authorizeRoles } from "../middlewares/roleMiddleware";
 import multer from "multer";
-import { approveDocument, approveOwnershipTransfer, getTransferForReview, getTransfersForReview, rejectDocument, rejectOwnershipTransfer, reviewTransfer } from "../controllers/ownershipController";
+import { approveDocument, approveOwnershipTransfer, getTransferForReview, getTransfersForReview, listTransfersForGovernor, rejectDocument, rejectOwnershipTransfer, reviewTransfer } from "../controllers/ownershipController";
 const upload = multer({ storage: multer.memoryStorage() });
 
 const router = express.Router();
@@ -163,6 +163,8 @@ router.post(
   authorizeRoles(["APPROVER", "GOVERNOR"]),
   rejectDocument
 );
+// List transfers for governor
+router.get("/governor/list", internalUserAuth, listTransfersForGovernor);
 
 
 export default router;
