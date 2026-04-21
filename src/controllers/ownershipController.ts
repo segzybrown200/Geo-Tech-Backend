@@ -760,8 +760,12 @@ async function finalizeTransfer(
       return;
     }
 
-    const transferCoords = transfer.transferCoordinates as number[][];
-    const transferBearings = transfer.transferBearings as { bearing: number; distance: number }[];
+    const transferCoords = Array.isArray(transfer.transferCoordinates) 
+      ? transfer.transferCoordinates as number[][] 
+      : JSON.parse(transfer.transferCoordinates as string) as number[][];
+    const transferBearings = Array.isArray(transfer.transferBearings) 
+      ? transfer.transferBearings as { bearing: number; distance: number }[] 
+      : JSON.parse(transfer.transferBearings as string) as { bearing: number; distance: number }[];
 
     // Validate transfer data
     if (!transferCoords || !Array.isArray(transferCoords) || transferCoords.some(coord => !Array.isArray(coord) || coord.length !== 2 || coord.some(n => !isFinite(n)))) {
@@ -813,9 +817,9 @@ async function finalizeTransfer(
         ST_Area(g::geography),
         ST_Y(ST_Centroid(g)),
         ST_X(ST_Centroid(g)),
-        CAST(${JSON.stringify(transferCoords)} AS jsonb),
-        CAST(${JSON.stringify(transferCoords)} AS jsonb), -- temp, will fix later
-        CAST(${JSON.stringify(transfer.transferBearings)} AS jsonb),
+        ${JSON.stringify(transferCoords)}::jsonb,
+        ${JSON.stringify(transferCoords)}::jsonb, -- temp, will fix later
+        ${JSON.stringify(transferBearings)}::jsonb,
         ${transfer.transferSurveyType},
         ${transfer.transferStartPoint},
         ${transfer.transferUtmZone},
