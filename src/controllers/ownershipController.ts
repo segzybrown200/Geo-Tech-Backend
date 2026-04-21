@@ -785,6 +785,8 @@ async function finalizeTransfer(
         "latlngCoordinates",
         "utmCoordinates",
         "bearings",
+        "surveyType",
+        "startPoint",
         "utmZone",
         "landStatus",
         "createdAt"
@@ -804,6 +806,8 @@ async function finalizeTransfer(
         CAST(${JSON.stringify(transferCoords)} AS jsonb),
         CAST(${JSON.stringify(transferCoords)} AS jsonb), -- temp, will fix later
         CAST(${JSON.stringify(transfer.transferBearings)} AS jsonb),
+        ${transfer.transferSurveyType},
+        ${transfer.transferStartPoint},
         ${transfer.transferUtmZone},
         'APPROVED',
         now()
@@ -874,6 +878,7 @@ async function finalizeTransfer(
     await tx.landRegistration.update({
       where: { id: transfer.landId },
       data: {
+        surveyType: transfer.transferSurveyType,
         areaSqm: updated[0].area,
         centerLat: updated[0].lat,
         centerLng: updated[0].lng,

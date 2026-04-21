@@ -75,8 +75,8 @@ export function convertUTMToLatLng(
   const utmProj = `+proj=utm +zone=${zoneNumber} ${isSouth ? "+south" : ""} +datum=WGS84 +units=m +no_defs`;
   
   if (toUTM) {
-    // LatLng -> UTM
-    return proj4(WGS84, utmProj, [easting, northing]) as [number, number];
+    // LatLng -> UTM: easting=lat, northing=lng, so pass [lng, lat]
+    return proj4(WGS84, utmProj, [northing, easting]) as [number, number];
   } else {
     // UTM -> LatLng
     return proj4(utmProj, WGS84, [easting, northing]) as [number, number];
