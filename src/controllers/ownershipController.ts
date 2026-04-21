@@ -19,6 +19,7 @@ import {
   calculateAreaFromUTM,
   isClosed,
 } from "../utils/germetry";
+import { re } from "mathjs";
 
 function toWKTPolygon(coords: number[][]) {
   const formatted = coords.map(([lat, lng]) => `${lng} ${lat}`).join(",");
@@ -712,7 +713,29 @@ export const reviewTransfer = async (req: AuthRequest, res: Response) => {
 //     });
 //   });
 // }
+function coordinatesToBearings(utmCoords: number[][]) {
+  const bearings: { distance: number; bearing: number }[] = [];
 
+  for (let i = 0; i < utmCoords.length - 1; i++) {
+    const [e1, n1] = utmCoords[i];
+    const [e2, n2] = utmCoords[i + 1];
+
+    const deltaE = e2 - e1;
+    const deltaN = n2 - n1;
+
+    const distance = Math.sqrt(deltaE ** 2 + deltaN ** 2);
+
+    let bearing = (Math.atan2(deltaE, deltaN) * 180) / Math.PI;
+    bearing = (bearing + 360) % 360;
+
+    bearings.push({
+      distance: Number(distance.toFixed(2)),
+      bearing: Number(bearing.toFixed(3)),
+    });
+  }
+
+  return bearings;
+}
 async function finalizeTransfer(
   transferId: string,
   governorId: string,
@@ -734,11 +757,12 @@ async function finalizeTransfer(
       return;
     }
 
-    const transferWKT = toWKTPolygon(
-      transfer.transferCoordinates as number[][]
-    );
+    const transferCoords = transfer.transferCoordinates as number[][];
+    const transferWKT = toWKTPolygon(transferCoords);
 
-    // ✅ CREATE NEW LAND
+    // =========================
+    // 1️⃣ CREATE NEW LAND
+    // =========================
     const [newLand] = await tx.$queryRaw<any[]>`
       WITH geom AS (
         SELECT ST_ForceRHR(ST_GeomFromText(${transferWKT}, 4326)) AS g
@@ -766,8 +790,8 @@ async function finalizeTransfer(
         ST_Area(g::geography),
         ST_Y(ST_Centroid(g)),
         ST_X(ST_Centroid(g)),
-        CAST(${JSON.stringify(transfer.transferCoordinates)} AS jsonb),
-        CAST(${JSON.stringify(transfer.transferCoordinates)} AS jsonb),
+        CAST(${JSON.stringify(transferCoords)} AS jsonb),
+        CAST(${JSON.stringify(transferCoords)} AS jsonb), -- temp, will fix later
         CAST(${JSON.stringify(transfer.transferBearings)} AS jsonb),
         ${transfer.transferUtmZone},
         'APPROVED',
@@ -776,47 +800,114 @@ async function finalizeTransfer(
       RETURNING *;
     `;
 
-    // ✅ UPDATE ORIGINAL LAND (CRITICAL FIX)
-    const updated = await tx.$queryRaw<any[]>`
-      WITH diff AS (
-        SELECT ST_Difference(
-          boundary,
-          ST_GeomFromText(${transferWKT}, 4326)
-        ) AS g
-        FROM "LandRegistration"
-        WHERE id = ${transfer.landId}
+    // =========================
+    // 2️⃣ CUT ORIGINAL LAND (SQL ONLY)
+    // =========================
+    await tx.$queryRaw`
+      UPDATE "LandRegistration"
+      SET "boundary" = ST_Difference(
+        "boundary",
+        ST_GeomFromText(${transferWKT}, 4326)
       )
-      SELECT
-        ST_AsGeoJSON(g) as geo,
-        ST_Area(g::geography) as area,
-        ST_Y(ST_Centroid(g)) as lat,
-        ST_X(ST_Centroid(g)) as lng,
-        ST_GeometryType(g) as type
-      FROM diff
+      WHERE "id" = ${transfer.landId}
     `;
 
-    const geo = JSON.parse(updated[0].geo);
+    // =========================
+    // 3️⃣ FETCH UPDATED GEOMETRY
+    // =========================
+    const updated = await tx.$queryRaw<any[]>`
+      SELECT 
+        ST_AsGeoJSON(boundary) as geo,
+        ST_Area(boundary::geography) as area,
+        ST_Y(ST_Centroid(boundary)) as lat,
+        ST_X(ST_Centroid(boundary)) as lng,
+        ST_GeometryType(boundary) as type
+      FROM "LandRegistration"
+      WHERE id = ${transfer.landId}
+    `;
 
-    if (updated[0].type !== "ST_Polygon") {
-      throw new Error("Invalid subdivision result");
+    if (!updated.length) {
+      throw new Error("Failed to fetch updated geometry");
     }
 
-    const newCoords = geo.coordinates[0].map(
+    if (updated[0].type !== "ST_Polygon") {
+      throw new Error("Subdivision resulted in invalid geometry");
+    }
+
+    // =========================
+    // 4️⃣ EXTRACT LAT/LNG
+    // =========================
+    const geo = JSON.parse(updated[0].geo);
+
+    const newLatLng: number[][] = geo.coordinates[0].map(
       ([lng, lat]: number[]) => [lat, lng]
     );
 
+    // =========================
+    // 5️⃣ CONVERT TO UTM
+    // =========================
+    const utmZone = transfer.transferUtmZone;
+
+    const newUTM = newLatLng.map(([lat, lng]) =>
+      convertUTMToLatLng(lat, lng, utmZone as string, true)
+    );
+
+    // =========================
+    // 6️⃣ 🔥 GENERATE NEW BEARINGS
+    // =========================
+    const newBearings = coordinatesToBearings(newUTM);
+
+    // =========================
+    // 7️⃣ UPDATE ORIGINAL LAND (NO GEOMETRY HERE)
+    // =========================
     await tx.landRegistration.update({
       where: { id: transfer.landId },
       data: {
-        boundary: undefined, // already updated in DB
         areaSqm: updated[0].area,
         centerLat: updated[0].lat,
         centerLng: updated[0].lng,
-        latlngCoordinates: newCoords,
+        latlngCoordinates: newLatLng,
+        utmCoordinates: newUTM,
+        bearings: newBearings,
       },
     });
 
-        await tx.ownershipHistory.create({
+    // =========================
+    // 8️⃣ FIX NEW LAND UTM + BEARINGS
+    // =========================
+    const newLandUTM = transferCoords.map(([lat, lng]) =>
+      convertUTMToLatLng(lat, lng, utmZone as string, true)
+    );
+
+    const newLandBearings = coordinatesToBearings(newLandUTM);
+
+    await tx.landRegistration.update({
+      where: { id: newLand.id },
+      data: {
+        utmCoordinates: newLandUTM,
+        bearings: newLandBearings,
+      },
+    });
+
+    // =========================
+    // 9️⃣ FINALIZE TRANSFER
+    // =========================
+    await tx.ownershipTransfer.update({
+      where: { id: transferId },
+      data: {
+        status: "APPROVED",
+        governorId,
+        transferredLandId: newLand.id,
+        reviewedAt: new Date(),
+        governorComment: comment,
+
+      },
+    });
+
+    // =========================
+    // 🔟 HISTORY
+    // =========================
+    await tx.ownershipHistory.create({
       data: {
         landId: transfer.landId,
         fromUserId: transfer.currentOwnerId,
@@ -826,26 +917,9 @@ async function finalizeTransfer(
       },
     });
 
-    await tx.ownershipTransfer.update({
-      where: { id: transferId },
-      data: {
-        status: "APPROVED",
-        governorId,
-        transferredLandId: newLand.id,
-      },
-    });
-      // Audit log
-    await tx.ownershipTransferAuditLog.create({
-      data: {
-        transferId,
-        action: "APPROVED",
-        performedById: governorId,
-        performedByRole: "GOVERNOR",
-        comment,
-      },
-    });
   });
 }
+
 
 /* ===============================
    5.5. REJECT TRANSFER
