@@ -3,7 +3,10 @@ import crypto from "crypto";
 import { Response } from "express";
 import { AuthRequest } from "../middlewares/authMiddleware";
 import { sendEmail } from "../services/emailSevices";
-import { uploadToCloudinary, validateDocumentFile } from "../services/uploadService";
+import {
+  uploadToCloudinary,
+  validateDocumentFile,
+} from "../services/uploadService";
 import {
   ownershipTransferInitiateSchema,
   ownershipTransferVerifySchema,
@@ -18,9 +21,7 @@ import {
 } from "../utils/germetry";
 
 function toWKTPolygon(coords: number[][]) {
-  const formatted = coords
-    .map(([lat, lng]) => `${lng} ${lat}`)
-    .join(",");
+  const formatted = coords.map(([lat, lng]) => `${lng} ${lat}`).join(",");
   return `POLYGON((${formatted}))`;
 }
 
@@ -47,7 +48,7 @@ function normalizeLatLngOrder(coords: number[][]): number[][] {
 
 export const initiateOwnershipTransfer = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ) => {
   const body = ownershipTransferInitiateSchema.safeParse(req.body);
   if (!body.success) {
@@ -81,28 +82,41 @@ export const initiateOwnershipTransfer = async (
 
     // check if the newOwnerEmail is same as current owner's email
     if (newOwnerEmail && land?.owner?.email === newOwnerEmail) {
-      return res.status(400).json({ message: "New owner's email cannot be the same as current owner's email" });
+      return res
+        .status(400)
+        .json({
+          message:
+            "New owner's email cannot be the same as current owner's email",
+        });
     }
     // check if the newOwnerPhone is same as current owner's phone
     if (newOwnerPhone && land?.owner?.phone === newOwnerPhone) {
-      return res.status(400).json({ message: "New owner's phone cannot be the same as current owner's phone" });
+      return res
+        .status(400)
+        .json({
+          message:
+            "New owner's phone cannot be the same as current owner's phone",
+        });
     }
     // check if the newOwnerEmail is in the database as a user
     const existingUser = await prisma.user.findUnique({
       where: { email: newOwnerEmail },
     });
 
-      if (!existingUser) {
-        return res.status(400).json({ message: "No user found with the provided new owner's email" });
-      }
-    
+    if (!existingUser) {
+      return res
+        .status(400)
+        .json({ message: "No user found with the provided new owner's email" });
+    }
 
     if (!land || land.ownerId !== ownerId) {
       return res.status(403).json({ message: "You don't own this land" });
     }
 
     if (land.landStatus !== "APPROVED") {
-      return res.status(400).json({ message: "Land must be approved to transfer" });
+      return res
+        .status(400)
+        .json({ message: "Land must be approved to transfer" });
     }
 
     // For partial transfers, validate boundary
@@ -113,12 +127,16 @@ export const initiateOwnershipTransfer = async (
 
     if (transferType === "PARTIAL") {
       if (!transferSurveyType) {
-        return res.status(400).json({ message: "Survey type required for partial transfer" });
+        return res
+          .status(400)
+          .json({ message: "Survey type required for partial transfer" });
       }
 
       if (transferSurveyType === "COORDINATE") {
         if (!coordinates || coordinates.length < 4) {
-          return res.status(400).json({ message: "At least 4 coordinates required" });
+          return res
+            .status(400)
+            .json({ message: "At least 4 coordinates required" });
         }
         const normalized = normalizeLatLngOrder(coordinates);
         transferLatLng = closePolygon(normalized);
@@ -126,28 +144,47 @@ export const initiateOwnershipTransfer = async (
           return res.status(400).json({ message: "UTM zone required" });
         }
         transferUTM = transferLatLng.map(([lat, lng]) =>
-          convertUTMToLatLng(lat, lng, utmZone, true)
+          convertUTMToLatLng(lat, lng, utmZone, true),
         );
       } else if (transferSurveyType === "BEARING") {
         if (!bearings || bearings.length < 3 || !startPoint || !utmZone) {
-          return res.status(400).json({ message: "Bearings, start point, and UTM zone required" });
+          return res
+            .status(400)
+            .json({ message: "Bearings, start point, and UTM zone required" });
         }
-        const result = bearingsToCoordinates(bearings, utmZone, startPoint, true);
+        const result = bearingsToCoordinates(
+          bearings,
+          utmZone,
+          startPoint,
+          true,
+        );
         transferLatLng = closePolygon(result.latlngCoordinates);
         transferUTM = closePolygon(result.utmCoordinates);
         if (!isClosed(transferUTM)) {
-          return res.status(400).json({ message: "Transfer polygon not closed" });
+          return res
+            .status(400)
+            .json({ message: "Transfer polygon not closed" });
         }
       }
 
       // Validate transfer boundary is within original land
       const transferWKT = toWKTPolygon(transferLatLng);
+      // const withinCheck = await prisma.$queryRaw<{ within: boolean }[]>`
+      //   SELECT ST_Within(ST_GeomFromText(${transferWKT}, 4326), boundary) as within
+      //   FROM "LandRegistration" WHERE id = ${landId}
+      // `;
       const withinCheck = await prisma.$queryRaw<{ within: boolean }[]>`
-        SELECT ST_Within(ST_GeomFromText(${transferWKT}, 4326), boundary) as within
-        FROM "LandRegistration" WHERE id = ${landId}
+        SELECT ST_CoveredBy(
+          ST_Buffer(ST_GeomFromText(${transferWKT}, 4326), -0.0000001),
+          ST_Buffer(boundary, 0.0000001)
+        ) as within
+        FROM "LandRegistration"
+        WHERE id = ${landId}
       `;
       if (!withinCheck[0]?.within) {
-        return res.status(400).json({ message: "Transfer boundary must be within original land" });
+        return res
+          .status(400)
+          .json({ message: "Transfer boundary must be within original land" });
       }
 
       finalTransferArea = calculateAreaFromUTM(transferUTM);
@@ -166,8 +203,12 @@ export const initiateOwnershipTransfer = async (
         transferBearings: bearings,
         transferUtmZone: utmZone,
         transferAreaSqm: finalTransferArea,
-        transferCenterLat: transferLatLng.reduce((sum, [lat]) => sum + lat, 0) / transferLatLng.length,
-        transferCenterLng: transferLatLng.reduce((sum, [, lng]) => sum + lng, 0) / transferLatLng.length,
+        transferCenterLat:
+          transferLatLng.reduce((sum, [lat]) => sum + lat, 0) /
+          transferLatLng.length,
+        transferCenterLng:
+          transferLatLng.reduce((sum, [, lng]) => sum + lng, 0) /
+          transferLatLng.length,
         transferStartPoint: startPoint,
       };
     }
@@ -213,7 +254,7 @@ export const initiateOwnershipTransfer = async (
         await sendEmail(
           channel.value,
           "Land Ownership Transfer - Verification",
-          `<p>Your verification code: <strong>${code}</strong></p>`
+          `<p>Your verification code: <strong>${code}</strong></p>`,
         );
       }
     }
@@ -270,7 +311,7 @@ export const verifyTransfer = async (req: AuthRequest, res: Response) => {
     }
 
     // Find verification record
-    const verification = transfer.verifications.find(v => v.code === code);
+    const verification = transfer.verifications.find((v) => v.code === code);
     if (!verification || verification.isVerified) {
       return res.status(400).json({ message: "Invalid or used code" });
     }
@@ -291,7 +332,9 @@ export const verifyTransfer = async (req: AuthRequest, res: Response) => {
     });
 
     if (updatedTransfer) {
-      const unverified = updatedTransfer.verifications.filter(v => !v.isVerified);
+      const unverified = updatedTransfer.verifications.filter(
+        (v) => !v.isVerified,
+      );
       if (unverified.length === 0) {
         // Mark as verified by parties - documents needed next
         await prisma.ownershipTransfer.update({
@@ -301,7 +344,10 @@ export const verifyTransfer = async (req: AuthRequest, res: Response) => {
       }
     }
 
-    res.json({ message: "Verified successfully", allVerified: updatedTransfer?.verifications.every(v => v.isVerified) });
+    res.json({
+      message: "Verified successfully",
+      allVerified: updatedTransfer?.verifications.every((v) => v.isVerified),
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Verification failed" });
@@ -322,7 +368,7 @@ async function startApprovalWorkflow(transferId: string) {
     include: {
       land: { include: { state: true } },
       currentOwner: true,
-      documents: true
+      documents: true,
     },
   });
 
@@ -357,7 +403,11 @@ async function startApprovalWorkflow(transferId: string) {
     });
 
     // Send detailed notification email to approver
-    await sendApproverNotification(firstApprover, transfer, "New Transfer Assigned for Review");
+    await sendApproverNotification(
+      firstApprover,
+      transfer,
+      "New Transfer Assigned for Review",
+    );
   }
 }
 
@@ -368,11 +418,12 @@ async function startApprovalWorkflow(transferId: string) {
 async function sendApproverNotification(
   approver: any,
   transfer: any,
-  subject: string
+  subject: string,
 ) {
   if (!approver.email) return;
 
-  const transferType = transfer.transferType === "FULL" ? "Full Ownership" : "Partial Ownership";
+  const transferType =
+    transfer.transferType === "FULL" ? "Full Ownership" : "Partial Ownership";
   const documentCount = transfer.documents?.length || 0;
 
   const emailHtml = `
@@ -403,7 +454,7 @@ async function sendApproverNotification(
         </div>
 
         <div style="text-align: center; margin: 20px 0;">
-          <a href="${process.env.FRONTEND_URL || 'https://geo-tech-reviewer.vercel.app/'}/dashboard/transfers"
+          <a href="${process.env.FRONTEND_URL || "https://geo-tech-reviewer.vercel.app/"}/dashboard/transfers"
              style="background: #28a745; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
             Review Transfer
           </a>
@@ -416,11 +467,7 @@ async function sendApproverNotification(
     </div>
   `;
 
-  await sendEmail(
-    approver.email,
-    subject,
-    emailHtml
-  );
+  await sendEmail(approver.email, subject, emailHtml);
 }
 
 /* ===============================
@@ -450,7 +497,9 @@ export const reviewTransfer = async (req: AuthRequest, res: Response) => {
     });
 
     if (!transfer || transfer.currentReviewerId !== reviewerId) {
-      return res.status(403).json({ message: "Not authorized to review this transfer" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to review this transfer" });
     }
 
     const currentStage = transfer.stages[0];
@@ -469,11 +518,17 @@ export const reviewTransfer = async (req: AuthRequest, res: Response) => {
         },
       });
 
-      const unreviewedDocuments = documents.filter(doc => doc.reviews.length === 0);
+      const unreviewedDocuments = documents.filter(
+        (doc) => doc.reviews.length === 0,
+      );
       if (unreviewedDocuments.length > 0) {
         return res.status(400).json({
-          message: "All documents must be reviewed before approving the transfer",
-          unreviewedDocuments: unreviewedDocuments.map(doc => ({ id: doc.id, title: doc.title })),
+          message:
+            "All documents must be reviewed before approving the transfer",
+          unreviewedDocuments: unreviewedDocuments.map((doc) => ({
+            id: doc.id,
+            title: doc.title,
+          })),
         });
       }
 
@@ -500,6 +555,164 @@ export const reviewTransfer = async (req: AuthRequest, res: Response) => {
    5. FINALIZE TRANSFER
 ================================ */
 
+// async function finalizeTransfer(
+//   transferId: string,
+//   governorId: string,
+//   comment?: string,
+// ) {
+//   const transfer = await prisma.ownershipTransfer.findUnique({
+//     where: { id: transferId },
+//     include: { land: true },
+//   });
+
+//   if (!transfer) return;
+
+//   await prisma.$transaction(async (tx) => {
+//     if (transfer.transferType === "FULL") {
+//       // Update land owner
+//       await tx.landRegistration.update({
+//         where: { id: transfer.landId },
+//         data: { ownerId: transfer.newOwnerId! },
+//       });
+//     } else {
+//       // Get original boundary as WKT
+//       const originalBoundary = await tx.$queryRaw<{ boundary: string }[]>`
+//         SELECT ST_AsText(boundary) as boundary FROM "LandRegistration" WHERE id = ${transfer.landId}
+//       `;
+//       const originalWKT = originalBoundary[0]?.boundary;
+
+//       // Create new land for transferred portion
+//       const transferWKT = toWKTPolygon(
+//         transfer.transferCoordinates as number[][],
+//       );
+//       const newLandId = crypto.randomUUID();
+
+//       const existingUser = await prisma.user.findUnique({
+//         where: {
+//           id: transfer.newOwnerId!,
+//         },
+//       });
+//       if (!existingUser) {
+//         throw new Error("New owner user not found");
+//       }
+
+//       // Use same pattern as landController with proper column names and ST_ForceRHR
+//       const [newLand] = await tx.$queryRaw<any[]>`
+//         WITH geom AS (
+//           SELECT ST_ForceRHR(ST_GeomFromText(${transferWKT}, 4326)) AS g
+//         )
+//         INSERT INTO "LandRegistration" (
+//           "id",
+//           "landCode",
+//           "ownerId",
+//           "ownerName",
+//           "ownershipType",
+//           "purpose",
+//           "titleType",
+//           "stateId",
+//           "address",
+//           "areaSqm",
+//           "centerLat",
+//           "centerLng",
+//           "surveyType",
+//           "utmZone",
+//           "utmCoordinates",
+//           "latlngCoordinates",
+//           "startPoint",
+//           "landStatus",
+//           "boundary",
+//           "isVerified",
+//           "createdAt"
+//         )
+//         SELECT
+//           ${newLandId},
+//           ${`SUB-${transfer.land.landCode || "UNKNOWN"}-${Date.now()}`},
+//           ${transfer.newOwnerId},
+//           ${existingUser?.fullName || "Unknown Owner"},
+//           ${transfer.land.ownershipType},
+//           ${transfer.land.purpose},
+//           ${transfer.land.titleType},
+//           ${transfer.land.stateId},
+//           ${transfer.land.address},
+//           ${transfer.transferAreaSqm},
+//           ST_Y(ST_Centroid(g)),
+//           ST_X(ST_Centroid(g)),
+//           ${transfer.transferSurveyType || "COORDINATE"},
+//           ${transfer.transferUtmZone},
+//           CAST(${JSON.stringify(transfer.transferCoordinates ?? [])} AS jsonb),
+//           CAST(${JSON.stringify(transfer.transferCoordinates ?? [])} AS jsonb),
+//           CAST(${JSON.stringify(transfer.transferStartPoint ?? null)} AS jsonb),
+//           'APPROVED',
+//           g,
+//           true,
+//           now()
+//         FROM geom
+//         RETURNING *;
+//       `;
+
+//       // Update original land boundary (subtract transferred area) AND recalculate coordinates
+//       // After partial transfer, the land shape changes, so we need to:
+//       // 1. Update the boundary geometry
+//       // 2. Recalculate the area from the new boundary (using geographic calculation for proper square meter calculation)
+//       // 3. Recalculate the center coordinates
+//       await tx.$queryRaw`
+//         WITH updated_boundary AS (
+//           SELECT
+//             ST_Difference("boundary", ST_GeomFromText(${transferWKT}, 4326)) as new_geom
+//           FROM "LandRegistration"
+//           WHERE "id" = ${transfer.landId}
+//         )
+//         UPDATE "LandRegistration"
+//         SET "boundary" = updated_boundary.new_geom,
+//             "areaSqm" = ROUND(ST_Area(updated_boundary.new_geom, true)::numeric, 2),
+//             "centerLat" = ST_Y(ST_Centroid(updated_boundary.new_geom)),
+//             "centerLng" = ST_X(ST_Centroid(updated_boundary.new_geom))
+//         FROM updated_boundary
+//         WHERE "id" = ${transfer.landId}
+//       `;
+
+//       // Link transferred land
+//       await tx.ownershipTransfer.update({
+//         where: { id: transferId },
+//         data: { transferredLandId: newLandId },
+//       });
+//     }
+
+//     // Create ownership history for the new land
+//     await tx.ownershipHistory.create({
+//       data: {
+//         landId: transfer.landId,
+//         fromUserId: transfer.currentOwnerId,
+//         toUserId: transfer.newOwnerId!,
+//         authorizedBy: governorId,
+//         transferDate: new Date(),
+//       },
+//     });
+
+//     // Update transfer status
+//     await tx.ownershipTransfer.update({
+//       where: { id: transferId },
+//       data: {
+//         status: "APPROVED",
+//         governorId,
+//         reviewedAt: new Date(),
+//         governorComment: comment,
+//       },
+//     });
+
+//     // Audit log
+//     await tx.ownershipTransferAuditLog.create({
+//       data: {
+//         transferId,
+//         action: "APPROVED",
+//         performedById: governorId,
+//         performedByRole: "GOVERNOR",
+//         comment,
+//       },
+//     });
+//   });
+// }
+
 async function finalizeTransfer(
   transferId: string,
   governorId: string,
@@ -514,137 +727,114 @@ async function finalizeTransfer(
 
   await prisma.$transaction(async (tx) => {
     if (transfer.transferType === "FULL") {
-      // Update land owner
       await tx.landRegistration.update({
         where: { id: transfer.landId },
         data: { ownerId: transfer.newOwnerId! },
       });
-    } else {
-      // Get original boundary as WKT
-      const originalBoundary = await tx.$queryRaw<{ boundary: string }[]>`
-        SELECT ST_AsText(boundary) as boundary FROM "LandRegistration" WHERE id = ${transfer.landId}
-      `;
-      const originalWKT = originalBoundary[0]?.boundary;
-
-      // Create new land for transferred portion
-      const transferWKT = toWKTPolygon(transfer.transferCoordinates as number[][]);
-      const newLandId = crypto.randomUUID();
-
-      const existingUser = await prisma.user.findUnique({
-        where:{
-          id: transfer.newOwnerId!
-        }
-      })
-      if(!existingUser){
-        throw new Error("New owner user not found");
-      }
-      
-      
-      // Use same pattern as landController with proper column names and ST_ForceRHR
-      const [newLand] = await tx.$queryRaw<any[]>`
-        WITH geom AS (
-          SELECT ST_ForceRHR(ST_GeomFromText(${transferWKT}, 4326)) AS g
-        )
-        INSERT INTO "LandRegistration" (
-          "id",
-          "landCode",
-          "ownerId",
-          "ownerName",
-          "ownershipType",
-          "purpose",
-          "titleType",
-          "stateId",
-          "address",
-          "areaSqm",
-          "centerLat",
-          "centerLng",
-          "surveyType",
-          "utmZone",
-          "utmCoordinates",
-          "latlngCoordinates",
-          "startPoint",
-          "landStatus",
-          "boundary",
-          "isVerified",
-          "createdAt"
-        )
-        SELECT
-          ${newLandId},
-          ${`SUB-${transfer.land.landCode || 'UNKNOWN'}-${Date.now()}`},
-          ${transfer.newOwnerId},
-          ${existingUser?.fullName || 'Unknown Owner'},
-          ${transfer.land.ownershipType},
-          ${transfer.land.purpose},
-          ${transfer.land.titleType},
-          ${transfer.land.stateId},
-          ${transfer.land.address},
-          ${transfer.transferAreaSqm},
-          ST_Y(ST_Centroid(g)),
-          ST_X(ST_Centroid(g)),
-          ${transfer.transferSurveyType || 'COORDINATE'},
-          ${transfer.transferUtmZone},
-          CAST(${JSON.stringify(transfer.transferCoordinates ?? [])} AS jsonb),
-          CAST(${JSON.stringify(transfer.transferCoordinates ?? [])} AS jsonb),
-          CAST(${JSON.stringify(transfer.transferStartPoint ?? null)} AS jsonb),
-          'APPROVED',
-          g,
-          true,
-          now()
-        FROM geom
-        RETURNING *;
-      `;
-
-      // Update original land boundary (subtract transferred area) AND recalculate coordinates
-      // After partial transfer, the land shape changes, so we need to:
-      // 1. Update the boundary geometry
-      // 2. Recalculate the area from the new boundary (using geographic calculation for proper square meter calculation)
-      // 3. Recalculate the center coordinates
-      await tx.$queryRaw`
-        WITH updated_boundary AS (
-          SELECT
-            ST_Difference("boundary", ST_GeomFromText(${transferWKT}, 4326)) as new_geom
-          FROM "LandRegistration"
-          WHERE "id" = ${transfer.landId}
-        )
-        UPDATE "LandRegistration"
-        SET "boundary" = updated_boundary.new_geom,
-            "areaSqm" = ROUND(ST_Area(updated_boundary.new_geom, true)::numeric, 2),
-            "centerLat" = ST_Y(ST_Centroid(updated_boundary.new_geom)),
-            "centerLng" = ST_X(ST_Centroid(updated_boundary.new_geom))
-        FROM updated_boundary
-        WHERE "id" = ${transfer.landId}
-      `;
-
-      // Link transferred land
-      await tx.ownershipTransfer.update({
-        where: { id: transferId },
-        data: { transferredLandId: newLandId },
-      });
+      return;
     }
 
-          // Create ownership history for the new land
-      await tx.ownershipHistory.create({
-        data: {
-          landId: transfer.landId,
-          fromUserId: transfer.currentOwnerId,
-          toUserId: transfer.newOwnerId!,
-          authorizedBy: governorId,
-          transferDate: new Date(),
-        },
-      });
-    
-    // Update transfer status
+    const transferWKT = toWKTPolygon(
+      transfer.transferCoordinates as number[][]
+    );
+
+    // ✅ CREATE NEW LAND
+    const [newLand] = await tx.$queryRaw<any[]>`
+      WITH geom AS (
+        SELECT ST_ForceRHR(ST_GeomFromText(${transferWKT}, 4326)) AS g
+      )
+      INSERT INTO "LandRegistration" (
+        "id",
+        "ownerId",
+        "ownerName",
+        "boundary",
+        "areaSqm",
+        "centerLat",
+        "centerLng",
+        "latlngCoordinates",
+        "utmCoordinates",
+        "bearings",
+        "utmZone",
+        "landStatus",
+        "createdAt"
+      )
+      SELECT
+        gen_random_uuid(),
+        ${transfer.newOwnerId},
+        'New Owner',
+        g,
+        ST_Area(g::geography),
+        ST_Y(ST_Centroid(g)),
+        ST_X(ST_Centroid(g)),
+        CAST(${JSON.stringify(transfer.transferCoordinates)} AS jsonb),
+        CAST(${JSON.stringify(transfer.transferCoordinates)} AS jsonb),
+        CAST(${JSON.stringify(transfer.transferBearings)} AS jsonb),
+        ${transfer.transferUtmZone},
+        'APPROVED',
+        now()
+      FROM geom
+      RETURNING *;
+    `;
+
+    // ✅ UPDATE ORIGINAL LAND (CRITICAL FIX)
+    const updated = await tx.$queryRaw<any[]>`
+      WITH diff AS (
+        SELECT ST_Difference(
+          boundary,
+          ST_GeomFromText(${transferWKT}, 4326)
+        ) AS g
+        FROM "LandRegistration"
+        WHERE id = ${transfer.landId}
+      )
+      SELECT
+        ST_AsGeoJSON(g) as geo,
+        ST_Area(g::geography) as area,
+        ST_Y(ST_Centroid(g)) as lat,
+        ST_X(ST_Centroid(g)) as lng,
+        ST_GeometryType(g) as type
+      FROM diff
+    `;
+
+    const geo = JSON.parse(updated[0].geo);
+
+    if (updated[0].type !== "ST_Polygon") {
+      throw new Error("Invalid subdivision result");
+    }
+
+    const newCoords = geo.coordinates[0].map(
+      ([lng, lat]: number[]) => [lat, lng]
+    );
+
+    await tx.landRegistration.update({
+      where: { id: transfer.landId },
+      data: {
+        boundary: undefined, // already updated in DB
+        areaSqm: updated[0].area,
+        centerLat: updated[0].lat,
+        centerLng: updated[0].lng,
+        latlngCoordinates: newCoords,
+      },
+    });
+
+        await tx.ownershipHistory.create({
+      data: {
+        landId: transfer.landId,
+        fromUserId: transfer.currentOwnerId,
+        toUserId: transfer.newOwnerId!,
+        authorizedBy: governorId,
+        transferDate: new Date(),
+      },
+    });
+
     await tx.ownershipTransfer.update({
       where: { id: transferId },
       data: {
         status: "APPROVED",
         governorId,
-        reviewedAt: new Date(),
-        governorComment: comment,
+        transferredLandId: newLand.id,
       },
     });
-
-    // Audit log
+      // Audit log
     await tx.ownershipTransferAuditLog.create({
       data: {
         transferId,
@@ -664,7 +854,7 @@ async function finalizeTransfer(
 async function rejectTransfer(
   transferId: string,
   reviewerId: string,
-  reason?: string
+  reason?: string,
 ) {
   const transfer = await prisma.ownershipTransfer.findUnique({
     where: { id: transferId },
@@ -701,13 +891,13 @@ async function rejectTransfer(
 async function forwardToNextReviewer(
   transferId: string,
   currentReviewerId: string,
-  comment?: string
+  comment?: string,
 ) {
   const transfer = await prisma.ownershipTransfer.findUnique({
     where: { id: transferId },
     include: {
       land: { include: { state: true } },
-      stages: { include: { approver: true }, orderBy: { stageNumber: "asc" } }
+      stages: { include: { approver: true }, orderBy: { stageNumber: "asc" } },
     },
   });
 
@@ -770,12 +960,16 @@ async function forwardToNextReviewer(
       include: {
         land: { include: { state: true } },
         currentOwner: true,
-        documents: true
+        documents: true,
       },
     });
 
     if (transferWithDetails) {
-      await sendApproverNotification(nextApprover, transferWithDetails, "Transfer Forwarded for Your Review");
+      await sendApproverNotification(
+        nextApprover,
+        transferWithDetails,
+        "Transfer Forwarded for Your Review",
+      );
     }
   } else {
     // No more approvers, forward to governor
@@ -821,12 +1015,16 @@ async function forwardToNextReviewer(
         include: {
           land: { include: { state: true } },
           currentOwner: true,
-          documents: true
+          documents: true,
         },
       });
 
       if (transferWithDetails) {
-        await sendApproverNotification(governor, transferWithDetails, "Transfer Requires Governor Approval");
+        await sendApproverNotification(
+          governor,
+          transferWithDetails,
+          "Transfer Requires Governor Approval",
+        );
       }
     }
   }
@@ -836,7 +1034,10 @@ async function forwardToNextReviewer(
    8. GET TRANSFERS FOR REVIEW
 ================================ */
 
-export const getTransfersForReview = async (req: AuthRequest, res: Response) => {
+export const getTransfersForReview = async (
+  req: AuthRequest,
+  res: Response,
+) => {
   const reviewerId = req.user.id;
 
   try {
@@ -887,15 +1088,15 @@ export const getUserTransfers = async (req: AuthRequest, res: Response) => {
   try {
     const transfers = await prisma.ownershipTransfer.findMany({
       where: {
-        OR: [
-          { currentOwnerId: userId },
-          { newOwnerId: userId },
-        ],
+        OR: [{ currentOwnerId: userId }, { newOwnerId: userId }],
       },
       include: {
         land: { include: { state: true } },
         documents: true,
-        stages: { include: { approver: true }, orderBy: { stageNumber: "asc" } },
+        stages: {
+          include: { approver: true },
+          orderBy: { stageNumber: "asc" },
+        },
         transferAuditLogs: { orderBy: { createdAt: "desc" }, take: 5 },
         currentReviewer: true,
         governor: true,
@@ -903,18 +1104,24 @@ export const getUserTransfers = async (req: AuthRequest, res: Response) => {
       orderBy: { createdAt: "desc" },
     });
 
-    const formattedTransfers = transfers.map(transfer => {
+    const formattedTransfers = transfers.map((transfer) => {
       // Calculate progress percentage based on status
       const progressPercentage = calculateTransferProgress(transfer.status);
 
       // Get document statistics
       const totalDocuments = transfer.documents.length;
-      const approvedDocuments = transfer.documents.filter(d => d.status === "APPROVED").length;
-      const rejectedDocuments = transfer.documents.filter(d => d.status === "REJECTED").length;
-      const pendingDocuments = transfer.documents.filter(d => d.status === "PENDING").length;
+      const approvedDocuments = transfer.documents.filter(
+        (d) => d.status === "APPROVED",
+      ).length;
+      const rejectedDocuments = transfer.documents.filter(
+        (d) => d.status === "REJECTED",
+      ).length;
+      const pendingDocuments = transfer.documents.filter(
+        (d) => d.status === "PENDING",
+      ).length;
 
       // Format stages
-      const stages = transfer.stages.map(stage => ({
+      const stages = transfer.stages.map((stage) => ({
         stage: `Stage ${stage.stageNumber}`,
         completed: stage.approvedAt !== null,
         completedAt: stage.approvedAt?.toISOString(),
@@ -930,7 +1137,7 @@ export const getUserTransfers = async (req: AuthRequest, res: Response) => {
       }));
 
       // Format recent activity
-      const recentActivity = transfer.transferAuditLogs.map(log => ({
+      const recentActivity = transfer.transferAuditLogs.map((log) => ({
         action: log.action,
         date: log.createdAt.toISOString(),
         comment: log.comment || "",
@@ -984,15 +1191,23 @@ export const getTransferProgress = async (req: AuthRequest, res: Response) => {
     }
 
     if (transfer.currentOwnerId !== userId && transfer.newOwnerId !== userId) {
-      return res.status(403).json({ message: "Not authorized to view this transfer" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to view this transfer" });
     }
 
     const totalDocuments = transfer.documents.length;
-    const approvedDocuments = transfer.documents.filter(d => d.status === "APPROVED").length;
-    const rejectedDocuments = transfer.documents.filter(d => d.status === "REJECTED").length;
-    const pendingDocuments = transfer.documents.filter(d => d.status === "PENDING").length;
+    const approvedDocuments = transfer.documents.filter(
+      (d) => d.status === "APPROVED",
+    ).length;
+    const rejectedDocuments = transfer.documents.filter(
+      (d) => d.status === "REJECTED",
+    ).length;
+    const pendingDocuments = transfer.documents.filter(
+      (d) => d.status === "PENDING",
+    ).length;
 
-    const verificationTargets = transfer.verifications.map(v => ({
+    const verificationTargets = transfer.verifications.map((v) => ({
       target: v.target,
       channelType: v.channelType === "phone" ? "phone" : "email",
       isVerified: v.isVerified,
@@ -1018,22 +1233,32 @@ export const getTransferProgress = async (req: AuthRequest, res: Response) => {
       stages: [
         {
           stage: "VERIFICATION",
-          completed: verificationTargets.every(t => t.isVerified) && verificationTargets.length > 0,
+          completed:
+            verificationTargets.every((t) => t.isVerified) &&
+            verificationTargets.length > 0,
           completedAt: transfer.reviewedAt?.toISOString() || null,
-          progress: verificationTargets.every(t => t.isVerified) ? 100 : 0,
+          progress: verificationTargets.every((t) => t.isVerified) ? 100 : 0,
           details: {
             targets: verificationTargets,
             total: verificationTargets.length,
-            verified: verificationTargets.filter(t => t.isVerified).length,
-            pending: verificationTargets.filter(t => !t.isVerified).length,
+            verified: verificationTargets.filter((t) => t.isVerified).length,
+            pending: verificationTargets.filter((t) => !t.isVerified).length,
           },
           submittedDocuments: totalDocuments,
         },
         {
           stage: "DOCUMENTS",
-          completed: transfer.status === "DOCUMENTS_UPLOADED" || transfer.status === "PENDING_GOVERNOR" || transfer.status === "APPROVED",
+          completed:
+            transfer.status === "DOCUMENTS_UPLOADED" ||
+            transfer.status === "PENDING_GOVERNOR" ||
+            transfer.status === "APPROVED",
           completedAt: transfer.updatedAt.toISOString(),
-          progress: transfer.status === "DOCUMENTS_UPLOADED" || transfer.status === "PENDING_GOVERNOR" || transfer.status === "APPROVED" ? 100 : 0,
+          progress:
+            transfer.status === "DOCUMENTS_UPLOADED" ||
+            transfer.status === "PENDING_GOVERNOR" ||
+            transfer.status === "APPROVED"
+              ? 100
+              : 0,
           details: {
             total: totalDocuments,
             approved: approvedDocuments,
@@ -1043,7 +1268,7 @@ export const getTransferProgress = async (req: AuthRequest, res: Response) => {
           submittedDocuments: totalDocuments,
         },
       ],
-      recentActivity: transfer.transferAuditLogs.map(log => ({
+      recentActivity: transfer.transferAuditLogs.map((log) => ({
         action: log.action,
         date: log.createdAt.toISOString(),
         comment: log.comment || "",
@@ -1083,13 +1308,18 @@ export const getTransferForReview = async (req: AuthRequest, res: Response) => {
             },
           },
         },
-        stages: { include: { approver: true }, orderBy: { stageNumber: "desc" } },
+        stages: {
+          include: { approver: true },
+          orderBy: { stageNumber: "desc" },
+        },
         verifications: true,
       },
     });
 
     if (!transfer) {
-      return res.status(404).json({ message: "Transfer not found or not assigned to you" });
+      return res
+        .status(404)
+        .json({ message: "Transfer not found or not assigned to you" });
     }
 
     res.json({ transfer });
@@ -1115,7 +1345,10 @@ export const getTransferDetails = async (req: AuthRequest, res: Response) => {
         currentOwner: true,
         newOwner: true,
         documents: { include: { reviewedBy: true } },
-        stages: { include: { approver: true }, orderBy: { stageNumber: "asc" } },
+        stages: {
+          include: { approver: true },
+          orderBy: { stageNumber: "asc" },
+        },
         verifications: true,
         transferAuditLogs: { orderBy: { createdAt: "desc" }, take: 10 },
         currentReviewer: true,
@@ -1129,7 +1362,9 @@ export const getTransferDetails = async (req: AuthRequest, res: Response) => {
 
     // Check if user is authorized to view this transfer
     if (transfer.currentOwnerId !== userId && transfer.newOwnerId !== userId) {
-      return res.status(403).json({ message: "Not authorized to view this transfer" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to view this transfer" });
     }
 
     // Format the response according to TransferDetailsResponse interface
@@ -1151,41 +1386,48 @@ export const getTransferDetails = async (req: AuthRequest, res: Response) => {
         state: transfer.land.state.name,
         titleType: transfer.land.titleType,
       },
-      newOwner: transfer.newOwner ? {
-        id: transfer.newOwner.id,
-        fullName: transfer.newOwner.fullName,
-        email: transfer.newOwner.email,
-        phone: transfer.newOwner.phone,
-      } : null,
+      newOwner: transfer.newOwner
+        ? {
+            id: transfer.newOwner.id,
+            fullName: transfer.newOwner.fullName,
+            email: transfer.newOwner.email,
+            phone: transfer.newOwner.phone,
+          }
+        : null,
       currentOwner: {
         id: transfer.currentOwner.id,
         fullName: transfer.currentOwner.fullName,
         email: transfer.currentOwner.email,
         phone: transfer.currentOwner.phone,
       },
-      transferDetails: transfer.transferType === "PARTIAL" ? {
-        surveyType: transfer.transferSurveyType,
-        coordinates: transfer.transferCoordinates,
-        bearings: transfer.transferBearings,
-        utmZone: transfer.transferUtmZone,
-        areaSqm: transfer.transferAreaSqm,
-        centerLat: transfer.transferCenterLat,
-        centerLng: transfer.transferCenterLng,
-      } : null,
-      documents: transfer.documents.map(doc => ({
+      transferDetails:
+        transfer.transferType === "PARTIAL"
+          ? {
+              surveyType: transfer.transferSurveyType,
+              coordinates: transfer.transferCoordinates,
+              bearings: transfer.transferBearings,
+              utmZone: transfer.transferUtmZone,
+              areaSqm: transfer.transferAreaSqm,
+              centerLat: transfer.transferCenterLat,
+              centerLng: transfer.transferCenterLng,
+            }
+          : null,
+      documents: transfer.documents.map((doc) => ({
         id: doc.id,
         type: doc.type,
         title: doc.title,
         url: doc.url,
         status: doc.status,
         reviewedAt: doc.reviewedAt?.toISOString(),
-        reviewedBy: doc.reviewedBy ? {
-          id: doc.reviewedBy.id,
-          name: doc.reviewedBy.name,
-        } : null,
+        reviewedBy: doc.reviewedBy
+          ? {
+              id: doc.reviewedBy.id,
+              name: doc.reviewedBy.name,
+            }
+          : null,
         rejectionMessage: doc.rejectionMessage,
       })),
-      stages: transfer.stages.map(stage => ({
+      stages: transfer.stages.map((stage) => ({
         stageNumber: stage.stageNumber,
         status: stage.status,
         message: stage.message,
@@ -1197,27 +1439,31 @@ export const getTransferDetails = async (req: AuthRequest, res: Response) => {
           role: stage.approver.role,
         },
       })),
-      verifications: transfer.verifications.map(v => ({
+      verifications: transfer.verifications.map((v) => ({
         channelType: v.channelType,
         target: v.target,
         isVerified: v.isVerified,
         createdAt: v.createdAt.toISOString(),
         expiresAt: v.expiresAt.toISOString(),
       })),
-      currentReviewer: transfer.currentReviewer ? {
-        id: transfer.currentReviewer.id,
-        name: transfer.currentReviewer.name,
-        role: transfer.currentReviewer.role,
-      } : null,
-      governor: transfer.governor ? {
-        id: transfer.governor.id,
-        name: transfer.governor.name,
-      } : null,
+      currentReviewer: transfer.currentReviewer
+        ? {
+            id: transfer.currentReviewer.id,
+            name: transfer.currentReviewer.name,
+            role: transfer.currentReviewer.role,
+          }
+        : null,
+      governor: transfer.governor
+        ? {
+            id: transfer.governor.id,
+            name: transfer.governor.name,
+          }
+        : null,
       governorComment: transfer.governorComment,
       reviewedAt: transfer.reviewedAt?.toISOString(),
       rejectionReason: transfer.rejectionReason,
       applicationNumber: transfer.applicationNumber,
-      recentActivity: transfer.transferAuditLogs.map(log => ({
+      recentActivity: transfer.transferAuditLogs.map((log) => ({
         action: log.action,
         performedByRole: log.performedByRole,
         comment: log.comment,
@@ -1238,7 +1484,7 @@ export const getTransferDetails = async (req: AuthRequest, res: Response) => {
 
 export const uploadTransferDocuments = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ) => {
   const { transferId } = req.params;
   const files = req.files as Express.Multer.File[];
@@ -1267,7 +1513,9 @@ export const uploadTransferDocuments = async (
     }
 
     if (transfer.status !== "VERIFIED_BY_PARTIES") {
-      return res.status(400).json({ message: "Transfer must be verified first" });
+      return res
+        .status(400)
+        .json({ message: "Transfer must be verified first" });
     }
 
     if (!files || files.length === 0) {
@@ -1277,19 +1525,27 @@ export const uploadTransferDocuments = async (
     // Parse metadata
     const docsMeta = documentsMeta;
     if (docsMeta.length !== files.length) {
-      return res.status(400).json({ message: "Metadata must match file count" });
+      return res
+        .status(400)
+        .json({ message: "Metadata must match file count" });
     }
 
     // Validate files
     const validationErrors: string[] = [];
     files.forEach((file, i) => {
-      const result = validateDocumentFile(file.buffer, file.originalname, file.mimetype);
+      const result = validateDocumentFile(
+        file.buffer,
+        file.originalname,
+        file.mimetype,
+      );
       if (!result.valid) {
         validationErrors.push(`File ${i + 1}: ${result.error}`);
       }
     });
     if (validationErrors.length) {
-      return res.status(400).json({ message: "Invalid files", errors: validationErrors });
+      return res
+        .status(400)
+        .json({ message: "Invalid files", errors: validationErrors });
     }
 
     // Upload files and create records
@@ -1302,7 +1558,7 @@ export const uploadTransferDocuments = async (
         file.buffer,
         file.originalname,
         file.mimetype,
-        { folder: `ownership_transfers/${transferId}` }
+        { folder: `ownership_transfers/${transferId}` },
       );
 
       const doc = await prisma.ownershipTransferDocument.create({
@@ -1325,8 +1581,10 @@ export const uploadTransferDocuments = async (
 
     // Check if all mandatory documents are uploaded
     const mandatoryDocs = getMandatoryDocuments(transfer.transferType);
-    const uploadedTypes = uploadedDocs.map(d => d.type);
-    const missingDocs = mandatoryDocs.filter(type => !uploadedTypes.includes(type));
+    const uploadedTypes = uploadedDocs.map((d) => d.type);
+    const missingDocs = mandatoryDocs.filter(
+      (type) => !uploadedTypes.includes(type),
+    );
 
     if (missingDocs.length > 0) {
       return res.status(400).json({
@@ -1401,11 +1659,7 @@ function getMandatoryDocuments(transferType: string): string[] {
   ];
 
   if (transferType === "PARTIAL") {
-    return [
-      ...baseDocs,
-      "SUBDIVISION_AGREEMENT",
-      "UPDATED_TITLE_DOCUMENT",
-    ];
+    return [...baseDocs, "SUBDIVISION_AGREEMENT", "UPDATED_TITLE_DOCUMENT"];
   }
 
   return baseDocs;
@@ -1415,16 +1669,16 @@ function getMandatoryDocuments(transferType: string): string[] {
    18. GET USER OWNERSHIP TRANSFERS
 ================================ */
 
-export const getUserOwnershipTransfers = async (req: AuthRequest, res: Response) => {
+export const getUserOwnershipTransfers = async (
+  req: AuthRequest,
+  res: Response,
+) => {
   const userId = req.user.sub;
 
   try {
     const transfers = await prisma.ownershipTransfer.findMany({
       where: {
-        OR: [
-          { currentOwnerId: userId },
-          { newOwnerId: userId },
-        ],
+        OR: [{ currentOwnerId: userId }, { newOwnerId: userId }],
       },
       include: {
         land: true,
@@ -1445,7 +1699,10 @@ export const getUserOwnershipTransfers = async (req: AuthRequest, res: Response)
    19. REJECT OWNERSHIP TRANSFER
 ================================ */
 
-export const rejectOwnershipTransfer = async (req: AuthRequest, res: Response) => {
+export const rejectOwnershipTransfer = async (
+  req: AuthRequest,
+  res: Response,
+) => {
   const { transferId } = req.params;
   const { reason } = req.body;
   const governorId = req.user.id;
@@ -1466,7 +1723,11 @@ export const rejectOwnershipTransfer = async (req: AuthRequest, res: Response) =
       include: { state: true },
     });
 
-    if (!governor || governor.role !== "GOVERNOR" || governor.stateId !== transfer.land.stateId) {
+    if (
+      !governor ||
+      governor.role !== "GOVERNOR" ||
+      governor.stateId !== transfer.land.stateId
+    ) {
       return res.status(403).json({ message: "Not authorized" });
     }
 
@@ -1501,7 +1762,10 @@ export const rejectOwnershipTransfer = async (req: AuthRequest, res: Response) =
    20. APPROVE OWNERSHIP TRANSFER
 ================================ */
 
-export const approveOwnershipTransfer = async (req: AuthRequest, res: Response) => {
+export const approveOwnershipTransfer = async (
+  req: AuthRequest,
+  res: Response,
+) => {
   const { transferId } = req.params;
   const governorId = req.user.id;
 
@@ -1521,7 +1785,11 @@ export const approveOwnershipTransfer = async (req: AuthRequest, res: Response) 
       include: { state: true },
     });
 
-    if (!governor || governor.role !== "GOVERNOR" || governor.stateId !== transfer.land.stateId) {
+    if (
+      !governor ||
+      governor.role !== "GOVERNOR" ||
+      governor.stateId !== transfer.land.stateId
+    ) {
       return res.status(403).json({ message: "Not authorized" });
     }
 
@@ -1554,7 +1822,9 @@ export const resendTransferOTP = async (req: AuthRequest, res: Response) => {
     }
 
     if (transfer.status !== "INITIATED") {
-      return res.status(400).json({ message: "Cannot resend OTP at this stage" });
+      return res
+        .status(400)
+        .json({ message: "Cannot resend OTP at this stage" });
     }
 
     // Generate new codes and resend
@@ -1574,7 +1844,7 @@ export const resendTransferOTP = async (req: AuthRequest, res: Response) => {
         await sendEmail(
           verification.target,
           "Land Ownership Transfer - Verification (Resent)",
-          `<p>Your new verification code: <strong>${newCode}</strong></p>`
+          `<p>Your new verification code: <strong>${newCode}</strong></p>`,
         );
       }
     }
@@ -1621,7 +1891,9 @@ export const approveDocument = async (req: AuthRequest, res: Response) => {
     }
 
     if (document.transfer.currentReviewerId !== reviewerId) {
-      return res.status(403).json({ message: "Not authorized to review this document" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to review this document" });
     }
 
     // Check if reviewer has already reviewed this document
@@ -1635,7 +1907,9 @@ export const approveDocument = async (req: AuthRequest, res: Response) => {
     });
 
     if (existingReview) {
-      return res.status(400).json({ message: "You have already reviewed this document" });
+      return res
+        .status(400)
+        .json({ message: "You have already reviewed this document" });
     }
 
     // Create document review
@@ -1699,7 +1973,9 @@ export const rejectDocument = async (req: AuthRequest, res: Response) => {
     }
 
     if (document.transfer.currentReviewerId !== reviewerId) {
-      return res.status(403).json({ message: "Not authorized to review this document" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to review this document" });
     }
 
     // Check if reviewer has already reviewed this document
@@ -1713,7 +1989,9 @@ export const rejectDocument = async (req: AuthRequest, res: Response) => {
     });
 
     if (existingReview) {
-      return res.status(400).json({ message: "You have already reviewed this document" });
+      return res
+        .status(400)
+        .json({ message: "You have already reviewed this document" });
     }
 
     // Create document review
@@ -1759,7 +2037,10 @@ export const rejectDocument = async (req: AuthRequest, res: Response) => {
    13. LIST TRANSFERS FOR GOVERNOR
 ================================ */
 
-export const listTransfersForGovernor = async (req: AuthRequest, res: Response) => {
+export const listTransfersForGovernor = async (
+  req: AuthRequest,
+  res: Response,
+) => {
   const governorId = req.user.id;
 
   try {
@@ -1770,7 +2051,11 @@ export const listTransfersForGovernor = async (req: AuthRequest, res: Response) 
     });
 
     if (!governor || governor.role !== "GOVERNOR" || !governor.stateId) {
-      return res.status(403).json({ message: "Access denied. Governor role with assigned state required." });
+      return res
+        .status(403)
+        .json({
+          message: "Access denied. Governor role with assigned state required.",
+        });
     }
 
     // Get all transfers for this governor's state
@@ -1822,9 +2107,9 @@ export const listTransfersForGovernor = async (req: AuthRequest, res: Response) 
     });
 
     // Categorize transfers
-    const pending = transfers.filter(t => t.status === "PENDING_GOVERNOR");
-    const approved = transfers.filter(t => t.status === "APPROVED");
-    const rejected = transfers.filter(t => t.status === "REJECTED");
+    const pending = transfers.filter((t) => t.status === "PENDING_GOVERNOR");
+    const approved = transfers.filter((t) => t.status === "APPROVED");
+    const rejected = transfers.filter((t) => t.status === "REJECTED");
 
     // Format transfers for response
     const formatTransfer = (transfer: any) => ({
@@ -1880,4 +2165,3 @@ export const listTransfersForGovernor = async (req: AuthRequest, res: Response) 
     res.status(500).json({ message: "Failed to fetch transfers" });
   }
 };
-
