@@ -761,6 +761,16 @@ async function finalizeTransfer(
     }
 
     const transferCoords = transfer.transferCoordinates as number[][];
+    const transferBearings = transfer.transferBearings as { bearing: number; distance: number }[];
+
+    // Validate transfer data
+    if (!transferCoords || !Array.isArray(transferCoords) || transferCoords.some(coord => !Array.isArray(coord) || coord.length !== 2 || coord.some(n => !isFinite(n)))) {
+      throw new Error("Invalid transfer coordinates");
+    }
+    if (!transferBearings || !Array.isArray(transferBearings) || transferBearings.some(b => !isFinite(b.bearing) || !isFinite(b.distance))) {
+      throw new Error("Invalid transfer bearings");
+    }
+
     const transferWKT = toWKTPolygon(transferCoords);
 
     // =========================
@@ -858,6 +868,11 @@ async function finalizeTransfer(
       ([lng, lat]: number[]) => [lat, lng],
     );
 
+    // Validate new coordinates
+    if (!newLatLng || !Array.isArray(newLatLng) || newLatLng.some(coord => !Array.isArray(coord) || coord.length !== 2 || coord.some(n => !isFinite(n)))) {
+      throw new Error("Invalid coordinates from updated geometry");
+    }
+
     // =========================
     // 5️⃣ CONVERT TO UTM
     // =========================
@@ -867,10 +882,20 @@ async function finalizeTransfer(
       convertUTMToLatLng(lat, lng, utmZone as string, true),
     );
 
+    // Validate UTM coordinates
+    if (!newUTM || !Array.isArray(newUTM) || newUTM.some(coord => !Array.isArray(coord) || coord.length !== 2 || coord.some(n => !isFinite(n)))) {
+      throw new Error("Invalid UTM coordinates from conversion");
+    }
+
     // =========================
     // 6️⃣ 🔥 GENERATE NEW BEARINGS
     // =========================
     const newBearings = coordinatesToBearings(newUTM);
+
+    // Validate bearings
+    if (!newBearings || !Array.isArray(newBearings) || newBearings.some(b => !isFinite(b.bearing) || !isFinite(b.distance))) {
+      throw new Error("Invalid bearings from new coordinates");
+    }
 
     // =========================
     // 7️⃣ UPDATE ORIGINAL LAND (NO GEOMETRY HERE)
@@ -895,7 +920,17 @@ async function finalizeTransfer(
       convertUTMToLatLng(lat, lng, utmZone as string, true),
     );
 
+    // Validate new land UTM
+    if (!newLandUTM || !Array.isArray(newLandUTM) || newLandUTM.some(coord => !Array.isArray(coord) || coord.length !== 2 || coord.some(n => !isFinite(n)))) {
+      throw new Error("Invalid UTM coordinates for new land");
+    }
+
     const newLandBearings = coordinatesToBearings(newLandUTM);
+
+    // Validate new land bearings
+    if (!newLandBearings || !Array.isArray(newLandBearings) || newLandBearings.some(b => !isFinite(b.bearing) || !isFinite(b.distance))) {
+      throw new Error("Invalid bearings for new land");
+    }
 
     await tx.landRegistration.update({
       where: { id: newLand.id },
