@@ -83,21 +83,17 @@ export const initiateOwnershipTransfer = async (
 
     // check if the newOwnerEmail is same as current owner's email
     if (newOwnerEmail && land?.owner?.email === newOwnerEmail) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "New owner's email cannot be the same as current owner's email",
-        });
+      return res.status(400).json({
+        message:
+          "New owner's email cannot be the same as current owner's email",
+      });
     }
     // check if the newOwnerPhone is same as current owner's phone
     if (newOwnerPhone && land?.owner?.phone === newOwnerPhone) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "New owner's phone cannot be the same as current owner's phone",
-        });
+      return res.status(400).json({
+        message:
+          "New owner's phone cannot be the same as current owner's phone",
+      });
     }
     // check if the newOwnerEmail is in the database as a user
     const existingUser = await prisma.user.findUnique({
@@ -748,6 +744,13 @@ async function finalizeTransfer(
 
   if (!transfer) return;
 
+  const existingUser = await prisma.user.findUnique({
+    where: {
+      id: transfer.newOwnerId!,
+    },
+  });
+  if (!existingUser) return;
+
   await prisma.$transaction(async (tx) => {
     if (transfer.transferType === "FULL") {
       await tx.landRegistration.update({
@@ -771,6 +774,10 @@ async function finalizeTransfer(
         "id",
         "ownerId",
         "ownerName",
+        "ownershipType",
+        "purpose",
+        "titleType",
+        "stateId",
         "boundary",
         "areaSqm",
         "centerLat",
@@ -785,7 +792,11 @@ async function finalizeTransfer(
       SELECT
         gen_random_uuid(),
         ${transfer.newOwnerId},
-        'New Owner',
+        ${existingUser?.fullName || "Unknown Owner"},
+        ${transfer.land.ownershipType},
+        ${transfer.land.purpose},
+        ${transfer.land.titleType},
+        ${transfer.land.stateId},
         g,
         ST_Area(g::geography),
         ST_Y(ST_Centroid(g)),
@@ -840,7 +851,7 @@ async function finalizeTransfer(
     const geo = JSON.parse(updated[0].geo);
 
     const newLatLng: number[][] = geo.coordinates[0].map(
-      ([lng, lat]: number[]) => [lat, lng]
+      ([lng, lat]: number[]) => [lat, lng],
     );
 
     // =========================
@@ -849,7 +860,7 @@ async function finalizeTransfer(
     const utmZone = transfer.transferUtmZone;
 
     const newUTM = newLatLng.map(([lat, lng]) =>
-      convertUTMToLatLng(lat, lng, utmZone as string, true)
+      convertUTMToLatLng(lat, lng, utmZone as string, true),
     );
 
     // =========================
@@ -876,7 +887,7 @@ async function finalizeTransfer(
     // 8️⃣ FIX NEW LAND UTM + BEARINGS
     // =========================
     const newLandUTM = transferCoords.map(([lat, lng]) =>
-      convertUTMToLatLng(lat, lng, utmZone as string, true)
+      convertUTMToLatLng(lat, lng, utmZone as string, true),
     );
 
     const newLandBearings = coordinatesToBearings(newLandUTM);
@@ -900,7 +911,6 @@ async function finalizeTransfer(
         transferredLandId: newLand.id,
         reviewedAt: new Date(),
         governorComment: comment,
-
       },
     });
 
@@ -916,10 +926,8 @@ async function finalizeTransfer(
         transferDate: new Date(),
       },
     });
-
   });
 }
-
 
 /* ===============================
    5.5. REJECT TRANSFER
@@ -2125,11 +2133,9 @@ export const listTransfersForGovernor = async (
     });
 
     if (!governor || governor.role !== "GOVERNOR" || !governor.stateId) {
-      return res
-        .status(403)
-        .json({
-          message: "Access denied. Governor role with assigned state required.",
-        });
+      return res.status(403).json({
+        message: "Access denied. Governor role with assigned state required.",
+      });
     }
 
     // Get all transfers for this governor's state
