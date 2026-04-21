@@ -760,20 +760,40 @@ async function finalizeTransfer(
       return;
     }
 
-    const transferCoords = Array.isArray(transfer.transferCoordinates) 
-      ? transfer.transferCoordinates as number[][] 
-      : JSON.parse(transfer.transferCoordinates as string) as number[][];
-    const transferBearings = Array.isArray(transfer.transferBearings) 
-      ? transfer.transferBearings as { bearing: number; distance: number }[] 
-      : JSON.parse(transfer.transferBearings as string) as { bearing: number; distance: number }[];
+    const transferCoords = Array.isArray(transfer.transferCoordinates)
+      ? (transfer.transferCoordinates as number[][])
+      : (JSON.parse(transfer.transferCoordinates as string) as number[][]);
+    const transferBearings = Array.isArray(transfer.transferBearings)
+      ? (transfer.transferBearings as { bearing: number; distance: number }[])
+      : (JSON.parse(transfer.transferBearings as string) as {
+          bearing: number;
+          distance: number;
+        }[]);
 
     // Validate transfer data
-    if (!transferCoords || !Array.isArray(transferCoords) || transferCoords.some(coord => !Array.isArray(coord) || coord.length !== 2 || coord.some(n => !isFinite(n)))) {
+    if (
+      !transferCoords ||
+      !Array.isArray(transferCoords) ||
+      transferCoords.some(
+        (coord) =>
+          !Array.isArray(coord) ||
+          coord.length !== 2 ||
+          coord.some((n) => !isFinite(n)),
+      )
+    ) {
       throw new Error("Invalid transfer coordinates");
     }
-    if (!transferBearings || !Array.isArray(transferBearings) || transferBearings.some(b => !isFinite(b.bearing) || !isFinite(b.distance))) {
+    if (
+      !transferBearings ||
+      !Array.isArray(transferBearings) ||
+      transferBearings.some(
+        (b) => !isFinite(b.bearing) || !isFinite(b.distance),
+      )
+    ) {
       throw new Error("Invalid transfer bearings");
     }
+    console.log("coords:", transferCoords);
+    console.log("bearings:", transferBearings);
 
     const transferWKT = toWKTPolygon(transferCoords);
 
@@ -817,9 +837,9 @@ async function finalizeTransfer(
         ST_Area(g::geography),
         ST_Y(ST_Centroid(g)),
         ST_X(ST_Centroid(g)),
-        ${JSON.stringify(transferCoords)}::jsonb,
-        ${JSON.stringify(transferCoords)}::jsonb, -- temp, will fix later
-        ${JSON.stringify(transferBearings)}::jsonb,
+        ${transferCoords}::jsonb,
+        ${transferCoords}::jsonb,
+        ${transferBearings}::jsonb,
         ${transfer.transferSurveyType},
         ${transfer.transferStartPoint},
         ${transfer.transferUtmZone},
@@ -873,7 +893,16 @@ async function finalizeTransfer(
     );
 
     // Validate new coordinates
-    if (!newLatLng || !Array.isArray(newLatLng) || newLatLng.some(coord => !Array.isArray(coord) || coord.length !== 2 || coord.some(n => !isFinite(n)))) {
+    if (
+      !newLatLng ||
+      !Array.isArray(newLatLng) ||
+      newLatLng.some(
+        (coord) =>
+          !Array.isArray(coord) ||
+          coord.length !== 2 ||
+          coord.some((n) => !isFinite(n)),
+      )
+    ) {
       throw new Error("Invalid coordinates from updated geometry");
     }
 
@@ -887,7 +916,16 @@ async function finalizeTransfer(
     );
 
     // Validate UTM coordinates
-    if (!newUTM || !Array.isArray(newUTM) || newUTM.some(coord => !Array.isArray(coord) || coord.length !== 2 || coord.some(n => !isFinite(n)))) {
+    if (
+      !newUTM ||
+      !Array.isArray(newUTM) ||
+      newUTM.some(
+        (coord) =>
+          !Array.isArray(coord) ||
+          coord.length !== 2 ||
+          coord.some((n) => !isFinite(n)),
+      )
+    ) {
       throw new Error("Invalid UTM coordinates from conversion");
     }
 
@@ -897,7 +935,11 @@ async function finalizeTransfer(
     const newBearings = coordinatesToBearings(newUTM);
 
     // Validate bearings
-    if (!newBearings || !Array.isArray(newBearings) || newBearings.some(b => !isFinite(b.bearing) || !isFinite(b.distance))) {
+    if (
+      !newBearings ||
+      !Array.isArray(newBearings) ||
+      newBearings.some((b) => !isFinite(b.bearing) || !isFinite(b.distance))
+    ) {
       throw new Error("Invalid bearings from new coordinates");
     }
 
@@ -925,14 +967,27 @@ async function finalizeTransfer(
     );
 
     // Validate new land UTM
-    if (!newLandUTM || !Array.isArray(newLandUTM) || newLandUTM.some(coord => !Array.isArray(coord) || coord.length !== 2 || coord.some(n => !isFinite(n)))) {
+    if (
+      !newLandUTM ||
+      !Array.isArray(newLandUTM) ||
+      newLandUTM.some(
+        (coord) =>
+          !Array.isArray(coord) ||
+          coord.length !== 2 ||
+          coord.some((n) => !isFinite(n)),
+      )
+    ) {
       throw new Error("Invalid UTM coordinates for new land");
     }
 
     const newLandBearings = coordinatesToBearings(newLandUTM);
 
     // Validate new land bearings
-    if (!newLandBearings || !Array.isArray(newLandBearings) || newLandBearings.some(b => !isFinite(b.bearing) || !isFinite(b.distance))) {
+    if (
+      !newLandBearings ||
+      !Array.isArray(newLandBearings) ||
+      newLandBearings.some((b) => !isFinite(b.bearing) || !isFinite(b.distance))
+    ) {
       throw new Error("Invalid bearings for new land");
     }
 
