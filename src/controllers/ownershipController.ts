@@ -13,6 +13,7 @@ import {
   ownershipTransferReviewSchema,
   ownershipTransferDocumentUploadSchema,
 } from "../utils/zodSchemas";
+
 import {
   convertUTMToLatLng,
   bearingsToCoordinates,
@@ -20,6 +21,7 @@ import {
   isClosed,
 } from "../utils/germetry";
 import { re } from "mathjs";
+import { Prisma } from "../generated/client/client";
 
 function toWKTPolygon(coords: number[][]) {
   const formatted = coords.map(([lat, lng]) => `${lng} ${lat}`).join(",");
@@ -837,11 +839,11 @@ async function finalizeTransfer(
         ST_Area(g::geography),
         ST_Y(ST_Centroid(g)),
         ST_X(ST_Centroid(g)),
-        ${transferCoords}::jsonb,
-        ${transferCoords}::jsonb,
-        ${transferBearings}::jsonb,
+        ${Prisma.sql`${JSON.stringify(transferCoords)}::jsonb`},
+        ${Prisma.sql`${JSON.stringify(transferCoords)}::jsonb`},
+        ${Prisma.sql`${JSON.stringify(transferBearings)}::jsonb`},
         ${transfer.transferSurveyType},
-        ${transfer.transferStartPoint},
+        ${Prisma.sql`${JSON.stringify(transfer.transferStartPoint)}::jsonb`},
         ${transfer.transferUtmZone},
         'APPROVED',
         now()
