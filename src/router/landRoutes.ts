@@ -1,7 +1,21 @@
 import express from 'express';
 import multer from 'multer';
-import { deleteLand, getAllUserLands, getLandById, getLandCount, getLandsByState, registerLand, searchLandExistence, updateLand, verifyLand } from '../controllers/landController';
-import { requireAuth,verifyToken } from '../middlewares/authMiddleware';
+import { 
+  deleteLand, 
+  getAllUserLands, 
+  getLandById, 
+  getLandCount, 
+  getLandsByState, 
+  registerLand, 
+  searchLandExistence, 
+  updateLand, 
+  verifyLand,
+  confirmPaymentLand,
+  getLandConflicts,
+  acknowledgeLandConflict,
+  getConflictDocument,
+} from '../controllers/landController';
+import { requireAuth, verifyToken } from '../middlewares/authMiddleware';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -15,5 +29,11 @@ router.put("/update-land/:id", requireAuth, updateLand); // Placeholder for upda
 router.get("/get-lands-count", verifyToken, getLandCount)
 router.get("/search-lands", verifyToken, searchLandExistence);
 router.post("/verify-land", verifyLand);
+
+// ============= PAYMENT & CONFLICT ROUTES =============
+router.post("/confirm-payment", requireAuth, confirmPaymentLand);
+router.get("/conflicts/:landId", verifyToken, getLandConflicts);
+router.post("/acknowledge-conflict", requireAuth, acknowledgeLandConflict);
+router.get("/conflict-document/:conflictId", verifyToken, getConflictDocument);
 
 export default router;

@@ -187,6 +187,11 @@ z.tuple([z.number(), z.number()]) // [lat, lng]
   }, z.number().positive("Area must be greater than 0").optional()),
 
   parentLandId: z.string().uuid().optional(),
+
+  // 📄 Existing C of O Fields
+  hasExistingCofO: z.boolean().default(false),
+  existingCofONumber: z.string().optional(),
+  existingCofOIssueDate: z.string().optional(),
 });
 
 export const internalUserSchema = z.object({
@@ -291,4 +296,22 @@ export const ownershipTransferDocumentUploadSchema = z.object({
     ]),
     title: z.string().min(1),
   }))),
+});
+
+// Land Conflict & Payment Schemas
+export const acknowledgeLandConflictSchema = z.object({
+  conflictId: z.string().uuid(),
+  acknowledged: z.boolean(),
+});
+
+export const paymentConfirmationSchema = z.object({
+  paymentId: z.string().uuid(),
+  status: z.enum(["SUCCESS", "FAILED", "UNPAID"]),
+  transactionReference: z.string().optional(),
+});
+
+export const existingCofOUploadSchema = z.object({
+  cofONumber: z.string().min(3, "C of O number is required"),
+  issueDate: z.string().optional(),
+  hasExistingCofO: z.boolean().default(true),
 });

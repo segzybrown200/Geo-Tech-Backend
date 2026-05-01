@@ -53,6 +53,8 @@ enum landStatus {
   PENDING
   APPROVED
   REJECTED
+  PAYMENT_PENDING
+  PENDING_REVIEWER_VERIFICATION
 }
 
 model InternalUser {
@@ -231,7 +233,22 @@ model LandRegistration {
   parentLand   LandRegistration?  @relation("Subdivision", fields: [parentLandId], references: [id])
   children     LandRegistration[] @relation("Subdivision")
 
-  // 🕒 Timestamps
+
+  // 📄 Existing C of O Fields
+  hasExistingCofO         Boolean    @default(false)
+  existingCofODocument    String?    // URL to uploaded C of O
+  existingCofONumber      String?    // C of O reference number
+  existingCofOIssueDate   DateTime?
+
+  // 🚩 Reviewer Flag
+  requiresReviewerApproval Boolean @default(false)
+  conflictFlags           Json?
+
+  // 📋 Conflicts
+  conflicts              LandConflict[] @relation("LandWithConflict")
+  conflictsWith          LandConflict[] @relation("ConflictingLand")
+
+  // �🕒 Timestamps
   createdAt DateTime @default(now())
 
   // 📌 Indexes
@@ -512,16 +529,17 @@ model Payment {
   id        String        @id @default(uuid()) @db.Uuid
   userId    String        @db.Uuid
   cofOId    String?       @db.Uuid
-  landId    String        @db.Uuid
+  landId    String?       @db.Uuid
   amount    Float
   reference String        @unique
   status    PaymentStatus
   provider  String // Paystack, Remita, etc
+  type      String        @default("LAND_REGISTRATION") // "LAND_REGISTRATION" | "COFO"
   createdAt DateTime      @default(now())
 
-  user User             @relation(fields: [userId], references: [id])
-  cofO CofOApplication? @relation(fields: [cofOId], references: [id])
-  land LandRegistration @relation(fields: [landId], references: [id])
+  user  User              @relation(fields: [userId], references: [id])
+  cofO  CofOApplication?  @relation(fields: [cofOId], references: [id])
+  land  LandRegistration? @relation(fields: [landId], references: [id])
 }
 
 model StageLog {
@@ -577,6 +595,25 @@ model ApprovalAudit {
   comment   String?
   createdAt DateTime        @default(now())
   cofO      CofOApplication @relation(fields: [cofOId], references: [id])
+}
+
+model LandConflict {
+  id String @id @default(uuid()) @db.Uuid
+
+  landId String           @db.Uuid
+  land   LandRegistration @relation("LandWithConflict", fields: [landId], references: [id])
+
+  conflictingLandId String           @db.Uuid
+  conflictingLand   LandRegistration @relation("ConflictingLand", fields: [conflictingLandId], references: [id])
+
+  conflictType String // "OVERLAP" | "EXISTING_COFO"
+  status       String // "FLAGGED" | "ACKNOWLEDGED" | "RESOLVED"
+
+  conflictDocument String? // URL to conflict document
+  createdAt        DateTime @default(now())
+
+  @@index([landId])
+  @@index([conflictingLandId])
 }
 
 model PasswordResetToken {

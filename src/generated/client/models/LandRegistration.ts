@@ -64,6 +64,11 @@ export type LandRegistrationMinAggregateOutputType = {
   purpose: string | null
   titleType: string | null
   parentLandId: string | null
+  hasExistingCofO: boolean | null
+  existingCofODocument: string | null
+  existingCofONumber: string | null
+  existingCofOIssueDate: Date | null
+  requiresReviewerApproval: boolean | null
   createdAt: Date | null
 }
 
@@ -93,6 +98,11 @@ export type LandRegistrationMaxAggregateOutputType = {
   purpose: string | null
   titleType: string | null
   parentLandId: string | null
+  hasExistingCofO: boolean | null
+  existingCofODocument: string | null
+  existingCofONumber: string | null
+  existingCofOIssueDate: Date | null
+  requiresReviewerApproval: boolean | null
   createdAt: Date | null
 }
 
@@ -126,6 +136,12 @@ export type LandRegistrationCountAggregateOutputType = {
   purpose: number
   titleType: number
   parentLandId: number
+  hasExistingCofO: number
+  existingCofODocument: number
+  existingCofONumber: number
+  existingCofOIssueDate: number
+  requiresReviewerApproval: number
+  conflictFlags: number
   createdAt: number
   _all: number
 }
@@ -169,6 +185,11 @@ export type LandRegistrationMinAggregateInputType = {
   purpose?: true
   titleType?: true
   parentLandId?: true
+  hasExistingCofO?: true
+  existingCofODocument?: true
+  existingCofONumber?: true
+  existingCofOIssueDate?: true
+  requiresReviewerApproval?: true
   createdAt?: true
 }
 
@@ -198,6 +219,11 @@ export type LandRegistrationMaxAggregateInputType = {
   purpose?: true
   titleType?: true
   parentLandId?: true
+  hasExistingCofO?: true
+  existingCofODocument?: true
+  existingCofONumber?: true
+  existingCofOIssueDate?: true
+  requiresReviewerApproval?: true
   createdAt?: true
 }
 
@@ -231,6 +257,12 @@ export type LandRegistrationCountAggregateInputType = {
   purpose?: true
   titleType?: true
   parentLandId?: true
+  hasExistingCofO?: true
+  existingCofODocument?: true
+  existingCofONumber?: true
+  existingCofOIssueDate?: true
+  requiresReviewerApproval?: true
+  conflictFlags?: true
   createdAt?: true
   _all?: true
 }
@@ -351,6 +383,12 @@ export type LandRegistrationGroupByOutputType = {
   purpose: string
   titleType: string
   parentLandId: string | null
+  hasExistingCofO: boolean
+  existingCofODocument: string | null
+  existingCofONumber: string | null
+  existingCofOIssueDate: Date | null
+  requiresReviewerApproval: boolean
+  conflictFlags: runtime.JsonValue | null
   createdAt: Date
   _count: LandRegistrationCountAggregateOutputType | null
   _avg: LandRegistrationAvgAggregateOutputType | null
@@ -407,6 +445,12 @@ export type LandRegistrationWhereInput = {
   purpose?: Prisma.StringFilter<"LandRegistration"> | string
   titleType?: Prisma.StringFilter<"LandRegistration"> | string
   parentLandId?: Prisma.UuidNullableFilter<"LandRegistration"> | string | null
+  hasExistingCofO?: Prisma.BoolFilter<"LandRegistration"> | boolean
+  existingCofODocument?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  existingCofONumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  existingCofOIssueDate?: Prisma.DateTimeNullableFilter<"LandRegistration"> | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFilter<"LandRegistration"> | boolean
+  conflictFlags?: Prisma.JsonNullableFilter<"LandRegistration">
   createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   state?: Prisma.XOR<Prisma.StateScalarRelationFilter, Prisma.StateWhereInput>
@@ -419,6 +463,8 @@ export type LandRegistrationWhereInput = {
   CofOApplication?: Prisma.CofOApplicationListRelationFilter
   parentLand?: Prisma.XOR<Prisma.LandRegistrationNullableScalarRelationFilter, Prisma.LandRegistrationWhereInput> | null
   children?: Prisma.LandRegistrationListRelationFilter
+  conflicts?: Prisma.LandConflictListRelationFilter
+  conflictsWith?: Prisma.LandConflictListRelationFilter
 }
 
 export type LandRegistrationOrderByWithRelationInput = {
@@ -451,6 +497,12 @@ export type LandRegistrationOrderByWithRelationInput = {
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
   parentLandId?: Prisma.SortOrderInput | Prisma.SortOrder
+  hasExistingCofO?: Prisma.SortOrder
+  existingCofODocument?: Prisma.SortOrderInput | Prisma.SortOrder
+  existingCofONumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  existingCofOIssueDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  requiresReviewerApproval?: Prisma.SortOrder
+  conflictFlags?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
   state?: Prisma.StateOrderByWithRelationInput
@@ -463,6 +515,8 @@ export type LandRegistrationOrderByWithRelationInput = {
   CofOApplication?: Prisma.CofOApplicationOrderByRelationAggregateInput
   parentLand?: Prisma.LandRegistrationOrderByWithRelationInput
   children?: Prisma.LandRegistrationOrderByRelationAggregateInput
+  conflicts?: Prisma.LandConflictOrderByRelationAggregateInput
+  conflictsWith?: Prisma.LandConflictOrderByRelationAggregateInput
 }
 
 export type LandRegistrationWhereUniqueInput = Prisma.AtLeast<{
@@ -498,6 +552,12 @@ export type LandRegistrationWhereUniqueInput = Prisma.AtLeast<{
   purpose?: Prisma.StringFilter<"LandRegistration"> | string
   titleType?: Prisma.StringFilter<"LandRegistration"> | string
   parentLandId?: Prisma.UuidNullableFilter<"LandRegistration"> | string | null
+  hasExistingCofO?: Prisma.BoolFilter<"LandRegistration"> | boolean
+  existingCofODocument?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  existingCofONumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  existingCofOIssueDate?: Prisma.DateTimeNullableFilter<"LandRegistration"> | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFilter<"LandRegistration"> | boolean
+  conflictFlags?: Prisma.JsonNullableFilter<"LandRegistration">
   createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   state?: Prisma.XOR<Prisma.StateScalarRelationFilter, Prisma.StateWhereInput>
@@ -510,6 +570,8 @@ export type LandRegistrationWhereUniqueInput = Prisma.AtLeast<{
   CofOApplication?: Prisma.CofOApplicationListRelationFilter
   parentLand?: Prisma.XOR<Prisma.LandRegistrationNullableScalarRelationFilter, Prisma.LandRegistrationWhereInput> | null
   children?: Prisma.LandRegistrationListRelationFilter
+  conflicts?: Prisma.LandConflictListRelationFilter
+  conflictsWith?: Prisma.LandConflictListRelationFilter
 }, "id" | "landCode" | "surveyPlanNumber">
 
 export type LandRegistrationOrderByWithAggregationInput = {
@@ -542,6 +604,12 @@ export type LandRegistrationOrderByWithAggregationInput = {
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
   parentLandId?: Prisma.SortOrderInput | Prisma.SortOrder
+  hasExistingCofO?: Prisma.SortOrder
+  existingCofODocument?: Prisma.SortOrderInput | Prisma.SortOrder
+  existingCofONumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  existingCofOIssueDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  requiresReviewerApproval?: Prisma.SortOrder
+  conflictFlags?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.LandRegistrationCountOrderByAggregateInput
   _avg?: Prisma.LandRegistrationAvgOrderByAggregateInput
@@ -583,6 +651,12 @@ export type LandRegistrationScalarWhereWithAggregatesInput = {
   purpose?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
   titleType?: Prisma.StringWithAggregatesFilter<"LandRegistration"> | string
   parentLandId?: Prisma.UuidNullableWithAggregatesFilter<"LandRegistration"> | string | null
+  hasExistingCofO?: Prisma.BoolWithAggregatesFilter<"LandRegistration"> | boolean
+  existingCofODocument?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
+  existingCofONumber?: Prisma.StringNullableWithAggregatesFilter<"LandRegistration"> | string | null
+  existingCofOIssueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"LandRegistration"> | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolWithAggregatesFilter<"LandRegistration"> | boolean
+  conflictFlags?: Prisma.JsonNullableWithAggregatesFilter<"LandRegistration">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LandRegistration"> | Date | string
 }
 
@@ -613,6 +687,12 @@ export type LandRegistrationUpdateInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -625,6 +705,8 @@ export type LandRegistrationUpdateInput = {
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateInput = {
@@ -657,6 +739,12 @@ export type LandRegistrationUncheckedUpdateInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -666,6 +754,8 @@ export type LandRegistrationUncheckedUpdateInput = {
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUpdateManyMutationInput = {
@@ -695,6 +785,12 @@ export type LandRegistrationUpdateManyMutationInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -728,6 +824,12 @@ export type LandRegistrationUncheckedUpdateManyInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -776,6 +878,12 @@ export type LandRegistrationCountOrderByAggregateInput = {
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
   parentLandId?: Prisma.SortOrder
+  hasExistingCofO?: Prisma.SortOrder
+  existingCofODocument?: Prisma.SortOrder
+  existingCofONumber?: Prisma.SortOrder
+  existingCofOIssueDate?: Prisma.SortOrder
+  requiresReviewerApproval?: Prisma.SortOrder
+  conflictFlags?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -811,6 +919,11 @@ export type LandRegistrationMaxOrderByAggregateInput = {
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
   parentLandId?: Prisma.SortOrder
+  hasExistingCofO?: Prisma.SortOrder
+  existingCofODocument?: Prisma.SortOrder
+  existingCofONumber?: Prisma.SortOrder
+  existingCofOIssueDate?: Prisma.SortOrder
+  requiresReviewerApproval?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -840,6 +953,11 @@ export type LandRegistrationMinOrderByAggregateInput = {
   purpose?: Prisma.SortOrder
   titleType?: Prisma.SortOrder
   parentLandId?: Prisma.SortOrder
+  hasExistingCofO?: Prisma.SortOrder
+  existingCofODocument?: Prisma.SortOrder
+  existingCofONumber?: Prisma.SortOrder
+  existingCofOIssueDate?: Prisma.SortOrder
+  requiresReviewerApproval?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -1009,9 +1127,29 @@ export type LandRegistrationCreateNestedOneWithoutPaymentsInput = {
   connect?: Prisma.LandRegistrationWhereUniqueInput
 }
 
-export type LandRegistrationUpdateOneRequiredWithoutPaymentsNestedInput = {
+export type LandRegistrationUpdateOneWithoutPaymentsNestedInput = {
+  disconnect?: Prisma.LandRegistrationWhereInput | boolean
+  delete?: Prisma.LandRegistrationWhereInput | boolean
   connect?: Prisma.LandRegistrationWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.LandRegistrationUpdateToOneWithWhereWithoutPaymentsInput, Prisma.LandRegistrationUpdateWithoutPaymentsInput>, Prisma.LandRegistrationUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type LandRegistrationCreateNestedOneWithoutConflictsInput = {
+  connect?: Prisma.LandRegistrationWhereUniqueInput
+}
+
+export type LandRegistrationCreateNestedOneWithoutConflictsWithInput = {
+  connect?: Prisma.LandRegistrationWhereUniqueInput
+}
+
+export type LandRegistrationUpdateOneRequiredWithoutConflictsNestedInput = {
+  connect?: Prisma.LandRegistrationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LandRegistrationUpdateToOneWithWhereWithoutConflictsInput, Prisma.LandRegistrationUpdateWithoutConflictsInput>, Prisma.LandRegistrationUncheckedUpdateWithoutConflictsInput>
+}
+
+export type LandRegistrationUpdateOneRequiredWithoutConflictsWithNestedInput = {
+  connect?: Prisma.LandRegistrationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LandRegistrationUpdateToOneWithWhereWithoutConflictsWithInput, Prisma.LandRegistrationUpdateWithoutConflictsWithInput>, Prisma.LandRegistrationUncheckedUpdateWithoutConflictsWithInput>
 }
 
 export type LandRegistrationUpdateWithWhereUniqueWithoutOwnerInput = {
@@ -1057,6 +1195,12 @@ export type LandRegistrationScalarWhereInput = {
   purpose?: Prisma.StringFilter<"LandRegistration"> | string
   titleType?: Prisma.StringFilter<"LandRegistration"> | string
   parentLandId?: Prisma.UuidNullableFilter<"LandRegistration"> | string | null
+  hasExistingCofO?: Prisma.BoolFilter<"LandRegistration"> | boolean
+  existingCofODocument?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  existingCofONumber?: Prisma.StringNullableFilter<"LandRegistration"> | string | null
+  existingCofOIssueDate?: Prisma.DateTimeNullableFilter<"LandRegistration"> | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFilter<"LandRegistration"> | boolean
+  conflictFlags?: Prisma.JsonNullableFilter<"LandRegistration">
   createdAt?: Prisma.DateTimeFilter<"LandRegistration"> | Date | string
 }
 
@@ -1092,6 +1236,12 @@ export type LandRegistrationUpdateWithoutChildrenInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1103,6 +1253,8 @@ export type LandRegistrationUpdateWithoutChildrenInput = {
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutChildrenInput = {
@@ -1135,6 +1287,12 @@ export type LandRegistrationUncheckedUpdateWithoutChildrenInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1143,6 +1301,8 @@ export type LandRegistrationUncheckedUpdateWithoutChildrenInput = {
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUpdateWithWhereUniqueWithoutParentLandInput = {
@@ -1187,6 +1347,12 @@ export type LandRegistrationUpdateWithoutDocumentsInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1198,6 +1364,8 @@ export type LandRegistrationUpdateWithoutDocumentsInput = {
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutDocumentsInput = {
@@ -1230,6 +1398,12 @@ export type LandRegistrationUncheckedUpdateWithoutDocumentsInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
   auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
@@ -1238,6 +1412,8 @@ export type LandRegistrationUncheckedUpdateWithoutDocumentsInput = {
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUpdateWithWhereUniqueWithoutStateInput = {
@@ -1282,6 +1458,12 @@ export type LandRegistrationUpdateWithoutAuditLogsInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1293,6 +1475,8 @@ export type LandRegistrationUpdateWithoutAuditLogsInput = {
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutAuditLogsInput = {
@@ -1325,6 +1509,12 @@ export type LandRegistrationUncheckedUpdateWithoutAuditLogsInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1333,6 +1523,8 @@ export type LandRegistrationUncheckedUpdateWithoutAuditLogsInput = {
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUpdateToOneWithWhereWithoutOwnershipTransferInput = {
@@ -1367,6 +1559,12 @@ export type LandRegistrationUpdateWithoutOwnershipTransferInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1378,6 +1576,8 @@ export type LandRegistrationUpdateWithoutOwnershipTransferInput = {
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutOwnershipTransferInput = {
@@ -1410,6 +1610,12 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipTransferInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1418,6 +1624,8 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipTransferInput = {
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUpdateToOneWithWhereWithoutTransferredFromInput = {
@@ -1452,6 +1660,12 @@ export type LandRegistrationUpdateWithoutTransferredFromInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1463,6 +1677,8 @@ export type LandRegistrationUpdateWithoutTransferredFromInput = {
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutTransferredFromInput = {
@@ -1495,6 +1711,12 @@ export type LandRegistrationUncheckedUpdateWithoutTransferredFromInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1503,6 +1725,8 @@ export type LandRegistrationUncheckedUpdateWithoutTransferredFromInput = {
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUpdateToOneWithWhereWithoutOwnershipLogsInput = {
@@ -1537,6 +1761,12 @@ export type LandRegistrationUpdateWithoutOwnershipLogsInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1548,6 +1778,8 @@ export type LandRegistrationUpdateWithoutOwnershipLogsInput = {
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutOwnershipLogsInput = {
@@ -1580,6 +1812,12 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipLogsInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
@@ -1588,6 +1826,8 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipLogsInput = {
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUpdateToOneWithWhereWithoutCofOApplicationInput = {
@@ -1622,6 +1862,12 @@ export type LandRegistrationUpdateWithoutCofOApplicationInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1633,6 +1879,8 @@ export type LandRegistrationUpdateWithoutCofOApplicationInput = {
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutCofOApplicationInput = {
@@ -1665,6 +1913,12 @@ export type LandRegistrationUncheckedUpdateWithoutCofOApplicationInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1673,6 +1927,8 @@ export type LandRegistrationUncheckedUpdateWithoutCofOApplicationInput = {
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUpdateToOneWithWhereWithoutPaymentsInput = {
@@ -1707,6 +1963,12 @@ export type LandRegistrationUpdateWithoutPaymentsInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1718,6 +1980,8 @@ export type LandRegistrationUpdateWithoutPaymentsInput = {
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutPaymentsInput = {
@@ -1750,6 +2014,12 @@ export type LandRegistrationUncheckedUpdateWithoutPaymentsInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1758,6 +2028,210 @@ export type LandRegistrationUncheckedUpdateWithoutPaymentsInput = {
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
+}
+
+export type LandRegistrationUpdateToOneWithWhereWithoutConflictsInput = {
+  where?: Prisma.LandRegistrationWhereInput
+  data: Prisma.XOR<Prisma.LandRegistrationUpdateWithoutConflictsInput, Prisma.LandRegistrationUncheckedUpdateWithoutConflictsInput>
+}
+
+export type LandRegistrationUpdateWithoutConflictsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
+  state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
+  documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
+  ownershipLogs?: Prisma.OwnershipHistoryUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
+  transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
+  parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
+  children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
+}
+
+export type LandRegistrationUncheckedUpdateWithoutConflictsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
+  ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
+  transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
+  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
+}
+
+export type LandRegistrationUpdateToOneWithWhereWithoutConflictsWithInput = {
+  where?: Prisma.LandRegistrationWhereInput
+  data: Prisma.XOR<Prisma.LandRegistrationUpdateWithoutConflictsWithInput, Prisma.LandRegistrationUncheckedUpdateWithoutConflictsWithInput>
+}
+
+export type LandRegistrationUpdateWithoutConflictsWithInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
+  state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
+  documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
+  ownershipLogs?: Prisma.OwnershipHistoryUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
+  transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
+  parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
+  children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+}
+
+export type LandRegistrationUncheckedUpdateWithoutConflictsWithInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
+  ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
+  transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
+  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
 }
 
 export type LandRegistrationUpdateWithoutOwnerInput = {
@@ -1787,6 +2261,12 @@ export type LandRegistrationUpdateWithoutOwnerInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
@@ -1798,6 +2278,8 @@ export type LandRegistrationUpdateWithoutOwnerInput = {
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutOwnerInput = {
@@ -1829,6 +2311,12 @@ export type LandRegistrationUncheckedUpdateWithoutOwnerInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1838,6 +2326,8 @@ export type LandRegistrationUncheckedUpdateWithoutOwnerInput = {
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateManyWithoutOwnerInput = {
@@ -1869,6 +2359,12 @@ export type LandRegistrationUncheckedUpdateManyWithoutOwnerInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1899,6 +2395,12 @@ export type LandRegistrationUpdateWithoutParentLandInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
@@ -1910,6 +2412,8 @@ export type LandRegistrationUpdateWithoutParentLandInput = {
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutParentLandInput = {
@@ -1941,6 +2445,12 @@ export type LandRegistrationUncheckedUpdateWithoutParentLandInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -1950,6 +2460,8 @@ export type LandRegistrationUncheckedUpdateWithoutParentLandInput = {
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateManyWithoutParentLandInput = {
@@ -1981,6 +2493,12 @@ export type LandRegistrationUncheckedUpdateManyWithoutParentLandInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -2011,6 +2529,12 @@ export type LandRegistrationUpdateWithoutStateInput = {
   ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
   documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
@@ -2022,6 +2546,8 @@ export type LandRegistrationUpdateWithoutStateInput = {
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
   children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateWithoutStateInput = {
@@ -2053,6 +2579,12 @@ export type LandRegistrationUncheckedUpdateWithoutStateInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
   ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
@@ -2062,6 +2594,8 @@ export type LandRegistrationUncheckedUpdateWithoutStateInput = {
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
 }
 
 export type LandRegistrationUncheckedUpdateManyWithoutStateInput = {
@@ -2093,6 +2627,12 @@ export type LandRegistrationUncheckedUpdateManyWithoutStateInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   titleType?: Prisma.StringFieldUpdateOperationsInput | string
   parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -2110,6 +2650,8 @@ export type LandRegistrationCountOutputType = {
   transferredFrom: number
   CofOApplication: number
   children: number
+  conflicts: number
+  conflictsWith: number
 }
 
 export type LandRegistrationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2121,6 +2663,8 @@ export type LandRegistrationCountOutputTypeSelect<ExtArgs extends runtime.Types.
   transferredFrom?: boolean | LandRegistrationCountOutputTypeCountTransferredFromArgs
   CofOApplication?: boolean | LandRegistrationCountOutputTypeCountCofOApplicationArgs
   children?: boolean | LandRegistrationCountOutputTypeCountChildrenArgs
+  conflicts?: boolean | LandRegistrationCountOutputTypeCountConflictsArgs
+  conflictsWith?: boolean | LandRegistrationCountOutputTypeCountConflictsWithArgs
 }
 
 /**
@@ -2189,6 +2733,20 @@ export type LandRegistrationCountOutputTypeCountChildrenArgs<ExtArgs extends run
   where?: Prisma.LandRegistrationWhereInput
 }
 
+/**
+ * LandRegistrationCountOutputType without action
+ */
+export type LandRegistrationCountOutputTypeCountConflictsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LandConflictWhereInput
+}
+
+/**
+ * LandRegistrationCountOutputType without action
+ */
+export type LandRegistrationCountOutputTypeCountConflictsWithArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LandConflictWhereInput
+}
+
 
 export type LandRegistrationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2220,6 +2778,12 @@ export type LandRegistrationSelect<ExtArgs extends runtime.Types.Extensions.Inte
   purpose?: boolean
   titleType?: boolean
   parentLandId?: boolean
+  hasExistingCofO?: boolean
+  existingCofODocument?: boolean
+  existingCofONumber?: boolean
+  existingCofOIssueDate?: boolean
+  requiresReviewerApproval?: boolean
+  conflictFlags?: boolean
   createdAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
@@ -2232,6 +2796,8 @@ export type LandRegistrationSelect<ExtArgs extends runtime.Types.Extensions.Inte
   CofOApplication?: boolean | Prisma.LandRegistration$CofOApplicationArgs<ExtArgs>
   parentLand?: boolean | Prisma.LandRegistration$parentLandArgs<ExtArgs>
   children?: boolean | Prisma.LandRegistration$childrenArgs<ExtArgs>
+  conflicts?: boolean | Prisma.LandRegistration$conflictsArgs<ExtArgs>
+  conflictsWith?: boolean | Prisma.LandRegistration$conflictsWithArgs<ExtArgs>
   _count?: boolean | Prisma.LandRegistrationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["landRegistration"]>
 
@@ -2266,6 +2832,12 @@ export type LandRegistrationSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   purpose?: boolean
   titleType?: boolean
   parentLandId?: boolean
+  hasExistingCofO?: boolean
+  existingCofODocument?: boolean
+  existingCofONumber?: boolean
+  existingCofOIssueDate?: boolean
+  requiresReviewerApproval?: boolean
+  conflictFlags?: boolean
   createdAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
@@ -2302,10 +2874,16 @@ export type LandRegistrationSelectScalar = {
   purpose?: boolean
   titleType?: boolean
   parentLandId?: boolean
+  hasExistingCofO?: boolean
+  existingCofODocument?: boolean
+  existingCofONumber?: boolean
+  existingCofOIssueDate?: boolean
+  requiresReviewerApproval?: boolean
+  conflictFlags?: boolean
   createdAt?: boolean
 }
 
-export type LandRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "ownerName" | "stateId" | "address" | "plotNumber" | "landCode" | "areaSqm" | "centerLat" | "centerLng" | "startPoint" | "utmZone" | "surveyType" | "utmCoordinates" | "latlngCoordinates" | "bearings" | "surveyPlanNumber" | "surveyDate" | "surveyorName" | "surveyorAddress" | "surveyTelephone" | "surveyNotes" | "landStatus" | "isVerified" | "accuracyLevel" | "ownershipType" | "purpose" | "titleType" | "parentLandId" | "createdAt", ExtArgs["result"]["landRegistration"]>
+export type LandRegistrationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "ownerName" | "stateId" | "address" | "plotNumber" | "landCode" | "areaSqm" | "centerLat" | "centerLng" | "startPoint" | "utmZone" | "surveyType" | "utmCoordinates" | "latlngCoordinates" | "bearings" | "surveyPlanNumber" | "surveyDate" | "surveyorName" | "surveyorAddress" | "surveyTelephone" | "surveyNotes" | "landStatus" | "isVerified" | "accuracyLevel" | "ownershipType" | "purpose" | "titleType" | "parentLandId" | "hasExistingCofO" | "existingCofODocument" | "existingCofONumber" | "existingCofOIssueDate" | "requiresReviewerApproval" | "conflictFlags" | "createdAt", ExtArgs["result"]["landRegistration"]>
 export type LandRegistrationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   state?: boolean | Prisma.StateDefaultArgs<ExtArgs>
@@ -2318,6 +2896,8 @@ export type LandRegistrationInclude<ExtArgs extends runtime.Types.Extensions.Int
   CofOApplication?: boolean | Prisma.LandRegistration$CofOApplicationArgs<ExtArgs>
   parentLand?: boolean | Prisma.LandRegistration$parentLandArgs<ExtArgs>
   children?: boolean | Prisma.LandRegistration$childrenArgs<ExtArgs>
+  conflicts?: boolean | Prisma.LandRegistration$conflictsArgs<ExtArgs>
+  conflictsWith?: boolean | Prisma.LandRegistration$conflictsWithArgs<ExtArgs>
   _count?: boolean | Prisma.LandRegistrationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LandRegistrationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2340,6 +2920,8 @@ export type $LandRegistrationPayload<ExtArgs extends runtime.Types.Extensions.In
     CofOApplication: Prisma.$CofOApplicationPayload<ExtArgs>[]
     parentLand: Prisma.$LandRegistrationPayload<ExtArgs> | null
     children: Prisma.$LandRegistrationPayload<ExtArgs>[]
+    conflicts: Prisma.$LandConflictPayload<ExtArgs>[]
+    conflictsWith: Prisma.$LandConflictPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2371,6 +2953,12 @@ export type $LandRegistrationPayload<ExtArgs extends runtime.Types.Extensions.In
     purpose: string
     titleType: string
     parentLandId: string | null
+    hasExistingCofO: boolean
+    existingCofODocument: string | null
+    existingCofONumber: string | null
+    existingCofOIssueDate: Date | null
+    requiresReviewerApproval: boolean
+    conflictFlags: runtime.JsonValue | null
     createdAt: Date
   }, ExtArgs["result"]["landRegistration"]>
   composites: {}
@@ -2706,6 +3294,8 @@ export interface Prisma__LandRegistrationClient<T, Null = never, ExtArgs extends
   CofOApplication<T extends Prisma.LandRegistration$CofOApplicationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$CofOApplicationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   parentLand<T extends Prisma.LandRegistration$parentLandArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$parentLandArgs<ExtArgs>>): Prisma.Prisma__LandRegistrationClient<runtime.Types.Result.GetResult<Prisma.$LandRegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   children<T extends Prisma.LandRegistration$childrenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  conflicts<T extends Prisma.LandRegistration$conflictsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$conflictsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandConflictPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  conflictsWith<T extends Prisma.LandRegistration$conflictsWithArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$conflictsWithArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandConflictPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2764,6 +3354,12 @@ export interface LandRegistrationFieldRefs {
   readonly purpose: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly titleType: Prisma.FieldRef<"LandRegistration", 'String'>
   readonly parentLandId: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly hasExistingCofO: Prisma.FieldRef<"LandRegistration", 'Boolean'>
+  readonly existingCofODocument: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly existingCofONumber: Prisma.FieldRef<"LandRegistration", 'String'>
+  readonly existingCofOIssueDate: Prisma.FieldRef<"LandRegistration", 'DateTime'>
+  readonly requiresReviewerApproval: Prisma.FieldRef<"LandRegistration", 'Boolean'>
+  readonly conflictFlags: Prisma.FieldRef<"LandRegistration", 'Json'>
   readonly createdAt: Prisma.FieldRef<"LandRegistration", 'DateTime'>
 }
     
@@ -3283,6 +3879,54 @@ export type LandRegistration$childrenArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.LandRegistrationScalarFieldEnum | Prisma.LandRegistrationScalarFieldEnum[]
+}
+
+/**
+ * LandRegistration.conflicts
+ */
+export type LandRegistration$conflictsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LandConflict
+   */
+  select?: Prisma.LandConflictSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LandConflict
+   */
+  omit?: Prisma.LandConflictOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandConflictInclude<ExtArgs> | null
+  where?: Prisma.LandConflictWhereInput
+  orderBy?: Prisma.LandConflictOrderByWithRelationInput | Prisma.LandConflictOrderByWithRelationInput[]
+  cursor?: Prisma.LandConflictWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LandConflictScalarFieldEnum | Prisma.LandConflictScalarFieldEnum[]
+}
+
+/**
+ * LandRegistration.conflictsWith
+ */
+export type LandRegistration$conflictsWithArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LandConflict
+   */
+  select?: Prisma.LandConflictSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LandConflict
+   */
+  omit?: Prisma.LandConflictOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandConflictInclude<ExtArgs> | null
+  where?: Prisma.LandConflictWhereInput
+  orderBy?: Prisma.LandConflictOrderByWithRelationInput | Prisma.LandConflictOrderByWithRelationInput[]
+  cursor?: Prisma.LandConflictWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LandConflictScalarFieldEnum | Prisma.LandConflictScalarFieldEnum[]
 }
 
 /**

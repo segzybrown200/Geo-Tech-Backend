@@ -407,6 +407,7 @@ export const ModelName = {
   EmailVerificationToken: 'EmailVerificationToken',
   CofOAuditLog: 'CofOAuditLog',
   ApprovalAudit: 'ApprovalAudit',
+  LandConflict: 'LandConflict',
   PasswordResetToken: 'PasswordResetToken'
 } as const
 
@@ -423,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "landAuditLog" | "ownershipTransfer" | "transferVerification" | "ownershipTransferDocument" | "documentReview" | "ownershipTransferAuditLog" | "transferStageLog" | "ownershipHistory" | "cofOApplication" | "cofODocument" | "payment" | "stageLog" | "inboxMessage" | "emailVerificationToken" | "cofOAuditLog" | "approvalAudit" | "passwordResetToken"
+    modelProps: "user" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "landAuditLog" | "ownershipTransfer" | "transferVerification" | "ownershipTransferDocument" | "documentReview" | "ownershipTransferAuditLog" | "transferStageLog" | "ownershipHistory" | "cofOApplication" | "cofODocument" | "payment" | "stageLog" | "inboxMessage" | "emailVerificationToken" | "cofOAuditLog" | "approvalAudit" | "landConflict" | "passwordResetToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2113,6 +2114,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LandConflict: {
+      payload: Prisma.$LandConflictPayload<ExtArgs>
+      fields: Prisma.LandConflictFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LandConflictFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandConflictPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LandConflictFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandConflictPayload>
+        }
+        findFirst: {
+          args: Prisma.LandConflictFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandConflictPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LandConflictFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandConflictPayload>
+        }
+        findMany: {
+          args: Prisma.LandConflictFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandConflictPayload>[]
+        }
+        create: {
+          args: Prisma.LandConflictCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandConflictPayload>
+        }
+        createMany: {
+          args: Prisma.LandConflictCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LandConflictCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandConflictPayload>[]
+        }
+        delete: {
+          args: Prisma.LandConflictDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandConflictPayload>
+        }
+        update: {
+          args: Prisma.LandConflictUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandConflictPayload>
+        }
+        deleteMany: {
+          args: Prisma.LandConflictDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LandConflictUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LandConflictUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandConflictPayload>[]
+        }
+        upsert: {
+          args: Prisma.LandConflictUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandConflictPayload>
+        }
+        aggregate: {
+          args: Prisma.LandConflictAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLandConflict>
+        }
+        groupBy: {
+          args: Prisma.LandConflictGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LandConflictGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LandConflictCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LandConflictCountAggregateOutputType> | number
+        }
+      }
+    }
     PasswordResetToken: {
       payload: Prisma.$PasswordResetTokenPayload<ExtArgs>
       fields: Prisma.PasswordResetTokenFieldRefs
@@ -2322,6 +2397,12 @@ export const LandRegistrationScalarFieldEnum = {
   purpose: 'purpose',
   titleType: 'titleType',
   parentLandId: 'parentLandId',
+  hasExistingCofO: 'hasExistingCofO',
+  existingCofODocument: 'existingCofODocument',
+  existingCofONumber: 'existingCofONumber',
+  existingCofOIssueDate: 'existingCofOIssueDate',
+  requiresReviewerApproval: 'requiresReviewerApproval',
+  conflictFlags: 'conflictFlags',
   createdAt: 'createdAt'
 } as const
 
@@ -2524,6 +2605,7 @@ export const PaymentScalarFieldEnum = {
   reference: 'reference',
   status: 'status',
   provider: 'provider',
+  type: 'type',
   createdAt: 'createdAt'
 } as const
 
@@ -2590,6 +2672,19 @@ export const ApprovalAuditScalarFieldEnum = {
 } as const
 
 export type ApprovalAuditScalarFieldEnum = (typeof ApprovalAuditScalarFieldEnum)[keyof typeof ApprovalAuditScalarFieldEnum]
+
+
+export const LandConflictScalarFieldEnum = {
+  id: 'id',
+  landId: 'landId',
+  conflictingLandId: 'conflictingLandId',
+  conflictType: 'conflictType',
+  status: 'status',
+  conflictDocument: 'conflictDocument',
+  createdAt: 'createdAt'
+} as const
+
+export type LandConflictScalarFieldEnum = (typeof LandConflictScalarFieldEnum)[keyof typeof LandConflictScalarFieldEnum]
 
 
 export const PasswordResetTokenScalarFieldEnum = {
@@ -2949,6 +3044,7 @@ export type GlobalOmitConfig = {
   emailVerificationToken?: Prisma.EmailVerificationTokenOmit
   cofOAuditLog?: Prisma.CofOAuditLogOmit
   approvalAudit?: Prisma.ApprovalAuditOmit
+  landConflict?: Prisma.LandConflictOmit
   passwordResetToken?: Prisma.PasswordResetTokenOmit
 }
 

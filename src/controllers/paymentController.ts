@@ -82,6 +82,12 @@ export const verifyPayment = async (req: Request, res: Response) => {
     }
 
       // ✅ prevent duplicate CofO
+  if (!payment.landId) {
+    return res.status(400).json({
+      message: "Payment record is not linked to a land registration.",
+    });
+  }
+
   const existing = await prisma.cofOApplication.findFirst({
     where: { landId: payment.landId, userId: payment.userId },
   });
@@ -89,10 +95,9 @@ export const verifyPayment = async (req: Request, res: Response) => {
     return res.json({
       message: "Payment verified successfully. CofO application already exists.",
       cofOApplicationId: existing.id,
-      applicationNumber: existing.applicationNumber ,
+      applicationNumber: existing.applicationNumber,
     });
   }
-
 
   const cofO = await prisma.cofOApplication.create({
     data: {

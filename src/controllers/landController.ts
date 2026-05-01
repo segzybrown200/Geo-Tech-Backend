@@ -3,6 +3,7 @@ import { LandRegistration } from "../generated/client/client";
 import {
   landRegistrationSchema,
   landVerificationSchema,
+  existingCofOUploadSchema,
 } from "../utils/zodSchemas";
 import {
   uploadToCloudinary,
@@ -16,6 +17,15 @@ import {
   calculateAreaFromUTM,
   isClosed,
 } from "../utils/germetry";
+import {
+  generateConflictDocumentText,
+  createConflictRecord,
+  generateConflictDocumentData,
+} from "../services/conflictDocumentService";
+import {
+  createLandRegistrationPayment,
+  calculateLandRegistrationFee,
+} from "../services/paymentService";
 
 function toWKTPolygon(coords: number[][]) {
   const formatted = coords
@@ -73,6 +83,9 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
     bearings,
     startPoint,
     measuredAreaSqm,
+    hasExistingCofO = false,
+    existingCofONumber,
+    existingCofOIssueDate,
   } = body.data;
 
   const userId = req.user.sub;
@@ -201,17 +214,12 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
       console.log(`✅ Area validated: Calculated ${calculatedArea.toFixed(2)} m², Using measured ${measuredAreaSqm.toFixed(2)} m²`);
     }
 
-    // 5️⃣ Overlap check
+    // 5️⃣ Overlap check - create conflict records instead of rejecting
     const overlap = await prisma.$queryRaw<any[]>`
       SELECT id FROM "LandRegistration"
       WHERE ST_Intersects(boundary, ST_GeomFromText(${polygon}, 4326))
       AND NOT ST_Touches(boundary, ST_GeomFromText(${polygon}, 4326))
     `;
-    if (overlap.length > 0) {
-      return res
-        .status(400)
-        .json({ message: "Land overlaps with existing land" });
-    }
 
     // 6️⃣ Subdivision check
     if (parentLandId) {
@@ -262,7 +270,11 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
         "boundary",
         "createdAt",
         "isVerified",
-        "utmZone"
+        "utmZone",
+        "hasExistingCofO",
+        "existingCofONumber",
+        "existingCofOIssueDate",
+        "requiresReviewerApproval"
       )
       SELECT
         gen_random_uuid(),
@@ -290,17 +302,65 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
         CAST(${JSON.stringify(finalUTM)} AS jsonb),
         CAST(${JSON.stringify(finalLatLng)} AS jsonb),
         CAST(${JSON.stringify(bearings ?? [])} AS jsonb),
-        'PENDING',
+        'PAYMENT_PENDING',
         g,
         now(),
         false,
-        ${utmZone}
+        ${utmZone},
+        ${hasExistingCofO},
+        ${existingCofONumber ?? null},
+        ${existingCofOIssueDate ? new Date(existingCofOIssueDate) : null},
+        ${hasExistingCofO ? true : false}
       FROM geom
       RETURNING *;
     `;
 
     if (!land) {
       return res.status(500).json({ message: "Land registration failed" });
+    }
+
+    // Process conflicts now that land is created
+    let conflicts = [];
+    if (overlap.length > 0) {
+      // Create conflict records for each overlapping land
+      for (const overlappingLand of overlap) {
+        try {
+          const conflictData = await generateConflictDocumentData(
+            land.id,
+            overlappingLand.id,
+            "OVERLAP"
+          );
+
+          if (conflictData) {
+            const conflictText = generateConflictDocumentText(conflictData);
+            // Here you would save the document to Cloudinary or file storage
+            // For now, we'll just store the text in the database
+
+            const conflict = await createConflictRecord(
+              land.id,
+              overlappingLand.id,
+              "OVERLAP"
+            );
+            conflicts.push(conflict);
+          }
+        } catch (err) {
+          console.error("Error creating conflict record:", err);
+        }
+      }
+
+      // Update land with conflict flags
+      if (conflicts.length > 0) {
+        await prisma.landRegistration.update({
+          where: { id: land.id },
+          data: {
+            conflictFlags: JSON.stringify({
+              hasConflicts: true,
+              conflictCount: conflicts.length,
+              conflictIds: conflicts.map((c) => c.id),
+            }),
+          },
+        });
+      }
     }
 
     // 8️⃣ Validate and upload documents
@@ -339,7 +399,24 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
       }),
     );
 
-    // 9️⃣ Audit log
+    // 9️⃣ Create payment record
+    const paymentFee = calculateLandRegistrationFee(finalAreaSqm);
+    const paymentReference = `PAY-${land.id.substring(0, 8)}-${Date.now()}`;
+    
+    let payment = null;
+    try {
+      payment = await createLandRegistrationPayment(
+        userId,
+        land.id,
+        paymentFee,
+        "PAYSTACK", // Default provider, can be configured
+        paymentReference
+      );
+    } catch (err) {
+      console.error("Error creating payment record:", err);
+    }
+
+    // 🔟 Audit log
     await prisma.landAuditLog.create({
       data: {
         landId: land.id,
@@ -349,14 +426,36 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
           ownerName,
           areaSqm: land.areaSqm,
           coordinates: finalLatLng,
+          hasConflicts: conflicts.length > 0,
+          hasExistingCofO,
         },
       },
     });
 
     return res.status(201).json({
-      message: "Land registered successfully",
-      land,
+      message: "Land registered successfully. Payment required to complete registration.",
+      land: {
+        id: land.id,
+        landCode: land.landCode,
+        ownerName: land.ownerName,
+        areaSqm: land.areaSqm,
+        landStatus: land.landStatus,
+        hasConflicts: conflicts.length > 0,
+        conflictCount: conflicts.length,
+      },
+      payment: {
+        id: payment?.id,
+        amount: payment?.amount,
+        reference: payment?.reference,
+        status: payment?.status,
+        message: "Please proceed to payment to complete your land registration",
+      },
       documents: uploadedDocs,
+      conflicts: conflicts.length > 0 ? {
+        detected: true,
+        count: conflicts.length,
+        message: "This land overlaps with existing registrations. Please review the conflict documents.",
+      } : null,
     });
   } catch (err) {
     console.error(err);
@@ -648,6 +747,279 @@ export const updateLand = async (req: AuthRequest, res: Response) => {
     return res.status(200).json({ message: "Land updated successfully" });
   } catch (err) {
     res.status(500).json({ message: "Error updating land", error: err });
+  }
+};
+
+// ============= NEW ENDPOINTS FOR PAYMENT & CONFLICTS =============
+
+import {
+  acknowledgeLandConflictSchema,
+  paymentConfirmationSchema,
+} from "../utils/zodSchemas";
+import { confirmPayment } from "../services/paymentService";
+import { updateConflictStatus } from "../services/conflictDocumentService";
+
+/**
+ * Confirm payment for land registration
+ * Transitions land from PAYMENT_PENDING to PENDING (ready for reviewer)
+ */
+export const confirmPaymentLand = async (req: AuthRequest, res: Response) => {
+  const body = paymentConfirmationSchema.safeParse(req.body);
+  if (!body.success) {
+    return res.status(400).json({
+      message: "Invalid request",
+      errors: body.error.flatten(),
+    });
+  }
+
+  const { paymentId, status } = body.data;
+  const userId = req.user.sub;
+
+  try {
+    const result = await confirmPayment(paymentId, status);
+
+    if (!result.success) {
+      return res.status(400).json({
+        message: result.message,
+      });
+    }
+
+    // Audit log
+    const payment = result.data;
+    if (payment?.landId) {
+      await prisma.landAuditLog.create({
+        data: {
+          landId: payment.landId,
+          action: "PAYMENT_CONFIRMED",
+          userId,
+          metadata: {
+            paymentId,
+            status,
+            amount: payment.amount,
+          },
+        },
+      });
+    }
+
+    return res.status(200).json({
+      message: "Payment confirmed successfully",
+      payment: result.data,
+    });
+  } catch (err) {
+    console.error("Error confirming payment:", err);
+    return res.status(500).json({
+      message: "Error confirming payment",
+    });
+  }
+};
+
+/**
+ * Get all conflicts for a land
+ */
+export const getLandConflicts = async (req: Request, res: Response) => {
+  const { landId } = req.params;
+
+  try {
+    const conflicts = await prisma.landConflict.findMany({
+      where: {
+        OR: [{ landId }, { conflictingLandId: landId }],
+      },
+      include: {
+        land: {
+          include: {
+            owner: {
+              select: {
+                id: true,
+                fullName: true,
+                email: true,
+                phone: true,
+              },
+            },
+          },
+        },
+        conflictingLand: {
+          include: {
+            owner: {
+              select: {
+                id: true,
+                fullName: true,
+                email: true,
+                phone: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (conflicts.length === 0) {
+      return res.status(200).json({
+        message: "No conflicts found",
+        conflicts: [],
+      });
+    }
+
+    return res.status(200).json({
+      message: "Conflicts retrieved successfully",
+      total: conflicts.length,
+      conflicts,
+    });
+  } catch (err) {
+    console.error("Error fetching conflicts:", err);
+    return res.status(500).json({
+      message: "Error retrieving conflicts",
+    });
+  }
+};
+
+/**
+ * Acknowledge a land conflict
+ */
+export const acknowledgeLandConflict = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  const body = acknowledgeLandConflictSchema.safeParse(req.body);
+  if (!body.success) {
+    return res.status(400).json({
+      message: "Invalid request",
+      errors: body.error.flatten(),
+    });
+  }
+
+  const { conflictId, acknowledged } = body.data;
+  const userId = req.user.sub;
+
+  try {
+    const conflict = await prisma.landConflict.findUnique({
+      where: { id: conflictId },
+      include: {
+        land: true,
+      },
+    });
+
+    if (!conflict) {
+      return res.status(404).json({
+        message: "Conflict not found",
+      });
+    }
+
+    // Only the land owner can acknowledge a conflict
+    const land = await prisma.landRegistration.findUnique({
+      where: { id: conflict.landId },
+    });
+
+    if (land?.ownerId !== userId) {
+      return res.status(403).json({
+        message: "Forbidden: You do not have permission to acknowledge this conflict",
+      });
+    }
+
+    // Update conflict status
+    const newStatus = acknowledged ? "ACKNOWLEDGED" : "FLAGGED";
+    const updatedConflict = await updateConflictStatus(conflictId, newStatus as any);
+
+    // Audit log
+    await prisma.landAuditLog.create({
+      data: {
+        landId: conflict.landId,
+        action: `CONFLICT_${newStatus}`,
+        userId,
+        metadata: {
+          conflictId,
+          conflictingLandId: conflict.conflictingLandId,
+          acknowledged,
+        },
+      },
+    });
+
+    return res.status(200).json({
+      message: `Conflict ${newStatus.toLowerCase()} successfully`,
+      conflict: updatedConflict,
+    });
+  } catch (err) {
+    console.error("Error acknowledging conflict:", err);
+    return res.status(500).json({
+      message: "Error acknowledging conflict",
+    });
+  }
+};
+
+/**
+ * Download/retrieve conflict document
+ */
+export const getConflictDocument = async (req: Request, res: Response) => {
+  const { conflictId } = req.params;
+
+  try {
+    const conflict = await prisma.landConflict.findUnique({
+      where: { id: conflictId },
+      include: {
+        land: {
+          include: {
+            owner: {
+              select: {
+                fullName: true,
+                email: true,
+                phone: true,
+              },
+            },
+          },
+        },
+        conflictingLand: {
+          include: {
+            owner: {
+              select: {
+                fullName: true,
+                email: true,
+                phone: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!conflict) {
+      return res.status(404).json({
+        message: "Conflict not found",
+      });
+    }
+
+    // Generate conflict document data
+    const conflictData = await generateConflictDocumentData(
+      conflict.landId,
+      conflict.conflictingLandId,
+      conflict.conflictType as "OVERLAP" | "EXISTING_COFO"
+    );
+
+    if (!conflictData) {
+      return res.status(500).json({
+        message: "Error generating conflict document",
+      });
+    }
+
+    // Generate document text
+    const documentText = generateConflictDocumentText(conflictData);
+
+    // Return document
+    return res.status(200).json({
+      message: "Conflict document retrieved successfully",
+      document: {
+        conflictId,
+        conflictType: conflict.conflictType,
+        status: conflict.status,
+        documentUrl: conflict.conflictDocument,
+        generatedAt: new Date().toISOString(),
+        content: documentText,
+        data: conflictData,
+      },
+    });
+  } catch (err) {
+    console.error("Error retrieving conflict document:", err);
+    return res.status(500).json({
+      message: "Error retrieving conflict document",
+    });
   }
 };
 export const getLandCount = async (req: Request, res: Response) => {

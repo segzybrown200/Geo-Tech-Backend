@@ -74,6 +74,7 @@ export const ModelName = {
   EmailVerificationToken: 'EmailVerificationToken',
   CofOAuditLog: 'CofOAuditLog',
   ApprovalAudit: 'ApprovalAudit',
+  LandConflict: 'LandConflict',
   PasswordResetToken: 'PasswordResetToken'
 } as const
 
@@ -189,6 +190,12 @@ export const LandRegistrationScalarFieldEnum = {
   purpose: 'purpose',
   titleType: 'titleType',
   parentLandId: 'parentLandId',
+  hasExistingCofO: 'hasExistingCofO',
+  existingCofODocument: 'existingCofODocument',
+  existingCofONumber: 'existingCofONumber',
+  existingCofOIssueDate: 'existingCofOIssueDate',
+  requiresReviewerApproval: 'requiresReviewerApproval',
+  conflictFlags: 'conflictFlags',
   createdAt: 'createdAt'
 } as const
 
@@ -391,6 +398,7 @@ export const PaymentScalarFieldEnum = {
   reference: 'reference',
   status: 'status',
   provider: 'provider',
+  type: 'type',
   createdAt: 'createdAt'
 } as const
 
@@ -457,6 +465,19 @@ export const ApprovalAuditScalarFieldEnum = {
 } as const
 
 export type ApprovalAuditScalarFieldEnum = (typeof ApprovalAuditScalarFieldEnum)[keyof typeof ApprovalAuditScalarFieldEnum]
+
+
+export const LandConflictScalarFieldEnum = {
+  id: 'id',
+  landId: 'landId',
+  conflictingLandId: 'conflictingLandId',
+  conflictType: 'conflictType',
+  status: 'status',
+  conflictDocument: 'conflictDocument',
+  createdAt: 'createdAt'
+} as const
+
+export type LandConflictScalarFieldEnum = (typeof LandConflictScalarFieldEnum)[keyof typeof LandConflictScalarFieldEnum]
 
 
 export const PasswordResetTokenScalarFieldEnum = {

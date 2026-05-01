@@ -133,6 +133,11 @@ export type CofOAuditLog = Prisma.CofOAuditLogModel
  */
 export type ApprovalAudit = Prisma.ApprovalAuditModel
 /**
+ * Model LandConflict
+ * 
+ */
+export type LandConflict = Prisma.LandConflictModel
+/**
  * Model PasswordResetToken
  * 
  */

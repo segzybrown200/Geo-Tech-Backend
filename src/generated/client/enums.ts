@@ -37,7 +37,9 @@ export type Role = (typeof Role)[keyof typeof Role]
 export const landStatus = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED'
+  REJECTED: 'REJECTED',
+  PAYMENT_PENDING: 'PAYMENT_PENDING',
+  PENDING_REVIEWER_VERIFICATION: 'PENDING_REVIEWER_VERIFICATION'
 } as const
 
 export type landStatus = (typeof landStatus)[keyof typeof landStatus]
