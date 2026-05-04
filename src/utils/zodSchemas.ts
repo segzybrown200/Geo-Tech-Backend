@@ -249,7 +249,7 @@ z.tuple([z.number(), z.number()]) // [lat, lng]
   }
 });
 
-export const landRegistrationWithPaymentSchema = landRegistrationSchema.extend({
+export const landRegistrationWithPaymentSchema = landRegistrationSchema.safeExtend({
   paymentReference: z.string().min(3, "Payment reference is required"),
   paymentAmount: z.preprocess((val) => {
     if (typeof val === "string") {
