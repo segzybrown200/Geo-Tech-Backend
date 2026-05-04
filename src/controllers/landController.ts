@@ -321,6 +321,7 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
 
     // Process conflicts now that land is created
     let conflicts = [];
+    let conflictDetails = [];
     if (overlap.length > 0) {
       // Create conflict records for each overlapping land
       for (const overlappingLand of overlap) {
@@ -342,6 +343,13 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
               "OVERLAP"
             );
             conflicts.push(conflict);
+            
+            // Add full conflict data to details for frontend
+            conflictDetails.push({
+              conflictId: conflict.id,
+              status: conflict.status,
+              conflictData: conflictData,
+            });
           }
         } catch (err) {
           console.error("Error creating conflict record:", err);
@@ -454,7 +462,47 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
       conflicts: conflicts.length > 0 ? {
         detected: true,
         count: conflicts.length,
-        message: "This land overlaps with existing registrations. Please review the conflict documents.",
+        message: "⚠️ CONFLICT DETECTED: This land overlaps with existing registrations. Please review the details below before proceeding.",
+        conflictDetails: conflictDetails.map(detail => ({
+          conflictId: detail.conflictId,
+          conflictType: "OVERLAP",
+          status: detail.status,
+          yourLand: {
+            id: detail.conflictData.newLand.id,
+            ownerName: detail.conflictData.newLand.ownerName,
+            areaSqm: detail.conflictData.newLand.areaSqm,
+            purpose: detail.conflictData.newLand.purpose,
+            titleType: detail.conflictData.newLand.titleType,
+            ownershipType: detail.conflictData.newLand.ownershipType,
+            address: detail.conflictData.newLand.address,
+            ownerContact: {
+              name: detail.conflictData.newLandOwner.fullName,
+              email: detail.conflictData.newLandOwner.email,
+              phone: detail.conflictData.newLandOwner.phone,
+            }
+          },
+          conflictingLand: {
+            id: detail.conflictData.conflictingLand.id,
+            ownerName: detail.conflictData.conflictingLand.ownerName,
+            areaSqm: detail.conflictData.conflictingLand.areaSqm,
+            purpose: detail.conflictData.conflictingLand.purpose,
+            titleType: detail.conflictData.conflictingLand.titleType,
+            ownershipType: detail.conflictData.conflictingLand.ownershipType,
+            address: detail.conflictData.conflictingLand.address,
+            ownerContact: {
+              name: detail.conflictData.conflictingLandOwner.fullName,
+              email: detail.conflictData.conflictingLandOwner.email,
+              phone: detail.conflictData.conflictingLandOwner.phone,
+            }
+          },
+          nextActions: [
+            "Review the conflicting land details above",
+            "Contact the existing land owner to resolve boundary differences",
+            "Acknowledge this conflict in the system",
+            "Proceed with payment",
+            "Await reviewer verification"
+          ]
+        }))
       } : null,
     });
   } catch (err) {
