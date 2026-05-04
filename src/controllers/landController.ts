@@ -2,7 +2,7 @@ import prisma from "../lib/prisma";
 import { LandRegistration } from "../generated/client/client";
 import {
   landRegistrationSchema,
-  landVerificationSchema,
+  landRegistrationWithPaymentSchema,
   existingCofOUploadSchema,
 } from "../utils/zodSchemas";
 import {
@@ -23,8 +23,8 @@ import {
   generateConflictDocumentData,
 } from "../services/conflictDocumentService";
 import {
-  createLandRegistrationPayment,
   calculateLandRegistrationFee,
+  verifyPaystackReference,
 } from "../services/paymentService";
 
 function toWKTPolygon(coords: number[][]) {
@@ -53,8 +53,8 @@ function normalizeLatLngOrder(coords: number[][]): number[][] {
 }
 
 export const registerLand = async (req: AuthRequest, res: Response) => {
-  // 1️⃣ Validate request body
-  const body = landRegistrationSchema.safeParse(req.body);
+  // 1️⃣ Validate request body with payment details
+  const body = landRegistrationWithPaymentSchema.safeParse(req.body);
   if (!body.success) {
     return res.status(400).json({
       message: "Invalid land input",
@@ -83,9 +83,11 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
     bearings,
     startPoint,
     measuredAreaSqm,
-    hasExistingCofO = false,
+    hasExistingCofO,
     existingCofONumber,
     existingCofOIssueDate,
+    paymentReference,
+    paymentAmount,
   } = body.data;
 
   const userId = req.user.sub;
@@ -199,7 +201,6 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
 
     if (measuredAreaSqm) {
       const areaDifference = Math.abs(calculatedArea - measuredAreaSqm);
-      
       if (areaDifference > AREA_TOLERANCE) {
         return res.status(400).json({
           message: `Area mismatch detected. Calculated: ${calculatedArea.toFixed(2)} m², Measured: ${measuredAreaSqm.toFixed(2)} m². Difference: ${areaDifference.toFixed(2)} m² (tolerance: ±${AREA_TOLERANCE} m²). Please verify your measured area from the survey document.`,
@@ -208,18 +209,41 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
           difference: parseFloat(areaDifference.toFixed(2)),
         });
       }
-      
-      // Area is within tolerance, use the measured value
       finalAreaSqm = measuredAreaSqm;
       console.log(`✅ Area validated: Calculated ${calculatedArea.toFixed(2)} m², Using measured ${measuredAreaSqm.toFixed(2)} m²`);
     }
 
-    // 5️⃣ Overlap check - create conflict records instead of rejecting
+    // 5️⃣ Overlap check
     const overlap = await prisma.$queryRaw<any[]>`
-      SELECT id FROM "LandRegistration"
+      SELECT id, "ownerName", "ownershipType", purpose, "titleType", "stateId", "ownerId", "landStatus", address
+      FROM "LandRegistration"
       WHERE ST_Intersects(boundary, ST_GeomFromText(${polygon}, 4326))
       AND NOT ST_Touches(boundary, ST_GeomFromText(${polygon}, 4326))
     `;
+
+    if (overlap.length > 0) {
+      const existingConflicts = overlap.map((existing) => ({
+        landId: existing.id,
+        ownerName: existing.ownerName,
+        ownershipType: existing.ownershipType,
+        purpose: existing.purpose,
+        titleType: existing.titleType,
+        stateId: existing.stateId,
+        landStatus: existing.landStatus,
+        address: existing.address,
+        ownerId: existing.ownerId,
+      }));
+
+      return res.status(400).json({
+        message: "Land overlaps with existing registration(s)",
+        canRegister: false,
+        conflicts: {
+          detected: true,
+          count: overlap.length,
+          details: existingConflicts,
+        },
+      });
+    }
 
     // 6️⃣ Subdivision check
     if (parentLandId) {
@@ -235,154 +259,85 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
       }
     }
 
-    // 7️⃣ Insert land
-    const [land] = await prisma.$queryRaw<any[]>`
-      WITH geom AS (
-        SELECT ST_ForceRHR(ST_GeomFromText(${polygon}, 4326)) AS g
-      )
-      INSERT INTO "LandRegistration" (
-        "id",
-        "landCode",
-        "ownerId",
-        "ownerName",
-        "ownershipType",
-        "purpose",
-        "titleType",
-        "stateId",
-        "address",
-        "parentLandId",
-        "areaSqm",
-        "centerLat",
-        "centerLng",
-        "startPoint",
-        "surveyPlanNumber",
-        "surveyDate",
-        "surveyorName",
-        "surveyorAddress",
-        "surveyTelephone",
-        "surveyNotes",
-        "accuracyLevel",
-        "surveyType",
-        "utmCoordinates",
-        "latlngCoordinates",
-        "bearings",
-        "landStatus",
-        "boundary",
-        "createdAt",
-        "isVerified",
-        "utmZone",
-        "hasExistingCofO",
-        "existingCofONumber",
-        "existingCofOIssueDate",
-        "requiresReviewerApproval"
-      )
-      SELECT
-        gen_random_uuid(),
-        ${`LAND-${Date.now()}-${Math.floor(Math.random() * 1000)}`},
-        ${userId},
-        ${ownerName},
-        ${ownershipType},
-        ${purpose},
-        ${titleType},
-        ${stateId},
-        ${address},
-        ${parentLandId ?? null},
-        ${finalAreaSqm},
-        ST_Y(ST_Centroid(g)),
-        ST_X(ST_Centroid(g)),
-        CAST(${JSON.stringify(startPoint ?? null)} AS jsonb),
-        ${surveyPlanNumber},
-        ${parsedSurveyDate},
-        ${surveyorName},
-        ${surveyorAddress ?? null},
-        ${surveyTelephone ?? null},
-        ${surveyNotes ?? null},
-        ${accuracyLevel},
-        ${surveyType},
-        CAST(${JSON.stringify(finalUTM)} AS jsonb),
-        CAST(${JSON.stringify(finalLatLng)} AS jsonb),
-        CAST(${JSON.stringify(bearings ?? [])} AS jsonb),
-        'PAYMENT_PENDING',
-        g,
-        now(),
-        false,
-        ${utmZone},
-        ${hasExistingCofO},
-        ${existingCofONumber ?? null},
-        ${existingCofOIssueDate ? new Date(existingCofOIssueDate) : null},
-        ${hasExistingCofO ? true : false}
-      FROM geom
-      RETURNING *;
-    `;
-
-    if (!land) {
-      return res.status(500).json({ message: "Land registration failed" });
+    // 7️⃣ Duplicate field check
+    const duplicateIssues: Array<{ field: string; message: string }> = [];
+    const existingPlan = await prisma.landRegistration.findFirst({
+      where: { surveyPlanNumber },
+    });
+    if (existingPlan) {
+      duplicateIssues.push({
+        field: "surveyPlanNumber",
+        message: "This survey plan number is already registered",
+      });
     }
 
-    // Process conflicts now that land is created
-    let conflicts = [];
-    let conflictDetails = [];
-    if (overlap.length > 0) {
-      // Create conflict records for each overlapping land
-      for (const overlappingLand of overlap) {
-        try {
-          const conflictData = await generateConflictDocumentData(
-            land.id,
-            overlappingLand.id,
-            "OVERLAP"
-          );
-
-          if (conflictData) {
-            const conflictText = generateConflictDocumentText(conflictData);
-            // Here you would save the document to Cloudinary or file storage
-            // For now, we'll just store the text in the database
-
-            const conflict = await createConflictRecord(
-              land.id,
-              overlappingLand.id,
-              "OVERLAP"
-            );
-            conflicts.push(conflict);
-            
-            // Add full conflict data to details for frontend
-            conflictDetails.push({
-              conflictId: conflict.id,
-              status: conflict.status,
-              conflictData: conflictData,
-            });
-          }
-        } catch (err) {
-          console.error("Error creating conflict record:", err);
-        }
-      }
-
-      // Update land with conflict flags
-      if (conflicts.length > 0) {
-        await prisma.landRegistration.update({
-          where: { id: land.id },
-          data: {
-            conflictFlags: JSON.stringify({
-              hasConflicts: true,
-              conflictCount: conflicts.length,
-              conflictIds: conflicts.map((c) => c.id),
-            }),
-          },
+    if (hasExistingCofO && existingCofONumber) {
+      const existingCofO = await prisma.landRegistration.findFirst({
+        where: { existingCofONumber },
+      });
+      if (existingCofO) {
+        duplicateIssues.push({
+          field: "existingCofONumber",
+          message: "This existing CofO number has already been used",
         });
       }
     }
 
-    // 8️⃣ Validate and upload documents
-    const files = req.files as Express.Multer.File[];
-    const validationErrors: string[] = [];
+    if (duplicateIssues.length > 0) {
+      return res.status(400).json({
+        message: "Duplicate or invalid registration details",
+        canRegister: false,
+        duplicateIssues,
+      });
+    }
 
+    // 8️⃣ Verify payment reference before creating the land
+    const paymentVerification = await verifyPaystackReference(paymentReference);
+    if (!paymentVerification.success) {
+      return res.status(400).json({
+        message: "Payment verification failed",
+        details: paymentVerification.message,
+      });
+    }
+
+    if (typeof paymentVerification.amount !== "number" ||
+      Math.abs(paymentVerification.amount - paymentAmount) > 0.01) {
+      return res.status(400).json({
+        message: "Payment amount does not match the verified transaction",
+        expectedAmount: paymentAmount,
+        verifiedAmount: paymentVerification.amount,
+      });
+    }
+
+    const existingPayment = await prisma.payment.findUnique({
+      where: { reference: paymentReference },
+    });
+    if (existingPayment && existingPayment.landId) {
+      return res.status(400).json({
+        message: "This payment reference has already been used for another land registration",
+      });
+    }
+    if (existingPayment && existingPayment.userId !== userId) {
+      return res.status(403).json({
+        message: "Payment reference belongs to another user",
+      });
+    }
+
+    const files = req.files as Express.Multer.File[];
+    if (!files || files.length === 0) {
+      return res.status(400).json({ message: "At least one land document is required" });
+    }
+
+    const validationErrors: string[] = [];
     files.forEach((file, i) => {
       const result = validateDocumentFile(
         file.buffer,
         file.originalname,
         file.mimetype,
       );
-      if (!result.valid)
+      if (!result.valid) {
         validationErrors.push(`File ${i + 1}: ${result.error}`);
+      }
     });
     if (validationErrors.length) {
       return res
@@ -390,39 +345,133 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
         .json({ message: "Invalid documents", errors: validationErrors });
     }
 
-    const uploadedDocs = await Promise.all(
+    const uploadedResults = await Promise.all(
       files.map(async (file) => {
-        const uploaded = await uploadToCloudinary(
-          file.buffer,
-          file.originalname,
-          file.mimetype,
-        );
-        return prisma.landDocument.create({
-          data: {
-            landId: land.id,
-            documentUrl: uploaded.secure_url,
-            fileName: file.originalname,
-          },
-        });
+        return uploadToCloudinary(file.buffer, file.originalname, file.mimetype);
       }),
     );
 
-    // 9️⃣ Create payment record
-    const paymentFee = calculateLandRegistrationFee(finalAreaSqm);
-    const paymentReference = `PAY-${land.id.substring(0, 8)}-${Date.now()}`;
-    
-    let payment = null;
-    try {
-      payment = await createLandRegistrationPayment(
-        userId,
-        land.id,
-        paymentFee,
-        "PAYSTACK", // Default provider, can be configured
-        paymentReference
+    const landStatus = hasExistingCofO
+      ? "PENDING_REVIEWER_VERIFICATION"
+      : "APPROVED";
+
+    const [land, payment, uploadedDocs] = await prisma.$transaction(async (tx) => {
+      const [newLand] = await tx.$queryRaw<any[]>`
+        WITH geom AS (
+          SELECT ST_ForceRHR(ST_GeomFromText(${polygon}, 4326)) AS g
+        )
+        INSERT INTO "LandRegistration" (
+          "id",
+          "landCode",
+          "ownerId",
+          "ownerName",
+          "ownershipType",
+          "purpose",
+          "titleType",
+          "stateId",
+          "address",
+          "parentLandId",
+          "areaSqm",
+          "centerLat",
+          "centerLng",
+          "startPoint",
+          "surveyPlanNumber",
+          "surveyDate",
+          "surveyorName",
+          "surveyorAddress",
+          "surveyTelephone",
+          "surveyNotes",
+          "accuracyLevel",
+          "surveyType",
+          "utmCoordinates",
+          "latlngCoordinates",
+          "bearings",
+          "landStatus",
+          "boundary",
+          "createdAt",
+          "isVerified",
+          "utmZone",
+          "hasExistingCofO",
+          "existingCofONumber",
+          "existingCofOIssueDate",
+          "requiresReviewerApproval"
+        )
+        SELECT
+          gen_random_uuid(),
+          ${`LAND-${Date.now()}-${Math.floor(Math.random() * 1000)}`},
+          ${userId},
+          ${ownerName},
+          ${ownershipType},
+          ${purpose},
+          ${titleType},
+          ${stateId},
+          ${address},
+          ${parentLandId ?? null},
+          ${finalAreaSqm},
+          ST_Y(ST_Centroid(g)),
+          ST_X(ST_Centroid(g)),
+          CAST(${JSON.stringify(startPoint ?? null)} AS jsonb),
+          ${surveyPlanNumber},
+          ${parsedSurveyDate},
+          ${surveyorName},
+          ${surveyorAddress ?? null},
+          ${surveyTelephone ?? null},
+          ${surveyNotes ?? null},
+          ${accuracyLevel},
+          ${surveyType},
+          CAST(${JSON.stringify(finalUTM)} AS jsonb),
+          CAST(${JSON.stringify(finalLatLng)} AS jsonb),
+          CAST(${JSON.stringify(bearings ?? [])} AS jsonb),
+          ${landStatus},
+          g,
+          now(),
+          false,
+          ${utmZone},
+          ${hasExistingCofO},
+          ${existingCofONumber ?? null},
+          ${existingCofOIssueDate ? new Date(existingCofOIssueDate) : null},
+          ${hasExistingCofO ? true : false}
+        FROM geom
+        RETURNING *;
+      `;
+
+      const paymentRecord = existingPayment
+        ? await tx.payment.update({
+            where: { id: existingPayment.id },
+            data: {
+              landId: newLand.id,
+              amount: paymentAmount,
+              status: "SUCCESS",
+              provider: "PAYSTACK",
+              type: "LAND_REGISTRATION",
+            },
+          })
+        : await tx.payment.create({
+            data: {
+              userId,
+              landId: newLand.id,
+              amount: paymentAmount,
+              provider: "PAYSTACK",
+              reference: paymentReference,
+              status: "SUCCESS",
+              type: "LAND_REGISTRATION",
+            },
+          });
+
+      const documentRecords = await Promise.all(
+        uploadedResults.map((uploaded, i) => {
+          return tx.landDocument.create({
+            data: {
+              landId: newLand.id,
+              documentUrl: uploaded.secure_url,
+              fileName: files[i].originalname,
+            },
+          });
+        }),
       );
-    } catch (err) {
-      console.error("Error creating payment record:", err);
-    }
+
+      return [newLand, paymentRecord, documentRecords];
+    });
 
     // 🔟 Audit log
     await prisma.landAuditLog.create({
@@ -434,76 +483,31 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
           ownerName,
           areaSqm: land.areaSqm,
           coordinates: finalLatLng,
-          hasConflicts: conflicts.length > 0,
           hasExistingCofO,
         },
       },
     });
 
     return res.status(201).json({
-      message: "Land registered successfully. Payment required to complete registration.",
+      message: "Land registered successfully. Payment has been verified and land is now created.",
       land: {
         id: land.id,
         landCode: land.landCode,
         ownerName: land.ownerName,
         areaSqm: land.areaSqm,
         landStatus: land.landStatus,
-        hasConflicts: conflicts.length > 0,
-        conflictCount: conflicts.length,
+        hasExistingCofO,
       },
       payment: {
-        id: payment?.id,
-        amount: payment?.amount,
-        reference: payment?.reference,
-        status: payment?.status,
-        message: "Please proceed to payment to complete your land registration",
+        id: payment.id,
+        amount: payment.amount,
+        reference: payment.reference,
+        status: payment.status,
+        message: "Payment has been verified for this registration",
       },
       documents: uploadedDocs,
-      conflicts: conflicts.length > 0 ? {
-        detected: true,
-        count: conflicts.length,
-        message: "⚠️ CONFLICT DETECTED: This land overlaps with existing registrations. Please review the details below before proceeding.",
-        conflictDetails: conflictDetails.map(detail => ({
-          conflictId: detail.conflictId,
-          conflictType: "OVERLAP",
-          status: detail.status,
-          yourLand: {
-            id: detail.conflictData.newLand.id,
-            ownerName: detail.conflictData.newLand.ownerName,
-            areaSqm: detail.conflictData.newLand.areaSqm,
-            purpose: detail.conflictData.newLand.purpose,
-            titleType: detail.conflictData.newLand.titleType,
-            ownershipType: detail.conflictData.newLand.ownershipType,
-            address: detail.conflictData.newLand.address,
-            ownerContact: {
-              name: detail.conflictData.newLandOwner.fullName,
-              email: detail.conflictData.newLandOwner.email,
-              phone: detail.conflictData.newLandOwner.phone,
-            }
-          },
-          conflictingLand: {
-            id: detail.conflictData.conflictingLand.id,
-            ownerName: detail.conflictData.conflictingLand.ownerName,
-            areaSqm: detail.conflictData.conflictingLand.areaSqm,
-            purpose: detail.conflictData.conflictingLand.purpose,
-            titleType: detail.conflictData.conflictingLand.titleType,
-            ownershipType: detail.conflictData.conflictingLand.ownershipType,
-            address: detail.conflictData.conflictingLand.address,
-            ownerContact: {
-              name: detail.conflictData.conflictingLandOwner.fullName,
-              email: detail.conflictData.conflictingLandOwner.email,
-              phone: detail.conflictData.conflictingLandOwner.phone,
-            }
-          },
-          nextActions: [
-            "Review the conflicting land details above",
-            "Contact the existing land owner to resolve boundary differences",
-            "Acknowledge this conflict in the system",
-            "Proceed with payment",
-            "Await reviewer verification"
-          ]
-        }))
-      } : null,
+      conflicts: null,
+      requiresReviewerApproval: hasExistingCofO,
     });
   } catch (err) {
     console.error(err);
@@ -517,23 +521,41 @@ function convertToWKT(coordinates: number[][]) {
 }
 
 export const verifyLand = async (req: Request, res: Response) => {
-  const parsed = landVerificationSchema.safeParse(req.body);
+  const parsed = landRegistrationSchema.safeParse(req.body);
 
   if (!parsed.success) {
     return res.status(400).json({
-      message: "Invalid input",
+      message: "Invalid land input",
       errors: parsed.error.flatten(),
     });
   }
 
-  const { surveyType, coordinates, bearings, startPoint, utmZone, stateId } = parsed.data;
+  const {
+    surveyType,
+    coordinates,
+    bearings,
+    startPoint,
+    utmZone,
+    stateId,
+    surveyPlanNumber,
+    measuredAreaSqm,
+    hasExistingCofO,
+    existingCofONumber,
+  } = parsed.data;
 
   try {
     let finalLatLng: number[][];
+    let finalUTM: number[][] = [];
 
     if (surveyType === "COORDINATE") {
       const normalized = normalizeLatLngOrder(coordinates! as number[][]);
       finalLatLng = closePolygon(normalized);
+      if (!utmZone) {
+        return res.status(400).json({ message: "UTM zone is required" });
+      }
+      finalUTM = finalLatLng.map(([lat, lng]) =>
+        convertUTMToLatLng(lat, lng, utmZone, true),
+      );
     } else {
       const result = bearingsToCoordinates(
         bearings! as { distance: number; bearing: number }[],
@@ -542,84 +564,107 @@ export const verifyLand = async (req: Request, res: Response) => {
         false,
       );
       finalLatLng = closePolygon(result.latlngCoordinates);
+      finalUTM = closePolygon(result.utmCoordinates);
+
+      if (!isClosed(finalUTM)) {
+        return res.status(400).json({
+          message: "Polygon is not properly closed",
+        });
+      }
     }
 
     const polygon = convertToWKT(finalLatLng);
 
-    // 🔥 MAIN GIS QUERY
-    const lands = await prisma.$queryRawUnsafe<
-      {
-        id: string;
-        ownerId: string;
-        ownerName: string;
-        ownershipType: string;
-        landStatus: string;
-        purpose: string;
-        titleType: string;
-        stateId: string;
-        ownerEmail: string | null;
-        ownerPhone: string | null;
-        ownerFullName: string | null;
-      }[]
-    >(
-      `
-      SELECT
-        lr.id,
-        lr."ownerId",
-        lr."ownerName",
-        lr."ownershipType",
-        lr."landStatus",
-        lr.purpose,
-        lr."titleType",
-        lr."stateId",
-        u.email AS "ownerEmail",
-        u.phone AS "ownerPhone",
-        u."fullName" AS "ownerFullName"
-      FROM "LandRegistration" lr
-      LEFT JOIN "User" u ON u.id = lr."ownerId"
-      WHERE ST_Intersects(
-        lr.boundary,
-        ST_GeomFromText($1, 4326)
-      )
-      AND NOT ST_Touches(
-        lr.boundary,
-        ST_GeomFromText($1, 4326)
-      )
-      ${stateId ? `AND lr."stateId" = '${stateId}'` : ""}
-      `,
-      polygon,
-    );
+    const validityCheck = await prisma.$queryRaw<any[]>`
+      SELECT ST_IsValid(
+        ST_MakeValid(ST_GeomFromText(${polygon}, 4326))
+      ) as valid
+    `;
 
-    const existingOwners = lands.map((land) => ({
+    if (!validityCheck[0]?.valid) {
+      return res.status(400).json({ message: "Invalid polygon shape" });
+    }
+
+    const calculatedArea = calculateAreaFromUTM(finalUTM);
+    let finalAreaSqm = calculatedArea;
+    const AREA_TOLERANCE = 10;
+
+    if (measuredAreaSqm) {
+      const areaDifference = Math.abs(calculatedArea - measuredAreaSqm);
+      if (areaDifference > AREA_TOLERANCE) {
+        return res.status(400).json({
+          message: `Area mismatch detected. Calculated: ${calculatedArea.toFixed(2)} m², Measured: ${measuredAreaSqm.toFixed(2)} m². Difference: ${areaDifference.toFixed(2)} m² (tolerance: ±${AREA_TOLERANCE} m²). Please verify your measured area from the survey document.`,
+          calculatedArea: parseFloat(calculatedArea.toFixed(2)),
+          measuredArea: measuredAreaSqm,
+          difference: parseFloat(areaDifference.toFixed(2)),
+        });
+      }
+      finalAreaSqm = measuredAreaSqm;
+    }
+
+    const overlap = await prisma.$queryRaw<any[]>`
+      SELECT id, "ownerName", "ownershipType", purpose, "titleType", "stateId", "ownerId", "landStatus", address
+      FROM "LandRegistration"
+      WHERE ST_Intersects(boundary, ST_GeomFromText(${polygon}, 4326))
+      AND NOT ST_Touches(boundary, ST_GeomFromText(${polygon}, 4326))
+    `;
+
+    const existingOwners = overlap.map((land) => ({
       id: land.id,
       ownerId: land.ownerId,
       ownerName: land.ownerName,
-      ownerFullName: land.ownerFullName,
-      ownerEmail: land.ownerEmail,
-      ownerPhone: land.ownerPhone,
       ownershipType: land.ownershipType,
       landStatus: land.landStatus,
       purpose: land.purpose,
       titleType: land.titleType,
       stateId: land.stateId,
-      isGovernment:
-        /gov/i.test(land.ownershipType || "") || /gov/i.test(land.ownerName || ""),
+      address: land.address,
+      ownerContact: {
+        ownerId: land.ownerId,
+      },
     }));
 
-    let riskLevel: "SAFE" | "RISKY" | "GOVERNMENT" = "SAFE";
-    if (lands.length > 0) {
-      riskLevel = existingOwners.some((o) => o.isGovernment)
-        ? "GOVERNMENT"
-        : "RISKY";
+    const surveyPlanDuplicate = await prisma.landRegistration.findFirst({
+      where: { surveyPlanNumber },
+    });
+    const duplicateIssues: Array<{ field: string; message: string }> = [];
+    if (surveyPlanDuplicate) {
+      duplicateIssues.push({
+        field: "surveyPlanNumber",
+        message: "A land with this survey plan number already exists",
+      });
     }
 
+    if (hasExistingCofO && existingCofONumber) {
+      const existingCofODuplicate = await prisma.landRegistration.findFirst({
+        where: { existingCofONumber },
+      });
+      if (existingCofODuplicate) {
+        duplicateIssues.push({
+          field: "existingCofONumber",
+          message: "This Certificate of Occupancy number is already on file",
+        });
+      }
+    }
+
+    const riskLevel: "SAFE" | "RISKY" | "GOVERNMENT" = overlap.length > 0
+      ? existingOwners.some((o) => /gov/i.test(o.ownershipType || "") || /gov/i.test(o.ownerName || ""))
+        ? "GOVERNMENT"
+        : "RISKY"
+      : "SAFE";
+
     return res.status(200).json({
-      exists: lands.length > 0,
-      overlap: lands.length > 0,
+      canRegister: overlap.length === 0 && duplicateIssues.length === 0,
+      fee: calculateLandRegistrationFee(finalAreaSqm),
+      areaSqm: finalAreaSqm,
+      overlap: overlap.length > 0,
+      totalMatches: overlap.length,
+      conflicts: overlap.length > 0 ? existingOwners : [],
+      duplicateIssues,
       riskLevel,
-      totalMatches: lands.length,
-      existingOwners,
+      requiresReviewerApproval: hasExistingCofO || overlap.length > 0,
       coordinates: finalLatLng,
+      hasExistingCofO,
     });
   } catch (err) {
     console.error(err);

@@ -1,5 +1,8 @@
+import axios from "axios";
 import prisma from "../lib/prisma";
 import { PaymentStatus } from "../generated/client/client";
+
+const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET!;
 
 export interface PaymentInitData {
   userId: string;
@@ -104,6 +107,43 @@ export async function getPaymentByReference(reference: string): Promise<any> {
   } catch (error) {
     console.error("Error fetching payment:", error);
     return null;
+  }
+}
+
+export async function verifyPaystackReference(
+  reference: string,
+): Promise<{ success: boolean; message: string; amount?: number; status?: string; raw?: any }> {
+  try {
+    const verify = await axios.get(
+      `https://api.paystack.co/transaction/verify/${reference}`,
+      {
+        headers: { Authorization: `Bearer ${PAYSTACK_SECRET}` },
+      },
+    );
+
+    const paymentData = verify.data.data;
+    if (!paymentData || paymentData.status !== "success") {
+      return {
+        success: false,
+        message: "Paystack payment is not successful",
+        raw: paymentData,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Payment verified successfully",
+      amount: paymentData.amount / 100,
+      status: paymentData.status,
+      raw: paymentData,
+    };
+  } catch (error) {
+    console.error("Error verifying Paystack reference:", error);
+    return {
+      success: false,
+      message: "Unable to verify payment reference",
+      raw: error,
+    };
   }
 }
 

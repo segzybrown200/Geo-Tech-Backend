@@ -192,6 +192,72 @@ z.tuple([z.number(), z.number()]) // [lat, lng]
   hasExistingCofO: z.boolean().default(false),
   existingCofONumber: z.string().optional(),
   existingCofOIssueDate: z.string().optional(),
+}).superRefine((data, ctx) => {
+  if (data.surveyType === "COORDINATE") {
+    if (!data.coordinates || data.coordinates.length < 4) {
+      ctx.addIssue({
+        path: ["coordinates"],
+        code: z.ZodIssueCode.custom,
+        message: "A valid land polygon must have at least 4 points",
+      });
+    }
+  } else {
+    if (!data.bearings || data.bearings.length < 3) {
+      ctx.addIssue({
+        path: ["bearings"],
+        code: z.ZodIssueCode.custom,
+        message: "At least 3 bearings are required for a bearing survey",
+      });
+    }
+    if (!data.startPoint) {
+      ctx.addIssue({
+        path: ["startPoint"],
+        code: z.ZodIssueCode.custom,
+        message: "Start point is required for bearing surveys",
+      });
+    }
+    if (!data.utmZone) {
+      ctx.addIssue({
+        path: ["utmZone"],
+        code: z.ZodIssueCode.custom,
+        message: "UTM zone is required for bearing surveys",
+      });
+    }
+  }
+
+  if (data.hasExistingCofO) {
+    if (!data.existingCofONumber) {
+      ctx.addIssue({
+        path: ["existingCofONumber"],
+        code: z.ZodIssueCode.custom,
+        message: "Existing CofO number is required when you already have an existing CofO",
+      });
+    }
+    if (!data.existingCofOIssueDate) {
+      ctx.addIssue({
+        path: ["existingCofOIssueDate"],
+        code: z.ZodIssueCode.custom,
+        message: "Existing CofO issue date is required when you already have an existing CofO",
+      });
+    } else if (isNaN(Date.parse(data.existingCofOIssueDate))) {
+      ctx.addIssue({
+        path: ["existingCofOIssueDate"],
+        code: z.ZodIssueCode.custom,
+        message: "Existing CofO issue date must be a valid date",
+      });
+    }
+  }
+});
+
+export const landRegistrationWithPaymentSchema = landRegistrationSchema.extend({
+  paymentReference: z.string().min(3, "Payment reference is required"),
+  paymentAmount: z.preprocess((val) => {
+    if (typeof val === "string") {
+      const parsed = Number(val.trim());
+      return Number.isNaN(parsed) ? val : parsed;
+    }
+    return val;
+  }, z.number().positive("Payment amount must be greater than 0")),
 });
 
 export const internalUserSchema = z.object({
