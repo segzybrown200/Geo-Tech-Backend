@@ -602,27 +602,135 @@ export const verifyLand = async (req: Request, res: Response) => {
       finalAreaSqm = measuredAreaSqm;
     }
 
-    const overlap = await prisma.$queryRaw<any[]>`
-      SELECT id, "ownerName", "ownershipType", purpose, "titleType", "stateId", "ownerId", "landStatus", address
+    const overlapIdsResult = await prisma.$queryRaw<{ id: string }[]>`
+      SELECT id
       FROM "LandRegistration"
       WHERE ST_Intersects(boundary, ST_GeomFromText(${polygon}, 4326))
       AND NOT ST_Touches(boundary, ST_GeomFromText(${polygon}, 4326))
     `;
 
-    const existingOwners = overlap.map((land) => ({
+    const overlapIds = overlapIdsResult.map((row) => row.id);
+
+    const overlapRecords = overlapIds.length > 0
+      ? await prisma.landRegistration.findMany({
+          where: { id: { in: overlapIds } },
+          include: {
+            owner: { select: { id: true, fullName: true, email: true, phone: true } },
+            documents: true,
+            OwnershipTransfer: {
+              include: {
+                documents: true,
+                currentOwner: { select: { id: true, fullName: true, email: true, phone: true } },
+                newOwner: { select: { id: true, fullName: true, email: true, phone: true } },
+              },
+            },
+            CofOApplication: {
+              include: { cofODocuments: true },
+            },
+          },
+        })
+      : [];
+
+    const existingOwners = overlapRecords.map((land) => ({
       id: land.id,
       ownerId: land.ownerId,
       ownerName: land.ownerName,
+      ownerFullName: land.owner?.fullName ?? null,
+      ownerEmail: land.owner?.email ?? null,
+      ownerPhone: land.owner?.phone ?? null,
       ownershipType: land.ownershipType,
       landStatus: land.landStatus,
       purpose: land.purpose,
       titleType: land.titleType,
       stateId: land.stateId,
       address: land.address,
+      surveyPlanNumber: land.surveyPlanNumber,
+      surveyDate: land.surveyDate,
+      surveyorName: land.surveyorName,
+      surveyorAddress: land.surveyorAddress,
+      surveyTelephone: land.surveyTelephone,
+      surveyNotes: land.surveyNotes,
+      areaSqm: land.areaSqm,
+      hasExistingCofO: land.hasExistingCofO,
+      existingCofONumber: land.existingCofONumber,
+      existingCofOIssueDate: land.existingCofOIssueDate,
+      existingCofODocument: land.existingCofODocument,
       ownerContact: {
         ownerId: land.ownerId,
+        name: land.owner?.fullName ?? null,
+        email: land.owner?.email ?? null,
+        phone: land.owner?.phone ?? null,
       },
+      documents: land.documents.map((doc) => ({
+        id: doc.id,
+        documentUrl: doc.documentUrl,
+        fileName: doc.fileName,
+        isActive: doc.isActive,
+        createdAt: doc.createdAt,
+      })),
+      ownershipTransfers: land.OwnershipTransfer.map((transfer) => ({
+        id: transfer.id,
+        transferType: transfer.transferType,
+        status: transfer.status,
+        applicationNumber: transfer.applicationNumber,
+        currentOwnerId: transfer.currentOwnerId,
+        newOwnerId: transfer.newOwnerId,
+        currentOwner: {
+          id: transfer.currentOwner?.id,
+          fullName: transfer.currentOwner?.fullName,
+          email: transfer.currentOwner?.email,
+          phone: transfer.currentOwner?.phone,
+        },
+        newOwner: {
+          id: transfer.newOwner?.id,
+          fullName: transfer.newOwner?.fullName,
+          email: transfer.newOwner?.email,
+          phone: transfer.newOwner?.phone,
+        },
+        transferAreaSqm: transfer.transferAreaSqm,
+        transferSurveyType: transfer.transferSurveyType,
+        transferUtmZone: transfer.transferUtmZone,
+        transferStartPoint: transfer.transferStartPoint,
+        transferCoordinates: transfer.transferCoordinates,
+        transferBearings: transfer.transferBearings,
+        transferCenterLat: transfer.transferCenterLat,
+        transferCenterLng: transfer.transferCenterLng,
+        transferDocuments: transfer.documents.map((doc) => ({
+          id: doc.id,
+          type: doc.type,
+          title: doc.title,
+          url: doc.url,
+          status: doc.status,
+          rejectionMessage: doc.rejectionMessage,
+          reviewedById: doc.reviewedById,
+          reviewedAt: doc.reviewedAt,
+          createdAt: doc.createdAt,
+          updatedAt: doc.updatedAt,
+        })),
+      })),
+      cofOApplications: land.CofOApplication.map((app) => ({
+        id: app.id,
+        applicationNumber: app.applicationNumber,
+        status: app.status,
+        plotNumber: app.plotNumber,
+        cofONumber: app.cofONumber,
+        signedAt: app.signedAt,
+        certificateUrl: app.certificateUrl,
+        approvedById: app.approvedById,
+        createdAt: app.createdAt,
+        cofODocuments: app.cofODocuments?.map((doc) => ({
+          id: doc.id,
+          type: doc.type,
+          title: doc.title,
+          url: doc.url,
+          status: doc.status,
+          rejectionMessage: doc.rejectionMessage,
+          createdAt: doc.createdAt,
+        })),
+      })),
     }));
+
+    const overlapCount = overlapRecords.length;
 
     const surveyPlanDuplicate = await prisma.landRegistration.findFirst({
       where: { surveyPlanNumber },
@@ -647,22 +755,22 @@ export const verifyLand = async (req: Request, res: Response) => {
       }
     }
 
-    const riskLevel: "SAFE" | "RISKY" | "GOVERNMENT" = overlap.length > 0
+    const riskLevel: "SAFE" | "RISKY" | "GOVERNMENT" = overlapCount > 0
       ? existingOwners.some((o) => /gov/i.test(o.ownershipType || "") || /gov/i.test(o.ownerName || ""))
         ? "GOVERNMENT"
         : "RISKY"
       : "SAFE";
 
     return res.status(200).json({
-      canRegister: overlap.length === 0 && duplicateIssues.length === 0,
+      canRegister: overlapCount === 0 && duplicateIssues.length === 0,
       fee: calculateLandRegistrationFee(finalAreaSqm),
       areaSqm: finalAreaSqm,
-      overlap: overlap.length > 0,
-      totalMatches: overlap.length,
-      conflicts: overlap.length > 0 ? existingOwners : [],
+      overlap: overlapCount > 0,
+      totalMatches: overlapCount,
+      conflicts: overlapCount > 0 ? existingOwners : [],
       duplicateIssues,
       riskLevel,
-      requiresReviewerApproval: hasExistingCofO || overlap.length > 0,
+      requiresReviewerApproval: hasExistingCofO || overlapCount > 0,
       coordinates: finalLatLng,
       hasExistingCofO,
     });
