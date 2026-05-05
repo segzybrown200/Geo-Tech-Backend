@@ -72,6 +72,71 @@ export async function createCofOPayment(
 }
 
 /**
+ * Initialize land registration payment with Paystack
+ */
+export async function initializeLandRegistrationPayment(
+  userId: string,
+  amount: number,
+  landId?: string
+): Promise<any> {
+  try {
+    // Get user email for Paystack
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { email: true },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Initialize payment with Paystack
+    const paystackResponse = await axios.post(
+      "https://api.paystack.co/transaction/initialize",
+      {
+        email: user.email,
+        amount: amount * 100, // Convert to kobo
+        reference: `LAND_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        metadata: {
+          type: "LAND_REGISTRATION",
+          landId,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${PAYSTACK_SECRET}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const { reference, authorization_url } = paystackResponse.data.data;
+
+    // Create payment record
+    const payment = await prisma.payment.create({
+      data: {
+        userId,
+        landId,
+        amount,
+        provider: "PAYSTACK",
+        reference,
+        status: "PENDING",
+        type: "LAND_REGISTRATION",
+      },
+    });
+
+    return {
+      payment,
+      authorization_url,
+      reference,
+    };
+  } catch (error) {
+    console.error("Error initializing land registration payment:", error);
+    throw error;
+  }
+}
+
+/**
  * Update payment status
  */
 export async function updatePaymentStatus(

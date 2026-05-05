@@ -14,6 +14,7 @@ import {
   getLandConflicts,
   acknowledgeLandConflict,
   getConflictDocument,
+  initiateLandPayment,
 } from '../controllers/landController';
 import { requireAuth, verifyToken } from '../middlewares/authMiddleware';
 
@@ -28,6 +29,7 @@ router.delete("/delete-land/:id", requireAuth, deleteLand);
 router.put("/update-land/:id", requireAuth, updateLand); // Placeholder for updateLand
 router.get("/get-lands-count", verifyToken, getLandCount)
 router.get("/search-lands", verifyToken, searchLandExistence);
+router.post("/initiate-payment", requireAuth, initiateLandPayment);
 router.post("/verify-land", verifyLand);
 
 // ============= PAYMENT & CONFLICT ROUTES =============

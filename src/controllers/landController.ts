@@ -25,6 +25,7 @@ import {
 import {
   calculateLandRegistrationFee,
   verifyPaystackReference,
+  initializeLandRegistrationPayment,
 } from "../services/paymentService";
 
 function toWKTPolygon(coords: number[][]) {
@@ -51,6 +52,41 @@ function normalizeLatLngOrder(coords: number[][]): number[][] {
   if (looksLikeLngLat) return coords.map(([lat, lng]) => [lng, lat]);
   return coords;
 }
+
+export const initiateLandPayment = async (req: AuthRequest, res: Response) => {
+  try {
+    const { areaSqm } = req.body;
+
+    if (!areaSqm || typeof areaSqm !== "number" || areaSqm <= 0) {
+      return res.status(400).json({
+        message: "Valid areaSqm is required to calculate payment",
+      });
+    }
+
+    const userId = req.user.sub;
+    const fee = calculateLandRegistrationFee(areaSqm);
+
+    const paymentResult = await initializeLandRegistrationPayment(userId, fee);
+
+    return res.status(200).json({
+      message: "Payment initialized successfully",
+      fee,
+      areaSqm,
+      payment: {
+        id: paymentResult.payment.id,
+        reference: paymentResult.reference,
+        amount: paymentResult.payment.amount,
+        status: paymentResult.payment.status,
+        authorization_url: paymentResult.authorization_url,
+      },
+    });
+  } catch (error) {
+    console.error("Error initiating land payment:", error);
+    return res.status(500).json({
+      message: "Failed to initiate payment",
+    });
+  }
+};
 
 export const registerLand = async (req: AuthRequest, res: Response) => {
   // 1️⃣ Validate request body with payment details
