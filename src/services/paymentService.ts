@@ -96,7 +96,6 @@ export async function initializeLandRegistrationPayment(
       {
         email: user.email,
         amount: amount * 100, // Convert to kobo
-        reference: `LAND_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         metadata: {
           type: "LAND_REGISTRATION",
           landId,
