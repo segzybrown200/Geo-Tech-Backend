@@ -253,8 +253,8 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
     const overlap = await prisma.$queryRaw<any[]>`
       SELECT id, "ownerName", "ownershipType", purpose, "titleType", "stateId", "ownerId", "landStatus", address
       FROM "LandRegistration"
-      WHERE ST_Intersects(boundary, ST_GeomFromText(${polygon}, 4326))
-      AND NOT ST_Touches(boundary, ST_GeomFromText(${polygon}, 4326))
+      WHERE ST_Overlaps(boundary, ST_GeomFromText(${polygon}, 4326))
+      OR (ST_Intersects(boundary, ST_GeomFromText(${polygon}, 4326)) AND ST_Area(ST_Intersection(boundary, ST_GeomFromText(${polygon}, 4326))::geography) > 0.1)
     `;
 
     if (overlap.length > 0) {
@@ -641,8 +641,8 @@ export const verifyLand = async (req: Request, res: Response) => {
     const overlapIdsResult = await prisma.$queryRaw<{ id: string }[]>`
       SELECT id
       FROM "LandRegistration"
-      WHERE ST_Intersects(boundary, ST_GeomFromText(${polygon}, 4326))
-      AND NOT ST_Touches(boundary, ST_GeomFromText(${polygon}, 4326))
+      WHERE ST_Overlaps(boundary, ST_GeomFromText(${polygon}, 4326))
+      OR (ST_Intersects(boundary, ST_GeomFromText(${polygon}, 4326)) AND ST_Area(ST_Intersection(boundary, ST_GeomFromText(${polygon}, 4326))::geography) > 0.1)
     `;
 
     const overlapIds = overlapIdsResult.map((row) => row.id);

@@ -95,7 +95,7 @@ export async function initializeLandRegistrationPayment(
       "https://api.paystack.co/transaction/initialize",
       {
         email: user.email,
-        amount: amount * 100, // Convert to kobo
+        amount: Math.round(amount * 100), // Convert to kobo and ensure integer
         metadata: {
           type: "LAND_REGISTRATION",
           landId,
