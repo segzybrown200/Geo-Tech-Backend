@@ -251,10 +251,17 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
 
     // 5️⃣ Overlap check
     const overlap = await prisma.$queryRaw<any[]>`
+      WITH input_geom AS (
+        SELECT ST_MakeValid(ST_GeomFromText(${polygon}, 4326)) AS g
+      )
       SELECT id, "ownerName", "ownershipType", purpose, "titleType", "stateId", "ownerId", "landStatus", address
-      FROM "LandRegistration"
-      WHERE ST_Overlaps(boundary, ST_GeomFromText(${polygon}, 4326))
-      OR (ST_Intersects(boundary, ST_GeomFromText(${polygon}, 4326)) AND ST_Area(ST_Intersection(boundary, ST_GeomFromText(${polygon}, 4326))::geography) > 0.1)
+      FROM "LandRegistration", input_geom
+      WHERE
+        ST_Overlaps(boundary, g)
+        OR (
+          ST_Intersects(boundary, g)
+          AND ST_Area(ST_Intersection(boundary, g)::geography) > 0.1
+        )
     `;
 
     if (overlap.length > 0) {
@@ -597,7 +604,7 @@ export const verifyLand = async (req: Request, res: Response) => {
         bearings! as { distance: number; bearing: number }[],
         utmZone!,
         startPoint as [number, number],
-        false,
+        true,
       );
       finalLatLng = closePolygon(result.latlngCoordinates);
       finalUTM = closePolygon(result.utmCoordinates);
@@ -609,7 +616,7 @@ export const verifyLand = async (req: Request, res: Response) => {
       }
     }
 
-    const polygon = convertToWKT(finalLatLng);
+    const polygon = toWKTPolygon(finalLatLng);
 
     const validityCheck = await prisma.$queryRaw<any[]>`
       SELECT ST_IsValid(
@@ -639,10 +646,17 @@ export const verifyLand = async (req: Request, res: Response) => {
     }
 
     const overlapIdsResult = await prisma.$queryRaw<{ id: string }[]>`
+      WITH input_geom AS (
+        SELECT ST_MakeValid(ST_GeomFromText(${polygon}, 4326)) AS g
+      )
       SELECT id
-      FROM "LandRegistration"
-      WHERE ST_Overlaps(boundary, ST_GeomFromText(${polygon}, 4326))
-      OR (ST_Intersects(boundary, ST_GeomFromText(${polygon}, 4326)) AND ST_Area(ST_Intersection(boundary, ST_GeomFromText(${polygon}, 4326))::geography) > 0.1)
+      FROM "LandRegistration", input_geom
+      WHERE
+        ST_Overlaps(boundary, g)
+        OR (
+          ST_Intersects(boundary, g)
+          AND ST_Area(ST_Intersection(boundary, g)::geography) > 0.1
+        )
     `;
 
     const overlapIds = overlapIdsResult.map((row) => row.id);
