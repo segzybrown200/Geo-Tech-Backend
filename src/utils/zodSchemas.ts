@@ -1,6 +1,15 @@
 // src/utils/zodSchemas.ts
 import { z } from 'zod';
 
+const parseBoolean = z.preprocess((val) => {
+  if (typeof val === "string") {
+    const normalized = val.trim().toLowerCase();
+    if (normalized === "true" || normalized === "1") return true;
+    if (normalized === "false" || normalized === "0") return false;
+  }
+  return val;
+}, z.boolean());
+
 export const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -189,7 +198,7 @@ z.tuple([z.number(), z.number()]) // [lat, lng]
   parentLandId: z.string().uuid().optional(),
 
   // 📄 Existing C of O Fields
-  hasExistingCofO: z.boolean().default(false),
+  hasExistingCofO: parseBoolean.default(false),
   existingCofONumber: z.string().optional(),
   existingCofOIssueDate: z.string().optional(),
 }).superRefine((data, ctx) => {
@@ -270,7 +279,7 @@ export const internalUserSchema = z.object({
   approvingPosition: z.number().optional(),
   function: z.string(),
   role: z.string(),
-  requiresSignature: z.boolean().optional(),
+  requiresSignature: parseBoolean.optional(),
   signatureUrl: z.string().url().optional(),
   stateId: z.string().uuid(),
 });
@@ -367,7 +376,7 @@ export const ownershipTransferDocumentUploadSchema = z.object({
 // Land Conflict & Payment Schemas
 export const acknowledgeLandConflictSchema = z.object({
   conflictId: z.string().uuid(),
-  acknowledged: z.boolean(),
+  acknowledged: parseBoolean,
 });
 
 export const paymentConfirmationSchema = z.object({
@@ -379,5 +388,5 @@ export const paymentConfirmationSchema = z.object({
 export const existingCofOUploadSchema = z.object({
   cofONumber: z.string().min(3, "C of O number is required"),
   issueDate: z.string().optional(),
-  hasExistingCofO: z.boolean().default(true),
+  hasExistingCofO: parseBoolean.default(true),
 });
