@@ -946,7 +946,45 @@ export const getMyCofOApplications = async (req: AuthRequest, res: Response) => 
     },
   });
 
-  res.json(applications);
+  const existingLandCofOs = await prisma.landRegistration.findMany({
+    where: {
+      ownerId: userId,
+      hasExistingCofO: true,
+    },
+    include: {
+      state: true,
+      owner: true,
+      documents: true,
+      reviewLogs: { orderBy: { arrivedAt: "asc" } },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  const pseudoApplications = existingLandCofOs.map((land) => ({
+    id: land.id,
+    userId,
+    landId: land.id,
+    land,
+    status:
+      land.landStatus === "APPROVED"
+        ? "APPROVED"
+        : land.landStatus === "PENDING_REVIEWER_VERIFICATION"
+        ? "IN_REVIEW"
+        : land.landStatus,
+    applicationNumber: land.landCode || `EXISTING-COFO-${land.id}`,
+    isExistingCofO: true,
+    existingCofONumber: land.existingCofONumber,
+    existingCofOIssueDate: land.existingCofOIssueDate,
+    currentReviewerId: land.currentReviewerId,
+    logs: land.reviewLogs,
+    createdAt: land.createdAt,
+  }));
+
+  const combined = [...applications, ...pseudoApplications].sort(
+    (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+  );
+
+  res.json(combined);
 };
 
 // List CofOs for governor of their state
