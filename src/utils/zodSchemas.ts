@@ -235,20 +235,20 @@ z.tuple([z.number(), z.number()]) // [lat, lng]
   }
 
   if (data.hasExistingCofO) {
-    if (!data.existingCofONumber) {
+    if (!data.existingCofONumber || (typeof data.existingCofONumber === 'string' && data.existingCofONumber.trim() === '')) {
       ctx.addIssue({
         path: ["existingCofONumber"],
         code: z.ZodIssueCode.custom,
         message: "Existing CofO number is required when you already have an existing CofO",
       });
     }
-    if (!data.existingCofOIssueDate) {
+    if (!data.existingCofOIssueDate || (typeof data.existingCofOIssueDate === 'string' && data.existingCofOIssueDate.trim() === '')) {
       ctx.addIssue({
         path: ["existingCofOIssueDate"],
         code: z.ZodIssueCode.custom,
         message: "Existing CofO issue date is required when you already have an existing CofO",
       });
-    } else if (isNaN(Date.parse(data.existingCofOIssueDate))) {
+    } else if (isNaN(Date.parse(data.existingCofOIssueDate.trim()))) {
       ctx.addIssue({
         path: ["existingCofOIssueDate"],
         code: z.ZodIssueCode.custom,
