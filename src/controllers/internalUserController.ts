@@ -862,7 +862,22 @@ export const getReviewerApplications = async (
     orderBy: { createdAt: "desc" },
   });
 
-  res.json(applications);
+  const landReviewTasks = await prisma.landRegistration.findMany({
+    where: {
+      currentReviewerId: reviewerId,
+      stateId: reviewer.stateId as string,
+      landStatus: "PENDING_REVIEWER_VERIFICATION",
+      hasExistingCofO: true,
+    },
+    include: {
+      owner: true,
+      state: true,
+      reviewLogs: { orderBy: { arrivedAt: "asc" } },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  res.json({ applications, landReviewTasks });
 };
 export const getCofOForReview = async (req: AuthRequest, res: Response) => {
   const reviewerId = req.user.id;

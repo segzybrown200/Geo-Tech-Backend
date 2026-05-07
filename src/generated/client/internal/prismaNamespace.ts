@@ -403,6 +403,7 @@ export const ModelName = {
   CofODocument: 'CofODocument',
   Payment: 'Payment',
   StageLog: 'StageLog',
+  LandReviewLog: 'LandReviewLog',
   InboxMessage: 'InboxMessage',
   EmailVerificationToken: 'EmailVerificationToken',
   CofOAuditLog: 'CofOAuditLog',
@@ -424,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "landAuditLog" | "ownershipTransfer" | "transferVerification" | "ownershipTransferDocument" | "documentReview" | "ownershipTransferAuditLog" | "transferStageLog" | "ownershipHistory" | "cofOApplication" | "cofODocument" | "payment" | "stageLog" | "inboxMessage" | "emailVerificationToken" | "cofOAuditLog" | "approvalAudit" | "landConflict" | "passwordResetToken"
+    modelProps: "user" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "landAuditLog" | "ownershipTransfer" | "transferVerification" | "ownershipTransferDocument" | "documentReview" | "ownershipTransferAuditLog" | "transferStageLog" | "ownershipHistory" | "cofOApplication" | "cofODocument" | "payment" | "stageLog" | "landReviewLog" | "inboxMessage" | "emailVerificationToken" | "cofOAuditLog" | "approvalAudit" | "landConflict" | "passwordResetToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1818,6 +1819,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LandReviewLog: {
+      payload: Prisma.$LandReviewLogPayload<ExtArgs>
+      fields: Prisma.LandReviewLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LandReviewLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandReviewLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LandReviewLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandReviewLogPayload>
+        }
+        findFirst: {
+          args: Prisma.LandReviewLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandReviewLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LandReviewLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandReviewLogPayload>
+        }
+        findMany: {
+          args: Prisma.LandReviewLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandReviewLogPayload>[]
+        }
+        create: {
+          args: Prisma.LandReviewLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandReviewLogPayload>
+        }
+        createMany: {
+          args: Prisma.LandReviewLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LandReviewLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandReviewLogPayload>[]
+        }
+        delete: {
+          args: Prisma.LandReviewLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandReviewLogPayload>
+        }
+        update: {
+          args: Prisma.LandReviewLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandReviewLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.LandReviewLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LandReviewLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LandReviewLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandReviewLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.LandReviewLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LandReviewLogPayload>
+        }
+        aggregate: {
+          args: Prisma.LandReviewLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLandReviewLog>
+        }
+        groupBy: {
+          args: Prisma.LandReviewLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LandReviewLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LandReviewLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LandReviewLogCountAggregateOutputType> | number
+        }
+      }
+    }
     InboxMessage: {
       payload: Prisma.$InboxMessagePayload<ExtArgs>
       fields: Prisma.InboxMessageFieldRefs
@@ -2396,6 +2471,7 @@ export const LandRegistrationScalarFieldEnum = {
   ownershipType: 'ownershipType',
   purpose: 'purpose',
   titleType: 'titleType',
+  currentReviewerId: 'currentReviewerId',
   parentLandId: 'parentLandId',
   hasExistingCofO: 'hasExistingCofO',
   existingCofODocument: 'existingCofODocument',
@@ -2624,6 +2700,20 @@ export const StageLogScalarFieldEnum = {
 } as const
 
 export type StageLogScalarFieldEnum = (typeof StageLogScalarFieldEnum)[keyof typeof StageLogScalarFieldEnum]
+
+
+export const LandReviewLogScalarFieldEnum = {
+  id: 'id',
+  landId: 'landId',
+  stageNumber: 'stageNumber',
+  internalUserId: 'internalUserId',
+  status: 'status',
+  message: 'message',
+  arrivedAt: 'arrivedAt',
+  approvedAt: 'approvedAt'
+} as const
+
+export type LandReviewLogScalarFieldEnum = (typeof LandReviewLogScalarFieldEnum)[keyof typeof LandReviewLogScalarFieldEnum]
 
 
 export const InboxMessageScalarFieldEnum = {
@@ -3040,6 +3130,7 @@ export type GlobalOmitConfig = {
   cofODocument?: Prisma.CofODocumentOmit
   payment?: Prisma.PaymentOmit
   stageLog?: Prisma.StageLogOmit
+  landReviewLog?: Prisma.LandReviewLogOmit
   inboxMessage?: Prisma.InboxMessageOmit
   emailVerificationToken?: Prisma.EmailVerificationTokenOmit
   cofOAuditLog?: Prisma.CofOAuditLogOmit

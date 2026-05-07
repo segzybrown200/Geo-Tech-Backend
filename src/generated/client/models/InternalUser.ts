@@ -342,6 +342,8 @@ export type InternalUserWhereInput = {
   rejectedApplications?: Prisma.CofOApplicationListRelationFilter
   approvedApplications?: Prisma.CofOApplicationListRelationFilter
   reviewingApplications?: Prisma.CofOApplicationListRelationFilter
+  landReviewAssignments?: Prisma.LandRegistrationListRelationFilter
+  landReviewLogs?: Prisma.LandReviewLogListRelationFilter
   ownershipTransfersReviewed?: Prisma.OwnershipTransferListRelationFilter
   transferCurrentReviewers?: Prisma.OwnershipTransferListRelationFilter
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentListRelationFilter
@@ -378,6 +380,8 @@ export type InternalUserOrderByWithRelationInput = {
   rejectedApplications?: Prisma.CofOApplicationOrderByRelationAggregateInput
   approvedApplications?: Prisma.CofOApplicationOrderByRelationAggregateInput
   reviewingApplications?: Prisma.CofOApplicationOrderByRelationAggregateInput
+  landReviewAssignments?: Prisma.LandRegistrationOrderByRelationAggregateInput
+  landReviewLogs?: Prisma.LandReviewLogOrderByRelationAggregateInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferOrderByRelationAggregateInput
   transferCurrentReviewers?: Prisma.OwnershipTransferOrderByRelationAggregateInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentOrderByRelationAggregateInput
@@ -417,6 +421,8 @@ export type InternalUserWhereUniqueInput = Prisma.AtLeast<{
   rejectedApplications?: Prisma.CofOApplicationListRelationFilter
   approvedApplications?: Prisma.CofOApplicationListRelationFilter
   reviewingApplications?: Prisma.CofOApplicationListRelationFilter
+  landReviewAssignments?: Prisma.LandRegistrationListRelationFilter
+  landReviewLogs?: Prisma.LandReviewLogListRelationFilter
   ownershipTransfersReviewed?: Prisma.OwnershipTransferListRelationFilter
   transferCurrentReviewers?: Prisma.OwnershipTransferListRelationFilter
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentListRelationFilter
@@ -504,6 +510,8 @@ export type InternalUserCreateInput = {
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
@@ -539,6 +547,8 @@ export type InternalUserUncheckedCreateInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -574,6 +584,8 @@ export type InternalUserUpdateInput = {
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
@@ -609,6 +621,8 @@ export type InternalUserUncheckedUpdateInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -761,15 +775,15 @@ export type InternalUserScalarRelationFilter = {
   isNot?: Prisma.InternalUserWhereInput
 }
 
+export type InternalUserNullableScalarRelationFilter = {
+  is?: Prisma.InternalUserWhereInput | null
+  isNot?: Prisma.InternalUserWhereInput | null
+}
+
 export type InternalUserListRelationFilter = {
   every?: Prisma.InternalUserWhereInput
   some?: Prisma.InternalUserWhereInput
   none?: Prisma.InternalUserWhereInput
-}
-
-export type InternalUserNullableScalarRelationFilter = {
-  is?: Prisma.InternalUserWhereInput | null
-  isNot?: Prisma.InternalUserWhereInput | null
 }
 
 export type InternalUserOrderByRelationAggregateInput = {
@@ -800,6 +814,16 @@ export type InternalUserUpdateOneRequiredWithoutOtpsNestedInput = {
   upsert?: Prisma.InternalUserUpsertWithoutOtpsInput
   connect?: Prisma.InternalUserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.InternalUserUpdateToOneWithWhereWithoutOtpsInput, Prisma.InternalUserUpdateWithoutOtpsInput>, Prisma.InternalUserUncheckedUpdateWithoutOtpsInput>
+}
+
+export type InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.InternalUserCreateWithoutLandReviewAssignmentsInput, Prisma.InternalUserUncheckedCreateWithoutLandReviewAssignmentsInput>
+  connectOrCreate?: Prisma.InternalUserCreateOrConnectWithoutLandReviewAssignmentsInput
+  upsert?: Prisma.InternalUserUpsertWithoutLandReviewAssignmentsInput
+  disconnect?: Prisma.InternalUserWhereInput | boolean
+  delete?: Prisma.InternalUserWhereInput | boolean
+  connect?: Prisma.InternalUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InternalUserUpdateToOneWithWhereWithoutLandReviewAssignmentsInput, Prisma.InternalUserUpdateWithoutLandReviewAssignmentsInput>, Prisma.InternalUserUncheckedUpdateWithoutLandReviewAssignmentsInput>
 }
 
 export type InternalUserCreateNestedManyWithoutStateInput = {
@@ -1014,6 +1038,20 @@ export type InternalUserUpdateOneRequiredWithoutStageLogNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.InternalUserUpdateToOneWithWhereWithoutStageLogInput, Prisma.InternalUserUpdateWithoutStageLogInput>, Prisma.InternalUserUncheckedUpdateWithoutStageLogInput>
 }
 
+export type InternalUserCreateNestedOneWithoutLandReviewLogsInput = {
+  create?: Prisma.XOR<Prisma.InternalUserCreateWithoutLandReviewLogsInput, Prisma.InternalUserUncheckedCreateWithoutLandReviewLogsInput>
+  connectOrCreate?: Prisma.InternalUserCreateOrConnectWithoutLandReviewLogsInput
+  connect?: Prisma.InternalUserWhereUniqueInput
+}
+
+export type InternalUserUpdateOneRequiredWithoutLandReviewLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.InternalUserCreateWithoutLandReviewLogsInput, Prisma.InternalUserUncheckedCreateWithoutLandReviewLogsInput>
+  connectOrCreate?: Prisma.InternalUserCreateOrConnectWithoutLandReviewLogsInput
+  upsert?: Prisma.InternalUserUpsertWithoutLandReviewLogsInput
+  connect?: Prisma.InternalUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InternalUserUpdateToOneWithWhereWithoutLandReviewLogsInput, Prisma.InternalUserUpdateWithoutLandReviewLogsInput>, Prisma.InternalUserUncheckedUpdateWithoutLandReviewLogsInput>
+}
+
 export type InternalUserCreateNestedOneWithoutInboxMessageInput = {
   create?: Prisma.XOR<Prisma.InternalUserCreateWithoutInboxMessageInput, Prisma.InternalUserUncheckedCreateWithoutInboxMessageInput>
   connectOrCreate?: Prisma.InternalUserCreateOrConnectWithoutInboxMessageInput
@@ -1056,6 +1094,8 @@ export type InternalUserCreateWithoutOtpsInput = {
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
@@ -1090,6 +1130,8 @@ export type InternalUserUncheckedCreateWithoutOtpsInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -1140,6 +1182,8 @@ export type InternalUserUpdateWithoutOtpsInput = {
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
@@ -1174,6 +1218,168 @@ export type InternalUserUncheckedUpdateWithoutOtpsInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
+  ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
+  transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+}
+
+export type InternalUserCreateWithoutLandReviewAssignmentsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  ministry?: string | null
+  department?: string | null
+  position?: number | null
+  function?: string | null
+  role?: $Enums.Role
+  requiresSignature?: boolean
+  approvingPosition?: number | null
+  signatureUrl?: string | null
+  createdAt?: Date | string
+  emailToken?: string | null
+  passwordToken?: string | null
+  isVerified?: boolean
+  tokenExpiresAt?: Date | string | null
+  state?: Prisma.StateCreateNestedOneWithoutApproversInput
+  StageLog?: Prisma.StageLogCreateNestedManyWithoutApproverInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutInternalUserInput
+  StateGovernor?: Prisma.StateCreateNestedOneWithoutGovernorInput
+  TransferStageLog?: Prisma.TransferStageLogCreateNestedManyWithoutApproverInput
+  otps?: Prisma.InternalOtpCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
+  ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
+  transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
+  reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+}
+
+export type InternalUserUncheckedCreateWithoutLandReviewAssignmentsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  ministry?: string | null
+  department?: string | null
+  position?: number | null
+  function?: string | null
+  stateId?: string | null
+  role?: $Enums.Role
+  requiresSignature?: boolean
+  approvingPosition?: number | null
+  signatureUrl?: string | null
+  createdAt?: Date | string
+  emailToken?: string | null
+  passwordToken?: string | null
+  isVerified?: boolean
+  tokenExpiresAt?: Date | string | null
+  StageLog?: Prisma.StageLogUncheckedCreateNestedManyWithoutApproverInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutInternalUserInput
+  StateGovernor?: Prisma.StateUncheckedCreateNestedOneWithoutGovernorInput
+  TransferStageLog?: Prisma.TransferStageLogUncheckedCreateNestedManyWithoutApproverInput
+  otps?: Prisma.InternalOtpUncheckedCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
+  ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
+  transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+}
+
+export type InternalUserCreateOrConnectWithoutLandReviewAssignmentsInput = {
+  where: Prisma.InternalUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.InternalUserCreateWithoutLandReviewAssignmentsInput, Prisma.InternalUserUncheckedCreateWithoutLandReviewAssignmentsInput>
+}
+
+export type InternalUserUpsertWithoutLandReviewAssignmentsInput = {
+  update: Prisma.XOR<Prisma.InternalUserUpdateWithoutLandReviewAssignmentsInput, Prisma.InternalUserUncheckedUpdateWithoutLandReviewAssignmentsInput>
+  create: Prisma.XOR<Prisma.InternalUserCreateWithoutLandReviewAssignmentsInput, Prisma.InternalUserUncheckedCreateWithoutLandReviewAssignmentsInput>
+  where?: Prisma.InternalUserWhereInput
+}
+
+export type InternalUserUpdateToOneWithWhereWithoutLandReviewAssignmentsInput = {
+  where?: Prisma.InternalUserWhereInput
+  data: Prisma.XOR<Prisma.InternalUserUpdateWithoutLandReviewAssignmentsInput, Prisma.InternalUserUncheckedUpdateWithoutLandReviewAssignmentsInput>
+}
+
+export type InternalUserUpdateWithoutLandReviewAssignmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ministry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  function?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  requiresSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvingPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  signatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  state?: Prisma.StateUpdateOneWithoutApproversNestedInput
+  StageLog?: Prisma.StageLogUpdateManyWithoutApproverNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutInternalUserNestedInput
+  StateGovernor?: Prisma.StateUpdateOneWithoutGovernorNestedInput
+  TransferStageLog?: Prisma.TransferStageLogUpdateManyWithoutApproverNestedInput
+  otps?: Prisma.InternalOtpUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
+  ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
+  transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
+  reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+}
+
+export type InternalUserUncheckedUpdateWithoutLandReviewAssignmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ministry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  function?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  requiresSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvingPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  signatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  StageLog?: Prisma.StageLogUncheckedUpdateManyWithoutApproverNestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutInternalUserNestedInput
+  StateGovernor?: Prisma.StateUncheckedUpdateOneWithoutGovernorNestedInput
+  TransferStageLog?: Prisma.TransferStageLogUncheckedUpdateManyWithoutApproverNestedInput
+  otps?: Prisma.InternalOtpUncheckedUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -1208,6 +1414,8 @@ export type InternalUserCreateWithoutStateInput = {
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
@@ -1242,6 +1450,8 @@ export type InternalUserUncheckedCreateWithoutStateInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -1286,6 +1496,8 @@ export type InternalUserCreateWithoutStateGovernorInput = {
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
@@ -1320,6 +1532,8 @@ export type InternalUserUncheckedCreateWithoutStateGovernorInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -1411,6 +1625,8 @@ export type InternalUserUpdateWithoutStateGovernorInput = {
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
@@ -1445,6 +1661,8 @@ export type InternalUserUncheckedUpdateWithoutStateGovernorInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -1480,6 +1698,8 @@ export type InternalUserCreateWithoutOwnershipTransfersReviewedInput = {
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
@@ -1514,6 +1734,8 @@ export type InternalUserUncheckedCreateWithoutOwnershipTransfersReviewedInput = 
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
@@ -1553,6 +1775,8 @@ export type InternalUserCreateWithoutTransferCurrentReviewersInput = {
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
@@ -1587,6 +1811,8 @@ export type InternalUserUncheckedCreateWithoutTransferCurrentReviewersInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
@@ -1637,6 +1863,8 @@ export type InternalUserUpdateWithoutOwnershipTransfersReviewedInput = {
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
@@ -1671,6 +1899,8 @@ export type InternalUserUncheckedUpdateWithoutOwnershipTransfersReviewedInput = 
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
@@ -1716,6 +1946,8 @@ export type InternalUserUpdateWithoutTransferCurrentReviewersInput = {
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
@@ -1750,6 +1982,8 @@ export type InternalUserUncheckedUpdateWithoutTransferCurrentReviewersInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
@@ -1784,6 +2018,8 @@ export type InternalUserCreateWithoutReviewedTransferDocumentsInput = {
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
@@ -1818,6 +2054,8 @@ export type InternalUserUncheckedCreateWithoutReviewedTransferDocumentsInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
@@ -1868,6 +2106,8 @@ export type InternalUserUpdateWithoutReviewedTransferDocumentsInput = {
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
@@ -1902,6 +2142,8 @@ export type InternalUserUncheckedUpdateWithoutReviewedTransferDocumentsInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
@@ -1936,6 +2178,8 @@ export type InternalUserCreateWithoutDocumentReviewsInput = {
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
@@ -1970,6 +2214,8 @@ export type InternalUserUncheckedCreateWithoutDocumentReviewsInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2020,6 +2266,8 @@ export type InternalUserUpdateWithoutDocumentReviewsInput = {
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
@@ -2054,6 +2302,8 @@ export type InternalUserUncheckedUpdateWithoutDocumentReviewsInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -2087,6 +2337,8 @@ export type InternalUserCreateWithoutTransferStageLogInput = {
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
@@ -2121,6 +2373,8 @@ export type InternalUserUncheckedCreateWithoutTransferStageLogInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2171,6 +2425,8 @@ export type InternalUserUpdateWithoutTransferStageLogInput = {
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
@@ -2205,6 +2461,8 @@ export type InternalUserUncheckedUpdateWithoutTransferStageLogInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -2239,6 +2497,8 @@ export type InternalUserCreateWithoutRejectedApplicationsInput = {
   cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
@@ -2273,6 +2533,8 @@ export type InternalUserUncheckedCreateWithoutRejectedApplicationsInput = {
   cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2312,6 +2574,8 @@ export type InternalUserCreateWithoutApprovedApplicationsInput = {
   cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
@@ -2346,6 +2610,8 @@ export type InternalUserUncheckedCreateWithoutApprovedApplicationsInput = {
   cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2385,6 +2651,8 @@ export type InternalUserCreateWithoutReviewingApplicationsInput = {
   cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
@@ -2419,6 +2687,8 @@ export type InternalUserUncheckedCreateWithoutReviewingApplicationsInput = {
   cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2458,6 +2728,8 @@ export type InternalUserCreateWithoutCofOApplicationsInput = {
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
@@ -2492,6 +2764,8 @@ export type InternalUserUncheckedCreateWithoutCofOApplicationsInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2542,6 +2816,8 @@ export type InternalUserUpdateWithoutRejectedApplicationsInput = {
   cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
@@ -2576,6 +2852,8 @@ export type InternalUserUncheckedUpdateWithoutRejectedApplicationsInput = {
   cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -2621,6 +2899,8 @@ export type InternalUserUpdateWithoutApprovedApplicationsInput = {
   cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
@@ -2655,6 +2935,8 @@ export type InternalUserUncheckedUpdateWithoutApprovedApplicationsInput = {
   cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -2700,6 +2982,8 @@ export type InternalUserUpdateWithoutReviewingApplicationsInput = {
   cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
@@ -2734,6 +3018,8 @@ export type InternalUserUncheckedUpdateWithoutReviewingApplicationsInput = {
   cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -2779,6 +3065,8 @@ export type InternalUserUpdateWithoutCofOApplicationsInput = {
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
@@ -2813,6 +3101,8 @@ export type InternalUserUncheckedUpdateWithoutCofOApplicationsInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -2847,6 +3137,8 @@ export type InternalUserCreateWithoutStageLogInput = {
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
@@ -2881,6 +3173,8 @@ export type InternalUserUncheckedCreateWithoutStageLogInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2931,6 +3225,8 @@ export type InternalUserUpdateWithoutStageLogInput = {
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
@@ -2965,6 +3261,168 @@ export type InternalUserUncheckedUpdateWithoutStageLogInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
+  ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
+  transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+}
+
+export type InternalUserCreateWithoutLandReviewLogsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  ministry?: string | null
+  department?: string | null
+  position?: number | null
+  function?: string | null
+  role?: $Enums.Role
+  requiresSignature?: boolean
+  approvingPosition?: number | null
+  signatureUrl?: string | null
+  createdAt?: Date | string
+  emailToken?: string | null
+  passwordToken?: string | null
+  isVerified?: boolean
+  tokenExpiresAt?: Date | string | null
+  state?: Prisma.StateCreateNestedOneWithoutApproversInput
+  StageLog?: Prisma.StageLogCreateNestedManyWithoutApproverInput
+  InboxMessage?: Prisma.InboxMessageCreateNestedManyWithoutInternalUserInput
+  StateGovernor?: Prisma.StateCreateNestedOneWithoutGovernorInput
+  TransferStageLog?: Prisma.TransferStageLogCreateNestedManyWithoutApproverInput
+  otps?: Prisma.InternalOtpCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
+  transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
+  reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+}
+
+export type InternalUserUncheckedCreateWithoutLandReviewLogsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  ministry?: string | null
+  department?: string | null
+  position?: number | null
+  function?: string | null
+  stateId?: string | null
+  role?: $Enums.Role
+  requiresSignature?: boolean
+  approvingPosition?: number | null
+  signatureUrl?: string | null
+  createdAt?: Date | string
+  emailToken?: string | null
+  passwordToken?: string | null
+  isVerified?: boolean
+  tokenExpiresAt?: Date | string | null
+  StageLog?: Prisma.StageLogUncheckedCreateNestedManyWithoutApproverInput
+  InboxMessage?: Prisma.InboxMessageUncheckedCreateNestedManyWithoutInternalUserInput
+  StateGovernor?: Prisma.StateUncheckedCreateNestedOneWithoutGovernorInput
+  TransferStageLog?: Prisma.TransferStageLogUncheckedCreateNestedManyWithoutApproverInput
+  otps?: Prisma.InternalOtpUncheckedCreateNestedManyWithoutInternalUserInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutInternalUserInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
+  transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+}
+
+export type InternalUserCreateOrConnectWithoutLandReviewLogsInput = {
+  where: Prisma.InternalUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.InternalUserCreateWithoutLandReviewLogsInput, Prisma.InternalUserUncheckedCreateWithoutLandReviewLogsInput>
+}
+
+export type InternalUserUpsertWithoutLandReviewLogsInput = {
+  update: Prisma.XOR<Prisma.InternalUserUpdateWithoutLandReviewLogsInput, Prisma.InternalUserUncheckedUpdateWithoutLandReviewLogsInput>
+  create: Prisma.XOR<Prisma.InternalUserCreateWithoutLandReviewLogsInput, Prisma.InternalUserUncheckedCreateWithoutLandReviewLogsInput>
+  where?: Prisma.InternalUserWhereInput
+}
+
+export type InternalUserUpdateToOneWithWhereWithoutLandReviewLogsInput = {
+  where?: Prisma.InternalUserWhereInput
+  data: Prisma.XOR<Prisma.InternalUserUpdateWithoutLandReviewLogsInput, Prisma.InternalUserUncheckedUpdateWithoutLandReviewLogsInput>
+}
+
+export type InternalUserUpdateWithoutLandReviewLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ministry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  function?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  requiresSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvingPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  signatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  state?: Prisma.StateUpdateOneWithoutApproversNestedInput
+  StageLog?: Prisma.StageLogUpdateManyWithoutApproverNestedInput
+  InboxMessage?: Prisma.InboxMessageUpdateManyWithoutInternalUserNestedInput
+  StateGovernor?: Prisma.StateUpdateOneWithoutGovernorNestedInput
+  TransferStageLog?: Prisma.TransferStageLogUpdateManyWithoutApproverNestedInput
+  otps?: Prisma.InternalOtpUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
+  transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
+  reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+}
+
+export type InternalUserUncheckedUpdateWithoutLandReviewLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ministry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  function?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  requiresSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  approvingPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  signatureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  StageLog?: Prisma.StageLogUncheckedUpdateManyWithoutApproverNestedInput
+  InboxMessage?: Prisma.InboxMessageUncheckedUpdateManyWithoutInternalUserNestedInput
+  StateGovernor?: Prisma.StateUncheckedUpdateOneWithoutGovernorNestedInput
+  TransferStageLog?: Prisma.TransferStageLogUncheckedUpdateManyWithoutApproverNestedInput
+  otps?: Prisma.InternalOtpUncheckedUpdateManyWithoutInternalUserNestedInput
+  cofOApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutInternalUserNestedInput
+  rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
+  approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
+  reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -2999,6 +3457,8 @@ export type InternalUserCreateWithoutInboxMessageInput = {
   rejectedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutReviewedByInput
@@ -3033,6 +3493,8 @@ export type InternalUserUncheckedCreateWithoutInboxMessageInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutRejectedByInput
   approvedApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutApprovedByInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutCurrentReviewerInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedCreateNestedManyWithoutApproverInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutGovernorInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentReviewerInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -3083,6 +3545,8 @@ export type InternalUserUpdateWithoutInboxMessageInput = {
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
@@ -3117,6 +3581,8 @@ export type InternalUserUncheckedUpdateWithoutInboxMessageInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -3172,6 +3638,8 @@ export type InternalUserUpdateWithoutStateInput = {
   rejectedApplications?: Prisma.CofOApplicationUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUpdateManyWithoutReviewedByNestedInput
@@ -3206,6 +3674,8 @@ export type InternalUserUncheckedUpdateWithoutStateInput = {
   rejectedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutRejectedByNestedInput
   approvedApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutApprovedByNestedInput
   reviewingApplications?: Prisma.CofOApplicationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewAssignments?: Prisma.LandRegistrationUncheckedUpdateManyWithoutCurrentReviewerNestedInput
+  landReviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutApproverNestedInput
   ownershipTransfersReviewed?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutGovernorNestedInput
   transferCurrentReviewers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerNestedInput
   reviewedTransferDocuments?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -3247,6 +3717,8 @@ export type InternalUserCountOutputType = {
   rejectedApplications: number
   approvedApplications: number
   reviewingApplications: number
+  landReviewAssignments: number
+  landReviewLogs: number
   ownershipTransfersReviewed: number
   transferCurrentReviewers: number
   reviewedTransferDocuments: number
@@ -3262,6 +3734,8 @@ export type InternalUserCountOutputTypeSelect<ExtArgs extends runtime.Types.Exte
   rejectedApplications?: boolean | InternalUserCountOutputTypeCountRejectedApplicationsArgs
   approvedApplications?: boolean | InternalUserCountOutputTypeCountApprovedApplicationsArgs
   reviewingApplications?: boolean | InternalUserCountOutputTypeCountReviewingApplicationsArgs
+  landReviewAssignments?: boolean | InternalUserCountOutputTypeCountLandReviewAssignmentsArgs
+  landReviewLogs?: boolean | InternalUserCountOutputTypeCountLandReviewLogsArgs
   ownershipTransfersReviewed?: boolean | InternalUserCountOutputTypeCountOwnershipTransfersReviewedArgs
   transferCurrentReviewers?: boolean | InternalUserCountOutputTypeCountTransferCurrentReviewersArgs
   reviewedTransferDocuments?: boolean | InternalUserCountOutputTypeCountReviewedTransferDocumentsArgs
@@ -3337,6 +3811,20 @@ export type InternalUserCountOutputTypeCountReviewingApplicationsArgs<ExtArgs ex
 /**
  * InternalUserCountOutputType without action
  */
+export type InternalUserCountOutputTypeCountLandReviewAssignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LandRegistrationWhereInput
+}
+
+/**
+ * InternalUserCountOutputType without action
+ */
+export type InternalUserCountOutputTypeCountLandReviewLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LandReviewLogWhereInput
+}
+
+/**
+ * InternalUserCountOutputType without action
+ */
 export type InternalUserCountOutputTypeCountOwnershipTransfersReviewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.OwnershipTransferWhereInput
 }
@@ -3393,6 +3881,8 @@ export type InternalUserSelect<ExtArgs extends runtime.Types.Extensions.Internal
   rejectedApplications?: boolean | Prisma.InternalUser$rejectedApplicationsArgs<ExtArgs>
   approvedApplications?: boolean | Prisma.InternalUser$approvedApplicationsArgs<ExtArgs>
   reviewingApplications?: boolean | Prisma.InternalUser$reviewingApplicationsArgs<ExtArgs>
+  landReviewAssignments?: boolean | Prisma.InternalUser$landReviewAssignmentsArgs<ExtArgs>
+  landReviewLogs?: boolean | Prisma.InternalUser$landReviewLogsArgs<ExtArgs>
   ownershipTransfersReviewed?: boolean | Prisma.InternalUser$ownershipTransfersReviewedArgs<ExtArgs>
   transferCurrentReviewers?: boolean | Prisma.InternalUser$transferCurrentReviewersArgs<ExtArgs>
   reviewedTransferDocuments?: boolean | Prisma.InternalUser$reviewedTransferDocumentsArgs<ExtArgs>
@@ -3480,6 +3970,8 @@ export type InternalUserInclude<ExtArgs extends runtime.Types.Extensions.Interna
   rejectedApplications?: boolean | Prisma.InternalUser$rejectedApplicationsArgs<ExtArgs>
   approvedApplications?: boolean | Prisma.InternalUser$approvedApplicationsArgs<ExtArgs>
   reviewingApplications?: boolean | Prisma.InternalUser$reviewingApplicationsArgs<ExtArgs>
+  landReviewAssignments?: boolean | Prisma.InternalUser$landReviewAssignmentsArgs<ExtArgs>
+  landReviewLogs?: boolean | Prisma.InternalUser$landReviewLogsArgs<ExtArgs>
   ownershipTransfersReviewed?: boolean | Prisma.InternalUser$ownershipTransfersReviewedArgs<ExtArgs>
   transferCurrentReviewers?: boolean | Prisma.InternalUser$transferCurrentReviewersArgs<ExtArgs>
   reviewedTransferDocuments?: boolean | Prisma.InternalUser$reviewedTransferDocumentsArgs<ExtArgs>
@@ -3506,6 +3998,8 @@ export type $InternalUserPayload<ExtArgs extends runtime.Types.Extensions.Intern
     rejectedApplications: Prisma.$CofOApplicationPayload<ExtArgs>[]
     approvedApplications: Prisma.$CofOApplicationPayload<ExtArgs>[]
     reviewingApplications: Prisma.$CofOApplicationPayload<ExtArgs>[]
+    landReviewAssignments: Prisma.$LandRegistrationPayload<ExtArgs>[]
+    landReviewLogs: Prisma.$LandReviewLogPayload<ExtArgs>[]
     ownershipTransfersReviewed: Prisma.$OwnershipTransferPayload<ExtArgs>[]
     transferCurrentReviewers: Prisma.$OwnershipTransferPayload<ExtArgs>[]
     reviewedTransferDocuments: Prisma.$OwnershipTransferDocumentPayload<ExtArgs>[]
@@ -3935,6 +4429,8 @@ export interface Prisma__InternalUserClient<T, Null = never, ExtArgs extends run
   rejectedApplications<T extends Prisma.InternalUser$rejectedApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$rejectedApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   approvedApplications<T extends Prisma.InternalUser$approvedApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$approvedApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewingApplications<T extends Prisma.InternalUser$reviewingApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$reviewingApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  landReviewAssignments<T extends Prisma.InternalUser$landReviewAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$landReviewAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  landReviewLogs<T extends Prisma.InternalUser$landReviewLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$landReviewLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandReviewLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownershipTransfersReviewed<T extends Prisma.InternalUser$ownershipTransfersReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$ownershipTransfersReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transferCurrentReviewers<T extends Prisma.InternalUser$transferCurrentReviewersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$transferCurrentReviewersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewedTransferDocuments<T extends Prisma.InternalUser$reviewedTransferDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternalUser$reviewedTransferDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipTransferDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4610,6 +5106,54 @@ export type InternalUser$reviewingApplicationsArgs<ExtArgs extends runtime.Types
   take?: number
   skip?: number
   distinct?: Prisma.CofOApplicationScalarFieldEnum | Prisma.CofOApplicationScalarFieldEnum[]
+}
+
+/**
+ * InternalUser.landReviewAssignments
+ */
+export type InternalUser$landReviewAssignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LandRegistration
+   */
+  select?: Prisma.LandRegistrationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LandRegistration
+   */
+  omit?: Prisma.LandRegistrationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandRegistrationInclude<ExtArgs> | null
+  where?: Prisma.LandRegistrationWhereInput
+  orderBy?: Prisma.LandRegistrationOrderByWithRelationInput | Prisma.LandRegistrationOrderByWithRelationInput[]
+  cursor?: Prisma.LandRegistrationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LandRegistrationScalarFieldEnum | Prisma.LandRegistrationScalarFieldEnum[]
+}
+
+/**
+ * InternalUser.landReviewLogs
+ */
+export type InternalUser$landReviewLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LandReviewLog
+   */
+  select?: Prisma.LandReviewLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LandReviewLog
+   */
+  omit?: Prisma.LandReviewLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LandReviewLogInclude<ExtArgs> | null
+  where?: Prisma.LandReviewLogWhereInput
+  orderBy?: Prisma.LandReviewLogOrderByWithRelationInput | Prisma.LandReviewLogOrderByWithRelationInput[]
+  cursor?: Prisma.LandReviewLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LandReviewLogScalarFieldEnum | Prisma.LandReviewLogScalarFieldEnum[]
 }
 
 /**

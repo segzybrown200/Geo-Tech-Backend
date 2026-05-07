@@ -35,6 +35,7 @@ import {
 import { authorizeRoles } from "../middlewares/roleMiddleware";
 import multer from "multer";
 import { approveDocument, approveOwnershipTransfer, getTransferForReview, getTransfersForReview, listTransfersForGovernor, rejectDocument, rejectOwnershipTransfer, reviewTransfer } from "../controllers/ownershipController";
+import { getLandForReview, reviewLand } from "../controllers/landController";
 const upload = multer({ storage: multer.memoryStorage() });
 
 const router = express.Router();
@@ -92,6 +93,18 @@ router.get(
   internalUserAuth,
   authorizeRoles(["GOVERNOR", "APPROVER"]),
   getCofOForReview,
+);
+router.get(
+  "/land-review/:id",
+  internalUserAuth,
+  authorizeRoles(["APPROVER"]),
+  getLandForReview,
+);
+router.post(
+  "/land-review/:id",
+  internalUserAuth,
+  authorizeRoles(["APPROVER"]),
+  reviewLand,
 );
 router.post("/approve-document/:documentId", internalUserAuth, approveDocumentForCofO)
 router.get("/monthly-trends", internalUserAuth, authorizeRoles(["GOVERNOR", "APPROVER"]), getCofOMonthlyTrends);

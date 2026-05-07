@@ -133,6 +133,11 @@ export type Payment = Prisma.PaymentModel
  */
 export type StageLog = Prisma.StageLogModel
 /**
+ * Model LandReviewLog
+ * 
+ */
+export type LandReviewLog = Prisma.LandReviewLogModel
+/**
  * Model InboxMessage
  * 
  */

@@ -88,6 +88,8 @@ model InternalUser {
   rejectedApplications       CofOApplication[]           @relation("rejectedBy")
   approvedApplications       CofOApplication[]           @relation("approvedBy")
   reviewingApplications      CofOApplication[]           @relation("currentReviewer")
+  landReviewAssignments      LandRegistration[]          @relation("LandReviewAssignment")
+  landReviewLogs             LandReviewLog[]
   ownershipTransfersReviewed OwnershipTransfer[]         @relation("GovernorReviewer")
   transferCurrentReviewers   OwnershipTransfer[]         @relation("TransferCurrentReviewer")
   reviewedTransferDocuments  OwnershipTransferDocument[] @relation("DocumentReviewer")
@@ -227,6 +229,11 @@ model LandRegistration {
 
   // 📑 CofO
   CofOApplication CofOApplication[]
+
+  // 🧾 Land review assignment
+  reviewLogs        LandReviewLog[]
+  currentReviewerId String?         @db.Uuid
+  currentReviewer   InternalUser?  @relation("LandReviewAssignment", fields: [currentReviewerId], references: [id])
 
   // 🌱 Subdivision Support
   parentLandId String?            @db.Uuid
@@ -553,6 +560,19 @@ model StageLog {
   approvedAt     DateTime?
   cofO           CofOApplication @relation(fields: [cofOId], references: [id])
   approver       InternalUser    @relation(fields: [internalUserId], references: [id])
+}
+
+model LandReviewLog {
+  id             String          @id @default(uuid()) @db.Uuid
+  landId         String          @db.Uuid
+  stageNumber    Int
+  internalUserId String          @db.Uuid
+  status         String
+  message        String?
+  arrivedAt      DateTime        @default(now())
+  approvedAt     DateTime?
+  land           LandRegistration @relation(fields: [landId], references: [id])
+  approver       InternalUser     @relation(fields: [internalUserId], references: [id])
 }
 
 model InboxMessage {

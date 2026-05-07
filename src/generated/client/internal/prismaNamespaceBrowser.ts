@@ -70,6 +70,7 @@ export const ModelName = {
   CofODocument: 'CofODocument',
   Payment: 'Payment',
   StageLog: 'StageLog',
+  LandReviewLog: 'LandReviewLog',
   InboxMessage: 'InboxMessage',
   EmailVerificationToken: 'EmailVerificationToken',
   CofOAuditLog: 'CofOAuditLog',
@@ -189,6 +190,7 @@ export const LandRegistrationScalarFieldEnum = {
   ownershipType: 'ownershipType',
   purpose: 'purpose',
   titleType: 'titleType',
+  currentReviewerId: 'currentReviewerId',
   parentLandId: 'parentLandId',
   hasExistingCofO: 'hasExistingCofO',
   existingCofODocument: 'existingCofODocument',
@@ -417,6 +419,20 @@ export const StageLogScalarFieldEnum = {
 } as const
 
 export type StageLogScalarFieldEnum = (typeof StageLogScalarFieldEnum)[keyof typeof StageLogScalarFieldEnum]
+
+
+export const LandReviewLogScalarFieldEnum = {
+  id: 'id',
+  landId: 'landId',
+  stageNumber: 'stageNumber',
+  internalUserId: 'internalUserId',
+  status: 'status',
+  message: 'message',
+  arrivedAt: 'arrivedAt',
+  approvedAt: 'approvedAt'
+} as const
+
+export type LandReviewLogScalarFieldEnum = (typeof LandReviewLogScalarFieldEnum)[keyof typeof LandReviewLogScalarFieldEnum]
 
 
 export const InboxMessageScalarFieldEnum = {

@@ -4,11 +4,15 @@ import {
   landRegistrationSchema,
   landRegistrationWithPaymentSchema,
   existingCofOUploadSchema,
+  cofoReviewSchema,
+  acknowledgeLandConflictSchema,
+  paymentConfirmationSchema,
 } from "../utils/zodSchemas";
 import {
   uploadToCloudinary,
   validateDocumentFile,
 } from "../services/uploadService";
+import { sendEmail } from "../services/emailSevices";
 import { Request, Response } from "express";
 import { AuthRequest } from "../middlewares/authMiddleware";
 import {
@@ -51,6 +55,13 @@ function normalizeLatLngOrder(coords: number[][]): number[][] {
   );
   if (looksLikeLngLat) return coords.map(([lat, lng]) => [lng, lat]);
   return coords;
+}
+
+async function getLandReviewers(stateId: string) {
+  return prisma.internalUser.findMany({
+    where: { stateId, role: "APPROVER" },
+    orderBy: { position: "asc" },
+  });
 }
 
 export const initiateLandPayment = async (req: AuthRequest, res: Response) => {
@@ -334,6 +345,17 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
       });
     }
 
+    let currentReviewerId: string | null = null;
+    if (hasExistingCofO) {
+      const reviewers = await getLandReviewers(stateId);
+      if (!reviewers || reviewers.length === 0) {
+        return res.status(500).json({
+          message: "No internal approvers configured for this state's existing CofO workflow",
+        });
+      }
+      currentReviewerId = reviewers[0].id;
+    }
+
     // 8️⃣ Verify payment reference before creating the land
     const paymentVerification = await verifyPaystackReference(paymentReference);
     if (!paymentVerification.success) {
@@ -437,6 +459,7 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
           "hasExistingCofO",
           "existingCofONumber",
           "existingCofOIssueDate",
+          "currentReviewerId",
           "requiresReviewerApproval"
         )
         SELECT
@@ -473,6 +496,7 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
           ${hasExistingCofO},
           ${existingCofONumber ?? null},
           ${existingCofOIssueDate ? new Date(existingCofOIssueDate) : null},
+          ${currentReviewerId ?? null},
           ${hasExistingCofO ? true : false}
         FROM geom
         RETURNING *;
@@ -1001,12 +1025,241 @@ export const updateLand = async (req: AuthRequest, res: Response) => {
   }
 };
 
+export const getLandForReview = async (req: AuthRequest, res: Response) => {
+  const reviewerId = req.user.id;
+  const { id } = req.params;
+
+  const reviewer = await prisma.internalUser.findUnique({
+    where: { id: reviewerId },
+  });
+  if (!reviewer) {
+    return res.status(403).json({ message: "Not an internal reviewer" });
+  }
+
+  const land = await prisma.landRegistration.findUnique({
+    where: { id },
+    include: {
+      owner: true,
+      state: true,
+      documents: true,
+      reviewLogs: { orderBy: { arrivedAt: "asc" } },
+    },
+  });
+
+  if (!land) {
+    return res.status(404).json({ message: "Land registration not found" });
+  }
+
+  if (land.stateId !== reviewer.stateId) {
+    return res.status(403).json({ message: "Access denied" });
+  }
+
+  if (!land.hasExistingCofO || land.landStatus !== "PENDING_REVIEWER_VERIFICATION") {
+    return res.status(400).json({
+      message: "This land registration is not currently assigned for existing CofO review",
+    });
+  }
+
+  if (land.currentReviewerId !== reviewerId) {
+    return res.status(403).json({
+      message: "You are not the assigned reviewer for this land registration",
+    });
+  }
+
+  return res.json({ land });
+};
+
+export const reviewLand = async (req: AuthRequest, res: Response) => {
+  const reviewerId = req.user.id;
+  const { id } = req.params;
+  const parse = cofoReviewSchema.safeParse(req.body);
+
+  if (!parse.success) {
+    return res.status(400).json({
+      message: "Validation failed",
+      errors: parse.error.flatten(),
+    });
+  }
+
+  const { action, message } = parse.data;
+
+  const reviewer = await prisma.internalUser.findUnique({
+    where: { id: reviewerId },
+  });
+  if (!reviewer) {
+    return res.status(403).json({ message: "Not an internal reviewer" });
+  }
+
+  const land = await prisma.landRegistration.findUnique({
+    where: { id },
+    include: {
+      owner: true,
+      state: true,
+      
+      reviewLogs: { orderBy: { arrivedAt: "asc" } },
+    },
+  });
+
+  if (!land) {
+    return res.status(404).json({ message: "Land registration not found" });
+  }
+
+  if (land.stateId !== reviewer.stateId) {
+    return res.status(403).json({ message: "Access denied" });
+  }
+
+  if (!land.hasExistingCofO || land.landStatus !== "PENDING_REVIEWER_VERIFICATION") {
+    return res.status(400).json({
+      message: "This land registration is not in review for existing CofO",
+    });
+  }
+
+  if (land.currentReviewerId !== reviewerId) {
+    return res.status(403).json({
+      message: "You are not the assigned reviewer for this land registration",
+    });
+  }
+
+  const reviewers = await getLandReviewers(land.stateId);
+  if (!reviewers || reviewers.length === 0) {
+    return res.status(500).json({
+      message: "No approvers configured for this state",
+    });
+  }
+
+  const currentIndex = reviewers.findIndex((user) => user.id === reviewerId);
+  if (currentIndex === -1) {
+    return res.status(500).json({
+      message: "Reviewer not configured for this state",
+    });
+  }
+
+  const stageNumber = (land.reviewLogs?.length ?? 0) + 1;
+  const isLastReviewer = currentIndex === reviewers.length - 1;
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      await tx.landReviewLog.create({
+        data: {
+          landId: land.id,
+          stageNumber,
+          internalUserId: reviewerId,
+          status: action === "APPROVE" ? "APPROVED" : "REJECTED",
+          message: message ?? null,
+          approvedAt: action === "APPROVE" ? new Date() : null,
+        },
+      });
+
+      if (action === "REJECT") {
+        await tx.landRegistration.update({
+          where: { id: land.id },
+          data: {
+            landStatus: "REJECTED",
+            currentReviewerId: null,
+            requiresReviewerApproval: false,
+          },
+        });
+
+        await tx.landAuditLog.create({
+          data: {
+            landId: land.id,
+            action: "REVIEW_REJECTED",
+            userId: reviewerId,
+            metadata: {
+              message,
+              reviewerName: reviewer.name,
+            },
+          },
+        });
+      } else {
+        if (isLastReviewer) {
+          await tx.landRegistration.update({
+            where: { id: land.id },
+            data: {
+              landStatus: "APPROVED",
+              currentReviewerId: null,
+              requiresReviewerApproval: false,
+            },
+          });
+
+          await tx.landAuditLog.create({
+            data: {
+              landId: land.id,
+              action: "REVIEW_APPROVED",
+              userId: reviewerId,
+              metadata: {
+                reviewerName: reviewer.name,
+              },
+            },
+          });
+        } else {
+          const nextReviewer = reviewers[currentIndex + 1];
+          await tx.landRegistration.update({
+            where: { id: land.id },
+            data: {
+              currentReviewerId: nextReviewer.id,
+            },
+          });
+
+          await tx.landAuditLog.create({
+            data: {
+              landId: land.id,
+              action: "REVIEW_FORWARDED",
+              userId: reviewerId,
+              metadata: {
+                nextReviewerId: nextReviewer.id,
+                nextReviewerName: nextReviewer.name,
+              },
+            },
+          });
+        }
+      }
+    });
+
+    if (action === "APPROVE" && !isLastReviewer) {
+      const nextReviewer = reviewers[currentIndex + 1];
+      if (nextReviewer.email) {
+        try {
+          await sendEmail(
+            nextReviewer.email,
+            "New land review assignment",
+            `<p>Dear ${nextReviewer.name},</p><p>A land registration with an existing CofO is now assigned to you for review.</p><p><strong>Land code:</strong> ${land.landCode}</p><p>Please log in to the GeoTech internal portal to continue the review.</p>`,
+          );
+        } catch (sendErr) {
+          console.warn("Failed to notify next reviewer", sendErr);
+        }
+      }
+    }
+
+    if (action === "APPROVE" && isLastReviewer) {
+      if (land.owner?.email) {
+        try {
+          await sendEmail(
+            land.owner.email,
+            "Land registration approved",
+            `<p>Dear ${land.owner.fullName || "Applicant"},</p><p>Your land registration with existing CofO has been approved.</p><p><strong>Land code:</strong> ${land.landCode}</p>`,
+          );
+        } catch (sendErr) {
+          console.warn("Failed to notify land owner", sendErr);
+        }
+      }
+    }
+
+    return res.json({
+      message: action === "APPROVE"
+        ? isLastReviewer
+          ? "Land approved successfully"
+          : "Land approved and forwarded to next reviewer"
+        : "Land review rejected",
+    });
+  } catch (err) {
+    console.error("Land review failed", err);
+    return res.status(500).json({ message: "Land review failed", error: err });
+  }
+};
+
 // ============= NEW ENDPOINTS FOR PAYMENT & CONFLICTS =============
 
-import {
-  acknowledgeLandConflictSchema,
-  paymentConfirmationSchema,
-} from "../utils/zodSchemas";
 import { confirmPayment } from "../services/paymentService";
 import { updateConflictStatus } from "../services/conflictDocumentService";
 
