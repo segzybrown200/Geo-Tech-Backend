@@ -396,7 +396,7 @@ export const registerLand = async (req: AuthRequest, res: Response) => {
 
     const landStatus = hasExistingCofO
       ? "PENDING_REVIEWER_VERIFICATION"
-      : "APPROVED";
+      : "PENDING";
 
     const [land, payment, uploadedDocs] = await prisma.$transaction(async (tx) => {
       const [newLand] = await tx.$queryRaw<any[]>`
