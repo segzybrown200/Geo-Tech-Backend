@@ -9,7 +9,11 @@ import {
   getTransferProgress,
   getTransferDetails,
   resendTransferOTP,
-  uploadTransferDocuments
+  uploadTransferDocuments,
+  requestTransferActionConsent,
+  verifyTransferActionRequest,
+  rejectTransferActionRequest,
+  getTransferActionRequest,
 } from "../controllers/ownershipController";
 
 import multer from "multer";
@@ -41,6 +45,10 @@ router.get("/:transferId/progress", requireAuth, getTransferProgress);
 
 // Resend transfer OTP
 router.post("/:transferId/resend-otp", requireAuth, resendTransferOTP);
+router.post("/transfer-action-request", requireAuth, requestTransferActionConsent);
+router.get("/transfer-action-request/:requestId", requireAuth, getTransferActionRequest);
+router.post("/transfer-action-request/:requestId/verify", requireAuth, verifyTransferActionRequest);
+router.post("/transfer-action-request/:requestId/reject", requireAuth, rejectTransferActionRequest);
 
 // Upload transfer documents
 router.post("/:transferId/upload-documents", requireAuth, upload.array("documents"), uploadTransferDocuments);

@@ -396,6 +396,7 @@ export type OwnershipTransferWhereInput = {
   documents?: Prisma.OwnershipTransferDocumentListRelationFilter
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogListRelationFilter
   stages?: Prisma.TransferStageLogListRelationFilter
+  actionRequests?: Prisma.TransferActionRequestListRelationFilter
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
   currentOwner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   newOwner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -436,6 +437,7 @@ export type OwnershipTransferOrderByWithRelationInput = {
   documents?: Prisma.OwnershipTransferDocumentOrderByRelationAggregateInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogOrderByRelationAggregateInput
   stages?: Prisma.TransferStageLogOrderByRelationAggregateInput
+  actionRequests?: Prisma.TransferActionRequestOrderByRelationAggregateInput
   land?: Prisma.LandRegistrationOrderByWithRelationInput
   currentOwner?: Prisma.UserOrderByWithRelationInput
   newOwner?: Prisma.UserOrderByWithRelationInput
@@ -479,6 +481,7 @@ export type OwnershipTransferWhereUniqueInput = Prisma.AtLeast<{
   documents?: Prisma.OwnershipTransferDocumentListRelationFilter
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogListRelationFilter
   stages?: Prisma.TransferStageLogListRelationFilter
+  actionRequests?: Prisma.TransferActionRequestListRelationFilter
   land?: Prisma.XOR<Prisma.LandRegistrationScalarRelationFilter, Prisma.LandRegistrationWhereInput>
   currentOwner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   newOwner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -581,6 +584,7 @@ export type OwnershipTransferCreateInput = {
   documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestCreateNestedManyWithoutTransferInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
   currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
   newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
@@ -621,6 +625,7 @@ export type OwnershipTransferUncheckedCreateInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogUncheckedCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferUpdateInput = {
@@ -649,6 +654,7 @@ export type OwnershipTransferUpdateInput = {
   documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUpdateManyWithoutTransferNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
   currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
   newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
@@ -689,6 +695,7 @@ export type OwnershipTransferUncheckedUpdateInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUncheckedUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferCreateManyInput = {
@@ -886,6 +893,11 @@ export type OwnershipTransferSumOrderByAggregateInput = {
 export type OwnershipTransferScalarRelationFilter = {
   is?: Prisma.OwnershipTransferWhereInput
   isNot?: Prisma.OwnershipTransferWhereInput
+}
+
+export type OwnershipTransferNullableScalarRelationFilter = {
+  is?: Prisma.OwnershipTransferWhereInput | null
+  isNot?: Prisma.OwnershipTransferWhereInput | null
 }
 
 export type OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput = {
@@ -1166,6 +1178,22 @@ export type OwnershipTransferUpdateOneRequiredWithoutTransferAuditLogsNestedInpu
   update?: Prisma.XOR<Prisma.XOR<Prisma.OwnershipTransferUpdateToOneWithWhereWithoutTransferAuditLogsInput, Prisma.OwnershipTransferUpdateWithoutTransferAuditLogsInput>, Prisma.OwnershipTransferUncheckedUpdateWithoutTransferAuditLogsInput>
 }
 
+export type OwnershipTransferCreateNestedOneWithoutActionRequestsInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutActionRequestsInput, Prisma.OwnershipTransferUncheckedCreateWithoutActionRequestsInput>
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutActionRequestsInput
+  connect?: Prisma.OwnershipTransferWhereUniqueInput
+}
+
+export type OwnershipTransferUpdateOneWithoutActionRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutActionRequestsInput, Prisma.OwnershipTransferUncheckedCreateWithoutActionRequestsInput>
+  connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutActionRequestsInput
+  upsert?: Prisma.OwnershipTransferUpsertWithoutActionRequestsInput
+  disconnect?: Prisma.OwnershipTransferWhereInput | boolean
+  delete?: Prisma.OwnershipTransferWhereInput | boolean
+  connect?: Prisma.OwnershipTransferWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OwnershipTransferUpdateToOneWithWhereWithoutActionRequestsInput, Prisma.OwnershipTransferUpdateWithoutActionRequestsInput>, Prisma.OwnershipTransferUncheckedUpdateWithoutActionRequestsInput>
+}
+
 export type OwnershipTransferCreateNestedOneWithoutStagesInput = {
   create?: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutStagesInput, Prisma.OwnershipTransferUncheckedCreateWithoutStagesInput>
   connectOrCreate?: Prisma.OwnershipTransferCreateOrConnectWithoutStagesInput
@@ -1206,6 +1234,7 @@ export type OwnershipTransferCreateWithoutCurrentOwnerInput = {
   documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestCreateNestedManyWithoutTransferInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
   newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
   governor?: Prisma.InternalUserCreateNestedOneWithoutOwnershipTransfersReviewedInput
@@ -1244,6 +1273,7 @@ export type OwnershipTransferUncheckedCreateWithoutCurrentOwnerInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogUncheckedCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferCreateOrConnectWithoutCurrentOwnerInput = {
@@ -1282,6 +1312,7 @@ export type OwnershipTransferCreateWithoutNewOwnerInput = {
   documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestCreateNestedManyWithoutTransferInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
   currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
   governor?: Prisma.InternalUserCreateNestedOneWithoutOwnershipTransfersReviewedInput
@@ -1320,6 +1351,7 @@ export type OwnershipTransferUncheckedCreateWithoutNewOwnerInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogUncheckedCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferCreateOrConnectWithoutNewOwnerInput = {
@@ -1423,6 +1455,7 @@ export type OwnershipTransferCreateWithoutGovernorInput = {
   documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestCreateNestedManyWithoutTransferInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
   currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
   newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
@@ -1461,6 +1494,7 @@ export type OwnershipTransferUncheckedCreateWithoutGovernorInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogUncheckedCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferCreateOrConnectWithoutGovernorInput = {
@@ -1499,6 +1533,7 @@ export type OwnershipTransferCreateWithoutCurrentReviewerInput = {
   documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestCreateNestedManyWithoutTransferInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
   currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
   newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
@@ -1537,6 +1572,7 @@ export type OwnershipTransferUncheckedCreateWithoutCurrentReviewerInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogUncheckedCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferCreateOrConnectWithoutCurrentReviewerInput = {
@@ -1607,6 +1643,7 @@ export type OwnershipTransferCreateWithoutLandInput = {
   documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestCreateNestedManyWithoutTransferInput
   currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
   newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
   governor?: Prisma.InternalUserCreateNestedOneWithoutOwnershipTransfersReviewedInput
@@ -1645,6 +1682,7 @@ export type OwnershipTransferUncheckedCreateWithoutLandInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogUncheckedCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferCreateOrConnectWithoutLandInput = {
@@ -1699,6 +1737,7 @@ export type OwnershipTransferCreateWithoutTransferredLandInput = {
   documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestCreateNestedManyWithoutTransferInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
   currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
   newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
@@ -1737,6 +1776,7 @@ export type OwnershipTransferUncheckedCreateWithoutTransferredLandInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogUncheckedCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferCreateOrConnectWithoutTransferredLandInput = {
@@ -1790,6 +1830,7 @@ export type OwnershipTransferCreateWithoutVerificationsInput = {
   documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestCreateNestedManyWithoutTransferInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
   currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
   newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
@@ -1829,6 +1870,7 @@ export type OwnershipTransferUncheckedCreateWithoutVerificationsInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogUncheckedCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferCreateOrConnectWithoutVerificationsInput = {
@@ -1872,6 +1914,7 @@ export type OwnershipTransferUpdateWithoutVerificationsInput = {
   documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUpdateManyWithoutTransferNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
   currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
   newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
@@ -1911,6 +1954,7 @@ export type OwnershipTransferUncheckedUpdateWithoutVerificationsInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUncheckedUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferCreateWithoutDocumentsInput = {
@@ -1938,6 +1982,7 @@ export type OwnershipTransferCreateWithoutDocumentsInput = {
   verifications?: Prisma.TransferVerificationCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestCreateNestedManyWithoutTransferInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
   currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
   newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
@@ -1977,6 +2022,7 @@ export type OwnershipTransferUncheckedCreateWithoutDocumentsInput = {
   verifications?: Prisma.TransferVerificationUncheckedCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogUncheckedCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferCreateOrConnectWithoutDocumentsInput = {
@@ -2020,6 +2066,7 @@ export type OwnershipTransferUpdateWithoutDocumentsInput = {
   verifications?: Prisma.TransferVerificationUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUpdateManyWithoutTransferNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
   currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
   newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
@@ -2059,6 +2106,7 @@ export type OwnershipTransferUncheckedUpdateWithoutDocumentsInput = {
   verifications?: Prisma.TransferVerificationUncheckedUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUncheckedUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferCreateWithoutTransferAuditLogsInput = {
@@ -2086,6 +2134,7 @@ export type OwnershipTransferCreateWithoutTransferAuditLogsInput = {
   verifications?: Prisma.TransferVerificationCreateNestedManyWithoutTransferInput
   documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestCreateNestedManyWithoutTransferInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
   currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
   newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
@@ -2125,6 +2174,7 @@ export type OwnershipTransferUncheckedCreateWithoutTransferAuditLogsInput = {
   verifications?: Prisma.TransferVerificationUncheckedCreateNestedManyWithoutTransferInput
   documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
   stages?: Prisma.TransferStageLogUncheckedCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferCreateOrConnectWithoutTransferAuditLogsInput = {
@@ -2168,6 +2218,7 @@ export type OwnershipTransferUpdateWithoutTransferAuditLogsInput = {
   verifications?: Prisma.TransferVerificationUpdateManyWithoutTransferNestedInput
   documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUpdateManyWithoutTransferNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
   currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
   newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
@@ -2207,6 +2258,159 @@ export type OwnershipTransferUncheckedUpdateWithoutTransferAuditLogsInput = {
   verifications?: Prisma.TransferVerificationUncheckedUpdateManyWithoutTransferNestedInput
   documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUncheckedUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutTransferNestedInput
+}
+
+export type OwnershipTransferCreateWithoutActionRequestsInput = {
+  id?: string
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  transferType?: string
+  transferSurveyType?: string | null
+  transferCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  transferBearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  transferUtmZone?: string | null
+  transferAreaSqm?: number | null
+  transferCenterLat?: number | null
+  transferCenterLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  status?: $Enums.TransferStatus
+  revisionCount?: number
+  applicationNumber?: string | null
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  expiresAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verifications?: Prisma.TransferVerificationCreateNestedManyWithoutTransferInput
+  documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
+  stages?: Prisma.TransferStageLogCreateNestedManyWithoutTransferInput
+  land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
+  currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
+  newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
+  governor?: Prisma.InternalUserCreateNestedOneWithoutOwnershipTransfersReviewedInput
+  currentReviewer?: Prisma.InternalUserCreateNestedOneWithoutTransferCurrentReviewersInput
+  transferredLand?: Prisma.LandRegistrationCreateNestedOneWithoutTransferredFromInput
+}
+
+export type OwnershipTransferUncheckedCreateWithoutActionRequestsInput = {
+  id?: string
+  landId: string
+  currentOwnerId: string
+  newOwnerId?: string | null
+  governorId?: string | null
+  newOwnerEmail?: string | null
+  newOwnerPhone?: string | null
+  transferType?: string
+  transferSurveyType?: string | null
+  transferCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  transferBearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  transferUtmZone?: string | null
+  transferAreaSqm?: number | null
+  transferCenterLat?: number | null
+  transferCenterLng?: number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  transferredLandId?: string | null
+  status?: $Enums.TransferStatus
+  currentReviewerId?: string | null
+  revisionCount?: number
+  applicationNumber?: string | null
+  governorComment?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  expiresAt: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verifications?: Prisma.TransferVerificationUncheckedCreateNestedManyWithoutTransferInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
+  stages?: Prisma.TransferStageLogUncheckedCreateNestedManyWithoutTransferInput
+}
+
+export type OwnershipTransferCreateOrConnectWithoutActionRequestsInput = {
+  where: Prisma.OwnershipTransferWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutActionRequestsInput, Prisma.OwnershipTransferUncheckedCreateWithoutActionRequestsInput>
+}
+
+export type OwnershipTransferUpsertWithoutActionRequestsInput = {
+  update: Prisma.XOR<Prisma.OwnershipTransferUpdateWithoutActionRequestsInput, Prisma.OwnershipTransferUncheckedUpdateWithoutActionRequestsInput>
+  create: Prisma.XOR<Prisma.OwnershipTransferCreateWithoutActionRequestsInput, Prisma.OwnershipTransferUncheckedCreateWithoutActionRequestsInput>
+  where?: Prisma.OwnershipTransferWhereInput
+}
+
+export type OwnershipTransferUpdateToOneWithWhereWithoutActionRequestsInput = {
+  where?: Prisma.OwnershipTransferWhereInput
+  data: Prisma.XOR<Prisma.OwnershipTransferUpdateWithoutActionRequestsInput, Prisma.OwnershipTransferUncheckedUpdateWithoutActionRequestsInput>
+}
+
+export type OwnershipTransferUpdateWithoutActionRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transferType?: Prisma.StringFieldUpdateOperationsInput | string
+  transferSurveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transferCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  transferBearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  transferUtmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verifications?: Prisma.TransferVerificationUpdateManyWithoutTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
+  stages?: Prisma.TransferStageLogUpdateManyWithoutTransferNestedInput
+  land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
+  currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
+  newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
+  governor?: Prisma.InternalUserUpdateOneWithoutOwnershipTransfersReviewedNestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutTransferCurrentReviewersNestedInput
+  transferredLand?: Prisma.LandRegistrationUpdateOneWithoutTransferredFromNestedInput
+}
+
+export type OwnershipTransferUncheckedUpdateWithoutActionRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  landId?: Prisma.StringFieldUpdateOperationsInput | string
+  currentOwnerId?: Prisma.StringFieldUpdateOperationsInput | string
+  newOwnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  newOwnerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transferType?: Prisma.StringFieldUpdateOperationsInput | string
+  transferSurveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transferCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  transferBearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  transferUtmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transferAreaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferCenterLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferCenterLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transferStartPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  transferredLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revisionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  applicationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  governorComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verifications?: Prisma.TransferVerificationUncheckedUpdateManyWithoutTransferNestedInput
+  documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
+  transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
+  stages?: Prisma.TransferStageLogUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferCreateWithoutStagesInput = {
@@ -2234,6 +2438,7 @@ export type OwnershipTransferCreateWithoutStagesInput = {
   verifications?: Prisma.TransferVerificationCreateNestedManyWithoutTransferInput
   documents?: Prisma.OwnershipTransferDocumentCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestCreateNestedManyWithoutTransferInput
   land: Prisma.LandRegistrationCreateNestedOneWithoutOwnershipTransferInput
   currentOwner: Prisma.UserCreateNestedOneWithoutCurrentOwnerTransfersInput
   newOwner?: Prisma.UserCreateNestedOneWithoutNewOwnerTransfersInput
@@ -2273,6 +2478,7 @@ export type OwnershipTransferUncheckedCreateWithoutStagesInput = {
   verifications?: Prisma.TransferVerificationUncheckedCreateNestedManyWithoutTransferInput
   documents?: Prisma.OwnershipTransferDocumentUncheckedCreateNestedManyWithoutTransferInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedCreateNestedManyWithoutTransferInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutTransferInput
 }
 
 export type OwnershipTransferCreateOrConnectWithoutStagesInput = {
@@ -2316,6 +2522,7 @@ export type OwnershipTransferUpdateWithoutStagesInput = {
   verifications?: Prisma.TransferVerificationUpdateManyWithoutTransferNestedInput
   documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUpdateManyWithoutTransferNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
   currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
   newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
@@ -2355,6 +2562,7 @@ export type OwnershipTransferUncheckedUpdateWithoutStagesInput = {
   verifications?: Prisma.TransferVerificationUncheckedUpdateManyWithoutTransferNestedInput
   documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferCreateManyCurrentOwnerInput = {
@@ -2441,6 +2649,7 @@ export type OwnershipTransferUpdateWithoutCurrentOwnerInput = {
   documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUpdateManyWithoutTransferNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
   newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
   governor?: Prisma.InternalUserUpdateOneWithoutOwnershipTransfersReviewedNestedInput
@@ -2479,6 +2688,7 @@ export type OwnershipTransferUncheckedUpdateWithoutCurrentOwnerInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUncheckedUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerInput = {
@@ -2536,6 +2746,7 @@ export type OwnershipTransferUpdateWithoutNewOwnerInput = {
   documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUpdateManyWithoutTransferNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
   currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
   governor?: Prisma.InternalUserUpdateOneWithoutOwnershipTransfersReviewedNestedInput
@@ -2574,6 +2785,7 @@ export type OwnershipTransferUncheckedUpdateWithoutNewOwnerInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUncheckedUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferUncheckedUpdateManyWithoutNewOwnerInput = {
@@ -2689,6 +2901,7 @@ export type OwnershipTransferUpdateWithoutGovernorInput = {
   documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUpdateManyWithoutTransferNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
   currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
   newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
@@ -2727,6 +2940,7 @@ export type OwnershipTransferUncheckedUpdateWithoutGovernorInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUncheckedUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferUncheckedUpdateManyWithoutGovernorInput = {
@@ -2784,6 +2998,7 @@ export type OwnershipTransferUpdateWithoutCurrentReviewerInput = {
   documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUpdateManyWithoutTransferNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
   currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
   newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
@@ -2822,6 +3037,7 @@ export type OwnershipTransferUncheckedUpdateWithoutCurrentReviewerInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUncheckedUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferUncheckedUpdateManyWithoutCurrentReviewerInput = {
@@ -2879,6 +3095,7 @@ export type OwnershipTransferUpdateWithoutLandInput = {
   documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUpdateManyWithoutTransferNestedInput
   currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
   newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
   governor?: Prisma.InternalUserUpdateOneWithoutOwnershipTransfersReviewedNestedInput
@@ -2917,6 +3134,7 @@ export type OwnershipTransferUncheckedUpdateWithoutLandInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUncheckedUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferCreateManyLandInput = {
@@ -3003,6 +3221,7 @@ export type OwnershipTransferUpdateWithoutTransferredLandInput = {
   documents?: Prisma.OwnershipTransferDocumentUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUpdateManyWithoutTransferNestedInput
   land?: Prisma.LandRegistrationUpdateOneRequiredWithoutOwnershipTransferNestedInput
   currentOwner?: Prisma.UserUpdateOneRequiredWithoutCurrentOwnerTransfersNestedInput
   newOwner?: Prisma.UserUpdateOneWithoutNewOwnerTransfersNestedInput
@@ -3041,6 +3260,7 @@ export type OwnershipTransferUncheckedUpdateWithoutTransferredLandInput = {
   documents?: Prisma.OwnershipTransferDocumentUncheckedUpdateManyWithoutTransferNestedInput
   transferAuditLogs?: Prisma.OwnershipTransferAuditLogUncheckedUpdateManyWithoutTransferNestedInput
   stages?: Prisma.TransferStageLogUncheckedUpdateManyWithoutTransferNestedInput
+  actionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutTransferNestedInput
 }
 
 export type OwnershipTransferCreateManyTransferredLandInput = {
@@ -3111,6 +3331,7 @@ export type OwnershipTransferCountOutputType = {
   documents: number
   transferAuditLogs: number
   stages: number
+  actionRequests: number
 }
 
 export type OwnershipTransferCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3118,6 +3339,7 @@ export type OwnershipTransferCountOutputTypeSelect<ExtArgs extends runtime.Types
   documents?: boolean | OwnershipTransferCountOutputTypeCountDocumentsArgs
   transferAuditLogs?: boolean | OwnershipTransferCountOutputTypeCountTransferAuditLogsArgs
   stages?: boolean | OwnershipTransferCountOutputTypeCountStagesArgs
+  actionRequests?: boolean | OwnershipTransferCountOutputTypeCountActionRequestsArgs
 }
 
 /**
@@ -3158,6 +3380,13 @@ export type OwnershipTransferCountOutputTypeCountStagesArgs<ExtArgs extends runt
   where?: Prisma.TransferStageLogWhereInput
 }
 
+/**
+ * OwnershipTransferCountOutputType without action
+ */
+export type OwnershipTransferCountOutputTypeCountActionRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TransferActionRequestWhereInput
+}
+
 
 export type OwnershipTransferSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3191,6 +3420,7 @@ export type OwnershipTransferSelect<ExtArgs extends runtime.Types.Extensions.Int
   documents?: boolean | Prisma.OwnershipTransfer$documentsArgs<ExtArgs>
   transferAuditLogs?: boolean | Prisma.OwnershipTransfer$transferAuditLogsArgs<ExtArgs>
   stages?: boolean | Prisma.OwnershipTransfer$stagesArgs<ExtArgs>
+  actionRequests?: boolean | Prisma.OwnershipTransfer$actionRequestsArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   currentOwner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   newOwner?: boolean | Prisma.OwnershipTransfer$newOwnerArgs<ExtArgs>
@@ -3308,6 +3538,7 @@ export type OwnershipTransferInclude<ExtArgs extends runtime.Types.Extensions.In
   documents?: boolean | Prisma.OwnershipTransfer$documentsArgs<ExtArgs>
   transferAuditLogs?: boolean | Prisma.OwnershipTransfer$transferAuditLogsArgs<ExtArgs>
   stages?: boolean | Prisma.OwnershipTransfer$stagesArgs<ExtArgs>
+  actionRequests?: boolean | Prisma.OwnershipTransfer$actionRequestsArgs<ExtArgs>
   land?: boolean | Prisma.LandRegistrationDefaultArgs<ExtArgs>
   currentOwner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   newOwner?: boolean | Prisma.OwnershipTransfer$newOwnerArgs<ExtArgs>
@@ -3340,6 +3571,7 @@ export type $OwnershipTransferPayload<ExtArgs extends runtime.Types.Extensions.I
     documents: Prisma.$OwnershipTransferDocumentPayload<ExtArgs>[]
     transferAuditLogs: Prisma.$OwnershipTransferAuditLogPayload<ExtArgs>[]
     stages: Prisma.$TransferStageLogPayload<ExtArgs>[]
+    actionRequests: Prisma.$TransferActionRequestPayload<ExtArgs>[]
     land: Prisma.$LandRegistrationPayload<ExtArgs>
     currentOwner: Prisma.$UserPayload<ExtArgs>
     newOwner: Prisma.$UserPayload<ExtArgs> | null
@@ -3773,6 +4005,7 @@ export interface Prisma__OwnershipTransferClient<T, Null = never, ExtArgs extend
   documents<T extends Prisma.OwnershipTransfer$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnershipTransfer$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipTransferDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transferAuditLogs<T extends Prisma.OwnershipTransfer$transferAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnershipTransfer$transferAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipTransferAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   stages<T extends Prisma.OwnershipTransfer$stagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnershipTransfer$stagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransferStageLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  actionRequests<T extends Prisma.OwnershipTransfer$actionRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnershipTransfer$actionRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransferActionRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   land<T extends Prisma.LandRegistrationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistrationDefaultArgs<ExtArgs>>): Prisma.Prisma__LandRegistrationClient<runtime.Types.Result.GetResult<Prisma.$LandRegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   currentOwner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   newOwner<T extends Prisma.OwnershipTransfer$newOwnerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnershipTransfer$newOwnerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -4324,6 +4557,30 @@ export type OwnershipTransfer$stagesArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.TransferStageLogScalarFieldEnum | Prisma.TransferStageLogScalarFieldEnum[]
+}
+
+/**
+ * OwnershipTransfer.actionRequests
+ */
+export type OwnershipTransfer$actionRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TransferActionRequest
+   */
+  select?: Prisma.TransferActionRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TransferActionRequest
+   */
+  omit?: Prisma.TransferActionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransferActionRequestInclude<ExtArgs> | null
+  where?: Prisma.TransferActionRequestWhereInput
+  orderBy?: Prisma.TransferActionRequestOrderByWithRelationInput | Prisma.TransferActionRequestOrderByWithRelationInput[]
+  cursor?: Prisma.TransferActionRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TransferActionRequestScalarFieldEnum | Prisma.TransferActionRequestScalarFieldEnum[]
 }
 
 /**

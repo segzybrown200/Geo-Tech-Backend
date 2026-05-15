@@ -27,6 +27,8 @@ model User {
   PasswordResetToken    PasswordResetToken[]
   currentOwnerTransfers OwnershipTransfer[]  @relation("CurrentOwner")
   newOwnerTransfers     OwnershipTransfer[]  @relation("NewOwner")
+  transferActionRequestsMade TransferActionRequest[] @relation("TransferActionRequester")
+  transferActionRequestsReceived TransferActionRequest[] @relation("TransferActionOwner")
   payments              Payment[]
 }
 
@@ -226,6 +228,7 @@ model LandRegistration {
   // 🔁 Ownership Transfer
   OwnershipTransfer OwnershipTransfer[]
   transferredFrom   OwnershipTransfer[] @relation("TransferredLand")
+  transferActionRequests TransferActionRequest[]
 
   // 📑 CofO
   CofOApplication CofOApplication[]
@@ -343,6 +346,7 @@ model OwnershipTransfer {
   documents         OwnershipTransferDocument[]
   transferAuditLogs OwnershipTransferAuditLog[]
   stages            TransferStageLog[]
+  actionRequests    TransferActionRequest[]
 
   land            LandRegistration  @relation(fields: [landId], references: [id])
   currentOwner    User              @relation("CurrentOwner", fields: [currentOwnerId], references: [id])
@@ -441,6 +445,44 @@ model OwnershipTransferAuditLog {
 
   @@index([transferId])
   @@index([createdAt])
+}
+
+model TransferActionRequest {
+  id            String    @id @default(uuid()) @db.Uuid
+  landId        String    @db.Uuid
+  transferId    String?   @db.Uuid
+  requesterId   String    @db.Uuid
+  ownerId       String    @db.Uuid
+  operation     String
+  status        ActionRequestStatus @default(PENDING)
+  otpCode       String
+  otpChannel    String
+  otpSentAt     DateTime  @default(now())
+  otpExpiresAt  DateTime
+  verifiedAt    DateTime?
+  rejectedAt    DateTime?
+  rejectionReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  land      LandRegistration   @relation(fields: [landId], references: [id])
+  transfer  OwnershipTransfer? @relation(fields: [transferId], references: [id])
+  requester User              @relation("TransferActionRequester", fields: [requesterId], references: [id])
+  owner     User              @relation("TransferActionOwner", fields: [ownerId], references: [id])
+
+  @@index([landId])
+  @@index([transferId])
+  @@index([requesterId])
+  @@index([ownerId])
+  @@index([status])
+}
+
+enum ActionRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  EXPIRED
 }
 
 model TransferStageLog {

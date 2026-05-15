@@ -211,6 +211,8 @@ export type UserWhereInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenListRelationFilter
   currentOwnerTransfers?: Prisma.OwnershipTransferListRelationFilter
   newOwnerTransfers?: Prisma.OwnershipTransferListRelationFilter
+  transferActionRequestsMade?: Prisma.TransferActionRequestListRelationFilter
+  transferActionRequestsReceived?: Prisma.TransferActionRequestListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
 }
 
@@ -228,6 +230,8 @@ export type UserOrderByWithRelationInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenOrderByRelationAggregateInput
   currentOwnerTransfers?: Prisma.OwnershipTransferOrderByRelationAggregateInput
   newOwnerTransfers?: Prisma.OwnershipTransferOrderByRelationAggregateInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestOrderByRelationAggregateInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestOrderByRelationAggregateInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
 }
 
@@ -248,6 +252,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   PasswordResetToken?: Prisma.PasswordResetTokenListRelationFilter
   currentOwnerTransfers?: Prisma.OwnershipTransferListRelationFilter
   newOwnerTransfers?: Prisma.OwnershipTransferListRelationFilter
+  transferActionRequestsMade?: Prisma.TransferActionRequestListRelationFilter
+  transferActionRequestsReceived?: Prisma.TransferActionRequestListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
 }, "id" | "email">
 
@@ -293,6 +299,8 @@ export type UserCreateInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   currentOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput
   newOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
 }
 
@@ -310,6 +318,8 @@ export type UserUncheckedCreateInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentOwnerInput
   newOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -327,6 +337,8 @@ export type UserUpdateInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentOwnerNestedInput
   newOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
 }
 
@@ -344,6 +356,8 @@ export type UserUncheckedUpdateInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput
   newOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -481,6 +495,34 @@ export type UserUpdateOneWithoutNewOwnerTransfersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNewOwnerTransfersInput, Prisma.UserUpdateWithoutNewOwnerTransfersInput>, Prisma.UserUncheckedUpdateWithoutNewOwnerTransfersInput>
 }
 
+export type UserCreateNestedOneWithoutTransferActionRequestsMadeInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTransferActionRequestsMadeInput, Prisma.UserUncheckedCreateWithoutTransferActionRequestsMadeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTransferActionRequestsMadeInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutTransferActionRequestsReceivedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTransferActionRequestsReceivedInput, Prisma.UserUncheckedCreateWithoutTransferActionRequestsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTransferActionRequestsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTransferActionRequestsMadeNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTransferActionRequestsMadeInput, Prisma.UserUncheckedCreateWithoutTransferActionRequestsMadeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTransferActionRequestsMadeInput
+  upsert?: Prisma.UserUpsertWithoutTransferActionRequestsMadeInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTransferActionRequestsMadeInput, Prisma.UserUpdateWithoutTransferActionRequestsMadeInput>, Prisma.UserUncheckedUpdateWithoutTransferActionRequestsMadeInput>
+}
+
+export type UserUpdateOneRequiredWithoutTransferActionRequestsReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTransferActionRequestsReceivedInput, Prisma.UserUncheckedCreateWithoutTransferActionRequestsReceivedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTransferActionRequestsReceivedInput
+  upsert?: Prisma.UserUpsertWithoutTransferActionRequestsReceivedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTransferActionRequestsReceivedInput, Prisma.UserUpdateWithoutTransferActionRequestsReceivedInput>, Prisma.UserUncheckedUpdateWithoutTransferActionRequestsReceivedInput>
+}
+
 export type UserCreateNestedOneWithoutCofOApplicationInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutCofOApplicationInput, Prisma.UserUncheckedCreateWithoutCofOApplicationInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutCofOApplicationInput
@@ -536,6 +578,8 @@ export type UserCreateWithoutLandRegistrationInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   currentOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput
   newOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
 }
 
@@ -552,6 +596,8 @@ export type UserUncheckedCreateWithoutLandRegistrationInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentOwnerInput
   newOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -584,6 +630,8 @@ export type UserUpdateWithoutLandRegistrationInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentOwnerNestedInput
   newOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
 }
 
@@ -600,6 +648,8 @@ export type UserUncheckedUpdateWithoutLandRegistrationInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput
   newOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -616,6 +666,8 @@ export type UserCreateWithoutCurrentOwnerTransfersInput = {
   LandRegistration?: Prisma.LandRegistrationCreateNestedManyWithoutOwnerInput
   PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   newOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
 }
 
@@ -632,6 +684,8 @@ export type UserUncheckedCreateWithoutCurrentOwnerTransfersInput = {
   LandRegistration?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutOwnerInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   newOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -653,6 +707,8 @@ export type UserCreateWithoutNewOwnerTransfersInput = {
   LandRegistration?: Prisma.LandRegistrationCreateNestedManyWithoutOwnerInput
   PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   currentOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
 }
 
@@ -669,6 +725,8 @@ export type UserUncheckedCreateWithoutNewOwnerTransfersInput = {
   LandRegistration?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutOwnerInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -701,6 +759,8 @@ export type UserUpdateWithoutCurrentOwnerTransfersInput = {
   LandRegistration?: Prisma.LandRegistrationUpdateManyWithoutOwnerNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   newOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
 }
 
@@ -717,6 +777,8 @@ export type UserUncheckedUpdateWithoutCurrentOwnerTransfersInput = {
   LandRegistration?: Prisma.LandRegistrationUncheckedUpdateManyWithoutOwnerNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   newOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -744,6 +806,8 @@ export type UserUpdateWithoutNewOwnerTransfersInput = {
   LandRegistration?: Prisma.LandRegistrationUpdateManyWithoutOwnerNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
 }
 
@@ -760,6 +824,184 @@ export type UserUncheckedUpdateWithoutNewOwnerTransfersInput = {
   LandRegistration?: Prisma.LandRegistrationUncheckedUpdateManyWithoutOwnerNestedInput
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutOwnerNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutTransferActionRequestsMadeInput = {
+  id?: string
+  fullName?: string | null
+  email: string
+  password: string
+  phone?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  isEmailVerified?: boolean
+  CofOApplication?: Prisma.CofOApplicationCreateNestedManyWithoutUserInput
+  LandRegistration?: Prisma.LandRegistrationCreateNestedManyWithoutOwnerInput
+  PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  currentOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput
+  newOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestCreateNestedManyWithoutOwnerInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutTransferActionRequestsMadeInput = {
+  id?: string
+  fullName?: string | null
+  email: string
+  password: string
+  phone?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  isEmailVerified?: boolean
+  CofOApplication?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutUserInput
+  LandRegistration?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutOwnerInput
+  PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentOwnerInput
+  newOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutOwnerInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutTransferActionRequestsMadeInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTransferActionRequestsMadeInput, Prisma.UserUncheckedCreateWithoutTransferActionRequestsMadeInput>
+}
+
+export type UserCreateWithoutTransferActionRequestsReceivedInput = {
+  id?: string
+  fullName?: string | null
+  email: string
+  password: string
+  phone?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  isEmailVerified?: boolean
+  CofOApplication?: Prisma.CofOApplicationCreateNestedManyWithoutUserInput
+  LandRegistration?: Prisma.LandRegistrationCreateNestedManyWithoutOwnerInput
+  PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  currentOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput
+  newOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestCreateNestedManyWithoutRequesterInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutTransferActionRequestsReceivedInput = {
+  id?: string
+  fullName?: string | null
+  email: string
+  password: string
+  phone?: string | null
+  role?: $Enums.Role
+  createdAt?: Date | string
+  isEmailVerified?: boolean
+  CofOApplication?: Prisma.CofOApplicationUncheckedCreateNestedManyWithoutUserInput
+  LandRegistration?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutOwnerInput
+  PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentOwnerInput
+  newOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutRequesterInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutTransferActionRequestsReceivedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTransferActionRequestsReceivedInput, Prisma.UserUncheckedCreateWithoutTransferActionRequestsReceivedInput>
+}
+
+export type UserUpsertWithoutTransferActionRequestsMadeInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTransferActionRequestsMadeInput, Prisma.UserUncheckedUpdateWithoutTransferActionRequestsMadeInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTransferActionRequestsMadeInput, Prisma.UserUncheckedCreateWithoutTransferActionRequestsMadeInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTransferActionRequestsMadeInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTransferActionRequestsMadeInput, Prisma.UserUncheckedUpdateWithoutTransferActionRequestsMadeInput>
+}
+
+export type UserUpdateWithoutTransferActionRequestsMadeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutUserNestedInput
+  LandRegistration?: Prisma.LandRegistrationUpdateManyWithoutOwnerNestedInput
+  PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  currentOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentOwnerNestedInput
+  newOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUpdateManyWithoutOwnerNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTransferActionRequestsMadeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutUserNestedInput
+  LandRegistration?: Prisma.LandRegistrationUncheckedUpdateManyWithoutOwnerNestedInput
+  PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput
+  newOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutOwnerNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutTransferActionRequestsReceivedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTransferActionRequestsReceivedInput, Prisma.UserUncheckedUpdateWithoutTransferActionRequestsReceivedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTransferActionRequestsReceivedInput, Prisma.UserUncheckedCreateWithoutTransferActionRequestsReceivedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTransferActionRequestsReceivedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTransferActionRequestsReceivedInput, Prisma.UserUncheckedUpdateWithoutTransferActionRequestsReceivedInput>
+}
+
+export type UserUpdateWithoutTransferActionRequestsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutUserNestedInput
+  LandRegistration?: Prisma.LandRegistrationUpdateManyWithoutOwnerNestedInput
+  PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  currentOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentOwnerNestedInput
+  newOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUpdateManyWithoutRequesterNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTransferActionRequestsReceivedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutUserNestedInput
+  LandRegistration?: Prisma.LandRegistrationUncheckedUpdateManyWithoutOwnerNestedInput
+  PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput
+  newOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutRequesterNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -776,6 +1018,8 @@ export type UserCreateWithoutCofOApplicationInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   currentOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput
   newOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
 }
 
@@ -792,6 +1036,8 @@ export type UserUncheckedCreateWithoutCofOApplicationInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentOwnerInput
   newOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -824,6 +1070,8 @@ export type UserUpdateWithoutCofOApplicationInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentOwnerNestedInput
   newOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
 }
 
@@ -840,6 +1088,8 @@ export type UserUncheckedUpdateWithoutCofOApplicationInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput
   newOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -857,6 +1107,8 @@ export type UserCreateWithoutPaymentsInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   currentOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput
   newOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -873,6 +1125,8 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentOwnerInput
   newOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -905,6 +1159,8 @@ export type UserUpdateWithoutPaymentsInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentOwnerNestedInput
   newOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -921,6 +1177,8 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   PasswordResetToken?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput
   newOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutPasswordResetTokenInput = {
@@ -936,6 +1194,8 @@ export type UserCreateWithoutPasswordResetTokenInput = {
   LandRegistration?: Prisma.LandRegistrationCreateNestedManyWithoutOwnerInput
   currentOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutCurrentOwnerInput
   newOwnerTransfers?: Prisma.OwnershipTransferCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
 }
 
@@ -952,6 +1212,8 @@ export type UserUncheckedCreateWithoutPasswordResetTokenInput = {
   LandRegistration?: Prisma.LandRegistrationUncheckedCreateNestedManyWithoutOwnerInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutCurrentOwnerInput
   newOwnerTransfers?: Prisma.OwnershipTransferUncheckedCreateNestedManyWithoutNewOwnerInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutRequesterInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedCreateNestedManyWithoutOwnerInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -984,6 +1246,8 @@ export type UserUpdateWithoutPasswordResetTokenInput = {
   LandRegistration?: Prisma.LandRegistrationUpdateManyWithoutOwnerNestedInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutCurrentOwnerNestedInput
   newOwnerTransfers?: Prisma.OwnershipTransferUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
 }
 
@@ -1000,6 +1264,8 @@ export type UserUncheckedUpdateWithoutPasswordResetTokenInput = {
   LandRegistration?: Prisma.LandRegistrationUncheckedUpdateManyWithoutOwnerNestedInput
   currentOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutCurrentOwnerNestedInput
   newOwnerTransfers?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutNewOwnerNestedInput
+  transferActionRequestsMade?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  transferActionRequestsReceived?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutOwnerNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1014,6 +1280,8 @@ export type UserCountOutputType = {
   PasswordResetToken: number
   currentOwnerTransfers: number
   newOwnerTransfers: number
+  transferActionRequestsMade: number
+  transferActionRequestsReceived: number
   payments: number
 }
 
@@ -1023,6 +1291,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   PasswordResetToken?: boolean | UserCountOutputTypeCountPasswordResetTokenArgs
   currentOwnerTransfers?: boolean | UserCountOutputTypeCountCurrentOwnerTransfersArgs
   newOwnerTransfers?: boolean | UserCountOutputTypeCountNewOwnerTransfersArgs
+  transferActionRequestsMade?: boolean | UserCountOutputTypeCountTransferActionRequestsMadeArgs
+  transferActionRequestsReceived?: boolean | UserCountOutputTypeCountTransferActionRequestsReceivedArgs
   payments?: boolean | UserCountOutputTypeCountPaymentsArgs
 }
 
@@ -1074,6 +1344,20 @@ export type UserCountOutputTypeCountNewOwnerTransfersArgs<ExtArgs extends runtim
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountTransferActionRequestsMadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TransferActionRequestWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTransferActionRequestsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TransferActionRequestWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PaymentWhereInput
 }
@@ -1093,6 +1377,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   PasswordResetToken?: boolean | Prisma.User$PasswordResetTokenArgs<ExtArgs>
   currentOwnerTransfers?: boolean | Prisma.User$currentOwnerTransfersArgs<ExtArgs>
   newOwnerTransfers?: boolean | Prisma.User$newOwnerTransfersArgs<ExtArgs>
+  transferActionRequestsMade?: boolean | Prisma.User$transferActionRequestsMadeArgs<ExtArgs>
+  transferActionRequestsReceived?: boolean | Prisma.User$transferActionRequestsReceivedArgs<ExtArgs>
   payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -1137,6 +1423,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   PasswordResetToken?: boolean | Prisma.User$PasswordResetTokenArgs<ExtArgs>
   currentOwnerTransfers?: boolean | Prisma.User$currentOwnerTransfersArgs<ExtArgs>
   newOwnerTransfers?: boolean | Prisma.User$newOwnerTransfersArgs<ExtArgs>
+  transferActionRequestsMade?: boolean | Prisma.User$transferActionRequestsMadeArgs<ExtArgs>
+  transferActionRequestsReceived?: boolean | Prisma.User$transferActionRequestsReceivedArgs<ExtArgs>
   payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1151,6 +1439,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     PasswordResetToken: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
     currentOwnerTransfers: Prisma.$OwnershipTransferPayload<ExtArgs>[]
     newOwnerTransfers: Prisma.$OwnershipTransferPayload<ExtArgs>[]
+    transferActionRequestsMade: Prisma.$TransferActionRequestPayload<ExtArgs>[]
+    transferActionRequestsReceived: Prisma.$TransferActionRequestPayload<ExtArgs>[]
     payments: Prisma.$PaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1561,6 +1851,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   PasswordResetToken<T extends Prisma.User$PasswordResetTokenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$PasswordResetTokenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   currentOwnerTransfers<T extends Prisma.User$currentOwnerTransfersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$currentOwnerTransfersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   newOwnerTransfers<T extends Prisma.User$newOwnerTransfersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$newOwnerTransfersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transferActionRequestsMade<T extends Prisma.User$transferActionRequestsMadeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$transferActionRequestsMadeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransferActionRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transferActionRequestsReceived<T extends Prisma.User$transferActionRequestsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$transferActionRequestsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransferActionRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payments<T extends Prisma.User$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2104,6 +2396,54 @@ export type User$newOwnerTransfersArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.OwnershipTransferScalarFieldEnum | Prisma.OwnershipTransferScalarFieldEnum[]
+}
+
+/**
+ * User.transferActionRequestsMade
+ */
+export type User$transferActionRequestsMadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TransferActionRequest
+   */
+  select?: Prisma.TransferActionRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TransferActionRequest
+   */
+  omit?: Prisma.TransferActionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransferActionRequestInclude<ExtArgs> | null
+  where?: Prisma.TransferActionRequestWhereInput
+  orderBy?: Prisma.TransferActionRequestOrderByWithRelationInput | Prisma.TransferActionRequestOrderByWithRelationInput[]
+  cursor?: Prisma.TransferActionRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TransferActionRequestScalarFieldEnum | Prisma.TransferActionRequestScalarFieldEnum[]
+}
+
+/**
+ * User.transferActionRequestsReceived
+ */
+export type User$transferActionRequestsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TransferActionRequest
+   */
+  select?: Prisma.TransferActionRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TransferActionRequest
+   */
+  omit?: Prisma.TransferActionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransferActionRequestInclude<ExtArgs> | null
+  where?: Prisma.TransferActionRequestWhereInput
+  orderBy?: Prisma.TransferActionRequestOrderByWithRelationInput | Prisma.TransferActionRequestOrderByWithRelationInput[]
+  cursor?: Prisma.TransferActionRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TransferActionRequestScalarFieldEnum | Prisma.TransferActionRequestScalarFieldEnum[]
 }
 
 /**

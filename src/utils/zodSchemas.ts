@@ -349,28 +349,48 @@ export const ownershipTransferReviewSchema = z.object({
 });
 
 export const ownershipTransferDocumentUploadSchema = z.object({
-  documentsMeta: z.preprocess((val) => {
-    if (typeof val === "string") {
-      try {
-        return JSON.parse(val);
-      } catch {
-        return val;
+  documentsMeta: z.preprocess(
+    (val) => {
+      if (typeof val === "string") {
+        try {
+          return JSON.parse(val);
+        } catch {
+          return val;
+        }
       }
-    }
-    return val;
-  }, z.array(z.object({
-    type: z.enum([
-      "TRANSFER_AGREEMENT",
-      "ID_DOCUMENT_CURRENT_OWNER",
-      "ID_DOCUMENT_NEW_OWNER",
-      "PAYMENT_RECEIPT",
-      "SURVEY_DOCUMENT",
-      "SUBDIVISION_AGREEMENT",
-      "UPDATED_TITLE_DOCUMENT",
-      "OTHER"
-    ]),
-    title: z.string().min(1),
-  }))),
+      return val;
+    },
+    z.array(
+      z.object({
+        type: z.enum([
+          "TRANSFER_AGREEMENT",
+          "ID_DOCUMENT_CURRENT_OWNER",
+          "ID_DOCUMENT_NEW_OWNER",
+          "PAYMENT_RECEIPT",
+          "SURVEY_DOCUMENT",
+          "SUBDIVISION_AGREEMENT",
+          "UPDATED_TITLE_DOCUMENT",
+          "OTHER",
+        ]),
+        title: z.string().min(1),
+      }),
+    ),
+  ),
+});
+
+export const transferActionRequestSchema = z.object({
+  landId: z.string().uuid(),
+  transferId: z.string().uuid().optional(),
+  operation: z.string().min(3),
+});
+
+export const transferActionVerifySchema = z.object({
+  requestId: z.string().uuid(),
+  code: z.string().min(4),
+});
+
+export const transferActionRejectSchema = z.object({
+  reason: z.string().min(5),
 });
 
 // Land Conflict & Payment Schemas

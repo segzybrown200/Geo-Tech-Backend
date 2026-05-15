@@ -397,6 +397,7 @@ export const ModelName = {
   OwnershipTransferDocument: 'OwnershipTransferDocument',
   DocumentReview: 'DocumentReview',
   OwnershipTransferAuditLog: 'OwnershipTransferAuditLog',
+  TransferActionRequest: 'TransferActionRequest',
   TransferStageLog: 'TransferStageLog',
   OwnershipHistory: 'OwnershipHistory',
   CofOApplication: 'CofOApplication',
@@ -425,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "landAuditLog" | "ownershipTransfer" | "transferVerification" | "ownershipTransferDocument" | "documentReview" | "ownershipTransferAuditLog" | "transferStageLog" | "ownershipHistory" | "cofOApplication" | "cofODocument" | "payment" | "stageLog" | "landReviewLog" | "inboxMessage" | "emailVerificationToken" | "cofOAuditLog" | "approvalAudit" | "landConflict" | "passwordResetToken"
+    modelProps: "user" | "internalUser" | "session" | "internalOtp" | "landRegistration" | "landDocument" | "state" | "landAuditLog" | "ownershipTransfer" | "transferVerification" | "ownershipTransferDocument" | "documentReview" | "ownershipTransferAuditLog" | "transferActionRequest" | "transferStageLog" | "ownershipHistory" | "cofOApplication" | "cofODocument" | "payment" | "stageLog" | "landReviewLog" | "inboxMessage" | "emailVerificationToken" | "cofOAuditLog" | "approvalAudit" | "landConflict" | "passwordResetToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1372,6 +1373,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.OwnershipTransferAuditLogCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.OwnershipTransferAuditLogCountAggregateOutputType> | number
+        }
+      }
+    }
+    TransferActionRequest: {
+      payload: Prisma.$TransferActionRequestPayload<ExtArgs>
+      fields: Prisma.TransferActionRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TransferActionRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferActionRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TransferActionRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferActionRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.TransferActionRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferActionRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TransferActionRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferActionRequestPayload>
+        }
+        findMany: {
+          args: Prisma.TransferActionRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferActionRequestPayload>[]
+        }
+        create: {
+          args: Prisma.TransferActionRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferActionRequestPayload>
+        }
+        createMany: {
+          args: Prisma.TransferActionRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TransferActionRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferActionRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.TransferActionRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferActionRequestPayload>
+        }
+        update: {
+          args: Prisma.TransferActionRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferActionRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.TransferActionRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TransferActionRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TransferActionRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferActionRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.TransferActionRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransferActionRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.TransferActionRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTransferActionRequest>
+        }
+        groupBy: {
+          args: Prisma.TransferActionRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransferActionRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TransferActionRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransferActionRequestCountAggregateOutputType> | number
         }
       }
     }
@@ -2609,6 +2684,28 @@ export const OwnershipTransferAuditLogScalarFieldEnum = {
 export type OwnershipTransferAuditLogScalarFieldEnum = (typeof OwnershipTransferAuditLogScalarFieldEnum)[keyof typeof OwnershipTransferAuditLogScalarFieldEnum]
 
 
+export const TransferActionRequestScalarFieldEnum = {
+  id: 'id',
+  landId: 'landId',
+  transferId: 'transferId',
+  requesterId: 'requesterId',
+  ownerId: 'ownerId',
+  operation: 'operation',
+  status: 'status',
+  otpCode: 'otpCode',
+  otpChannel: 'otpChannel',
+  otpSentAt: 'otpSentAt',
+  otpExpiresAt: 'otpExpiresAt',
+  verifiedAt: 'verifiedAt',
+  rejectedAt: 'rejectedAt',
+  rejectionReason: 'rejectionReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TransferActionRequestScalarFieldEnum = (typeof TransferActionRequestScalarFieldEnum)[keyof typeof TransferActionRequestScalarFieldEnum]
+
+
 export const TransferStageLogScalarFieldEnum = {
   id: 'id',
   transferId: 'transferId',
@@ -2990,6 +3087,20 @@ export type ListEnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'ActionRequestStatus'
+ */
+export type EnumActionRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ActionRequestStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ActionRequestStatus[]'
+ */
+export type ListEnumActionRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ActionRequestStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'CofOStatus'
  */
 export type EnumCofOStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CofOStatus'>
@@ -3124,6 +3235,7 @@ export type GlobalOmitConfig = {
   ownershipTransferDocument?: Prisma.OwnershipTransferDocumentOmit
   documentReview?: Prisma.DocumentReviewOmit
   ownershipTransferAuditLog?: Prisma.OwnershipTransferAuditLogOmit
+  transferActionRequest?: Prisma.TransferActionRequestOmit
   transferStageLog?: Prisma.TransferStageLogOmit
   ownershipHistory?: Prisma.OwnershipHistoryOmit
   cofOApplication?: Prisma.CofOApplicationOmit

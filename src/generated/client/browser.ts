@@ -83,6 +83,11 @@ export type DocumentReview = Prisma.DocumentReviewModel
  */
 export type OwnershipTransferAuditLog = Prisma.OwnershipTransferAuditLogModel
 /**
+ * Model TransferActionRequest
+ * 
+ */
+export type TransferActionRequest = Prisma.TransferActionRequestModel
+/**
  * Model TransferStageLog
  * 
  */

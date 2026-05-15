@@ -468,6 +468,7 @@ export type LandRegistrationWhereInput = {
   payments?: Prisma.PaymentListRelationFilter
   OwnershipTransfer?: Prisma.OwnershipTransferListRelationFilter
   transferredFrom?: Prisma.OwnershipTransferListRelationFilter
+  transferActionRequests?: Prisma.TransferActionRequestListRelationFilter
   CofOApplication?: Prisma.CofOApplicationListRelationFilter
   reviewLogs?: Prisma.LandReviewLogListRelationFilter
   currentReviewer?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
@@ -523,6 +524,7 @@ export type LandRegistrationOrderByWithRelationInput = {
   payments?: Prisma.PaymentOrderByRelationAggregateInput
   OwnershipTransfer?: Prisma.OwnershipTransferOrderByRelationAggregateInput
   transferredFrom?: Prisma.OwnershipTransferOrderByRelationAggregateInput
+  transferActionRequests?: Prisma.TransferActionRequestOrderByRelationAggregateInput
   CofOApplication?: Prisma.CofOApplicationOrderByRelationAggregateInput
   reviewLogs?: Prisma.LandReviewLogOrderByRelationAggregateInput
   currentReviewer?: Prisma.InternalUserOrderByWithRelationInput
@@ -581,6 +583,7 @@ export type LandRegistrationWhereUniqueInput = Prisma.AtLeast<{
   payments?: Prisma.PaymentListRelationFilter
   OwnershipTransfer?: Prisma.OwnershipTransferListRelationFilter
   transferredFrom?: Prisma.OwnershipTransferListRelationFilter
+  transferActionRequests?: Prisma.TransferActionRequestListRelationFilter
   CofOApplication?: Prisma.CofOApplicationListRelationFilter
   reviewLogs?: Prisma.LandReviewLogListRelationFilter
   currentReviewer?: Prisma.XOR<Prisma.InternalUserNullableScalarRelationFilter, Prisma.InternalUserWhereInput> | null
@@ -720,6 +723,7 @@ export type LandRegistrationUpdateInput = {
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
@@ -773,6 +777,7 @@ export type LandRegistrationUncheckedUpdateInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
@@ -1159,6 +1164,15 @@ export type LandRegistrationUpdateOneWithoutTransferredFromNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.LandRegistrationUpdateToOneWithWhereWithoutTransferredFromInput, Prisma.LandRegistrationUpdateWithoutTransferredFromInput>, Prisma.LandRegistrationUncheckedUpdateWithoutTransferredFromInput>
 }
 
+export type LandRegistrationCreateNestedOneWithoutTransferActionRequestsInput = {
+  connect?: Prisma.LandRegistrationWhereUniqueInput
+}
+
+export type LandRegistrationUpdateOneRequiredWithoutTransferActionRequestsNestedInput = {
+  connect?: Prisma.LandRegistrationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LandRegistrationUpdateToOneWithWhereWithoutTransferActionRequestsInput, Prisma.LandRegistrationUpdateWithoutTransferActionRequestsInput>, Prisma.LandRegistrationUncheckedUpdateWithoutTransferActionRequestsInput>
+}
+
 export type LandRegistrationCreateNestedOneWithoutOwnershipLogsInput = {
   connect?: Prisma.LandRegistrationWhereUniqueInput
 }
@@ -1325,6 +1339,7 @@ export type LandRegistrationUpdateWithoutChildrenInput = {
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
@@ -1377,6 +1392,7 @@ export type LandRegistrationUncheckedUpdateWithoutChildrenInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
@@ -1439,6 +1455,7 @@ export type LandRegistrationUpdateWithoutDocumentsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
@@ -1491,6 +1508,7 @@ export type LandRegistrationUncheckedUpdateWithoutDocumentsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
@@ -1554,6 +1572,7 @@ export type LandRegistrationUpdateWithoutAuditLogsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
@@ -1606,6 +1625,7 @@ export type LandRegistrationUncheckedUpdateWithoutAuditLogsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
@@ -1659,6 +1679,7 @@ export type LandRegistrationUpdateWithoutOwnershipTransferInput = {
   auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
@@ -1711,6 +1732,7 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipTransferInput = {
   auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
@@ -1764,6 +1786,7 @@ export type LandRegistrationUpdateWithoutTransferredFromInput = {
   auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
@@ -1816,6 +1839,114 @@ export type LandRegistrationUncheckedUpdateWithoutTransferredFromInput = {
   auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
+  reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
+  children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUncheckedUpdateManyWithoutConflictingLandNestedInput
+}
+
+export type LandRegistrationUpdateToOneWithWhereWithoutTransferActionRequestsInput = {
+  where?: Prisma.LandRegistrationWhereInput
+  data: Prisma.XOR<Prisma.LandRegistrationUpdateWithoutTransferActionRequestsInput, Prisma.LandRegistrationUncheckedUpdateWithoutTransferActionRequestsInput>
+}
+
+export type LandRegistrationUpdateWithoutTransferActionRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutLandRegistrationNestedInput
+  state?: Prisma.StateUpdateOneRequiredWithoutLandsNestedInput
+  documents?: Prisma.LandDocumentUpdateManyWithoutLandNestedInput
+  ownershipLogs?: Prisma.OwnershipHistoryUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
+  transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
+  reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
+  currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
+  parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
+  children?: Prisma.LandRegistrationUpdateManyWithoutParentLandNestedInput
+  conflicts?: Prisma.LandConflictUpdateManyWithoutLandNestedInput
+  conflictsWith?: Prisma.LandConflictUpdateManyWithoutConflictingLandNestedInput
+}
+
+export type LandRegistrationUncheckedUpdateWithoutTransferActionRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  stateId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plotNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaSqm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  centerLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  centerLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  startPoint?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  utmZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  utmCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  latlngCoordinates?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  bearings?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  surveyPlanNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  surveyorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyorAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyTelephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landStatus?: Prisma.EnumlandStatusFieldUpdateOperationsInput | $Enums.landStatus
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  accuracyLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownershipType?: Prisma.StringFieldUpdateOperationsInput | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  titleType?: Prisma.StringFieldUpdateOperationsInput | string
+  currentReviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLandId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasExistingCofO?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  existingCofODocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofONumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  existingCofOIssueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresReviewerApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  conflictFlags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  documents?: Prisma.LandDocumentUncheckedUpdateManyWithoutLandNestedInput
+  ownershipLogs?: Prisma.OwnershipHistoryUncheckedUpdateManyWithoutLandNestedInput
+  auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
+  OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
+  transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
@@ -1869,6 +2000,7 @@ export type LandRegistrationUpdateWithoutOwnershipLogsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
@@ -1921,6 +2053,7 @@ export type LandRegistrationUncheckedUpdateWithoutOwnershipLogsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
@@ -1975,6 +2108,7 @@ export type LandRegistrationUpdateWithoutCofOApplicationInput = {
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
@@ -2027,6 +2161,7 @@ export type LandRegistrationUncheckedUpdateWithoutCofOApplicationInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
   conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
@@ -2079,6 +2214,7 @@ export type LandRegistrationUpdateWithoutPaymentsInput = {
   auditLogs?: Prisma.LandAuditLogUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
@@ -2131,6 +2267,7 @@ export type LandRegistrationUncheckedUpdateWithoutPaymentsInput = {
   auditLogs?: Prisma.LandAuditLogUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
@@ -2185,6 +2322,7 @@ export type LandRegistrationUpdateWithoutReviewLogsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
@@ -2237,6 +2375,7 @@ export type LandRegistrationUncheckedUpdateWithoutReviewLogsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
   conflicts?: Prisma.LandConflictUncheckedUpdateManyWithoutLandNestedInput
@@ -2290,6 +2429,7 @@ export type LandRegistrationUpdateWithoutConflictsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
@@ -2342,6 +2482,7 @@ export type LandRegistrationUncheckedUpdateWithoutConflictsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
@@ -2395,6 +2536,7 @@ export type LandRegistrationUpdateWithoutConflictsWithInput = {
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
@@ -2447,6 +2589,7 @@ export type LandRegistrationUncheckedUpdateWithoutConflictsWithInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
@@ -2494,6 +2637,7 @@ export type LandRegistrationUpdateWithoutOwnerInput = {
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
@@ -2546,6 +2690,7 @@ export type LandRegistrationUncheckedUpdateWithoutOwnerInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
@@ -2634,6 +2779,7 @@ export type LandRegistrationUpdateWithoutCurrentReviewerInput = {
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   parentLand?: Prisma.LandRegistrationUpdateOneWithoutChildrenNestedInput
@@ -2685,6 +2831,7 @@ export type LandRegistrationUncheckedUpdateWithoutCurrentReviewerInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
@@ -2773,6 +2920,7 @@ export type LandRegistrationUpdateWithoutParentLandInput = {
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
@@ -2824,6 +2972,7 @@ export type LandRegistrationUncheckedUpdateWithoutParentLandInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
@@ -2911,6 +3060,7 @@ export type LandRegistrationUpdateWithoutStateInput = {
   payments?: Prisma.PaymentUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUpdateManyWithoutLandNestedInput
   currentReviewer?: Prisma.InternalUserUpdateOneWithoutLandReviewAssignmentsNestedInput
@@ -2963,6 +3113,7 @@ export type LandRegistrationUncheckedUpdateWithoutStateInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLandNestedInput
   OwnershipTransfer?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutLandNestedInput
   transferredFrom?: Prisma.OwnershipTransferUncheckedUpdateManyWithoutTransferredLandNestedInput
+  transferActionRequests?: Prisma.TransferActionRequestUncheckedUpdateManyWithoutLandNestedInput
   CofOApplication?: Prisma.CofOApplicationUncheckedUpdateManyWithoutLandNestedInput
   reviewLogs?: Prisma.LandReviewLogUncheckedUpdateManyWithoutLandNestedInput
   children?: Prisma.LandRegistrationUncheckedUpdateManyWithoutParentLandNestedInput
@@ -3021,6 +3172,7 @@ export type LandRegistrationCountOutputType = {
   payments: number
   OwnershipTransfer: number
   transferredFrom: number
+  transferActionRequests: number
   CofOApplication: number
   reviewLogs: number
   children: number
@@ -3035,6 +3187,7 @@ export type LandRegistrationCountOutputTypeSelect<ExtArgs extends runtime.Types.
   payments?: boolean | LandRegistrationCountOutputTypeCountPaymentsArgs
   OwnershipTransfer?: boolean | LandRegistrationCountOutputTypeCountOwnershipTransferArgs
   transferredFrom?: boolean | LandRegistrationCountOutputTypeCountTransferredFromArgs
+  transferActionRequests?: boolean | LandRegistrationCountOutputTypeCountTransferActionRequestsArgs
   CofOApplication?: boolean | LandRegistrationCountOutputTypeCountCofOApplicationArgs
   reviewLogs?: boolean | LandRegistrationCountOutputTypeCountReviewLogsArgs
   children?: boolean | LandRegistrationCountOutputTypeCountChildrenArgs
@@ -3092,6 +3245,13 @@ export type LandRegistrationCountOutputTypeCountOwnershipTransferArgs<ExtArgs ex
  */
 export type LandRegistrationCountOutputTypeCountTransferredFromArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.OwnershipTransferWhereInput
+}
+
+/**
+ * LandRegistrationCountOutputType without action
+ */
+export type LandRegistrationCountOutputTypeCountTransferActionRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TransferActionRequestWhereInput
 }
 
 /**
@@ -3176,6 +3336,7 @@ export type LandRegistrationSelect<ExtArgs extends runtime.Types.Extensions.Inte
   payments?: boolean | Prisma.LandRegistration$paymentsArgs<ExtArgs>
   OwnershipTransfer?: boolean | Prisma.LandRegistration$OwnershipTransferArgs<ExtArgs>
   transferredFrom?: boolean | Prisma.LandRegistration$transferredFromArgs<ExtArgs>
+  transferActionRequests?: boolean | Prisma.LandRegistration$transferActionRequestsArgs<ExtArgs>
   CofOApplication?: boolean | Prisma.LandRegistration$CofOApplicationArgs<ExtArgs>
   reviewLogs?: boolean | Prisma.LandRegistration$reviewLogsArgs<ExtArgs>
   currentReviewer?: boolean | Prisma.LandRegistration$currentReviewerArgs<ExtArgs>
@@ -3281,6 +3442,7 @@ export type LandRegistrationInclude<ExtArgs extends runtime.Types.Extensions.Int
   payments?: boolean | Prisma.LandRegistration$paymentsArgs<ExtArgs>
   OwnershipTransfer?: boolean | Prisma.LandRegistration$OwnershipTransferArgs<ExtArgs>
   transferredFrom?: boolean | Prisma.LandRegistration$transferredFromArgs<ExtArgs>
+  transferActionRequests?: boolean | Prisma.LandRegistration$transferActionRequestsArgs<ExtArgs>
   CofOApplication?: boolean | Prisma.LandRegistration$CofOApplicationArgs<ExtArgs>
   reviewLogs?: boolean | Prisma.LandRegistration$reviewLogsArgs<ExtArgs>
   currentReviewer?: boolean | Prisma.LandRegistration$currentReviewerArgs<ExtArgs>
@@ -3308,6 +3470,7 @@ export type $LandRegistrationPayload<ExtArgs extends runtime.Types.Extensions.In
     payments: Prisma.$PaymentPayload<ExtArgs>[]
     OwnershipTransfer: Prisma.$OwnershipTransferPayload<ExtArgs>[]
     transferredFrom: Prisma.$OwnershipTransferPayload<ExtArgs>[]
+    transferActionRequests: Prisma.$TransferActionRequestPayload<ExtArgs>[]
     CofOApplication: Prisma.$CofOApplicationPayload<ExtArgs>[]
     reviewLogs: Prisma.$LandReviewLogPayload<ExtArgs>[]
     currentReviewer: Prisma.$InternalUserPayload<ExtArgs> | null
@@ -3685,6 +3848,7 @@ export interface Prisma__LandRegistrationClient<T, Null = never, ExtArgs extends
   payments<T extends Prisma.LandRegistration$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   OwnershipTransfer<T extends Prisma.LandRegistration$OwnershipTransferArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$OwnershipTransferArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transferredFrom<T extends Prisma.LandRegistration$transferredFromArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$transferredFromArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transferActionRequests<T extends Prisma.LandRegistration$transferActionRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$transferActionRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransferActionRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   CofOApplication<T extends Prisma.LandRegistration$CofOApplicationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$CofOApplicationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CofOApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewLogs<T extends Prisma.LandRegistration$reviewLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$reviewLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LandReviewLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   currentReviewer<T extends Prisma.LandRegistration$currentReviewerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LandRegistration$currentReviewerArgs<ExtArgs>>): Prisma.Prisma__InternalUserClient<runtime.Types.Result.GetResult<Prisma.$InternalUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -4209,6 +4373,30 @@ export type LandRegistration$transferredFromArgs<ExtArgs extends runtime.Types.E
   take?: number
   skip?: number
   distinct?: Prisma.OwnershipTransferScalarFieldEnum | Prisma.OwnershipTransferScalarFieldEnum[]
+}
+
+/**
+ * LandRegistration.transferActionRequests
+ */
+export type LandRegistration$transferActionRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TransferActionRequest
+   */
+  select?: Prisma.TransferActionRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TransferActionRequest
+   */
+  omit?: Prisma.TransferActionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransferActionRequestInclude<ExtArgs> | null
+  where?: Prisma.TransferActionRequestWhereInput
+  orderBy?: Prisma.TransferActionRequestOrderByWithRelationInput | Prisma.TransferActionRequestOrderByWithRelationInput[]
+  cursor?: Prisma.TransferActionRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TransferActionRequestScalarFieldEnum | Prisma.TransferActionRequestScalarFieldEnum[]
 }
 
 /**

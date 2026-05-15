@@ -12,6 +12,9 @@ import {
   ownershipTransferVerifySchema,
   ownershipTransferReviewSchema,
   ownershipTransferDocumentUploadSchema,
+  transferActionRequestSchema,
+  transferActionVerifySchema,
+  transferActionRejectSchema,
 } from "../utils/zodSchemas";
 
 import {
@@ -2050,6 +2053,437 @@ export const resendTransferOTP = async (req: AuthRequest, res: Response) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to resend OTP" });
+  }
+};
+
+async function sendSmsPlaceholder(phone: string, code: string) {
+  console.warn(
+    `Transfer action OTP for ${phone} is ${code}. SMS sending is not configured.`,
+  );
+}
+
+async function notifyStateReviewers(
+  stateId: string,
+  subject: string,
+  html: string,
+) {
+  const reviewers = await prisma.internalUser.findMany({
+    where: {
+      stateId,
+      role: { in: ["APPROVER", "GOVERNOR", "ADMIN"] },
+    },
+  });
+
+  await Promise.all(
+    reviewers
+      .filter((reviewer) => reviewer.email)
+      .map((reviewer) =>
+        sendEmail(reviewer.email, subject, html).catch((err) => {
+          console.warn(
+            `Failed to notify state reviewer ${reviewer.email}:`,
+            err,
+          );
+        }),
+      ),
+  );
+}
+
+async function notifyOwnerOfTransferActionRequest(
+  owner: any,
+  request: any,
+  code: string,
+) {
+  if (owner.email) {
+    const channelLabel = owner.email && owner.phone ? "Email and phone" : owner.email ? "Email" : "Phone";
+    const html = `
+      <p>Dear ${owner.fullName},</p>
+      <p>
+        A transferee has requested to perform an action on land you currently own.
+        Please confirm that you authorize this <strong>${request.operation}</strong> request.
+      </p>
+      <p><strong>Request ID:</strong> ${request.id}</p>
+      <p><strong>OTP Code:</strong> ${code}</p>
+      <p>This OTP is valid until ${request.otpExpiresAt.toISOString()}.</p>
+      <p>If you did not request this, please ignore this message.</p>
+      <p>Contact methods: ${channelLabel}</p>
+    `;
+    await sendEmail(
+      owner.email,
+      "Action consent required for land transfer",
+      html,
+    );
+  }
+
+  if (owner.phone) {
+    await sendSmsPlaceholder(owner.phone, code);
+  }
+}
+
+async function notifyRequestOutcome(
+  request: any,
+  approved: boolean,
+  reason?: string,
+) {
+  const subject = approved
+    ? "Original owner approved your transfer action request"
+    : "Original owner rejected your transfer action request";
+
+  const html = `
+    <p>Dear ${request.requester.fullName},</p>
+    <p>
+      The original owner has ${approved ? "approved" : "rejected"} your request to
+      perform <strong>${request.operation}</strong> on the land with ID <strong>${request.landId}</strong>.
+    </p>
+    ${approved ? "" : `<p><strong>Reason:</strong> ${reason || "Not provided"}</p>`}
+    <p>Request ID: ${request.id}</p>
+  `;
+
+  if (request.requester.email) {
+    await sendEmail(request.requester.email, subject, html).catch((err) => {
+      console.warn("Failed to notify requester by email:", err);
+    });
+  }
+
+  if (!approved) {
+    const ownerRejectionHtml = `
+      <p>Owner ${request.owner.fullName} rejected a transferee action request.</p>
+      <p><strong>Land ID:</strong> ${request.landId}</p>
+      <p><strong>Operation:</strong> ${request.operation}</p>
+      <p><strong>Reason:</strong> ${reason || "Not provided"}</p>
+      <p><strong>Requester:</strong> ${request.requester.fullName} (${request.requester.email})</p>
+    `;
+
+    await notifyStateReviewers(
+      request.land.stateId,
+      "Transfer action request rejected by owner",
+      ownerRejectionHtml,
+    );
+  } else {
+    const approvalHtml = `
+      <p>Original owner ${request.owner.fullName} approved the transferee action request.</p>
+      <p><strong>Land ID:</strong> ${request.landId}</p>
+      <p><strong>Operation:</strong> ${request.operation}</p>
+      <p><strong>Requester:</strong> ${request.requester.fullName} (${request.requester.email})</p>
+    `;
+
+    await notifyStateReviewers(
+      request.land.stateId,
+      "Transfer action request approved by owner",
+      approvalHtml,
+    );
+  }
+}
+
+export const requestTransferActionConsent = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  const body = transferActionRequestSchema.safeParse(req.body);
+  if (!body.success) {
+    return res.status(400).json({
+      message: "Invalid request",
+      errors: body.error.flatten(),
+    });
+  }
+
+  const { landId, transferId, operation } = body.data;
+  const requesterId = req.user.sub;
+
+  try {
+    const requester = await prisma.user.findUnique({
+      where: { id: requesterId },
+    });
+    if (!requester) {
+      return res.status(404).json({ message: "Requester not found" });
+    }
+
+    const land = await prisma.landRegistration.findUnique({
+      where: { id: landId },
+      include: { owner: true, state: true },
+    });
+
+    if (!land) {
+      return res.status(404).json({ message: "Land not found" });
+    }
+
+    if (land.ownerId === requesterId) {
+      return res.status(400).json({
+        message: "Original owner cannot create a transferee action consent request",
+      });
+    }
+
+    const transfer = await prisma.ownershipTransfer.findFirst({
+      where: {
+        landId,
+        status: { in: ["INITIATED", "VERIFIED_BY_PARTIES", "DOCUMENTS_UPLOADED", "PENDING_GOVERNOR"] },
+        OR: [
+          { newOwnerId: requesterId },
+          { newOwnerEmail: requester.email },
+          { newOwnerPhone: requester.phone },
+        ],
+        ...(transferId ? { id: transferId } : {}),
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (!transfer) {
+      return res.status(400).json({
+        message:
+          "No active ownership transfer found linking you to this land",
+      });
+    }
+
+    if (!land.owner?.email && !land.owner?.phone) {
+      return res.status(400).json({
+        message:
+          "Original owner does not have valid email or phone contact information",
+      });
+    }
+
+    const code = crypto.randomInt(100000, 999999).toString();
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    const otpChannel = land.owner.email && land.owner.phone ? "BOTH" : land.owner.email ? "EMAIL" : "PHONE";
+
+    const actionRequest = await prisma.transferActionRequest.create({
+      data: {
+        landId,
+        transferId: transfer.id,
+        requesterId,
+        ownerId: land.ownerId,
+        operation,
+        otpCode: code,
+        otpChannel,
+        otpExpiresAt: expiresAt,
+      },
+    });
+
+    await notifyOwnerOfTransferActionRequest(land.owner, actionRequest, code);
+
+    await prisma.ownershipTransferAuditLog.create({
+      data: {
+        transferId: transfer.id,
+        action: "TRANSFER_ACTION_REQUESTED",
+        performedById: requesterId,
+        performedByRole: "USER",
+        comment: `Requested ${operation} consent from original owner`,
+      },
+    });
+
+    return res.status(201).json({
+      message: "Owner consent requested",
+      requestId: actionRequest.id,
+      expiresAt,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to request owner consent" });
+  }
+};
+
+export const verifyTransferActionRequest = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  const body = transferActionVerifySchema.safeParse(req.body);
+  if (!body.success) {
+    return res.status(400).json({
+      message: "Invalid request",
+      errors: body.error.flatten(),
+    });
+  }
+
+  const { requestId, code } = body.data;
+  const ownerId = req.user.sub;
+
+  try {
+    const actionRequest = await prisma.transferActionRequest.findUnique({
+      where: { id: requestId },
+      include: { land: true, requester: true, owner: true },
+    });
+    if (!actionRequest) {
+      return res.status(404).json({ message: "Request not found" });
+    }
+
+    if (actionRequest.ownerId !== ownerId) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    if (actionRequest.status !== "PENDING") {
+      return res.status(400).json({ message: "Request is not pending" });
+    }
+
+    if (new Date() > actionRequest.otpExpiresAt) {
+      await prisma.transferActionRequest.update({
+        where: { id: requestId },
+        data: { status: "EXPIRED" },
+      });
+      return res.status(400).json({ message: "OTP expired" });
+    }
+
+    if (actionRequest.otpCode !== code) {
+      return res.status(400).json({ message: "Invalid OTP code" });
+    }
+
+    const updatedRequest = await prisma.transferActionRequest.update({
+      where: { id: requestId },
+      data: {
+        status: "APPROVED",
+        verifiedAt: new Date(),
+      },
+      include: { land: true, requester: true, owner: true },
+    });
+
+    const approvedAuditData: any = {
+      action: "TRANSFER_ACTION_APPROVED",
+      performedById: ownerId,
+      performedByRole: "USER",
+      comment: `Owner approved ${updatedRequest.operation}`,
+    };
+    if (updatedRequest.transferId) {
+      approvedAuditData.transferId = updatedRequest.transferId;
+    }
+    await prisma.ownershipTransferAuditLog.create({
+      data: approvedAuditData,
+    });
+
+    await notifyRequestOutcome(updatedRequest, true);
+
+    return res.json({ message: "Owner consent granted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to verify owner consent" });
+  }
+};
+
+export const rejectTransferActionRequest = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  const body = transferActionRejectSchema.safeParse(req.body);
+  if (!body.success) {
+    return res.status(400).json({
+      message: "Invalid request",
+      errors: body.error.flatten(),
+    });
+  }
+
+  const { reason } = body.data;
+  const { requestId } = req.params;
+  const ownerId = req.user.sub;
+
+  try {
+    const actionRequest = await prisma.transferActionRequest.findUnique({
+      where: { id: requestId },
+      include: { land: true, requester: true, owner: true },
+    });
+    if (!actionRequest) {
+      return res.status(404).json({ message: "Request not found" });
+    }
+
+    if (actionRequest.ownerId !== ownerId) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    if (actionRequest.status !== "PENDING") {
+      return res.status(400).json({ message: "Request is not pending" });
+    }
+
+    const updatedRequest = await prisma.transferActionRequest.update({
+      where: { id: requestId },
+      data: {
+        status: "REJECTED",
+        rejectedAt: new Date(),
+        rejectionReason: reason,
+      },
+      include: { land: true, requester: true, owner: true },
+    });
+
+    const rejectedAuditData: any = {
+      action: "TRANSFER_ACTION_REJECTED",
+      performedById: ownerId,
+      performedByRole: "USER",
+      comment: reason,
+    };
+    if (updatedRequest.transferId) {
+      rejectedAuditData.transferId = updatedRequest.transferId;
+    }
+    await prisma.ownershipTransferAuditLog.create({
+      data: rejectedAuditData,
+    });
+
+    await notifyRequestOutcome(updatedRequest, false, reason);
+
+    return res.json({ message: "Owner rejected the request" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to reject owner consent request" });
+  }
+};
+
+export const getTransferActionRequest = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  const { requestId } = req.params;
+  const userId = req.user.sub;
+
+  try {
+    const actionRequest = await prisma.transferActionRequest.findUnique({
+      where: { id: requestId },
+      include: {
+        land: { include: { state: true } },
+        transfer: true,
+        requester: true,
+        owner: true,
+      },
+    });
+
+    if (!actionRequest) {
+      return res.status(404).json({ message: "Request not found" });
+    }
+
+    if (
+      actionRequest.requesterId !== userId &&
+      actionRequest.ownerId !== userId
+    ) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    return res.json({
+      request: {
+        id: actionRequest.id,
+        landId: actionRequest.landId,
+        transferId: actionRequest.transferId,
+        operation: actionRequest.operation,
+        status: actionRequest.status,
+        otpChannel: actionRequest.otpChannel,
+        expiresAt: actionRequest.otpExpiresAt,
+        verifiedAt: actionRequest.verifiedAt,
+        rejectedAt: actionRequest.rejectedAt,
+        rejectionReason: actionRequest.rejectionReason,
+        createdAt: actionRequest.createdAt,
+        updatedAt: actionRequest.updatedAt,
+        requester: {
+          id: actionRequest.requester.id,
+          fullName: actionRequest.requester.fullName,
+          email: actionRequest.requester.email,
+        },
+        owner: {
+          id: actionRequest.owner.id,
+          fullName: actionRequest.owner.fullName,
+          email: actionRequest.owner.email,
+          phone: actionRequest.owner.phone,
+        },
+        land: {
+          id: actionRequest.land.id,
+          address: actionRequest.land.address,
+          state: actionRequest.land.state?.name,
+        },
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch request" });
   }
 };
 

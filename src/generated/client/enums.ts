@@ -66,6 +66,16 @@ export const TransferStatus = {
 export type TransferStatus = (typeof TransferStatus)[keyof typeof TransferStatus]
 
 
+export const ActionRequestStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type ActionRequestStatus = (typeof ActionRequestStatus)[keyof typeof ActionRequestStatus]
+
+
 export const DocumentStatus = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
