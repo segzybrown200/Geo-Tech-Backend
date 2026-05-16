@@ -182,7 +182,7 @@ z.tuple([z.number(), z.number()]) // [lat, lng]
 
   surveyPlanNumber: z.string().min(3).optional(),
   surveyDate: z.string().optional(),
-  surveyorName: z.string().min(3).optional(),
+  surveyorName: z.string().min(2).optional(),
   surveyorAddress: z.string().optional(),
   surveyTelephone: z.string().optional(),
   surveyNotes: z.string().optional(),
