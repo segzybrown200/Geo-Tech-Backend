@@ -111,8 +111,8 @@ export const initiateOwnershipTransfer = async (
         .json({ message: "No user found with the provided new owner's email" });
     }
 
-    if (!land || land.ownerId !== ownerId) {
-      return res.status(403).json({ message: "You don't own this land" });
+    if (!land) {
+      return res.status(404).json({ message: "Land not found" });
     }
 
     if (land.landStatus !== "APPROVED") {
@@ -221,7 +221,7 @@ export const initiateOwnershipTransfer = async (
     const transfer = await prisma.ownershipTransfer.create({
       data: {
         landId,
-        currentOwnerId: ownerId,
+        currentOwnerId: land.ownerId,
         newOwnerEmail,
         newOwnerPhone,
         newOwnerId: existingUser?.id || null, // Will be set after verification
